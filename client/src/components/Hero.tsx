@@ -66,13 +66,6 @@ export default function Hero() {
             </Button>
           </div>
 
-          <div className="mt-16 flex items-center justify-center gap-8 text-muted-foreground/40 grayscale opacity-50">
-             {/* Tech-style logos placeholder */}
-             <div className="h-8 w-24 bg-current rounded opacity-20" />
-             <div className="h-8 w-24 bg-current rounded opacity-20" />
-             <div className="h-8 w-24 bg-current rounded opacity-20" />
-             <div className="h-8 w-24 bg-current rounded opacity-20" />
-          </div>
         </motion.div>
       </div>
     </section>
