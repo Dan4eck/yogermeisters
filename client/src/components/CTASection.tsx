@@ -15,10 +15,10 @@ export default function CTASection() {
           className="max-w-2xl mx-auto space-y-8"
         >
           <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white">
-            Ready to upgrade?
+            Ready to start your spiritual journey?
           </h2>
           <p className="text-xl text-muted-foreground font-light">
-            Join the waitlist for the next retreat or book a 1:1 consultation today.
+            Book the online class with me or enroll for one of my retreats!
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -26,14 +26,14 @@ export default function CTASection() {
               size="lg" 
               className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 w-full sm:w-auto font-medium"
             >
-              Book Consultation
+              Book a Class
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="h-12 px-8 rounded-full border-white/10 bg-black/50 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto backdrop-blur-md"
             >
-              View Schedule
+              Book a Retreat
             </Button>
           </div>
         </motion.div>

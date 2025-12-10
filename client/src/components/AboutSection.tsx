@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import aboutImg from "@assets/ZVC03532_1765387553363.JPG";
+import aboutImg from "@assets/2025-12-10_18.39.59_1765388536142.jpg";
 
 export default function AboutSection() {
   const stats = [
