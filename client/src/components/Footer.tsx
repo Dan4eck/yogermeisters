@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="col-span-1">
             <a href="/" className="text-lg font-bold tracking-tighter flex items-center gap-2 mb-6">
               <div className="w-4 h-4 bg-white rounded-full" />
-              <span>Serenity Flow</span>
+              <span>Yogermeisters</span>
             </a>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Designed for balance. <br />
@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground">
-          <p>&copy; 2024 Serenity Flow Inc. All rights reserved.</p>
+          <p>&copy; 2024 Yogermeisters Inc. All rights reserved.</p>
           <div className="flex items-center gap-2 mt-4 md:mt-0">
              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
              <span>Systems Operational</span>

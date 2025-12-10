@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import aboutImg from "@assets/generated_images/friendly_female_yoga_teacher_portrait_in_nature.png";
+import aboutImg from "@assets/ZVC03532_1765387553363.JPG";
 
 export default function AboutSection() {
   const stats = [

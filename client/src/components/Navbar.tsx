@@ -35,7 +35,7 @@ export default function Navbar() {
         <Link href="/">
           <a className="text-lg font-bold tracking-tighter flex items-center gap-2">
             <div className="w-5 h-5 bg-white rounded-full" />
-            <span className="text-white">Serenity Flow</span>
+            <span className="text-white">Yogermeisters</span>
           </a>
         </Link>
 

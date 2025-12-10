@@ -51,9 +51,6 @@ export default function ToursSection() {
               Curated experiences for deep focus and restoration.
             </p>
           </div>
-          <Button variant="link" className="text-white p-0 h-auto hover:text-white/70">
-            View all dates <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

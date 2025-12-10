@@ -34,15 +34,15 @@ export default function Hero() {
           className="max-w-4xl mx-auto flex flex-col items-center"
         >
           <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white backdrop-blur-xl">
-            <span className="mr-2 rounded-full bg-white px-1.5 py-0.5 text-[10px] font-bold text-black uppercase tracking-wide">New</span>
-            <span className="font-medium">Winter Retreat Series Available</span>
+            <span className="mr-2 rounded-full bg-white px-1.5 py-0.5 text-[10px] font-bold text-black uppercase tracking-wide">Early Birds</span>
+            <span className="font-medium">Cyrali retreat in May</span>
             <ArrowRight className="ml-2 h-3 w-3 opacity-50" />
           </div>
           
           <h1 className="text-5xl md:text-8xl font-bold tracking-tight text-white mb-6">
-            Find your <br />
+            Practice, <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40">
-              Inner Sanctuary.
+              Observe, Connect
             </span>
           </h1>
           
@@ -55,14 +55,14 @@ export default function Hero() {
               size="lg" 
               className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 font-medium w-full sm:w-auto transition-all hover:scale-105"
             >
-              Start Practice
+              Book Class
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="h-12 px-8 rounded-full border-white/20 bg-transparent text-white hover:bg-white/10 w-full sm:w-auto"
             >
-              <Play className="w-4 h-4 mr-2" /> Watch Trailer
+              Book Retreat
             </Button>
           </div>
 
