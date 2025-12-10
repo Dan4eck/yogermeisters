@@ -50,13 +50,6 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="h-8 rounded-full px-4 border-white/20 text-white hover:bg-white hover:text-black transition-all duration-300"
-          >
-            Book Class
-          </Button>
         </div>
 
         {/* Mobile Toggle */}
@@ -88,7 +81,6 @@ export default function Navbar() {
                   {link.name}
                 </a>
               ))}
-              <Button className="w-full rounded-md mt-2">Book Class</Button>
             </div>
           </motion.div>
         )}
