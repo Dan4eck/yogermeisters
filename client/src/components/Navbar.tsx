@@ -10,7 +10,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -25,33 +25,35 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 border-b border-transparent ${
         isScrolled
-          ? "bg-background/80 backdrop-blur-md shadow-sm py-4"
-          : "bg-transparent py-6"
+          ? "bg-background/80 backdrop-blur-xl border-white/10 py-3"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className={`text-2xl font-serif font-bold tracking-tight transition-colors ${isScrolled ? "text-foreground" : "text-white"}`}>
-          Serenity Flow
+        <Link href="/">
+          <a className="text-lg font-bold tracking-tighter flex items-center gap-2">
+            <div className="w-5 h-5 bg-white rounded-full" />
+            <span className="text-white">Serenity Flow</span>
+          </a>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className={`text-sm font-medium hover:text-primary transition-colors ${
-                isScrolled ? "text-foreground/80" : "text-white/90"
-              }`}
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.name}
             </a>
           ))}
           <Button 
-            variant={isScrolled ? "default" : "secondary"} 
-            className="rounded-full px-6"
+            variant="outline" 
+            size="sm"
+            className="h-8 rounded-full px-4 border-white/20 text-white hover:bg-white hover:text-black transition-all duration-300"
           >
             Book Class
           </Button>
@@ -62,11 +64,7 @@ export default function Navbar() {
           className="md:hidden text-foreground"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? (
-            <X className={isScrolled ? "text-foreground" : "text-white"} />
-          ) : (
-            <Menu className={isScrolled ? "text-foreground" : "text-white"} />
-          )}
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -77,20 +75,20 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-b"
+            className="md:hidden bg-background border-b border-white/10"
           >
             <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-lg font-serif text-foreground/80 hover:text-primary"
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
                 </a>
               ))}
-              <Button className="w-full rounded-full mt-4">Book Class</Button>
+              <Button className="w-full rounded-md mt-2">Book Class</Button>
             </div>
           </motion.div>
         )}

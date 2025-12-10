@@ -1,70 +1,81 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 import aboutImg from "@assets/generated_images/friendly_female_yoga_teacher_portrait_in_nature.png";
 
 export default function AboutSection() {
+  const stats = [
+    { label: "Years Exp", value: "10+" },
+    { label: "Students", value: "5k+" },
+    { label: "Countries", value: "12" },
+  ];
+
   return (
-    <section id="about" className="py-24 bg-background overflow-hidden">
+    <section id="about" className="py-24 bg-background border-t border-white/5">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+        <div className="flex flex-col lg:flex-row items-center gap-16">
           
-          {/* Image Side */}
+          {/* Content */}
           <motion.div 
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="w-full lg:w-1/2 relative"
+            className="w-full lg:w-1/2 space-y-8"
           >
-            <div className="relative aspect-square max-w-md mx-auto lg:max-w-none">
-              <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl transform -translate-x-10 translate-y-10" />
-              <div className="absolute inset-0 bg-secondary/20 rounded-full blur-3xl transform translate-x-10 -translate-y-10" />
-              <img
-                src={aboutImg}
-                alt="Sarah Yoga Teacher"
-                className="relative z-10 w-full h-full object-cover rounded-3xl shadow-xl"
-              />
-              
-              {/* Floating Badge */}
-              <div className="absolute -bottom-6 -right-6 z-20 bg-background p-6 rounded-2xl shadow-lg max-w-[200px] hidden md:block">
-                <p className="font-serif text-3xl font-bold text-primary mb-1">10+</p>
-                <p className="text-sm text-muted-foreground">Years of teaching experience worldwide</p>
-              </div>
+            <h2 className="text-4xl font-bold tracking-tight text-white">
+              Optimized for <br />
+              Human Performance.
+            </h2>
+            
+            <div className="space-y-6 text-muted-foreground leading-relaxed">
+              <p>
+                Yoga is often misunderstood as just stretching. I teach it as a system for mental and physical optimization. 
+              </p>
+              <p>
+                My methodology combines ancient biomechanics with modern functional movement. No spiritual bypassing—just rigorous, evidence-based practice designed to reset your nervous system.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-8 py-6 border-y border-white/5">
+              {stats.map((stat) => (
+                <div key={stat.label}>
+                  <p className="text-2xl font-bold text-white font-mono">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-2">
+              <ul className="space-y-3 mb-8">
+                {["Certified Iyengar Instructor", "Functional Range Conditioning Specialist", "Trauma-Informed Practice"].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-sm text-white/80">
+                    <div className="rounded-full bg-white/10 p-1">
+                      <Check className="w-3 h-3 text-white" />
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </motion.div>
 
-          {/* Content Side */}
+          {/* Image */}
           <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-full lg:w-1/2 space-y-8"
+            className="w-full lg:w-1/2 relative"
           >
-            <div>
-              <span className="text-primary font-medium tracking-wider uppercase text-sm mb-2 block">About Me</span>
-              <h2 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
-                Teaching yoga from <br />
-                <span className="italic text-secondary">the heart</span>
-              </h2>
-            </div>
-
-            <div className="space-y-6 text-muted-foreground text-lg font-light leading-relaxed">
-              <p>
-                Namaste, I'm Sarah. My journey with yoga began over a decade ago when I was searching for a way to quiet my busy mind. What started as a physical practice quickly transformed into a way of life.
-              </p>
-              <p>
-                I believe that yoga is not just about flexibility or strength, but about coming home to yourself. My classes weave together fluid movement, breathwork, and mindfulness to help you find balance both on and off the mat.
-              </p>
-              <p>
-                Whether you're a complete beginner or an advanced practitioner, my goal is to create a safe, welcoming space for you to explore your potential.
-              </p>
-            </div>
-
-            <div className="pt-4">
-              <Button size="lg" className="rounded-full px-8">
-                Read My Full Story
-              </Button>
+            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+              <img
+                src={aboutImg}
+                alt="Sarah Yoga Teacher"
+                className="w-full h-full object-cover grayscale contrast-125 opacity-90"
+              />
+              
+              {/* Tech Overlay lines */}
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             </div>
           </motion.div>
 

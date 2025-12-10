@@ -3,40 +3,37 @@ import { Button } from "@/components/ui/button";
 
 export default function CTASection() {
   return (
-    <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-      {/* Abstract Background Shapes */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-white/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+    <section className="py-32 relative overflow-hidden bg-background flex flex-col items-center justify-center border-t border-white/5">
+      {/* Glow Effect */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-3xl mx-auto space-y-8"
+          className="max-w-2xl mx-auto space-y-8"
         >
-          <h2 className="text-4xl md:text-6xl font-serif font-medium leading-tight">
-            Begin Your Journey Today
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white">
+            Ready to upgrade?
           </h2>
-          <p className="text-xl md:text-2xl text-primary-foreground/80 font-light">
-            Whether you're looking for a personal session to refine your alignment or ready to embark on a life-changing retreat.
+          <p className="text-xl text-muted-foreground font-light">
+            Join the waitlist for the next retreat or book a 1:1 consultation today.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button 
               size="lg" 
-              variant="secondary" 
-              className="rounded-full px-10 h-14 text-lg w-full sm:w-auto bg-white text-primary hover:bg-white/90"
+              className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 w-full sm:w-auto font-medium"
             >
-              Book Personal Class
+              Book Consultation
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="rounded-full px-10 h-14 text-lg w-full sm:w-auto border-white/40 text-white hover:bg-white/10 hover:text-white"
+              className="h-12 px-8 rounded-full border-white/10 bg-black/50 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto backdrop-blur-md"
             >
-              Contact Me
+              View Schedule
             </Button>
           </div>
         </motion.div>

@@ -1,71 +1,76 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, Command } from "lucide-react";
 import heroBg from "@assets/generated_images/serene_yoga_studio_overlooking_forest_at_sunrise.png";
 
 export default function Hero() {
   return (
-    <section className="relative h-screen min-h-[800px] w-full overflow-hidden flex items-center justify-center">
-      {/* Background with Overlay */}
+    <section className="relative h-screen min-h-[800px] w-full overflow-hidden flex flex-col items-center justify-center pt-20">
+      {/* Background with tech overlay */}
       <div className="absolute inset-0 z-0">
+         {/* Using the image but with a heavy dark overlay to match the tech aesthetic */}
         <img
           src={heroBg}
           alt="Serene Yoga Studio"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-40 grayscale-[50%]"
         />
-        <div className="absolute inset-0 bg-black/30 md:bg-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+        
+        {/* Grid Overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_100%)]" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center text-white">
+      <div className="relative z-10 container mx-auto px-6 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-4xl mx-auto space-y-8"
+          transition={{ duration: 0.5 }}
+          className="max-w-4xl mx-auto flex flex-col items-center"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm text-sm font-medium tracking-wider uppercase">
-            Reconnect with Nature
-          </span>
+          <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white backdrop-blur-xl">
+            <span className="mr-2 rounded-full bg-white px-1.5 py-0.5 text-[10px] font-bold text-black uppercase tracking-wide">New</span>
+            <span className="font-medium">Winter Retreat Series Available</span>
+            <ArrowRight className="ml-2 h-3 w-3 opacity-50" />
+          </div>
           
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium leading-tight md:leading-tight">
-            Find Your Inner <br />
-            <span className="italic font-light">Sanctuary</span>
+          <h1 className="text-5xl md:text-8xl font-bold tracking-tight text-white mb-6">
+            Find your <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40">
+              Inner Sanctuary.
+            </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light leading-relaxed">
-            Join Sarah for transformative yoga journeys. From local studio sessions to immersive retreats in the world's most breathtaking locations.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Experience yoga reimagined. Precision alignment, mindfulness engineering, and transformative retreats designed for the modern practitioner.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
             <Button 
               size="lg" 
-              className="rounded-full px-8 h-14 text-base bg-white text-black hover:bg-white/90 w-full sm:w-auto"
+              className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 font-medium w-full sm:w-auto transition-all hover:scale-105"
             >
-              Explore Retreats
+              Start Practice
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="rounded-full px-8 h-14 text-base border-white text-white hover:bg-white/10 hover:text-white w-full sm:w-auto"
+              className="h-12 px-8 rounded-full border-white/20 bg-transparent text-white hover:bg-white/10 w-full sm:w-auto"
             >
-              <Play className="w-4 h-4 mr-2" /> Watch Video
+              <Play className="w-4 h-4 mr-2" /> Watch Trailer
             </Button>
+          </div>
+
+          <div className="mt-16 flex items-center justify-center gap-8 text-muted-foreground/40 grayscale opacity-50">
+             {/* Tech-style logos placeholder */}
+             <div className="h-8 w-24 bg-current rounded opacity-20" />
+             <div className="h-8 w-24 bg-current rounded opacity-20" />
+             <div className="h-8 w-24 bg-current rounded opacity-20" />
+             <div className="h-8 w-24 bg-current rounded opacity-20" />
           </div>
         </motion.div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 flex flex-col items-center gap-2"
-      >
-        <span className="text-xs uppercase tracking-widest">Scroll</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
-      </motion.div>
     </section>
   );
 }
