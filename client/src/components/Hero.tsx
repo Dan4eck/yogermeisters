@@ -1,19 +1,23 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Command } from "lucide-react";
-import heroBg from "@assets/generated_images/serene_yoga_studio_overlooking_forest_at_sunrise.png";
+import heroVideo from "@assets/yoga_ubud_preroll_Copy_01_1765386774436.mp4";
 
 export default function Hero() {
   return (
     <section className="relative h-screen min-h-[800px] w-full overflow-hidden flex flex-col items-center justify-center pt-20">
       {/* Background with tech overlay */}
       <div className="absolute inset-0 z-0">
-         {/* Using the image but with a heavy dark overlay to match the tech aesthetic */}
-        <img
-          src={heroBg}
-          alt="Serene Yoga Studio"
+         {/* Using the video with a heavy dark overlay to match the tech aesthetic */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover opacity-40 grayscale-[50%]"
-        />
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-background/80" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
         
