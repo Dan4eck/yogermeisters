@@ -91,13 +91,20 @@ export default function ToursSection() {
                       <Calendar className="w-3 h-3" />
                       {tour.date}
                     </div>
-                    <div className="flex gap-2">
-                      {tour.tags.map((tag) => (
-                        <span key={tag} className="text-[10px] bg-white/5 px-2 py-1 rounded text-white/40 uppercase tracking-wider">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    <Button 
+                      size="sm" 
+                      className="h-8 px-4 rounded-full bg-white text-black hover:bg-white/90 text-xs font-medium"
+                      onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
+                    >
+                      Book Now
+                    </Button>
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    {tour.tags.map((tag) => (
+                      <span key={tag} className="text-[10px] bg-white/5 px-2 py-1 rounded text-white/40 uppercase tracking-wider">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </Card>

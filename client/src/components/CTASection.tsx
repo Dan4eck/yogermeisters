@@ -25,6 +25,7 @@ export default function CTASection() {
             <Button 
               size="lg" 
               className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 w-full sm:w-auto font-medium"
+              onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
             >
               Book a Class
             </Button>
@@ -32,6 +33,10 @@ export default function CTASection() {
               size="lg" 
               variant="outline" 
               className="h-12 px-8 rounded-full border-white/10 bg-black/50 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto backdrop-blur-md"
+              onClick={() => {
+                const element = document.getElementById('tours');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Book a Retreat
             </Button>

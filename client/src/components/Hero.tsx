@@ -54,6 +54,7 @@ export default function Hero() {
             <Button 
               size="lg" 
               className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 font-medium w-full sm:w-auto transition-all hover:scale-105"
+              onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
             >
               Book Class
             </Button>
@@ -61,6 +62,10 @@ export default function Hero() {
               size="lg" 
               variant="outline" 
               className="h-12 px-8 rounded-full border-white/20 bg-transparent text-white hover:bg-white/10 w-full sm:w-auto"
+              onClick={() => {
+                const element = document.getElementById('tours');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Book Retreat
             </Button>
