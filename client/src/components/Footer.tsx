@@ -18,10 +18,10 @@ export default function Footer() {
           </div>
 
           <div className="flex gap-6">
-            <a href="#" className="text-muted-foreground hover:text-white transition-colors" title="Instagram">
+            <a href="https://www.instagram.com/an_rolla?igsh=MXh1eGFlcXlzNHhpOA==" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white transition-colors" title="Instagram">
               <Instagram size={24} />
             </a>
-            <a href="#" className="text-muted-foreground hover:text-white transition-colors" title="YouTube">
+            <a href="https://www.youtube.com/@AnastasiaPagliacci" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-white transition-colors" title="YouTube">
               <Youtube size={24} />
             </a>
           </div>
