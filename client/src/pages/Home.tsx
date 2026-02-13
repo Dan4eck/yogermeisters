@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ToursSection from "@/components/ToursSection";
+import ClassesSection from "@/components/ClassesSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import AboutSection from "@/components/AboutSection";
 import CTASection from "@/components/CTASection";
@@ -12,6 +13,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <ToursSection />
+      <ClassesSection />
       <AboutSection />
       <ReviewsSection />
       <CTASection />

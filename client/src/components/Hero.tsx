@@ -54,7 +54,10 @@ export default function Hero() {
             <Button 
               size="lg" 
               className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 font-medium w-full sm:w-auto transition-all hover:scale-105"
-              onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
+              onClick={() => {
+                const element = document.getElementById('classes');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Book Class
             </Button>
