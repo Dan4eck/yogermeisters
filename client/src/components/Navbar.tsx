@@ -27,19 +27,17 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
     setLanguage(language === 'en' ? 'ru' : 'en');
   };
 
-  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+  const scrollToSection = (href: string) => {
     if (!href.startsWith('#')) {
-      return;
+      return false;
     }
 
     const targetId = href.slice(1);
     const section = document.getElementById(targetId);
 
     if (!section) {
-      return;
-    }
-
-    event.preventDefault();
+      return false;
+    }    
 
     const sectionTop = section.getBoundingClientRect().top + window.scrollY;
     const centeredTop = sectionTop - window.innerHeight / 2 + section.offsetHeight / 2;
@@ -47,6 +45,9 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
       top: Math.max(centeredTop, 0),
       behavior: 'smooth',
     });
+
+    window.history.replaceState(null, '', href);
+    return true;
   };
 
   return (
@@ -72,7 +73,14 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
               key={link.name}
               href={link.href}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              onClick={(event) => handleNavClick(event, link.href)}
+              onClick={(event) => {
+                if (!link.href.startsWith('#')) {
+                  return;
+                }
+
+                event.preventDefault();
+                scrollToSection(link.href);
+              }}
             >
               {link.name}
             </a>
@@ -124,8 +132,16 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
                   href={link.href}
                   className="text-sm font-medium text-muted-foreground hover:text-foreground"
                   onClick={(event) => {
-                    handleNavClick(event, link.href);
+                    if (!link.href.startsWith('#')) {
+                      setIsMobileMenuOpen(false);
+                      return;
+                    }
+
+                    event.preventDefault();
                     setIsMobileMenuOpen(false);
+                    window.setTimeout(() => {
+                      scrollToSection(link.href);
+                    }, 180);
                   }}
                 >
                   {link.name}
