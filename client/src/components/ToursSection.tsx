@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin } from 'lucide-react';
 import { retreats, type Retreat } from '@/lib/retreats';
+import { localizeRetreat, siteCopy, type Language } from '@/lib/i18n';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -13,15 +14,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-function formatDateRange(startDate: string, endDate: string): string {
+function formatDateRange(startDate: string, endDate: string, locale: string): string {
   const start = new Date(startDate);
   const end = new Date(endDate);
-  const dayFormat = new Intl.DateTimeFormat('en-US', { day: '2-digit' });
-  const monthDayFormat = new Intl.DateTimeFormat('en-US', {
+  const dayFormat = new Intl.DateTimeFormat(locale, { day: '2-digit' });
+  const monthDayFormat = new Intl.DateTimeFormat(locale, {
     month: 'short',
     day: '2-digit',
   });
-  const fullFormat = new Intl.DateTimeFormat('en-US', {
+  const fullFormat = new Intl.DateTimeFormat(locale, {
     month: 'short',
     day: '2-digit',
     year: 'numeric',
@@ -35,15 +36,24 @@ function formatDateRange(startDate: string, endDate: string): string {
   return `${fullFormat.format(start)} - ${fullFormat.format(end)}`;
 }
 
-export default function ToursSection() {
+interface ToursSectionProps {
+  language: Language;
+}
+
+export default function ToursSection({ language }: ToursSectionProps) {
+  const copy = siteCopy[language].tours;
   const [selectedRetreat, setSelectedRetreat] = useState<Retreat | null>(null);
+  const localizedRetreats = useMemo(
+    () => retreats.map((retreat) => localizeRetreat(retreat, language)),
+    [language],
+  );
   const dateRanges = useMemo(
     () =>
-      retreats.reduce<Record<number, string>>((acc, retreat) => {
-        acc[retreat.id] = formatDateRange(retreat.startDate, retreat.endDate);
+      localizedRetreats.reduce<Record<number, string>>((acc, retreat) => {
+        acc[retreat.id] = formatDateRange(retreat.startDate, retreat.endDate, copy.dateLocale);
         return acc;
       }, {}),
-    [],
+    [copy.dateLocale, localizedRetreats],
   );
 
   return (
@@ -52,16 +62,16 @@ export default function ToursSection() {
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-white mb-2">
-              Upcoming Retreats
+              {copy.title}
             </h2>
             <p className="text-muted-foreground">
-              Curated experiences for deep focus and restoration.
+              {copy.description}
             </p>
           </div>
         </div>
 
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3'>
-          {retreats.map((retreat, index) => (
+          {localizedRetreats.map((retreat, index) => (
             <motion.div
               key={retreat.id}
               initial={{ opacity: 0, y: 20 }}
@@ -109,7 +119,7 @@ export default function ToursSection() {
                       className="h-8 px-4 rounded-full bg-white text-black hover:bg-white/90 text-xs font-medium"
                       onClick={() => window.open(retreat.bookingUrl, '_blank')}
                     >
-                      Book Now
+                      {copy.bookNow}
                     </Button>
                   </div>
                 </div>
@@ -188,7 +198,7 @@ export default function ToursSection() {
                 className='h-10 rounded-full bg-white px-6 text-black hover:bg-white/90'
                 onClick={() => window.open(selectedRetreat.bookingUrl, '_blank')}
               >
-                Book This Retreat
+                {copy.bookRetreat}
               </Button>
             </div>
           </DialogContent>

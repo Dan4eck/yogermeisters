@@ -1,7 +1,14 @@
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { siteCopy, type Language } from '@/lib/i18n';
 
-export default function CTASection() {
+interface CTASectionProps {
+  language: Language;
+}
+
+export default function CTASection({ language }: CTASectionProps) {
+  const copy = siteCopy[language].cta;
+
   return (
     <section className="py-32 relative overflow-hidden bg-background flex flex-col items-center justify-center border-t border-white/5">
       {/* Glow Effect */}
@@ -15,10 +22,10 @@ export default function CTASection() {
           className="max-w-2xl mx-auto space-y-8"
         >
           <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white">
-            Ready to start your spiritual journey?
+            {copy.title}
           </h2>
           <p className="text-xl text-muted-foreground font-light">
-            Book the online class with me or enroll for one of my retreats!
+            {copy.description}
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -27,7 +34,7 @@ export default function CTASection() {
               className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 w-full sm:w-auto font-medium"
               onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
             >
-              Book a Class
+              {copy.bookClass}
             </Button>
             <Button 
               size="lg" 
@@ -38,7 +45,7 @@ export default function CTASection() {
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Book a Retreat
+              {copy.bookRetreat}
             </Button>
           </div>
         </motion.div>

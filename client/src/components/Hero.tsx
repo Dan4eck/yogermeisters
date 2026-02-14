@@ -1,9 +1,16 @@
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Command } from "lucide-react";
-import heroVideo from "@assets/yoga_ubud_preroll_Copy_01_1765386774436.mp4";
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import heroVideo from '@assets/yoga_ubud_preroll_Copy_01_1765386774436.mp4';
+import { siteCopy, type Language } from '@/lib/i18n';
 
-export default function Hero() {
+interface HeroProps {
+  language: Language;
+}
+
+export default function Hero({ language }: HeroProps) {
+  const copy = siteCopy[language].hero;
+
   return (
     <section className="relative h-screen min-h-[800px] w-full overflow-hidden flex flex-col items-center justify-center pt-20">
       {/* Background with tech overlay */}
@@ -34,20 +41,22 @@ export default function Hero() {
           className="max-w-4xl mx-auto flex flex-col items-center"
         >
           <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white backdrop-blur-xl">
-            <span className="mr-2 rounded-full bg-white px-1.5 py-0.5 text-[10px] font-bold text-black uppercase tracking-wide">Early Birds</span>
-            <span className="font-medium">Cyrali retreat in May</span>
+            <span className="mr-2 rounded-full bg-white px-1.5 py-0.5 text-[10px] font-bold text-black uppercase tracking-wide">
+              {copy.badgeLabel}
+            </span>
+            <span className="font-medium">{copy.badgeText}</span>
             <ArrowRight className="ml-2 h-3 w-3 opacity-50" />
           </div>
           
           <h1 className="text-5xl md:text-8xl font-bold tracking-tight text-white mb-6">
-            Practice, <br />
+            {copy.titleTop} <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40">
-              Observe, Connect
+              {copy.titleBottom}
             </span>
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            Experience yoga reimagined. Precision alignment, mindfulness engineering, and transformative retreats designed for the modern practitioner.
+            {copy.description}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
@@ -59,7 +68,7 @@ export default function Hero() {
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Book Class
+              {copy.bookClass}
             </Button>
             <Button 
               size="lg" 
@@ -70,7 +79,7 @@ export default function Hero() {
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Book Retreat
+              {copy.bookRetreat}
             </Button>
           </div>
 

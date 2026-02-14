@@ -1,14 +1,14 @@
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
-import aboutImg from "@assets/2025-12-10_18.39.59_1765388536142.jpg";
+import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
+import aboutImg from '@assets/2025-12-10_18.39.59_1765388536142.jpg';
+import { siteCopy, type Language } from '@/lib/i18n';
 
-export default function AboutSection() {
-  const stats = [
-    { label: "Years Exp", value: "10+" },
-    { label: "Students", value: "5k+" },
-    { label: "Countries", value: "12" },
-  ];
+interface AboutSectionProps {
+  language: Language;
+}
+
+export default function AboutSection({ language }: AboutSectionProps) {
+  const copy = siteCopy[language].about;
 
   return (
     <section id="about" className="py-24 bg-background border-t border-white/5">
@@ -23,21 +23,18 @@ export default function AboutSection() {
             className="w-full lg:w-1/2 space-y-8"
           >
             <h2 className="text-4xl font-bold tracking-tight text-white">
-              Optimized for <br />
-              Human Performance.
+              {copy.titleTop} <br />
+              {copy.titleBottom}
             </h2>
             
             <div className="space-y-6 text-muted-foreground leading-relaxed">
-              <p>
-                Yoga is often misunderstood as just stretching. I teach it as a system for mental and physical optimization. 
-              </p>
-              <p>
-                My methodology combines ancient biomechanics with modern functional movement. No spiritual bypassing—just rigorous, evidence-based practice designed to reset your nervous system.
-              </p>
+              {copy.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
 
             <div className="grid grid-cols-3 gap-8 py-6 border-y border-white/5">
-              {stats.map((stat) => (
+              {copy.stats.map((stat) => (
                 <div key={stat.label}>
                   <p className="text-2xl font-bold text-white font-mono">{stat.value}</p>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{stat.label}</p>
@@ -47,7 +44,7 @@ export default function AboutSection() {
 
             <div className="pt-2">
               <ul className="space-y-3 mb-8">
-                {["Certified Iyengar Instructor", "Functional Range Conditioning Specialist", "Trauma-Informed Practice"].map((item) => (
+                {copy.bullets.map((item) => (
                   <li key={item} className="flex items-center gap-3 text-sm text-white/80">
                     <div className="rounded-full bg-white/10 p-1">
                       <Check className="w-3 h-3 text-white" />
@@ -69,8 +66,8 @@ export default function AboutSection() {
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-white/5">
               <img
                 src={aboutImg}
-                alt="Sarah Yoga Teacher"
-                className="w-full h-full object-cover grayscale contrast-125 opacity-90"
+                alt={copy.imageAlt}
+                className="w-full h-full object-cover opacity-95"
               />
               
               {/* Tech Overlay lines */}

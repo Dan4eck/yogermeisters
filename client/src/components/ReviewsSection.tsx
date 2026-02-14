@@ -1,44 +1,30 @@
-import { motion } from "framer-motion";
-import { Star } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from 'framer-motion';
+import { Star } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { siteCopy, type Language } from '@/lib/i18n';
 
-const reviews = [
-  {
-    id: 1,
-    name: "Emma Thompson",
-    role: "Product Designer",
-    content: "The precision and structure of Sarah's classes resonate with my engineering mindset. It's yoga without the fluff.",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    role: "Founder",
-    content: "Retreats that actually recharge you. I came back to work with 2x clarity and focus. Highly recommended for busy professionals.",
-  },
-  {
-    id: 3,
-    name: "Sofia Rodriguez",
-    role: "Architect",
-    content: "A masterclass in form and flow. The attention to detail in every movement instruction is unparalleled.",
-  },
-];
+interface ReviewsSectionProps {
+  language: Language;
+}
 
-export default function ReviewsSection() {
+export default function ReviewsSection({ language }: ReviewsSectionProps) {
+  const copy = siteCopy[language].reviews;
+
   return (
     <section id="reviews" className="py-24 bg-background relative border-t border-white/5">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="col-span-1 md:col-span-3 text-center mb-8">
             <h2 className="text-3xl font-bold tracking-tight text-white mb-4">
-              Community Feedback
+              {copy.title}
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Trusted by high-performers worldwide.
+              {copy.description}
             </p>
           </div>
           
-          {reviews.map((review, i) => (
+          {copy.list.map((review, i) => (
             <motion.div
               key={review.id}
               initial={{ opacity: 0, y: 20 }}

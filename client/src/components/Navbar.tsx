@@ -1,10 +1,15 @@
-import { useState, useEffect } from "react";
-import { Link } from "wouter";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, type MouseEvent } from 'react';
+import { Link } from 'wouter';
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { languageToggleLabel, siteCopy, type Language } from '@/lib/i18n';
 
-export default function Navbar() {
+interface NavbarProps {
+  language: Language;
+  setLanguage: (language: Language) => void;
+}
+
+export default function Navbar({ language, setLanguage }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -16,12 +21,33 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: "Tours", href: "#tours" },
-    { name: "About", href: "#about" },
-    { name: "Reviews", href: "#reviews" },
-    { name: "Contact", href: "#contact" },
-  ];
+  const navLinks = siteCopy[language].nav.links;
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'ru' : 'en');
+  };
+
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith('#')) {
+      return;
+    }
+
+    const targetId = href.slice(1);
+    const section = document.getElementById(targetId);
+
+    if (!section) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    const centeredTop = sectionTop - window.innerHeight / 2 + section.offsetHeight / 2;
+    window.scrollTo({
+      top: Math.max(centeredTop, 0),
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <nav
@@ -46,19 +72,40 @@ export default function Navbar() {
               key={link.name}
               href={link.href}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              onClick={(event) => handleNavClick(event, link.href)}
             >
               {link.name}
             </a>
           ))}
+          <button
+            type='button'
+            onClick={toggleLanguage}
+            className='h-8 rounded-full border border-white/20 bg-transparent px-3 text-xs font-semibold text-white transition-colors hover:bg-white/10'
+            aria-label={language === 'en' ? 'Switch to Russian' : 'Переключить на английский'}
+          >
+            {languageToggleLabel[language]}
+          </button>
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-foreground"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className='md:hidden flex items-center gap-2'>
+          <button
+            type='button'
+            onClick={toggleLanguage}
+            className='h-8 rounded-full border border-white/20 bg-transparent px-3 text-xs font-semibold text-white transition-colors hover:bg-white/10'
+            aria-label={language === 'en' ? 'Switch to Russian' : 'Переключить на английский'}
+          >
+            {languageToggleLabel[language]}
+          </button>
+          <button
+            type='button'
+            className='text-foreground'
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          >
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -76,7 +123,10 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   className="text-sm font-medium text-muted-foreground hover:text-foreground"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(event) => {
+                    handleNavClick(event, link.href);
+                    setIsMobileMenuOpen(false);
+                  }}
                 >
                   {link.name}
                 </a>
