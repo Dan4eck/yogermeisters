@@ -181,7 +181,7 @@ export const retreats: readonly Retreat[] = [
       {
         id: 'closing',
         type: 'paragraph',
-        text: 'The final days are dedicated to deeper integration: mountain silence, sunrise practice, and a softer pace that helps the experience settle into the body and mind before returning home.',
+        text: 'The final days are dedicated to deeper integration: mountain silence, sunrise practice, and a softer pace that helps the experience settle into the body and mind before returning home. If this route resonates with you, reserve your place now: a €300 deposit secures your spot (refundable until April 30), and spaces are limited.',
       },
       {
         id: 'integration-image',

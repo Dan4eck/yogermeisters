@@ -115,8 +115,8 @@ export default function ToursSection({ language }: ToursSectionProps) {
                     </Badge>
                   </div>
 
-                  <div className='mt-6 flex items-center justify-between border-t border-white/5 pt-4'>
-                    <div className='flex items-center gap-2 font-mono text-xs text-muted-foreground'>
+                  <div className='mt-6 flex flex-col items-center gap-3 border-t border-white/5 pt-4 text-center'>
+                    <div className='flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground'>
                       <Calendar className='h-3 w-3' />
                       {dateRanges[retreat.id]}
                     </div>
@@ -200,12 +200,14 @@ export default function ToursSection({ language }: ToursSectionProps) {
                 })}
               </div>
 
-              <Button
-                className='h-10 rounded-full bg-white px-6 text-black hover:bg-white/90'
-                onClick={() => openExternal(selectedRetreat.bookingUrl)}
-              >
-                {copy.bookRetreat}
-              </Button>
+              <div className='flex justify-center pt-2'>
+                <Button
+                  className='h-10 rounded-full bg-white px-6 text-black hover:bg-white/90'
+                  onClick={() => openExternal(selectedRetreat.bookingUrl)}
+                >
+                  {copy.bookRetreat}
+                </Button>
+              </div>
             </div>
           </DialogContent>
         ) : null}

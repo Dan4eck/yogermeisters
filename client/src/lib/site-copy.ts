@@ -22,8 +22,8 @@ export const siteCopy = {
       title: 'Upcoming Retreats',
       description:
         'Retreats where route and practice work together: sea, mountains, silence, and a daily return to yourself.',
-      bookNow: 'Learn More',
-      bookRetreat: 'Open Program',
+      bookNow: 'Sign Up',
+      bookRetreat: 'Sign Up',
       dateLocale: 'en-US',
     },
     classes: {
@@ -145,8 +145,8 @@ export const siteCopy = {
       title: 'Ближайшие ретриты',
       description:
         'Ретриты, где маршрут и практика работают вместе: море, горы, тишина и ежедневное возвращение к себе.',
-      bookNow: 'Подробнее',
-      bookRetreat: 'Открыть программу',
+      bookNow: 'Записаться',
+      bookRetreat: 'Записаться',
       dateLocale: 'ru-RU',
     },
     classes: {
