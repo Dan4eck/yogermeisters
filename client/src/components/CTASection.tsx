@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { siteCopy, type Language } from '@/lib/i18n';
+import { openExternal } from '@/lib/open-external';
 
 interface CTASectionProps {
   language: Language;
@@ -32,7 +33,7 @@ export default function CTASection({ language }: CTASectionProps) {
             <Button 
               size="lg" 
               className="h-12 px-8 rounded-full bg-white text-black hover:bg-white/90 w-full sm:w-auto font-medium"
-              onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
+              onClick={() => openExternal('https://t.me/AnastasiaPagliacci')}
             >
               {copy.bookClass}
             </Button>

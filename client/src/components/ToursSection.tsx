@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Calendar, MapPin } from 'lucide-react';
 import { retreats, type Retreat } from '@/lib/retreats';
 import { localizeRetreat, siteCopy, type Language } from '@/lib/i18n';
+import { openExternal } from '@/lib/open-external';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -15,8 +16,8 @@ import {
 } from '@/components/ui/dialog';
 
 function formatDateRange(startDate: string, endDate: string, locale: string): string {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  const start = parseLocalDate(startDate);
+  const end = parseLocalDate(endDate);
   const dayFormat = new Intl.DateTimeFormat(locale, { day: '2-digit' });
   const monthDayFormat = new Intl.DateTimeFormat(locale, {
     month: 'short',
@@ -36,6 +37,11 @@ function formatDateRange(startDate: string, endDate: string, locale: string): st
   return `${fullFormat.format(start)} - ${fullFormat.format(end)}`;
 }
 
+function parseLocalDate(dateString: string): Date {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
 interface ToursSectionProps {
   language: Language;
 }
@@ -50,7 +56,7 @@ export default function ToursSection({ language }: ToursSectionProps) {
   const dateRanges = useMemo(
     () =>
       localizedRetreats.reduce<Record<number, string>>((acc, retreat) => {
-        acc[retreat.id] = formatDateRange(retreat.startDate, retreat.endDate, copy.dateLocale);
+        acc[retreat.id] = retreat.dateLabel ?? formatDateRange(retreat.startDate, retreat.endDate, copy.dateLocale);
         return acc;
       }, {}),
     [copy.dateLocale, localizedRetreats],
@@ -117,7 +123,7 @@ export default function ToursSection({ language }: ToursSectionProps) {
                     <Button 
                       size="sm" 
                       className="h-8 px-4 rounded-full bg-white text-black hover:bg-white/90 text-xs font-medium"
-                      onClick={() => window.open(retreat.bookingUrl, '_blank')}
+                      onClick={() => openExternal(retreat.bookingUrl)}
                     >
                       {copy.bookNow}
                     </Button>
@@ -167,11 +173,11 @@ export default function ToursSection({ language }: ToursSectionProps) {
               </div>
 
               <div className='space-y-5'>
-                {selectedRetreat.postBlocks.map((block, blockIndex) => {
+                {selectedRetreat.postBlocks.map((block) => {
                   if (block.type === 'paragraph') {
                     return (
                       <p
-                        key={`${selectedRetreat.id}-paragraph-${blockIndex}`}
+                        key={`${selectedRetreat.id}-${block.id}`}
                         className='text-sm leading-relaxed text-white/80 md:text-base'
                       >
                         {block.text}
@@ -181,7 +187,7 @@ export default function ToursSection({ language }: ToursSectionProps) {
 
                   return (
                     <div
-                      key={`${selectedRetreat.id}-image-${blockIndex}`}
+                      key={`${selectedRetreat.id}-${block.id}`}
                       className='overflow-hidden rounded-md border border-white/10'
                     >
                       <img
@@ -196,7 +202,7 @@ export default function ToursSection({ language }: ToursSectionProps) {
 
               <Button
                 className='h-10 rounded-full bg-white px-6 text-black hover:bg-white/90'
-                onClick={() => window.open(selectedRetreat.bookingUrl, '_blank')}
+                onClick={() => openExternal(selectedRetreat.bookingUrl)}
               >
                 {copy.bookRetreat}
               </Button>

@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { siteCopy, type Language } from '@/lib/i18n';
+import { openExternal } from '@/lib/open-external';
 
 const iconByClassId: Record<number, typeof Video> = {
   1: Video,
@@ -72,7 +73,7 @@ export default function ClassesSection({ language }: ClassesSectionProps) {
                 <Button 
                   size="sm" 
                   className="w-full h-9 px-5 rounded-full bg-white text-black hover:bg-white/90 text-sm font-medium"
-                  onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
+                  onClick={() => openExternal('https://t.me/AnastasiaPagliacci')}
                 >
                   {copy.bookSession}
                   <ArrowRight className="ml-2 w-3 h-3" />
@@ -96,7 +97,7 @@ export default function ClassesSection({ language }: ClassesSectionProps) {
           <Button 
             variant="outline" 
             className="rounded-full border-white/20 bg-transparent text-white hover:bg-white/10"
-            onClick={() => window.open('https://t.me/AnastasiaPagliacci', '_blank')}
+            onClick={() => openExternal('https://t.me/AnastasiaPagliacci')}
           >
             {copy.getInTouch}
           </Button>
