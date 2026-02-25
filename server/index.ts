@@ -6,6 +6,13 @@ import { createServer } from "http";
 const app = express();
 const httpServer = createServer(app);
 
+httpServer.on("clientError", (err, socket) => {
+  log(`client error: ${err.message}`, "http");
+  if (socket.writable) {
+    socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
+  }
+});
+
 declare module "http" {
   interface IncomingMessage {
     rawBody: unknown;
@@ -62,14 +69,6 @@ app.use((req, res, next) => {
 (async () => {
   await registerRoutes(httpServer, app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
-
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
@@ -80,8 +79,24 @@ app.use((req, res, next) => {
     await setupVite(httpServer, app);
   }
 
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || (err instanceof URIError ? 400 : 500);
+    const message =
+      err instanceof URIError
+        ? "Malformed request path"
+        : err.message || "Internal Server Error";
+
+    log(`${status} ${message}`, "error");
+
+    if (res.headersSent) {
+      return;
+    }
+
+    res.status(status).json({ message });
+  });
+
   // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
+  // Other ports are firewalled. Default to 3001 if not specified.
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || "3001", 10);
