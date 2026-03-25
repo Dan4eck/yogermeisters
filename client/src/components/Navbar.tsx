@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { languageToggleLabel, siteCopy, type Language } from '@/lib/i18n';
@@ -12,6 +12,7 @@ interface NavbarProps {
 export default function Navbar({ language, setLanguage }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [location] = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +23,7 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
   }, []);
 
   const navLinks = siteCopy[language].nav.links;
+  const isHomePage = location === '/';
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'ru' : 'en');
@@ -71,10 +73,10 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
           {navLinks.map((link) => (
             <a
               key={link.name}
-              href={link.href}
+              href={isHomePage ? link.href : `/${link.href}`}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               onClick={(event) => {
-                if (!link.href.startsWith('#')) {
+                if (!link.href.startsWith('#') || !isHomePage) {
                   return;
                 }
 
@@ -129,10 +131,10 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
               {navLinks.map((link) => (
                 <a
                   key={link.name}
-                  href={link.href}
+                  href={isHomePage ? link.href : `/${link.href}`}
                   className="text-sm font-medium text-muted-foreground hover:text-foreground"
                   onClick={(event) => {
-                    if (!link.href.startsWith('#')) {
+                    if (!link.href.startsWith('#') || !isHomePage) {
                       setIsMobileMenuOpen(false);
                       return;
                     }

@@ -181,6 +181,55 @@ export async function listRetreats(options: ListRetreatOptions): Promise<Retreat
   }
 }
 
+export async function getRetreatBySlug(
+  slug: string,
+  language: RetreatLanguage,
+): Promise<RetreatRecord | null> {
+  if (!db) {
+    return localizeFallbackRetreats(language).find((retreat) => retreat.slug === slug) ?? null;
+  }
+
+  try {
+    const retreatRows = await db.select().from(retreats).where(eq(retreats.slug, slug)).limit(1);
+    const retreatRow = retreatRows[0];
+
+    if (!retreatRow) {
+      return null;
+    }
+
+    const [translationRows, blockRows] = await Promise.all([
+      db
+        .select()
+        .from(retreatTranslations)
+        .where(
+          and(eq(retreatTranslations.retreatId, retreatRow.id), eq(retreatTranslations.language, language)),
+        ),
+      db
+        .select()
+        .from(retreatBlocks)
+        .where(eq(retreatBlocks.retreatId, retreatRow.id))
+        .orderBy(asc(retreatBlocks.sortOrder)),
+    ]);
+    const blockIds = blockRows.map((block) => block.id);
+    const blockTranslationRows =
+      blockIds.length > 0
+        ? await db
+            .select()
+            .from(retreatBlockTranslations)
+            .where(
+              and(
+                inArray(retreatBlockTranslations.blockId, blockIds),
+                eq(retreatBlockTranslations.language, language),
+              ),
+            )
+        : [];
+
+    return mapRowsToRetreats([retreatRow], translationRows, blockRows, blockTranslationRows)[0] ?? null;
+  } catch {
+    return localizeFallbackRetreats(language).find((retreat) => retreat.slug === slug) ?? null;
+  }
+}
+
 export async function updateRetreatStatus(id: number, status: RetreatStatus): Promise<RetreatRecord | null> {
   if (!db) {
     const retreatIndex = fallbackRetreats.findIndex((retreat) => retreat.id === id);
@@ -234,4 +283,3 @@ export async function updateRetreatStatus(id: number, status: RetreatStatus): Pr
     return null;
   }
 }
-

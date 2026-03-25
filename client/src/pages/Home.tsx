@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ToursSection from "@/components/ToursSection";
@@ -7,22 +6,14 @@ import ReviewsSection from "@/components/ReviewsSection";
 import AboutSection from "@/components/AboutSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import { DEFAULT_LANGUAGE, type Language } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
-export default function Home() {
-  const [language, setLanguage] = useState<Language>(() => {
-    const stored = typeof window !== 'undefined' ? window.localStorage.getItem('language') : null;
-    if (stored === 'ru' || stored === 'en') {
-      return stored;
-    }
-    return DEFAULT_LANGUAGE;
-  });
+interface HomeProps {
+  language: Language;
+  setLanguage: (language: Language) => void;
+}
 
-  useEffect(() => {
-    document.documentElement.lang = language;
-    window.localStorage.setItem('language', language);
-  }, [language]);
-
+export default function Home({ language, setLanguage }: HomeProps) {
   return (
     <div className="min-h-screen w-full bg-background text-foreground overflow-x-hidden selection:bg-primary/20">
       <Navbar language={language} setLanguage={setLanguage} />

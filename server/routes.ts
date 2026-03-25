@@ -7,7 +7,7 @@ import {
   type RetreatLanguage,
   type RetreatView,
 } from '@shared/retreat-content';
-import { listRetreats, updateRetreatStatus } from './retreats';
+import { getRetreatBySlug, listRetreats, updateRetreatStatus } from './retreats';
 
 export async function registerRoutes(
   httpServer: Server,
@@ -32,6 +32,26 @@ export async function registerRoutes(
         view,
         language,
         retreats,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get('/api/retreats/:slug', async (req, res, next) => {
+    try {
+      const languageParam = typeof req.query.language === 'string' ? req.query.language : 'en';
+      const language = retreatLanguageSchema.parse(languageParam) as RetreatLanguage;
+      const retreat = await getRetreatBySlug(req.params.slug, language);
+
+      if (!retreat) {
+        res.status(404).json({ message: 'Retreat not found' });
+        return;
+      }
+
+      res.status(200).json({
+        language,
+        retreat,
       });
     } catch (error) {
       next(error);
