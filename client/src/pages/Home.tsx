@@ -32,7 +32,7 @@ export default function Home() {
       <AboutSection language={language} />
       <ReviewsSection language={language} />
       <CTASection language={language} />
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 }

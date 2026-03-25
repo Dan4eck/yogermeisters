@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin } from 'lucide-react';
-import { retreats, type Retreat } from '@/lib/retreats';
-import { localizeRetreat, siteCopy, type Language } from '@/lib/i18n';
+import { siteCopy, type Language } from '@/lib/i18n';
+import { getRetreatAssetUrl } from '@/lib/retreat-assets';
 import { openExternal } from '@/lib/open-external';
+import { fetchJson } from '@/lib/query-client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -14,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import type { RetreatListResponse, RetreatRecord } from '@shared/retreat-content';
 
 function formatDateRange(startDate: string, endDate: string, locale: string): string {
   const start = parseLocalDate(startDate);
@@ -48,11 +51,13 @@ interface ToursSectionProps {
 
 export default function ToursSection({ language }: ToursSectionProps) {
   const copy = siteCopy[language].tours;
-  const [selectedRetreat, setSelectedRetreat] = useState<Retreat | null>(null);
-  const localizedRetreats = useMemo(
-    () => retreats.map((retreat) => localizeRetreat(retreat, language)),
-    [language],
-  );
+  const [selectedRetreat, setSelectedRetreat] = useState<RetreatRecord | null>(null);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['retreats', 'upcoming', language],
+    queryFn: () =>
+      fetchJson<RetreatListResponse>(`/api/retreats?view=upcoming&language=${language}`),
+  });
+  const localizedRetreats = data?.retreats ?? [];
   const dateRanges = useMemo(
     () =>
       localizedRetreats.reduce<Record<number, string>>((acc, retreat) => {
@@ -76,63 +81,77 @@ export default function ToursSection({ language }: ToursSectionProps) {
           </div>
         </div>
 
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3'>
-          {localizedRetreats.map((retreat, index) => (
-            <motion.div
-              key={retreat.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.4 }}
-            >
-              <Card className='group relative overflow-hidden border border-white/10 bg-card transition-all duration-300 hover:border-white/20'>
-                <button
-                  type='button'
-                  className='aspect-[16/9] w-full overflow-hidden'
-                  onClick={() => {
-                    setSelectedRetreat(retreat);
-                  }}
-                >
-                  <img
-                    src={retreat.coverImage}
-                    alt={retreat.title}
-                    className='h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100'
-                  />
-                </button>
-                
-                <div className="p-5">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-lg font-semibold text-white group-hover:text-white/90">
-                        {retreat.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-                        <MapPin className='h-3 w-3' /> {retreat.location}
-                      </p>
-                    </div>
-                    <Badge variant='outline' className='border-white/10 font-mono text-xs text-white/60'>
-                      {retreat.price}
-                    </Badge>
-                  </div>
+        {isLoading ? (
+          <div className='rounded-2xl border border-white/10 bg-card px-6 py-10 text-center text-sm text-muted-foreground'>
+            Loading retreats...
+          </div>
+        ) : null}
 
-                  <div className='mt-6 flex flex-col items-center gap-3 border-t border-white/5 pt-4 text-center'>
-                    <div className='flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground'>
-                      <Calendar className='h-3 w-3' />
-                      {dateRanges[retreat.id]}
+        {isError ? (
+          <div className='rounded-2xl border border-red-500/20 bg-card px-6 py-10 text-center text-sm text-white/70'>
+            Unable to load retreats right now.
+          </div>
+        ) : null}
+
+        {!isLoading && !isError ? (
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3'>
+            {localizedRetreats.map((retreat, index) => (
+              <motion.div
+                key={retreat.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.4 }}
+              >
+                <Card className='group relative overflow-hidden border border-white/10 bg-card transition-all duration-300 hover:border-white/20'>
+                  <button
+                    type='button'
+                    className='aspect-[16/9] w-full overflow-hidden'
+                    onClick={() => {
+                      setSelectedRetreat(retreat);
+                    }}
+                  >
+                    <img
+                      src={getRetreatAssetUrl(retreat.coverAssetKey)}
+                      alt={retreat.title}
+                      className='h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100'
+                    />
+                  </button>
+
+                  <div className="p-5">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-lg font-semibold text-white group-hover:text-white/90">
+                          {retreat.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                          <MapPin className='h-3 w-3' /> {retreat.location}
+                        </p>
+                      </div>
+                      <Badge variant='outline' className='border-white/10 font-mono text-xs text-white/60'>
+                        {retreat.price}
+                      </Badge>
                     </div>
-                    <Button 
-                      size="sm" 
-                      className="h-8 px-4 rounded-full bg-white text-black hover:bg-white/90 text-xs font-medium"
-                      onClick={() => openExternal(retreat.bookingUrl)}
-                    >
-                      {copy.bookNow}
-                    </Button>
+
+                    <div className='mt-6 flex flex-col items-center gap-3 border-t border-white/5 pt-4 text-center'>
+                      <div className='flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground'>
+                        <Calendar className='h-3 w-3' />
+                        {dateRanges[retreat.id]}
+                      </div>
+                      <Button
+                        size="sm"
+                        className="h-8 px-4 rounded-full bg-white text-black hover:bg-white/90 text-xs font-medium"
+                        onClick={() => openExternal(retreat.bookingUrl)}
+                      >
+                        {copy.bookNow}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        ) : null}
       </div>
 
       <Dialog
@@ -147,7 +166,7 @@ export default function ToursSection({ language }: ToursSectionProps) {
           <DialogContent className='max-h-[92vh] max-w-5xl overflow-y-auto border-white/10 bg-card p-0'>
             <div className='w-full overflow-hidden border-b border-white/10'>
               <img
-                src={selectedRetreat.coverImage}
+                src={getRetreatAssetUrl(selectedRetreat.coverAssetKey)}
                 alt={selectedRetreat.title}
                 className='h-[320px] w-full object-cover md:h-[460px]'
               />
@@ -191,8 +210,8 @@ export default function ToursSection({ language }: ToursSectionProps) {
                       className='overflow-hidden rounded-md border border-white/10'
                     >
                       <img
-                        src={block.image}
-                        alt={block.alt}
+                        src={block.assetKey ? getRetreatAssetUrl(block.assetKey) : ''}
+                        alt={block.alt ?? selectedRetreat.title}
                         className='max-h-[480px] w-full object-cover'
                       />
                     </div>

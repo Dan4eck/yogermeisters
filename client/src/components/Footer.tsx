@@ -1,6 +1,12 @@
 import { Instagram, Youtube } from 'lucide-react';
+import { siteCopy, type Language } from '@/lib/i18n';
 
-export default function Footer() {
+interface FooterProps {
+  language: Language;
+}
+
+export default function Footer({ language }: FooterProps) {
+  const copy = siteCopy[language].footer;
 
   return (
     <footer id='contact' className="bg-black text-white py-16 border-t border-white/10">
@@ -12,6 +18,11 @@ export default function Footer() {
               <div className="w-4 h-4 bg-white rounded-full" />
               <span>Yogermeisters</span>
             </a>
+            <div className='mt-4 space-y-1 text-sm text-muted-foreground'>
+              <p>{copy.lineOne}</p>
+              <p>{copy.lineTwo}</p>
+              <p className='pt-2 text-xs uppercase tracking-[0.2em]'>{copy.rights}</p>
+            </div>
           </div>
 
           <div className="flex gap-6">
