@@ -27,7 +27,7 @@ export type User = typeof users.$inferSelect;
 
 export const retreatStatusSchema = z.enum(['draft', 'active', 'archived']);
 export const retreatLanguageSchema = z.enum(['en', 'ru']);
-export const retreatBlockTypeSchema = z.enum(['paragraph', 'image']);
+export const retreatBlockTypeSchema = z.enum(['paragraph', 'image', 'heading']);
 
 export const retreats = pgTable('retreats', {
   id: integer('id').primaryKey(),
@@ -40,7 +40,7 @@ export const retreats = pgTable('retreats', {
   dateLabel: text('date_label'),
   price: text('price').notNull(),
   bookingUrl: text('booking_url').notNull(),
-  coverAssetKey: text('cover_asset_key').notNull(),
+  coverImage: text('cover_image').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
@@ -56,7 +56,7 @@ export const retreatBlocks = pgTable(
     sortOrder: integer('sort_order').notNull(),
     type: varchar('type', { length: 16 }).notNull(),
     text: text('text'),
-    imageAssetKey: text('image_asset_key'),
+    image: text('image'),
     alt: text('alt'),
   },
   (table) => ({

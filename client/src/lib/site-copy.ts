@@ -25,6 +25,9 @@ export const siteCopy = {
       viewDetails: 'Learn More',
       bookRetreat: 'Sign Up',
       backToRetreats: 'Back to Retreats',
+      detailCtaTitle: 'Ready to join this retreat?',
+      detailCtaDescription:
+        'Message me in Telegram and I will share the current details, availability, and booking steps.',
       dateLocale: 'en-US',
     },
     classes: {
@@ -149,6 +152,9 @@ export const siteCopy = {
       viewDetails: 'Подробнее',
       bookRetreat: 'Записаться',
       backToRetreats: 'К ретритам',
+      detailCtaTitle: 'Готовы присоединиться к ретриту?',
+      detailCtaDescription:
+        'Напишите мне в Telegram, и я отправлю актуальные детали, наличие мест и шаги для бронирования.',
       dateLocale: 'ru-RU',
     },
     classes: {

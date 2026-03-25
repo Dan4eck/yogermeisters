@@ -30,7 +30,7 @@ async function main() {
         dateLabel: retreat.dateLabel ?? null,
         price: retreat.price,
         bookingUrl: retreat.bookingUrl,
-        coverAssetKey: retreat.coverAssetKey,
+        coverImage: retreat.coverImage,
       });
 
       for (const [language, translation] of Object.entries(retreat.translations ?? {})) {
@@ -52,7 +52,7 @@ async function main() {
             sortOrder: block.sortOrder,
             type: block.type,
             text: block.text ?? null,
-            imageAssetKey: block.imageAssetKey ?? null,
+            image: block.image ?? null,
             alt: block.alt ?? null,
           })
           .returning({ id: retreatBlocks.id });
@@ -76,4 +76,3 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-

@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { formatRetreatDateLabel } from '@/lib/retreat-date';
-import { getRetreatAssetUrl } from '@/lib/retreat-assets';
+import { getRetreatImageUrl } from '@/lib/retreat-assets';
 import { siteCopy, type Language } from '@/lib/i18n';
 import { useRetreats } from '@/lib/retreat-queries';
 
@@ -68,7 +68,7 @@ export default function ToursSection({ language }: ToursSectionProps) {
                     <Link href={`/retreats/${retreat.slug}`}>
                       <a className='block aspect-[16/9] w-full overflow-hidden'>
                         <img
-                          src={getRetreatAssetUrl(retreat.coverAssetKey)}
+                          src={getRetreatImageUrl(retreat.coverImage)}
                           alt={retreat.title}
                           className='h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100'
                         />

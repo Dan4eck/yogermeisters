@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getRetreatAssetUrl } from '@/lib/retreat-assets';
+import { getRetreatImageUrl } from '@/lib/retreat-assets';
 import { formatRetreatDateLabel } from '@/lib/retreat-date';
 import { siteCopy, type Language } from '@/lib/i18n';
 import { openExternal } from '@/lib/open-external';
@@ -60,7 +60,7 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
             <section className='container mx-auto px-6 py-10'>
               <div className='overflow-hidden rounded-[2rem] border border-white/10 bg-card'>
                 <img
-                  src={getRetreatAssetUrl(retreat.coverAssetKey)}
+                  src={getRetreatImageUrl(retreat.coverImage)}
                   alt={retreat.title}
                   className='h-[320px] w-full object-cover md:h-[520px]'
                 />
@@ -104,6 +104,17 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
 
                 <div className='space-y-6'>
                   {retreat.postBlocks.map((block) => {
+                    if (block.type === 'heading') {
+                      return (
+                        <h2
+                          key={block.id}
+                          className='pt-2 text-2xl font-semibold tracking-tight text-white md:text-3xl'
+                        >
+                          {block.text}
+                        </h2>
+                      );
+                    }
+
                     if (block.type === 'paragraph') {
                       return (
                         <p key={block.id} className='text-base leading-relaxed text-white/80 md:text-lg'>
@@ -115,13 +126,32 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
                     return (
                       <div key={block.id} className='overflow-hidden rounded-2xl border border-white/10 bg-card'>
                         <img
-                          src={block.assetKey ? getRetreatAssetUrl(block.assetKey) : ''}
+                          src={block.image ? getRetreatImageUrl(block.image) : ''}
                           alt={block.alt ?? retreat.title}
                           className='max-h-[560px] w-full object-cover'
                         />
                       </div>
                     );
                   })}
+                </div>
+
+                <div className='rounded-[2rem] border border-white/10 bg-card px-6 py-8 md:px-8 md:py-10'>
+                  <div className='space-y-4 text-center md:text-left'>
+                    <h2 className='text-2xl font-semibold tracking-tight text-white md:text-3xl'>
+                      {copy.detailCtaTitle}
+                    </h2>
+                    <p className='max-w-2xl text-base leading-relaxed text-white/70 md:text-lg'>
+                      {copy.detailCtaDescription}
+                    </p>
+                    <div className='pt-2'>
+                      <Button
+                        className='h-11 rounded-full bg-white px-6 text-black hover:bg-white/90'
+                        onClick={() => openExternal(retreat.bookingUrl)}
+                      >
+                        {copy.bookRetreat}
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -133,4 +163,3 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
-import aboutImg from '@assets/2025-12-10_18.39.59_1765388536142.jpg';
+import aboutImg from '@assets/teacher-portrait-bamboo-wall.jpg';
 import { siteCopy, type Language } from '@/lib/i18n';
 
 interface AboutSectionProps {

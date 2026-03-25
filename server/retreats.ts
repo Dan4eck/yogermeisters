@@ -84,7 +84,7 @@ function mapBlocks(
         id: block.blockKey,
         type: block.type as LocalizedRetreatBlock['type'],
         text: translation?.text ?? block.text ?? undefined,
-        assetKey: block.imageAssetKey ?? undefined,
+        image: block.image ?? undefined,
         alt: translation?.alt ?? block.alt ?? undefined,
       };
     });
@@ -110,7 +110,7 @@ function mapRowsToRetreats(
       dateLabel: translation?.dateLabel ?? retreatRow.dateLabel ?? undefined,
       price: retreatRow.price,
       bookingUrl: retreatRow.bookingUrl,
-      coverAssetKey: retreatRow.coverAssetKey,
+      coverImage: retreatRow.coverImage,
       postBlocks: mapBlocks(retreatRow.id, blockRows, blockTranslationRows),
     };
   });
