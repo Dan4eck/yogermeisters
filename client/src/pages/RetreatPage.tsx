@@ -135,17 +135,21 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
                   })}
                 </div>
 
-                <div className='rounded-[2rem] border border-white/10 bg-card px-6 py-8 md:px-8 md:py-10'>
-                  <div className='space-y-4 text-center md:text-left'>
-                    <h2 className='text-2xl font-semibold tracking-tight text-white md:text-3xl'>
-                      {copy.detailCtaTitle}
-                    </h2>
-                    <p className='max-w-2xl text-base leading-relaxed text-white/70 md:text-lg'>
-                      {copy.detailCtaDescription}
-                    </p>
-                    <div className='pt-2'>
+                <div className='relative overflow-hidden rounded-[2rem] border border-white/15 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.16),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-6 py-8 md:px-8 md:py-10'>
+                  <div className='absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:24px_24px] opacity-30' />
+                  <div className='relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between'>
+                    <div className='space-y-4 text-center md:max-w-2xl md:text-left'>
+                      <h2 className='text-3xl font-semibold tracking-tight text-white md:text-4xl'>
+                        {copy.detailCtaTitle}
+                      </h2>
+                      <p className='text-base leading-relaxed text-white/75 md:text-lg'>
+                        {copy.detailCtaDescription}
+                      </p>
+                    </div>
+
+                    <div className='flex justify-center md:justify-end'>
                       <Button
-                        className='h-11 rounded-full bg-white px-6 text-black hover:bg-white/90'
+                        className='h-12 rounded-full bg-white px-7 text-sm font-semibold text-black shadow-[0_12px_40px_rgba(255,255,255,0.18)] transition-transform hover:scale-[1.02] hover:bg-white/90'
                         onClick={() => openExternal(retreat.bookingUrl)}
                       >
                         {copy.bookRetreat}
