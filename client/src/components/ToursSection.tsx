@@ -75,32 +75,36 @@ export default function ToursSection({ language }: ToursSectionProps) {
                       </a>
                     </Link>
 
-                    <div className="p-5">
-                      <div className="flex justify-between items-start mb-4 gap-4">
-                        <div>
+                    <div className="space-y-4 p-4 sm:p-5">
+                      <div className='flex items-center gap-2 font-mono text-xs text-muted-foreground'>
+                        <Calendar className='h-3 w-3' />
+                        {dateLabel}
+                      </div>
+
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <div className='min-w-0 space-y-2'>
                           <Link href={`/retreats/${retreat.slug}`}>
-                            <a className="text-lg font-semibold text-white transition-colors group-hover:text-white/90">
+                            <a className="block text-[1.35rem] font-semibold leading-tight text-white transition-colors group-hover:text-white/90 sm:text-lg">
                               {retreat.title}
                             </a>
                           </Link>
-                          <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                          <p className="flex items-start gap-1 text-sm leading-snug text-muted-foreground">
                             <MapPin className='h-3 w-3' /> {retreat.location}
                           </p>
                         </div>
-                        <Badge variant='outline' className='border-white/10 font-mono text-xs text-white/60'>
+                        <Badge
+                          variant='outline'
+                          className='w-fit shrink-0 border-white/10 font-mono text-xs text-white/60'
+                        >
                           {retreat.price}
                         </Badge>
                       </div>
 
-                      <div className='mt-6 flex flex-col items-center gap-3 border-t border-white/5 pt-4 text-center'>
-                        <div className='flex items-center justify-center gap-2 font-mono text-xs text-muted-foreground'>
-                          <Calendar className='h-3 w-3' />
-                          {dateLabel}
-                        </div>
+                      <div className='pt-1 text-left'>
                         <Button
                           asChild
                           size="sm"
-                          className="h-8 px-4 rounded-full bg-white text-black hover:bg-white/90 text-xs font-medium"
+                          className="h-9 rounded-full bg-white px-5 text-xs font-medium text-black hover:bg-white/90"
                         >
                           <Link href={`/retreats/${retreat.slug}`}>{copy.viewDetails}</Link>
                         </Button>
