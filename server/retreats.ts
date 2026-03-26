@@ -32,6 +32,9 @@ const fallbackRetreats = mapSeedRetreats('en').map((retreat) => ({
   postBlocks: retreat.postBlocks.map((block) => ({ ...block })),
 }));
 
+const useLocalRetreatContent =
+  process.env.NODE_ENV === 'development' && process.env.RETREAT_CONTENT_SOURCE !== 'database';
+
 function matchesView(retreat: RetreatRecord, view: RetreatView, today: string): boolean {
   const isPast = retreat.endDate < today;
 
@@ -83,6 +86,7 @@ function mapBlocks(
       return {
         id: block.blockKey,
         type: block.type as LocalizedRetreatBlock['type'],
+        variant: block.variant as LocalizedRetreatBlock['variant'],
         text: translation?.text ?? block.text ?? undefined,
         image: block.image ?? undefined,
         alt: translation?.alt ?? block.alt ?? undefined,
@@ -166,7 +170,7 @@ async function listRetreatsFromDatabase(options: ListRetreatOptions): Promise<Re
 }
 
 export async function listRetreats(options: ListRetreatOptions): Promise<RetreatRecord[]> {
-  if (!db) {
+  if (useLocalRetreatContent || !db) {
     return localizeFallbackRetreats(options.language).filter((retreat) =>
       matchesView(retreat, options.view, options.today),
     );
@@ -185,7 +189,7 @@ export async function getRetreatBySlug(
   slug: string,
   language: RetreatLanguage,
 ): Promise<RetreatRecord | null> {
-  if (!db) {
+  if (useLocalRetreatContent || !db) {
     return localizeFallbackRetreats(language).find((retreat) => retreat.slug === slug) ?? null;
   }
 

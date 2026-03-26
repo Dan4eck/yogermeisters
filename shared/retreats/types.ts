@@ -1,7 +1,8 @@
 export type RetreatLanguage = 'en' | 'ru';
 export type RetreatStatus = 'draft' | 'active' | 'archived';
 export type RetreatView = 'upcoming' | 'archive' | 'all';
-export type RetreatBlockType = 'paragraph' | 'image' | 'heading';
+export type RetreatBlockType = 'paragraph' | 'image' | 'heading' | 'callout';
+export type RetreatCalloutVariant = 'soft' | 'cta' | 'outline' | 'sunrise' | 'lagoon';
 
 export interface RetreatTranslationSeed {
   readonly title: string;
@@ -18,6 +19,7 @@ export interface RetreatBlockSeed {
   readonly id: string;
   readonly sortOrder: number;
   readonly type: RetreatBlockType;
+  readonly variant?: RetreatCalloutVariant;
   readonly text?: string;
   readonly image?: string;
   readonly alt?: string;
@@ -43,6 +45,7 @@ export interface RetreatSeed {
 export interface RetreatPostBlock {
   readonly id: string;
   readonly type: RetreatBlockType;
+  readonly variant?: RetreatCalloutVariant;
   readonly text?: string;
   readonly image?: string;
   readonly alt?: string;

@@ -123,6 +123,22 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
                       );
                     }
 
+                    if (block.type === 'callout') {
+                      return (
+                        <div
+                          key={block.id}
+                          className={`relative overflow-hidden ${getCalloutClasses(block.variant)}`}
+                        >
+                          <div className='absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:22px_22px] opacity-25' />
+                          <div className='relative'>
+                            <p className={getCalloutTextClasses(block.variant)}>
+                              {block.text}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    }
+
                     return (
                       <div key={block.id} className='overflow-hidden rounded-2xl border border-white/10 bg-card'>
                         <img
@@ -166,4 +182,44 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
       <Footer language={language} />
     </div>
   );
+}
+
+function getCalloutClasses(variant?: string): string {
+  if (variant === 'cta') {
+    return 'rounded-[2rem] border border-white/15 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.16),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-6 py-8 shadow-[0_22px_70px_rgba(0,0,0,0.24)] md:px-8 md:py-10';
+  }
+
+  if (variant === 'sunrise') {
+    return 'rounded-[1.9rem] border border-orange-200/20 bg-[radial-gradient(circle_at_top,rgba(253,186,116,0.34),transparent_30%),linear-gradient(145deg,rgba(120,53,15,0.5),rgba(251,113,133,0.2)_46%,rgba(15,23,42,0.42))] px-6 py-6 shadow-[0_20px_64px_rgba(120,53,15,0.26)] md:px-8 md:py-7';
+  }
+
+  if (variant === 'lagoon') {
+    return 'rounded-[1.9rem] border border-cyan-200/20 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.28),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(45,212,191,0.24),transparent_24%),linear-gradient(145deg,rgba(8,47,73,0.62),rgba(15,118,110,0.32)_48%,rgba(15,23,42,0.38))] px-6 py-6 shadow-[0_20px_64px_rgba(8,47,73,0.26)] md:px-8 md:py-7';
+  }
+
+  if (variant === 'outline') {
+    return 'rounded-[1.75rem] border border-white/18 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] px-5 py-5 shadow-[0_16px_50px_rgba(0,0,0,0.16)] ring-1 ring-inset ring-white/8 md:px-6';
+  }
+
+  return 'rounded-[1.75rem] border border-white/15 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.16),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-5 py-5 shadow-[0_18px_60px_rgba(0,0,0,0.2)] md:px-6';
+}
+
+function getCalloutTextClasses(variant?: string): string {
+  if (variant === 'cta') {
+    return 'mx-auto max-w-2xl text-center text-3xl font-semibold tracking-tight text-white md:text-4xl';
+  }
+
+  if (variant === 'sunrise') {
+    return 'mx-auto max-w-2xl text-center text-base font-semibold leading-relaxed text-orange-50 md:text-[1.08rem]';
+  }
+
+  if (variant === 'lagoon') {
+    return 'mx-auto max-w-2xl text-center text-base font-semibold leading-relaxed text-cyan-50 md:text-[1.08rem]';
+  }
+
+  if (variant === 'outline') {
+    return 'mx-auto max-w-2xl text-center text-base leading-relaxed text-white/90 md:text-[1.02rem]';
+  }
+
+  return 'mx-auto max-w-2xl text-center text-base font-medium leading-relaxed text-white/92 md:text-[1.05rem]';
 }

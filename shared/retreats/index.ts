@@ -57,6 +57,7 @@ function localizeRetreat(seed: RetreatSeed, language: RetreatLanguage): RetreatR
         return {
           id: block.id,
           type: block.type,
+          variant: block.variant,
           text: blockTranslation?.text ?? block.text,
           image: block.image,
           alt: blockTranslation?.alt ?? block.alt,

@@ -51,6 +51,7 @@ async function main() {
             blockKey: block.id,
             sortOrder: block.sortOrder,
             type: block.type,
+            variant: block.variant ?? null,
             text: block.text ?? null,
             image: block.image ?? null,
             alt: block.alt ?? null,

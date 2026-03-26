@@ -8,7 +8,7 @@ export const ciraliRetreat: RetreatSeed = {
   location: 'Cirali, Lycian Coast, Turkey',
   startDate: '2026-05-01',
   endDate: '2026-05-08',
-  price: '€720 Black Friday / €790',
+  price: '€790',
   bookingUrl: 'https://t.me/AnastasiaPagliacci',
   coverImage: 'cirali-beach-cover.jpeg',
   translations: {
@@ -30,8 +30,20 @@ export const ciraliRetreat: RetreatSeed = {
       },
     },
     {
-      id: 'morning-in-cirali',
+      id: 'cirali-booking-callout',
       sortOrder: 2,
+      type: 'callout',
+      variant: 'sunrise',
+      text: 'A few spots are still open. If Cirali is calling you, it is worth booking now while the retreat still has space and the price stays at €790.',
+      translations: {
+        ru: {
+          text: '✨ Осталось несколько мест по цене €790. Успей забронировать!',
+        },
+      },
+    },
+    {
+      id: 'morning-in-cirali',
+      sortOrder: 3,
       type: 'paragraph',
       text: 'Cirali greets us with quiet mornings among orange trees, the sound of waves, and warm wind. This is a retreat without rush or overplanning: just enough structure to go deep, and enough spaciousness to truly rest.',
       translations: {
@@ -42,7 +54,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'cirali-stay-image',
-      sortOrder: 3,
+      sortOrder: 4,
       type: 'image',
       image: 'cirali-garden-mountains.jpeg',
       alt: 'Garden and mountain atmosphere in Cirali',
@@ -54,7 +66,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-1-heading',
-      sortOrder: 4,
+      sortOrder: 5,
       type: 'heading',
       text: 'Day 1 – Arrival and recovery',
       translations: {
@@ -65,7 +77,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-1-text',
-      sortOrder: 5,
+      sortOrder: 6,
       type: 'paragraph',
       text: 'We settle into cozy bungalows in orange gardens just steps from the sea. After the road, the body gets a soft landing through gentle evening yoga and deep yoga nidra.',
       translations: {
@@ -76,7 +88,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-1-exterior-image',
-      sortOrder: 6,
+      sortOrder: 7,
       type: 'image',
       image: 'cirali-bungalows-exterior.png',
       alt: 'Retreat bungalows with mountain views in Cirali',
@@ -88,7 +100,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-1-interior-image',
-      sortOrder: 7,
+      sortOrder: 8,
       type: 'image',
       image: 'cirali-bungalows-interior.png',
       alt: 'Spacious wooden bungalow interiors for retreat guests',
@@ -100,7 +112,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-2-heading',
-      sortOrder: 8,
+      sortOrder: 9,
       type: 'heading',
       text: 'Day 2 – Bikes, beach, and activation',
       translations: {
@@ -111,7 +123,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-2-text',
-      sortOrder: 9,
+      sortOrder: 10,
       type: 'paragraph',
       text: 'We ride bikes through the village and scenic surroundings, then slow down on the beach and, if we are lucky, meet sea turtles. Morning practice is Himalayan yoga with pranayama for activation. Evening practice moves into meta-breathing and OSHO meditation.',
       translations: {
@@ -122,7 +134,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'cirali-bicycle',
-      sortOrder: 10,
+      sortOrder: 11,
       type: 'image',
       image: 'cirali-bicycle.jpg',
       alt: 'cirali-bicycle under the tree',
@@ -134,7 +146,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-3-heading',
-      sortOrder: 11,
+      sortOrder: 12,
       type: 'heading',
       text: 'Day 3 – SUP and spaciousness',
       translations: {
@@ -145,7 +157,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-3-text',
-      sortOrder: 12,
+      sortOrder: 13,
       type: 'paragraph',
       text: 'We meet the morning with SUP boarding in quiet bays. After that there is real free time: beach, books, sleep, or complete idleness under the sound of the surf. Morning focus: hand balances. Evening: Buddhist meditation and yoga nidra.',
       translations: {
@@ -156,7 +168,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'sup-image',
-      sortOrder: 13,
+      sortOrder: 14,
       type: 'image',
       image: 'cirali-sup-cove.jpeg',
       alt: 'SUP boarding in a calm cove near Cirali',
@@ -168,7 +180,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-4-heading',
-      sortOrder: 14,
+      sortOrder: 15,
       type: 'heading',
       text: 'Day 4 – Lycian Way and Black Beach',
       translations: {
@@ -179,7 +191,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-4-text',
-      sortOrder: 15,
+      sortOrder: 16,
       type: 'paragraph',
       text: 'We hike the Lycian Way toward the secluded Black Beach through pines, cliffs, and sea views. The route ends with a swim in clear water and a picnic by the shore. Morning practice opens the hips and supports lymphatic drainage; evening practice combines ecstatic dance and moving meditation.',
       translations: {
@@ -190,7 +202,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-4-landscape-image',
-      sortOrder: 16,
+      sortOrder: 17,
       type: 'image',
       image: 'cirali-forest-group.jpg',
       alt: 'Forest section of the Lycian Way during the Cirali retreat',
@@ -202,7 +214,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-5-heading',
-      sortOrder: 17,
+      sortOrder: 18,
       type: 'heading',
       text: 'Day 5 – Five bays by boat',
       translations: {
@@ -213,7 +225,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-5-text',
-      sortOrder: 18,
+      sortOrder: 19,
       type: 'paragraph',
       text: 'We spend the day on a boat traveling through five bays, snorkeling in hidden lagoons, eating lunch on board, and letting the body feel sun and salt water. Morning practice is dynamic yoga for energy. Evening: meta-breathing and a silence-of-mind practice.',
       translations: {
@@ -224,7 +236,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'boat-image',
-      sortOrder: 19,
+      sortOrder: 20,
       type: 'image',
       image: 'cirali-five-bays-collage.png',
       alt: 'Collage from the five bays boat day with SUP, sailing, and Black Beach views',
@@ -236,7 +248,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-6-heading',
-      sortOrder: 20,
+      sortOrder: 21,
       type: 'heading',
       text: 'Day 6 – Chimaera and silence',
       translations: {
@@ -247,7 +259,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-6-text',
-      sortOrder: 21,
+      sortOrder: 22,
       type: 'paragraph',
       text: 'We hike toward the eternal flames of Chimaera and sit in meditation under the stars. Morning practice turns toward strength, handstands, and inversions. Evening returns us to candle meditation and yoga nidra.',
       translations: {
@@ -258,7 +270,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'chimaera-image',
-      sortOrder: 22,
+      sortOrder: 23,
       type: 'image',
       image: 'cirali-mountain-view.jpeg',
       alt: 'Mountain landscapes along the retreat route',
@@ -270,7 +282,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-7-heading',
-      sortOrder: 23,
+      sortOrder: 24,
       type: 'heading',
       text: 'Day 7 – Olympos and the local market',
       translations: {
@@ -281,7 +293,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-7-text',
-      sortOrder: 24,
+      sortOrder: 25,
       type: 'paragraph',
       text: 'We explore ancient Olympos, where nature and history are woven together, and then go to the local market for fruit, spices, and Turkish sweets. Morning is integration yoga with pranayama. Evening ends with ecstatic dance and OSHO dynamic meditation.',
       translations: {
@@ -292,7 +304,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'olympos-image',
-      sortOrder: 25,
+      sortOrder: 26,
       type: 'image',
       image: 'cirali-olympos-group.jpg',
       alt: 'Retreat group at the ancient ruins of Olympos',
@@ -304,7 +316,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'day-8-heading',
-      sortOrder: 26,
+      sortOrder: 27,
       type: 'heading',
       text: 'Day 8 – Soft return',
       translations: {
@@ -315,7 +327,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'final-day',
-      sortOrder: 27,
+      sortOrder: 28,
       type: 'paragraph',
       text: 'The final day is for a slow breakfast, a stop at a natural cosmetics shop for gifts, and a gentle return home. The retreat ends, but the feeling of spaciousness, strength, and inner quiet stays much longer.',
       translations: {
@@ -326,7 +338,7 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'included-heading',
-      sortOrder: 28,
+      sortOrder: 29,
       type: 'heading',
       text: 'Included',
       translations: {
@@ -337,23 +349,23 @@ export const ciraliRetreat: RetreatSeed = {
     },
     {
       id: 'included',
-      sortOrder: 29,
+      sortOrder: 30,
       type: 'paragraph',
-      text: 'Full support with flight booking, comfortable accommodation with breakfasts, airport transfers, a yacht trip, yoga and meditation practices, SUP board rental, a custom route created by the KOVER Travel team, photo and video coverage of the brightest moments, and support from an experienced yoga instructor.',
+      text: 'Comfortable accommodation with breakfasts, airport transfers, a yacht trip, yoga and meditation practices, SUP board rental, a carefully designed retreat route, photo and video coverage of the brightest moments, and support throughout the journey.',
       translations: {
         ru: {
-          text: 'Полное сопровождение при покупке авиабилетов, комфортное проживание с завтраками, трансферы из/в аэропорт, прогулка на яхте, практики йоги и медитаций, аренда сап-бордов, авторский маршрут по стране от команды KOVER Travel, фото- и видеосъёмка ярких моментов поездки и сопровождение опытного инструктора йоги.',
+          text: 'Комфортное проживание с завтраками, трансферы из/в аэропорт, прогулка на яхте, практики йоги и медитаций, аренда сап-бордов, продуманный маршрут ретрита, фото- и видеосъёмка ярких моментов поездки и сопровождение на всём пути.',
         },
       },
     },
     {
       id: 'not-included-and-price',
-      sortOrder: 31,
+      sortOrder: 32,
       type: 'paragraph',
-      text: 'Flights, meals other than breakfasts, bicycle rental, and personal expenses are not included. Current brochure price: Black Friday offer €720 instead of €790. Deposit to reserve a place: €200.',
+      text: 'Flights, meals other than breakfasts, bicycle rental, and personal expenses are not included. Retreat price: €790. Deposit to reserve a place: €200.',
       translations: {
         ru: {
-          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Актуальная цена по буклету: Black Friday €720 вместо €790. Залог для брони места — €200.',
+          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Стоимость ретрита — €790. Залог для брони места — €200.',
         },
       },
     },
