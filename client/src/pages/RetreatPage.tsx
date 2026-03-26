@@ -165,12 +165,18 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
                   })}
                 </div>
 
-                <div className='relative overflow-hidden rounded-[2rem] border border-white/15 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.16),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-6 py-8 md:px-8 md:py-10'>
+                <div className='relative overflow-hidden rounded-[2rem] border border-white/15 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.16),transparent_38%),linear-gradient(225deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-6 py-8 md:px-8 md:py-10'>
                   <div className='absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:24px_24px] opacity-30' />
+                  <div className='pointer-events-none absolute left-3 top-2 text-[2.35rem] opacity-95 md:hidden'>
+                    📿
+                  </div>
                   <div className='relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between'>
                     <div className='space-y-4 text-center md:max-w-2xl md:text-left'>
-                      <h2 className='text-3xl font-semibold tracking-tight text-white md:text-4xl'>
-                        {copy.detailCtaTitle}
+                      <h2 className='mx-auto max-w-[14ch] text-[1.78rem] font-semibold leading-[1.06] tracking-tight text-white md:mx-0 md:max-w-none md:text-4xl'>
+                        <span className='md:hidden'>
+                          {language === 'ru' ? 'Готов присоединиться к ретриту?' : 'Ready to join this retreat?'}
+                        </span>
+                        <span className='hidden md:inline'>{copy.detailCtaTitle}</span>
                       </h2>
                       <p className='text-base leading-relaxed text-white/75 md:text-lg'>
                         {copy.detailCtaDescription}
