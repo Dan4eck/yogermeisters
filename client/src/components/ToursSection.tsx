@@ -82,7 +82,7 @@ export default function ToursSection({ language }: ToursSectionProps) {
                       </div>
 
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                        <div className='min-w-0 space-y-2'>
+                        <div className='min-w-0 space-y-3'>
                           <Link href={`/retreats/${retreat.slug}`}>
                             <a className="block text-[1.35rem] font-semibold leading-tight text-white transition-colors group-hover:text-white/90 sm:text-lg">
                               {retreat.title}
