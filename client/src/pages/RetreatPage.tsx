@@ -1,3 +1,5 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 
@@ -139,6 +141,18 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
                       );
                     }
 
+                    if (block.type === 'countdown') {
+                      return (
+                        <CountdownBlock
+                          key={block.id}
+                          deadline={block.deadline}
+                          priceCurrent={block.priceCurrent}
+                          priceCompare={block.priceCompare}
+                          language={language}
+                        />
+                      );
+                    }
+
                     return (
                       <div key={block.id} className='overflow-hidden rounded-2xl border border-white/10 bg-card'>
                         <img
@@ -182,6 +196,138 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
       <Footer language={language} />
     </div>
   );
+}
+
+interface CountdownBlockProps {
+  deadline?: string;
+  priceCurrent?: string;
+  priceCompare?: string;
+  language: Language;
+}
+
+function CountdownBlock({
+  deadline,
+  priceCurrent,
+  priceCompare,
+  language,
+}: CountdownBlockProps) {
+  const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(deadline));
+
+  useEffect(() => {
+    setTimeLeft(getTimeLeft(deadline));
+
+    const timer = window.setInterval(() => {
+      setTimeLeft(getTimeLeft(deadline));
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [deadline]);
+
+  if (!timeLeft) {
+    return null;
+  }
+
+  const labels =
+    language === 'ru'
+      ? { days: 'дней', hours: 'часов', minutes: 'минут', seconds: 'секунд' }
+      : { days: 'days', hours: 'hours', minutes: 'minutes', seconds: 'seconds' };
+
+  return (
+    <div className='relative overflow-hidden rounded-[1.75rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_34%),radial-gradient(circle_at_bottom,rgba(217,119,6,0.12),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] px-4 py-5 text-center shadow-[0_22px_60px_rgba(0,0,0,0.28)] md:px-5 md:py-6'>
+      <div className='pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent' />
+      <div className='pointer-events-none absolute inset-x-16 bottom-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent' />
+
+      <div className='relative flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1'>
+        {priceCurrent ? (
+          <span className='bg-gradient-to-b from-white to-white/78 bg-clip-text text-4xl font-semibold tracking-tight text-transparent md:text-5xl'>
+            {priceCurrent}
+          </span>
+        ) : null}
+        {priceCompare ? (
+          <span className='text-lg text-white/28 line-through decoration-white/28 decoration-2 md:text-2xl'>
+            {priceCompare}
+          </span>
+        ) : null}
+      </div>
+
+      <div className='relative mt-4 rounded-[1.4rem] bg-black/36 px-3 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_36px_rgba(0,0,0,0.24)] backdrop-blur-[2px] md:px-4 md:py-4'>
+        <div className='pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent' />
+
+        <div className='mx-auto grid max-w-[30rem] grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] items-end text-center'>
+          <CountdownValue value={timeLeft.days} />
+          <CountdownSeparator />
+          <CountdownValue value={timeLeft.hours} />
+          <CountdownSeparator />
+          <CountdownValue value={timeLeft.minutes} />
+          <CountdownSeparator />
+          <CountdownValue value={timeLeft.seconds} />
+        </div>
+
+        <div className='mx-auto mt-2.5 grid max-w-[30rem] grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] items-center text-center text-[9px] uppercase tracking-[0.24em] text-white/28 md:text-[10px]'>
+          <span className='block text-center'>{labels.days}</span>
+          <span />
+          <span className='block text-center'>{labels.hours}</span>
+          <span />
+          <span className='block text-center'>{labels.minutes}</span>
+          <span />
+          <span className='block text-center'>{labels.seconds}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface CountdownValueProps {
+  value: number;
+}
+
+function CountdownValue({ value }: CountdownValueProps) {
+  return (
+    <div className='relative min-w-[3.2rem] text-center md:min-w-[4rem]'>
+      <AnimatePresence mode='popLayout' initial={false}>
+        <motion.span
+          key={String(value).padStart(2, '0')}
+          initial={{ opacity: 0.35, y: 10, filter: 'blur(2px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0.2, y: -10, filter: 'blur(2px)' }}
+          transition={{ duration: 0.26, ease: 'easeOut' }}
+          className='block bg-gradient-to-b from-white to-white/72 bg-clip-text text-4xl font-semibold tracking-[-0.04em] text-transparent md:text-5xl'
+        >
+          {String(value).padStart(2, '0')}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function CountdownSeparator() {
+  return <span className='pb-1.5 px-1 text-center text-2xl font-medium text-white/22 md:text-3xl'>:</span>;
+}
+
+function getTimeLeft(
+  deadline?: string,
+): { days: number; hours: number; minutes: number; seconds: number } | null {
+  if (!deadline) {
+    return null;
+  }
+
+  const baseTarget = new Date(deadline).getTime();
+  if (Number.isNaN(baseTarget)) {
+    return null;
+  }
+
+  const now = Date.now();
+  const diff = baseTarget - now;
+  if (diff <= 0) {
+    return null;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return { days, hours, minutes, seconds };
 }
 
 function getCalloutClasses(variant?: string): string {

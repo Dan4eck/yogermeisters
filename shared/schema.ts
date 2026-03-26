@@ -27,7 +27,7 @@ export type User = typeof users.$inferSelect;
 
 export const retreatStatusSchema = z.enum(['draft', 'active', 'archived']);
 export const retreatLanguageSchema = z.enum(['en', 'ru']);
-export const retreatBlockTypeSchema = z.enum(['paragraph', 'image', 'heading', 'callout']);
+export const retreatBlockTypeSchema = z.enum(['paragraph', 'image', 'heading', 'callout', 'countdown']);
 export const retreatCalloutVariantSchema = z.enum(['soft', 'cta', 'outline', 'sunrise', 'lagoon']);
 
 export const retreats = pgTable('retreats', {
@@ -57,6 +57,10 @@ export const retreatBlocks = pgTable(
     sortOrder: integer('sort_order').notNull(),
     type: varchar('type', { length: 16 }).notNull(),
     variant: varchar('variant', { length: 24 }),
+    deadline: text('deadline'),
+    cycleDays: integer('cycle_days'),
+    priceCurrent: text('price_current'),
+    priceCompare: text('price_compare'),
     text: text('text'),
     image: text('image'),
     alt: text('alt'),

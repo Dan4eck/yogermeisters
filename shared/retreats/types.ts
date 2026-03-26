@@ -1,7 +1,7 @@
 export type RetreatLanguage = 'en' | 'ru';
 export type RetreatStatus = 'draft' | 'active' | 'archived';
 export type RetreatView = 'upcoming' | 'archive' | 'all';
-export type RetreatBlockType = 'paragraph' | 'image' | 'heading' | 'callout';
+export type RetreatBlockType = 'paragraph' | 'image' | 'heading' | 'callout' | 'countdown';
 export type RetreatCalloutVariant = 'soft' | 'cta' | 'outline' | 'sunrise' | 'lagoon';
 
 export interface RetreatTranslationSeed {
@@ -20,6 +20,9 @@ export interface RetreatBlockSeed {
   readonly sortOrder: number;
   readonly type: RetreatBlockType;
   readonly variant?: RetreatCalloutVariant;
+  readonly deadline?: string;
+  readonly priceCurrent?: string;
+  readonly priceCompare?: string;
   readonly text?: string;
   readonly image?: string;
   readonly alt?: string;
@@ -46,6 +49,9 @@ export interface RetreatPostBlock {
   readonly id: string;
   readonly type: RetreatBlockType;
   readonly variant?: RetreatCalloutVariant;
+  readonly deadline?: string;
+  readonly priceCurrent?: string;
+  readonly priceCompare?: string;
   readonly text?: string;
   readonly image?: string;
   readonly alt?: string;

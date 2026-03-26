@@ -12,6 +12,7 @@ export const queryClient = new QueryClient({
 
 export async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url, {
+    cache: 'no-store',
     credentials: 'include',
     headers: {
       Accept: 'application/json',
@@ -24,4 +25,3 @@ export async function fetchJson<T>(url: string): Promise<T> {
 
   return response.json() as Promise<T>;
 }
-
