@@ -121,11 +121,11 @@ export const ciraliRetreat: RetreatSeed = {
       },
     },
     {
-      id: 'bike-and-sup-image',
+      id: 'cirali-bicycle',
       sortOrder: 10,
       type: 'image',
-      image: 'cirali-forest-group.jpg',
-      alt: 'Group walk through the pine forest in Cirali',
+      image: 'cirali-bicycle.jpg',
+      alt: 'cirali-bicycle under the tree',
       translations: {
         ru: {
           alt: 'Групповая прогулка по сосновому лесу Чиралы',
