@@ -87,31 +87,13 @@ export const siteCopy = {
       imageAlt: 'Yoga teacher portrait',
     },
     reviews: {
-      title: 'What Students Say',
-      description: 'Feedback from people who value depth, structure, and a real effect from practice.',
-      list: [
-        {
-          id: 1,
-          name: 'Emma Thompson',
-          role: 'Product Designer',
-          content:
-            'There is so much clarity and structure in each class. After practice I feel not only relaxed, but focused and steady for the whole day.',
-        },
-        {
-          id: 2,
-          name: 'Michael Chen',
-          role: 'Startup Founder',
-          content:
-            'This retreat gives a rare state: rested body, quiet mind, better decisions. A deep reset that stays with you long after the trip.',
-        },
-        {
-          id: 3,
-          name: 'Sofia Rodriguez',
-          role: 'Architect',
-          content:
-            'Very subtle work with form and breath. You understand how to go deeper safely and how practice transforms your inner state.',
-        },
-      ],
+      title: 'Watch What Students Actually Feel After Practice',
+      description: 'Short video stories from students.',
+      watchNow: 'Play Featured Story',
+      playLabel: 'Play',
+      moreStoriesTitle: 'More Reviews',
+      placeholderMessage: 'Add the final video URL, poster, and optional captions to launch this testimonial.',
+      closeLabel: 'Back to Reviews',
     },
     cta: {
       title: 'Ready to take your first step in practice?',
@@ -214,31 +196,13 @@ export const siteCopy = {
       imageAlt: 'Портрет преподавателя йоги',
     },
     reviews: {
-      title: 'Что говорят ученики',
-      description: 'Отзывы людей, для которых важны глубина, структура и ощутимый эффект от практики.',
-      list: [
-        {
-          id: 1,
-          name: 'Emma Thompson',
-          role: 'Продуктовый дизайнер',
-          content:
-            'В занятиях много ясности и структуры. После практики чувствую не просто расслабление, а собранность и ровное внимание на весь день.',
-        },
-        {
-          id: 2,
-          name: 'Michael Chen',
-          role: 'Основатель стартапа',
-          content:
-            'Ретрит дает редкое состояние: тело отдохнуло, голова тихая, решения принимаются легче. Это глубокая перезагрузка, которая остается с тобой после поездки.',
-        },
-        {
-          id: 3,
-          name: 'Sofia Rodriguez',
-          role: 'Архитектор',
-          content:
-            'Очень тонкая работа с формой и дыханием. Понимаешь, как безопасно углубляться в асаны и как практика влияет на состояние изнутри.',
-        },
-      ],
+      title: 'Посмотри, как ученики описывают эффект от практики',
+      description: 'Короткие видео-отзывы от учеников.',
+      watchNow: 'Смотреть главный отзыв',
+      playLabel: 'Смотреть',
+      moreStoriesTitle: 'Другие отзывы',
+      placeholderMessage: 'Добавьте финальную ссылку на видео, постер и при необходимости субтитры, чтобы отзыв заработал.',
+      closeLabel: 'Вернуться к отзывам',
     },
     cta: {
       title: 'Готовы сделать первый шаг в практике?',
