@@ -76,7 +76,7 @@ export const videoTestimonials: Record<Language, readonly VideoTestimonial[]> = 
   ru: [
     {
       id: 'retreat-nature-reset',
-      name: 'Участница ретрита 01',
+      name: 'Арина',
       role: 'Больше, чем отдых',
       location: 'Чиралы',
       program: 'Ретрит',
@@ -93,7 +93,7 @@ export const videoTestimonials: Record<Language, readonly VideoTestimonial[]> = 
     },
     {
       id: 'retreat-first-experience',
-      name: 'Участница ретрита 02',
+      name: 'Рада',
       role: 'Настоящий рестарт',
       location: 'Чиралы',
       program: 'Ретрит',
@@ -110,7 +110,7 @@ export const videoTestimonials: Record<Language, readonly VideoTestimonial[]> = 
     },
     {
       id: 'retreat-community-trust',
-      name: 'Участница ретрита 03',
+      name: 'Маша',
       role: 'Тёплые люди',
       location: 'Чиралы',
       program: 'Ретрит',
