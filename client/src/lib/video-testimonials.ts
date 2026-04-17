@@ -23,7 +23,7 @@ export const videoTestimonials: Record<Language, readonly VideoTestimonial[]> = 
   en: [
     {
       id: 'retreat-nature-reset',
-      name: 'Retreat Guest 01',
+      name: 'Maya',
       role: 'Deep Slowdown',
       location: 'Cirali',
       program: 'Retreat',
@@ -40,7 +40,7 @@ export const videoTestimonials: Record<Language, readonly VideoTestimonial[]> = 
     },
     {
       id: 'retreat-first-experience',
-      name: 'Returning Guest',
+      name: 'Tea',
       role: 'Gentle Depth',
       location: 'Cirali',
       program: 'Retreat',
