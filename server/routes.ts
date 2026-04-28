@@ -1,5 +1,6 @@
-import type { Express } from 'express';
+import type { Express, Request } from 'express';
 import type { Server } from 'http';
+import { timingSafeEqual } from 'node:crypto';
 import { z } from 'zod';
 
 import { retreatLanguageSchema, updateRetreatStatusSchema } from '@shared/schema';
@@ -8,6 +9,29 @@ import {
   type RetreatView,
 } from '@shared/retreat-content';
 import { getRetreatBySlug, listRetreats, updateRetreatStatus } from './retreats';
+
+function getAdminTokenFromRequest(req: Request): string | null {
+  const authorizationHeader = req.get('authorization');
+
+  if (typeof authorizationHeader === 'string' && authorizationHeader.startsWith('Bearer ')) {
+    return authorizationHeader.slice('Bearer '.length);
+  }
+
+  const headerToken = req.get('x-admin-token');
+
+  return typeof headerToken === 'string' && headerToken.length > 0 ? headerToken : null;
+}
+
+function tokensMatch(expectedToken: string, providedToken: string): boolean {
+  const expectedBuffer = Buffer.from(expectedToken);
+  const providedBuffer = Buffer.from(providedToken);
+
+  if (expectedBuffer.length !== providedBuffer.length) {
+    return false;
+  }
+
+  return timingSafeEqual(expectedBuffer, providedBuffer);
+}
 
 export async function registerRoutes(
   httpServer: Server,
@@ -60,6 +84,20 @@ export async function registerRoutes(
 
   app.patch('/api/retreats/:id/status', async (req, res, next) => {
     try {
+      const adminApiToken = process.env.ADMIN_API_TOKEN;
+
+      if (!adminApiToken) {
+        res.status(503).json({ message: 'Admin API is disabled' });
+        return;
+      }
+
+      const requestToken = getAdminTokenFromRequest(req);
+
+      if (!requestToken || !tokensMatch(adminApiToken, requestToken)) {
+        res.status(403).json({ message: 'Forbidden' });
+        return;
+      }
+
       const retreatId = z.coerce.number().int().positive().parse(req.params.id);
       const body = updateRetreatStatusSchema.parse(req.body);
       const retreat = await updateRetreatStatus(retreatId, body.status);

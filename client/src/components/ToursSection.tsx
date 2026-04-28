@@ -70,7 +70,8 @@ export default function ToursSection({ language }: ToursSectionProps) {
                         <img
                           src={getRetreatImageUrl(retreat.coverImage)}
                           alt={retreat.title}
-                          className='h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100'
+                          loading="lazy"
+                          className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100"
                         />
                       </a>
                     </Link>

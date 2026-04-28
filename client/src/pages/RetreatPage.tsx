@@ -64,6 +64,8 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
                 <img
                   src={getRetreatImageUrl(retreat.coverImage)}
                   alt={retreat.title}
+                  loading="eager"
+                  decoding="async"
                   className='h-[320px] w-full object-cover md:h-[520px]'
                 />
               </div>
@@ -158,6 +160,8 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
                         <img
                           src={block.image ? getRetreatImageUrl(block.image) : ''}
                           alt={block.alt ?? retreat.title}
+                          loading="lazy"
+                          decoding="async"
                           className='max-h-[560px] w-full object-cover'
                         />
                       </div>

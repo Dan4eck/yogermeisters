@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import heroVideo from '@assets/yoga_ubud_preroll_Copy_01_1765386774436.mp4';
+import { useEffect, useRef, useState } from 'react';
 import { siteCopy, type Language } from '@/lib/i18n';
 
 interface HeroProps {
@@ -10,21 +10,52 @@ interface HeroProps {
 
 export default function Hero({ language }: HeroProps) {
   const copy = siteCopy[language].hero;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px 0px 200px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="relative h-screen min-h-[800px] w-full overflow-hidden flex flex-col items-center justify-center pt-20">
+    <section ref={containerRef} className="relative h-screen min-h-[800px] w-full overflow-hidden flex flex-col items-center justify-center pt-20">
       {/* Background with tech overlay */}
       <div className="absolute inset-0 z-0">
-         {/* Using the video with a heavy dark overlay to match the tech aesthetic */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover opacity-70 grayscale-[30%]"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
+        {shouldLoad ? (
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster="/assets/videos/hero-poster.jpg"
+            className="w-full h-full object-cover opacity-70 grayscale-[30%]"
+          >
+            <source src="/assets/videos/hero.webm" type="video/webm" />
+            <source src="/assets/videos/hero.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src="/assets/videos/hero-poster.jpg"
+            alt=""
+            className="w-full h-full object-cover opacity-50 grayscale-[30%]"
+          />
+        )}
         <div className="absolute inset-0 bg-background/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
         

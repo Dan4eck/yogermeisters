@@ -67,6 +67,8 @@ export default function AboutSection({ language }: AboutSectionProps) {
               <img
                 src={aboutImg}
                 alt={copy.imageAlt}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover opacity-95"
               />
               
