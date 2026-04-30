@@ -1,7 +1,8 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import LogoMark from '@/components/LogoMark';
 import { Button } from '@/components/ui/button';
-import { useEffect, useRef, useState } from 'react';
 import { siteCopy, type Language } from '@/lib/i18n';
 
 interface HeroProps {
@@ -64,13 +65,23 @@ export default function Hero({ language }: HeroProps) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center">
+      <div className="relative z-10 container mx-auto px-6 text-center -translate-y-8 md:-translate-y-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="max-w-4xl mx-auto flex flex-col items-center"
         >
+          <div className="mb-6 flex flex-col items-center gap-3">
+            <LogoMark
+              className="h-24 w-24 drop-shadow-[0_18px_45px_rgba(255,255,255,0.18)] md:h-32 md:w-32"
+              alt="Yogermeisters logo"
+            />
+            <span className="text-sm font-semibold uppercase tracking-[0.42em] text-white/80 md:text-base">
+              Yogermeisters
+            </span>
+          </div>
+
           <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white backdrop-blur-xl">
             <span className="mr-2 rounded-full bg-white px-1.5 py-0.5 text-[10px] font-bold text-black uppercase tracking-wide">
               {copy.badgeLabel}
@@ -79,17 +90,13 @@ export default function Hero({ language }: HeroProps) {
             <ArrowRight className="ml-2 h-3 w-3 opacity-50" />
           </div>
           
-          <h1 className="text-5xl md:text-8xl font-bold tracking-tight text-white mb-6">
+          <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-white mb-6">
             {copy.titleTop} <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40">
               {copy.titleBottom}
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            {copy.description}
-          </p>
-
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
             <Button 
               size="lg" 

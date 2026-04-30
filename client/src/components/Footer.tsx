@@ -1,4 +1,5 @@
 import { Instagram, Youtube } from 'lucide-react';
+import LogoMark from '@/components/LogoMark';
 import { siteCopy, type Language } from '@/lib/i18n';
 
 interface FooterProps {
@@ -14,8 +15,8 @@ export default function Footer({ language }: FooterProps) {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           
           <div>
-            <a href="/" className="text-lg font-bold tracking-tighter flex items-center gap-2">
-              <div className="w-4 h-4 bg-white rounded-full" />
+            <a href="/" className="text-lg font-bold tracking-tighter flex items-center gap-2.5">
+              <LogoMark className="h-7 w-7" />
               <span>Yogermeisters</span>
             </a>
             <div className='mt-4 space-y-1 text-sm text-muted-foreground'>

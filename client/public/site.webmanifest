@@ -1,0 +1,21 @@
+{
+  "name": "Yogermeisters",
+  "short_name": "Yogermeisters",
+  "description": "Himalayan yoga classes and immersive retreats by Anastasia Pagliacci.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080a08",
+  "theme_color": "#080a08",
+  "icons": [
+    {
+      "src": "/assets/brand/yogermeisters-app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/brand/yogermeisters-app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

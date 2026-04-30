@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LogoMark from '@/components/LogoMark';
 import { languageToggleLabel, siteCopy, type Language } from '@/lib/i18n';
 
 interface NavbarProps {
@@ -62,8 +63,8 @@ export default function Navbar({ language, setLanguage }: NavbarProps) {
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <Link href="/">
-          <a className="text-lg font-bold tracking-tighter flex items-center gap-2">
-            <div className="w-5 h-5 bg-white rounded-full" />
+          <a className="text-lg font-bold tracking-tighter flex items-center gap-2.5">
+            <LogoMark className="h-7 w-7" />
             <span className="text-white">Yogermeisters</span>
           </a>
         </Link>
