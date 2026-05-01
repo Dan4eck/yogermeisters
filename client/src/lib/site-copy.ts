@@ -87,7 +87,7 @@ export const siteCopy = {
       imageAlt: 'Yoga teacher portrait',
     },
     reviews: {
-      title: 'Watch What Students Actually Feel After Practice',
+      title: 'Video Reviews',
       description: 'Short video stories from students.',
       watchNow: 'Play Featured Story',
       playLabel: 'Play',
@@ -196,7 +196,7 @@ export const siteCopy = {
       imageAlt: 'Портрет преподавателя йоги',
     },
     reviews: {
-      title: 'Посмотри, как ученики описывают эффект от практики',
+      title: 'Видео-отзывы',
       description: 'Короткие видео-отзывы от учеников.',
       watchNow: 'Смотреть главный отзыв',
       playLabel: 'Смотреть',

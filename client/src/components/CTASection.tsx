@@ -11,7 +11,7 @@ export default function CTASection({ language }: CTASectionProps) {
   const copy = siteCopy[language].cta;
 
   return (
-    <section className="py-32 relative overflow-hidden bg-background flex flex-col items-center justify-center border-t border-white/5">
+    <section id="contact" className="py-32 relative overflow-hidden bg-background flex flex-col items-center justify-center border-t border-white/5">
       {/* Glow Effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
 
