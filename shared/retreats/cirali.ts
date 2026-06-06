@@ -22,10 +22,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'intro',
       sortOrder: 1,
       type: 'paragraph',
-      text: 'An 8-day retreat in Cirali, where mountains, sea, silence, and practice create a rare feeling of inner reset. We travel here to feel the ground under our feet, freedom in the body, and calm steadiness in the mind.',
+      text: 'A 7-day retreat in Cirali, where mountains, sea, silence, and practice create a rare feeling of inner reset. We travel here to feel the ground under our feet, freedom in the body, and calm steadiness in the mind.',
       translations: {
         ru: {
-          text: '8-дневный ретрит в Чиралы, где море, горы, тишина и практика собираются в редкое ощущение глубокой перезагрузки. Мы едем сюда, чтобы почувствовать землю под ногами, свободу в теле и спокойную устойчивость внутри.',
+          text: '7-дневный ретрит в Чиралы, где море, горы, тишина и практика собираются в редкое ощущение глубокой перезагрузки. Мы едем сюда, чтобы почувствовать землю под ногами, свободу в теле и спокойную устойчивость внутри.',
         },
       },
     },
@@ -280,10 +280,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-7-heading',
       sortOrder: 25,
       type: 'heading',
-      text: 'Day 7 – Olympos and the local market',
+      text: 'Day 7 – Olympos, local market & soft return',
       translations: {
         ru: {
-          text: 'День 7 – Олимпос и местный рынок',
+          text: 'День 7 – Олимпос, местный рынок и мягкое возвращение',
         },
       },
     },
@@ -311,19 +311,8 @@ export const ciraliRetreat: RetreatSeed = {
       },
     },
     {
-      id: 'day-8-heading',
-      sortOrder: 28,
-      type: 'heading',
-      text: 'Day 8 – Soft return',
-      translations: {
-        ru: {
-          text: 'День 8 – Мягкое возвращение',
-        },
-      },
-    },
-    {
       id: 'final-day',
-      sortOrder: 29,
+      sortOrder: 28,
       type: 'paragraph',
       text: 'The final day is for a slow breakfast, a stop at a natural cosmetics shop for gifts, and a gentle return home. The retreat ends, but the feeling of spaciousness, strength, and inner quiet stays much longer.',
       translations: {

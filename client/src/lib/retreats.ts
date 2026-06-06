@@ -47,7 +47,7 @@ export const retreats: readonly Retreat[] = [
       {
         id: 'intro',
         type: 'paragraph',
-        text: 'My signature 8-day Cirali retreat for body, mind, and energy reset. This village between sea and mountains has a unique atmosphere that helps practitioners drop stress quickly and return to themselves.',
+        text: 'My signature 7-day Cirali retreat for body, mind, and energy reset. This village between sea and mountains has a unique atmosphere that helps practitioners drop stress quickly and return to themselves.',
       },
       {
         id: 'practice-overview',
