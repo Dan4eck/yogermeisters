@@ -30,12 +30,16 @@ export const ciraliRetreat: RetreatSeed = {
       },
     },
     {
-      id: 'cirali-price-countdown',
+      id: 'cirali-price-callout',
       sortOrder: 2,
-      type: 'countdown',
-      deadline: '2026-09-10T23:59:00+03:00',
-      priceCurrent: '€750',
-      priceCompare: '€790',
+      type: 'callout',
+      variant: 'sunrise',
+      text: '🔥 Only 3 spots left at the special price of €720 (standard price: €750).',
+      translations: {
+        ru: {
+          text: '🔥 Осталось всего 3 места по специальной цене €720 (обычная цена — €750).',
+        },
+      },
     },
     {
       id: 'morning-in-cirali',
@@ -347,10 +351,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'not-included-and-price',
       sortOrder: 33,
       type: 'paragraph',
-      text: 'Flights, meals other than breakfasts, bicycle rental, and personal expenses are not included. Retreat price: €750 until September 10, then €790. Deposit to reserve a place: €200.',
+      text: 'Flights, meals other than breakfasts, bicycle rental, and personal expenses are not included. Retreat price: €750. Special promo: €720 for the first participants (3 spots left). Deposit to reserve a place: €200.',
       translations: {
         ru: {
-          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Стоимость ретрита — €750 до 10 сентября, затем €790. Залог для брони места — €200.',
+          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Стоимость ретрита — €750. Спецпредложение: €720 для первых участников (осталось 3 места). Залог для брони места — €200.',
         },
       },
     },

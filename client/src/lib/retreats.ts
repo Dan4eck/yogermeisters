@@ -41,7 +41,7 @@ export const retreats: readonly Retreat[] = [
     location: 'Cirali, Lycian Coast, Turkey',
     startDate: '2026-10-10',
     endDate: '2026-10-16',
-    price: '€790',
+    price: '€750',
     coverImage: beachImg,
     postBlocks: [
       {
@@ -74,7 +74,7 @@ export const retreats: readonly Retreat[] = [
       {
         id: 'pricing',
         type: 'paragraph',
-        text: 'All-inclusive format: accommodation, breakfasts, daily practices, SUP/boats, and transfers. Price: €790. Deposit: €200 (refundable until September 10), installments available.',
+        text: 'All-inclusive format: accommodation, breakfasts, daily practices, SUP/boats, and transfers. Price: €750. Special promo: €720 for the first participants (3 spots left). Deposit: €200, installments available.',
       },
       {
         id: 'teacher-image',
