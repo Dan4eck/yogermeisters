@@ -170,14 +170,14 @@
 
   .panel {
     width: 100%;
-    margin-top: 28px;
+    margin-top: clamp(230px, 52vw, 360px);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin-top: clamp(320px, 66vw, 450px);
+    margin-top: 28px;
   }
 }
 
@@ -190,9 +190,13 @@
     font-size: clamp(40px, 12vw, 58px);
   }
 
+  .panel {
+    padding: 24px;
+  }
+
   .actions {
     display: grid;
     grid-template-columns: 1fr;
-    margin-top: 330px;
+    margin-top: 24px;
   }
 }

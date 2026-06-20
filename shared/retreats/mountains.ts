@@ -10,7 +10,7 @@ export const mountainsRetreat: RetreatSeed = {
   endDate: '2026-03-15',
   price: '5,699 CZK early / 6,399 CZK',
   bookingUrl: 'https://t.me/AnastasiaPagliacci',
-  coverImage: 'mountain-retreat-location.png',
+  coverImage: 'thumb-prague-retreat.png',
   translations: {
     ru: {
       title: 'Йога и Горы',
@@ -33,7 +33,7 @@ export const mountainsRetreat: RetreatSeed = {
       id: 'mountain-image',
       sortOrder: 2,
       type: 'image',
-      image: 'mountain-retreat-location.png',
+      image: 'thumb-prague-retreat.png',
       alt: 'Krkonose mountain landscape near Prague',
       translations: {
         ru: {
@@ -67,7 +67,7 @@ export const mountainsRetreat: RetreatSeed = {
       id: 'studio-image',
       sortOrder: 5,
       type: 'image',
-      image: 'retreat-studio-forest-sunrise.png',
+      image: 'thumb-prague-retreat.png',
       alt: 'Warm indoor practice space for guided yoga sessions',
       translations: {
         ru: {
@@ -79,7 +79,7 @@ export const mountainsRetreat: RetreatSeed = {
       id: 'teacher-image',
       sortOrder: 6,
       type: 'image',
-      image: 'teacher-portrait-nature.png',
+      image: 'thumb-prague-retreat.png',
       alt: 'Teacher supporting participants during retreat practice',
       translations: {
         ru: {

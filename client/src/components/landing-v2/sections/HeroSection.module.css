@@ -453,16 +453,17 @@
     grid-template-areas:
       "mantra"
       "title"
-      "left"
       "right"
+      "left"
       "footer";
-    gap: 28px;
+    gap: 16px;
     aspect-ratio: auto;
     min-height: auto;
-    padding-top: 96px;
+    padding-top: 88px;
+    padding-bottom: 44px;
     background:
-      linear-gradient(180deg, rgba(251, 250, 247, 0.18), rgba(251, 250, 247, 0.88) 62%, #f7f3ed 100%),
-      url("/assets/landing-v2/cutouts/hero2-bg.png") right top 310px / min(780px, 116vw) auto no-repeat,
+      linear-gradient(180deg, rgba(251, 250, 247, 0.1), rgba(251, 250, 247, 0.74) 66%, #f7f3ed 100%),
+      url("/assets/landing-v2/cutouts/hero2-bg.png") center top 280px / min(720px, 128vw) auto no-repeat,
       #f7f3ed;
   }
 
@@ -481,7 +482,7 @@
     inset: auto;
     z-index: 5;
     font-size: 11px;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.2em;
     white-space: normal;
   }
 
@@ -497,7 +498,7 @@
   .title span {
     display: block;
     font-size: clamp(46px, 13.5vw, 104px);
-    line-height: 0.88;
+    line-height: 1.02;
   }
 
   .title span + span {
@@ -524,12 +525,13 @@
     grid-area: left;
     width: auto;
     z-index: 5;
+    margin-top: clamp(320px, 70vw, 450px);
   }
 
   .copy p {
     max-width: 520px;
     margin: 0;
-    padding-top: clamp(270px, 42vw, 360px);
+    padding-top: 0;
     font-size: 15px;
   }
 
@@ -543,52 +545,77 @@
   }
 
   .primaryActions {
+    display: flex;
     flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
   }
 
   .actionsPanel {
     grid-area: right;
-    width: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
     max-width: 560px;
-    padding: 18px;
+    margin-top: 112px;
+    padding: 0;
     gap: 10px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
   }
 
   .action {
-    grid-template-columns: 46px 1fr 20px;
-    min-height: 72px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    min-height: 58px;
+    padding: 10px 12px;
+    border: 1px solid rgba(21, 21, 21, 0.14);
+    border-radius: 999px;
+    background: rgba(255, 254, 252, 0.72);
+    box-shadow: 0 14px 34px rgba(68, 59, 49, 0.09);
   }
 
   .actionIcon {
-    width: 46px;
-    height: 46px;
+    width: 34px;
+    height: 34px;
   }
 
   .actionCopy strong {
-    font-size: 12px;
+    font-size: 10px;
+    line-height: 1.18;
   }
 
   .actionCopy small {
-    max-width: none;
-    font-size: 12px;
+    display: none;
+  }
+
+  .action > svg {
+    display: none;
   }
 
   .footer {
     grid-area: footer;
     display: grid;
-    gap: 20px;
+    gap: 0;
+    margin-top: -2px;
   }
 
   .socials {
     position: relative;
     inset: auto;
   }
+
+  .socials > span {
+    gap: 10px;
+  }
 }
 
 @media (max-width: 560px) {
   .section {
-    gap: 24px;
-    padding-top: 94px;
+    gap: 14px;
+    padding-top: 76px;
+    padding-bottom: 40px;
     background: #f7f3ed;
   }
 
@@ -596,15 +623,16 @@
     content: "";
     position: absolute;
     z-index: 1;
-    top: 214px;
+    top: 360px;
     left: 50%;
-    width: 1036px;
-    height: 583px;
+    width: min(690px, 178vw);
+    height: auto;
+    aspect-ratio: 16 / 9;
     background: url("/assets/landing-v2/cutouts/hero2-bg.png") center / 100% 100% no-repeat;
     filter: contrast(1.12) saturate(1.08);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
-    mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
-    transform: translateX(calc(-50% - 94px));
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    transform: translateX(calc(-50% - 48px));
     pointer-events: none;
   }
 
@@ -614,56 +642,88 @@
   }
 
   .title span {
-    font-size: clamp(40px, 13vw, 58px);
+    font-size: clamp(38px, 12.4vw, 54px);
   }
 
   .title span + span {
-    font-size: clamp(54px, 15vw, 68px);
+    font-size: clamp(50px, 14vw, 62px);
   }
 
   .ru .title span {
-    font-size: clamp(38px, 11.6vw, 54px);
+    font-size: clamp(36px, 10.8vw, 50px);
   }
 
   .ru .title span + span {
-    font-size: clamp(50px, 14.5vw, 66px);
+    font-size: clamp(46px, 13.2vw, 60px);
   }
 
   .ru.section::before {
-    top: 354px;
+    top: 360px;
+  }
+
+  .copy {
+    margin-top: clamp(270px, 76vw, 330px);
   }
 
   .copy p {
-    padding-top: 468px;
+    padding-top: 0;
     font-size: 14px;
+    line-height: 1.62;
   }
 
   .ru .copy p {
-    padding-top: 570px;
+    padding-top: 0;
     font-size: 14px;
   }
 
   .primaryActions {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .primaryButton {
+    width: auto !important;
+    min-width: 0;
+    min-height: 42px;
+    padding: 0 18px;
+    border-radius: 999px;
+    box-shadow: none;
   }
 
   .videoLink {
-    justify-self: start;
+    display: none;
   }
 
   .actionsPanel {
-    padding: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 100px;
   }
 
   .action {
-    grid-template-columns: 42px 1fr 18px;
-    min-height: 68px;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 9px;
+    min-height: 54px;
+    padding: 9px 10px;
   }
 
   .actionIcon {
-    width: 42px;
-    height: 42px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .actionIcon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .actionCopy strong {
+    font-size: 9px;
+  }
+
+  .socials a {
+    width: 40px;
+    height: 40px;
   }
 }

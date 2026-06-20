@@ -151,7 +151,7 @@
 
   .accordion {
     width: 100%;
-    margin-top: clamp(270px, 58vw, 390px);
+    margin-top: clamp(230px, 54vw, 360px);
   }
 
 }
@@ -170,6 +170,9 @@
   .accordion button {
     min-height: 58px;
     padding: 0 18px 0 22px;
+    gap: 14px;
+    text-align: left;
+    line-height: 1.2;
   }
 
 }

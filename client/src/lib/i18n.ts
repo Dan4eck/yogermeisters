@@ -6,6 +6,3 @@ export const languageToggleLabel: Record<Language, string> = {
   en: 'RU',
   ru: 'EN',
 };
-
-export { siteCopy } from './site-copy';
-export { localizeRetreat } from './retreat-localization';

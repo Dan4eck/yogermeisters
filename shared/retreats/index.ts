@@ -33,6 +33,20 @@ export type {
 
 export const retreatSeedData: readonly RetreatSeed[] = [ciraliRetreat, mountainsRetreat, nepalRetreat];
 
+function matchesView(retreat: RetreatRecord, view: RetreatView, today: string): boolean {
+  const isPast = retreat.endDate < today;
+
+  if (view === 'all') {
+    return true;
+  }
+
+  if (view === 'archive') {
+    return retreat.status === 'archived' || isPast;
+  }
+
+  return retreat.status === 'active' && !isPast;
+}
+
 function localizeRetreat(seed: RetreatSeed, language: RetreatLanguage): RetreatRecord {
   const translation = seed.translations?.[language];
 
@@ -71,4 +85,16 @@ function localizeRetreat(seed: RetreatSeed, language: RetreatLanguage): RetreatR
 
 export function mapSeedRetreats(language: RetreatLanguage): RetreatRecord[] {
   return retreatSeedData.map((retreat) => localizeRetreat(retreat, language));
+}
+
+export function listRetreats(view: RetreatView, language: RetreatLanguage, today = new Date().toISOString().slice(0, 10)): RetreatListResponse {
+  return {
+    view,
+    language,
+    retreats: mapSeedRetreats(language).filter((retreat) => matchesView(retreat, view, today)),
+  };
+}
+
+export function getRetreatBySlug(slug: string, language: RetreatLanguage): RetreatRecord | null {
+  return mapSeedRetreats(language).find((retreat) => retreat.slug === slug) ?? null;
 }

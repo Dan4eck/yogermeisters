@@ -371,6 +371,8 @@
 
   .cards {
     grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
     height: auto;
     min-height: auto;
     margin-top: 34px;
@@ -383,6 +385,23 @@
 
   .sideCards {
     grid-template-rows: none;
+    min-width: 0;
+  }
+
+  .sideCards > div,
+  .card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .cards > a,
+  .sideCards a,
+  .sideCards button {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 }
 
@@ -401,6 +420,7 @@
   }
 
   .card {
+    width: 100%;
     min-height: 360px;
     padding: 24px;
     border-radius: 14px;
@@ -413,7 +433,27 @@
 
   .card h3,
   .sideCard h3 {
-    font-size: clamp(32px, 10vw, 42px);
+    font-size: clamp(28px, 8.5vw, 36px);
+    line-height: 1;
+    overflow-wrap: anywhere;
   }
 
+  .card p,
+  .sideCard p {
+    font-size: 14px;
+    line-height: 1.42;
+  }
+
+  .photoPlaceholder {
+    height: 54%;
+  }
+
+  .photoPlaceholder::before {
+    opacity: 0.48;
+  }
+
+  .photoPlaceholder::after {
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255, 254, 252, 0.22), rgba(255, 254, 252, 0.96));
+  }
 }

@@ -4,10 +4,9 @@ import { Link } from 'wouter';
 
 import { formatRetreatDateLabel } from '@/lib/retreat-date';
 import { getRetreatImageUrl } from '@/lib/retreat-assets';
-import { siteCopy, type Language } from '@/lib/i18n';
-import { useRetreats } from '@/lib/retreat-queries';
+import type { Language } from '@/lib/i18n';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import type { RetreatRecord } from '@shared/retreat-content';
+import { listRetreats, type RetreatRecord } from '@shared/retreat-content';
 import { landingCopy } from '../content';
 import { ButtonLink, TitleOrnament } from '../ui';
 import styles from './RetreatsSection.module.css';
@@ -105,17 +104,16 @@ function isRetreatAvailable(retreat: RetreatRecord | undefined, today: string): 
 
 export default function RetreatsSection({ language }: RetreatsSectionProps) {
   const [unavailableRetreat, setUnavailableRetreat] = useState<RetreatCardView | null>(null);
-  const copy = siteCopy[language].tours;
   const sectionCopy = landingCopy[language].retreats;
-  const { data, isLoading, isError } = useRetreats('all', language);
-  const retreats = data?.retreats ?? [];
+  const data = listRetreats('all', language);
+  const retreats = data.retreats;
   const today = new Date().toISOString().slice(0, 10);
   const retreatBySlug = new Map(retreats.map((retreat) => [retreat.slug, retreat]));
   const cards: readonly RetreatCardView[] = retreatSlots.map(({ slug, tone, fallback }, index) => {
     const retreat = retreatBySlug.get(slug);
     const fallbackCopy = fallback[language];
     const dateLabel = retreat
-      ? formatRetreatDateLabel(retreat.startDate, retreat.endDate, retreat.dateLabel, copy.dateLocale, language)
+      ? formatRetreatDateLabel(retreat.startDate, retreat.endDate, retreat.dateLabel, sectionCopy.dateLocale, language)
       : null;
 
     return {
@@ -174,27 +172,15 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
     <section className={`section ${styles.section}${language === 'ru' ? ` ${styles.ru}` : ''}`} id='retreats'>
       <div className={styles.copy}>
         {language === 'ru' ? null : <span className={styles.mantra}>{sectionCopy.mantra}</span>}
-        <h2>{copy.title}</h2>
+        <h2>{sectionCopy.title}</h2>
         <TitleOrnament className={styles.ornament} />
-        <p>{copy.description}</p>
+        <p>{sectionCopy.description}</p>
         <ButtonLink className={styles.button} href='#contact'>
-          {copy.bookRetreat}
+          {sectionCopy.bookRetreat}
         </ButtonLink>
       </div>
 
-      {isLoading ? (
-        <div className={`${styles.cards} ${styles.stateCard}`} aria-live='polite'>
-          {sectionCopy.loading}
-        </div>
-      ) : null}
-
-      {isError ? (
-        <div className={`${styles.cards} ${styles.stateCard}`} role='alert'>
-          {sectionCopy.error}
-        </div>
-      ) : null}
-
-      {!isLoading && !isError && featured ? (
+      {featured ? (
         <div className={styles.cards} aria-label={sectionCopy.destinationsLabel}>
           {renderCard(featured, `${styles.card} ${styles.featured} ${toneClass[featured.tone]}`)}
 
@@ -208,7 +194,7 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
         </div>
       ) : null}
 
-      {!isLoading && !isError && !featured ? (
+      {!featured ? (
         <div className={`${styles.cards} ${styles.stateCard}`}>
           {sectionCopy.empty}
         </div>

@@ -5,9 +5,9 @@
 Коротко:
 
 - данные каждого ретрита живут в `shared/retreats/*.ts`
-- страница ретрита собирается из блоков `paragraph`, `heading`, `image`, `callout`
+- страница ретрита собирается из блоков `paragraph`, `heading`, `image`, `callout`, `countdown`
 - у `callout` есть варианты `soft`, `cta`, `outline`, `sunrise`, `lagoon`
-- после изменения контента ретрит нужно синхронизировать в базу через `npx tsx script/sync-retreat.ts <slug>`
+- после изменения контента достаточно пройти `npm run check` и `npm run build`
 - картинки подключаются по имени файла из `attached_assets/`
 
 Для полной инструкции открой [docs/retreats.md](/Users/daniel/myai/coding/Yogermeisters/docs/retreats.md).

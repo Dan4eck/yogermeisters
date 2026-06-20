@@ -13,9 +13,6 @@ This document contains essential information for agentic coding assistants worki
 ### Type Checking
 - `npm run check` - Run TypeScript compiler check (no emit)
 
-### Database
-- `npm run db:push` - Push Drizzle schema changes to database
-
 ### Testing
 No test framework is currently configured. When adding tests, use a common framework like Vitest and update this file.
 
@@ -26,7 +23,7 @@ No test framework is currently configured. When adding tests, use a common frame
 - Always annotate function parameters and return types explicitly
 - Use `type` for type aliases, `interface` for object shapes that may be extended
 - Prefer readonly properties when immutability is important
-- Use the `type` keyword for type-only imports: `import type { User } from "@shared/schema"`
+- Use the `type` keyword for type-only imports: `import type { RetreatRecord } from "@shared/retreat-content"`
 
 ### Import Conventions
 - Client imports: `@/` maps to `./client/src/`
@@ -45,15 +42,14 @@ No test framework is currently configured. When adding tests, use a common frame
 - Destructure props directly: `function MyComponent({ prop1, prop2 }: Props)`
 
 ### Styling
-- Use Tailwind CSS utility classes
-- For dynamic class merging, use the `cn()` utility from `@/lib/utils`
-- shadcn/ui components are located in `@/components/ui/`
-- Follow shadcn/ui patterns when creating new components
-- Use `cva` (class-variance-authority) for component variants
+- The active landing experience is V2 under `client/src/components/landing-v2/`
+- Use CSS modules for V2 sections and route-level V2 pages
+- Keep shared V2 tokens scoped under `.landing-v2-root` in `client/src/index.css`
+- `@/components/ui/` is intentionally minimal; only add shadcn/ui components when they are actually used
+- For dynamic class merging, use the `cn()` utility from `@/lib/utils` only where class composition is needed
 
 ### Error Handling
-- Server routes: Use try-catch blocks, return appropriate HTTP status codes
-- Client: Use React Query's error handling for API calls
+- Server: Express is currently only a minimal static server plus `/healthz`
 - Always provide user-friendly error messages
 - Log errors on the server with the `log()` utility from `server/index.ts`
 
@@ -66,61 +62,37 @@ No test framework is currently configured. When adding tests, use a common frame
 - Files: kebab-case for utilities, PascalCase for components
 
 ### Server-Side Patterns
-- Use Express.js with TypeScript
-- API routes should be prefixed with `/api`
-- Use Drizzle ORM for database operations
-- Use Zod schemas for request validation (defined in shared/schema.ts)
-- Use the `storage` module for database operations (implements IStorage interface)
-- Routes should be registered in `server/routes.ts`
-- Log errors using the `log()` utility from `server/index.ts`
-- Use async/await for all asynchronous operations
+- Use Express.js with TypeScript only for Railway static deployment and health checks
+- Do not add API routes or database access unless the product explicitly needs server-side behavior
 - Default server port: 3001 (or PORT environment variable)
 
 ### Client-Side Patterns
 - Use Wouter for routing (Switch/Route components)
-- Use TanStack Query (React Query) for server state with `apiRequest()` and `getQueryFn()` utilities
-- Use Framer Motion for animations (motion.div, motion.button, etc.)
 - Use Lucide React for icons
 - State management: React hooks (useState, useReducer, useContext)
-- Form handling: react-hook-form with Zod validation
-- Use `use-mobile.tsx` hook for responsive breakpoints
-- API calls include `credentials: "include"` for session support
+- Retreat data is imported from `@shared/retreat-content`, not fetched from an API
 
 ### File Organization
 ```
 client/src/
   components/     - Reusable UI components
-  components/ui/ - shadcn/ui components
+  components/landing-v2/ - Active V2 landing components, content, and CSS modules
+  components/ui/ - Minimal shared UI primitives that are actively imported
   hooks/          - Custom React hooks
   lib/            - Utilities and helpers
   pages/          - Route components
 server/
-  routes.ts       - API route definitions
-  storage.ts      - Database operations
-  index.ts        - Express server setup
+  index.ts        - Minimal Express server setup
+  static.ts       - Production static SPA serving
+  vite.ts         - Development Vite middleware
 shared/
-  schema.ts       - Drizzle schemas and Zod validators
+  retreats/       - Retreat content, translations, filtering, and types
 ```
 
-### Database Migrations
-- Schema changes require updating `shared/schema.ts`
-- Run `npm run db:push` to apply schema changes to database
-- Drizzle migrations are generated in `./migrations/` directory
-- Use Zod schemas for validation: `createInsertSchema()` from drizzle-zod
-
 ### Adding UI Components
-- Follow shadcn/ui component patterns from `@/components/ui/`
-- Use the `cn()` utility for dynamic class merging
-- Components support variants using `cva` (class-variance-authority)
-- Export components as named exports, with default export for the main component
-- shadcn/ui uses the "new-york" style variant
-
-### API Patterns
-- All API routes prefixed with `/api`
-- Use `apiRequest()` for mutations (POST/PUT/DELETE)
-- Use `getQueryFn()` with React Query for data fetching
-- All fetch calls include `credentials: "include"` for session cookies
-- Error handling: throw descriptive errors with HTTP status codes
+- Prefer local CSS modules for V2 page/section components
+- Add shared UI primitives only when at least two call sites need them
+- Export components as named exports for primitives, with default export for main page/section components
 
 ### Formatting Conventions
 - Use semicolons at the end of statements
@@ -131,21 +103,16 @@ shared/
 - No trailing whitespace
 
 ### Environment Variables
-- `DATABASE_URL` - PostgreSQL connection string (required for production)
 - `PORT` - Server port (defaults to 3001)
 - `NODE_ENV` - Environment mode (development/production)
 
 ### Security Considerations
 - Never commit secrets or keys to the repository
-- Validate all user inputs with Zod schemas
-- Use parameterized queries via Drizzle ORM (no SQL injection risk)
-- Sanitize error messages before sending to clients
-- Session cookies use credentials: "include" for authentication
+- Do not commit `.env`
+- Add server-side validation if API routes are introduced later
 
 ### Important Notes
 - The server and client run on the same port in development
 - Always run `npm run check` before committing to ensure type safety
 - No comments in code unless explicitly requested
 - The project uses ESM modules (type: "module" in package.json)
-- Database: PostgreSQL with Drizzle ORM
-- Sessions: Express sessions with memory store (development)

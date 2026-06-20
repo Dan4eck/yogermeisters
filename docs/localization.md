@@ -1,25 +1,40 @@
-# Локализация (текущее состояние)
+# Локализация
 
-Сайт поддерживает 2 языка: `en` и `ru`.
+Сайт поддерживает два языка: `en` и `ru`.
 
 ## Где хранится язык
 
 - Текущий язык хранится в `localStorage` по ключу `language`.
-- Инициализация и переключение происходят в `/Users/daniel/Coding/Yogermeisters/client/src/pages/Home.tsx`.
-- Язык передается в секции через проп `language`.
+- Инициализация и сохранение языка находятся в `client/src/hooks/use-language.ts`.
+- Переключатель языка находится в `client/src/components/landing-v2/Header.tsx`.
+- Язык передается в страницы и секции через проп `language`.
 
-## Где менять тексты
+## Где менять тексты лендинга V2
 
-- Основные тексты интерфейса:
-  - `/Users/daniel/Coding/Yogermeisters/client/src/lib/i18n.ts`
-  - Блоки: `siteCopy.en` и `siteCopy.ru`
+Основные тексты главной страницы, навигации, секций, карточек и страницы деталей ретрита находятся в:
 
-- Тексты ретритов:
-  - Базовые данные (EN): `/Users/daniel/Coding/Yogermeisters/client/src/lib/retreats.ts`
-  - Русские переводы ретритов: `/Users/daniel/Coding/Yogermeisters/client/src/lib/i18n.ts` в `retreatTranslationById.ru`
-  - Применение перевода: функция `localizeRetreat(...)` в `/Users/daniel/Coding/Yogermeisters/client/src/lib/i18n.ts`
+`client/src/components/landing-v2/content.ts`
 
-## Где кнопка переключения языка
+Файл содержит единый объект:
 
-- Переключатель `EN/RU` находится в:
-  - `/Users/daniel/Coding/Yogermeisters/client/src/components/Navbar.tsx`
+```ts
+landingCopy.en
+landingCopy.ru
+```
+
+Чтобы поменять текст в обеих версиях, меняйте одно и то же поле в блоках `en` и `ru`.
+
+## Где менять тексты ретритов
+
+Длинный контент ретритов и переводы хранятся в seed-файлах:
+
+- `shared/retreats/cirali.ts`
+- `shared/retreats/nepal.ts`
+- `shared/retreats/mountains.ts`
+
+Общая модель и локализация seed-данных находятся в:
+
+- `shared/retreats/types.ts`
+- `shared/retreats/index.ts`
+
+Клиент импортирует ретриты напрямую из `@shared/retreat-content`; отдельного API и базы для ретритов больше нет.

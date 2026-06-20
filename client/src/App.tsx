@@ -1,8 +1,6 @@
 import { Route, Switch } from 'wouter';
 
 import { useLanguage } from '@/hooks/use-language';
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import RetreatPage from '@/pages/RetreatPage';
@@ -25,10 +23,7 @@ function Router() {
 
 function App() {
   return (
-    <TooltipProvider>
-      <Toaster />
-      <Router />
-    </TooltipProvider>
+    <Router />
   );
 }
 

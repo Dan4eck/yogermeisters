@@ -1,4 +1,6 @@
 export {
+  getRetreatBySlug,
+  listRetreats,
   mapSeedRetreats,
   retreatSeedData,
   type RetreatBlockSeed,

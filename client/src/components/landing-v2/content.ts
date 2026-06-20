@@ -33,9 +33,18 @@ type LandingCopy = {
   };
   readonly retreats: {
     readonly mantra: string;
+    readonly title: string;
+    readonly description: string;
+    readonly bookRetreat: string;
+    readonly backToRetreats: string;
+    readonly dateLocale: string;
     readonly featuredEyebrow: string;
     readonly loading: string;
     readonly error: string;
+    readonly detailLoading: string;
+    readonly detailError: string;
+    readonly detailCtaTitle: string;
+    readonly detailCtaDescription: string;
     readonly destinationsLabel: string;
     readonly empty: string;
     readonly unavailableTitle: string;
@@ -127,9 +136,20 @@ export const landingCopy = {
     },
     retreats: {
       mantra: 'Travel • Practice • Restore',
+      title: 'Upcoming Retreats',
+      description:
+        'Retreats where route and practice work together: sea, mountains, silence, and a daily return to yourself.',
+      bookRetreat: 'Sign Up',
+      backToRetreats: 'Back to retreats',
+      dateLocale: 'en-US',
       featuredEyebrow: 'Featured',
       loading: 'Loading retreats...',
       error: 'Unable to load retreats right now.',
+      detailLoading: 'Loading retreat...',
+      detailError: 'Unable to load this retreat right now.',
+      detailCtaTitle: 'Ready to join this retreat?',
+      detailCtaDescription:
+        'Write to me in Telegram and I will send current details, available places, and explain how to reserve your spot.',
       destinationsLabel: 'Retreat destinations',
       empty: 'Upcoming retreats will be announced soon.',
       unavailableTitle: 'Retreat unavailable',
@@ -266,9 +286,20 @@ export const landingCopy = {
     },
     retreats: {
       mantra: 'Путешествие • Практика • Восстановление',
+      title: 'Ближайшие ретриты',
+      description:
+        'Ретриты, где сочетаются познание внешнего и внутреннего: море, горы, тишина и ежедневное возвращение к себе.',
+      bookRetreat: 'Записаться',
+      backToRetreats: 'К ретритам',
+      dateLocale: 'ru-RU',
       featuredEyebrow: 'Главный',
       loading: 'Загружаем ретриты...',
       error: 'Сейчас не получается загрузить ретриты.',
+      detailLoading: 'Загружаем ретрит...',
+      detailError: 'Сейчас не получается загрузить этот ретрит.',
+      detailCtaTitle: 'Готовы присоединиться к ретриту?',
+      detailCtaDescription:
+        'Напишите мне в Telegram, и я отправлю актуальные детали, наличие мест и расскажу, как сделать бронирование.',
       destinationsLabel: 'Направления ретритов',
       empty: 'Ближайшие ретриты скоро появятся.',
       unavailableTitle: 'Запись недоступна',
