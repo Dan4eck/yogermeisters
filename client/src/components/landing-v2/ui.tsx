@@ -10,10 +10,6 @@ type ButtonLinkProps = {
   icon?: LucideIcon | null;
 };
 
-type ChildrenProps = {
-  children: ReactNode;
-};
-
 type OrnamentProps = {
   className: string;
 };
@@ -29,10 +25,6 @@ export function ButtonLink({ children, className = "", href, icon: Icon = ArrowR
       {Icon ? <Icon aria-hidden="true" /> : null}
     </a>
   );
-}
-
-export function SectionKicker({ children }: ChildrenProps) {
-  return <span className="section-kicker">{children}</span>;
 }
 
 export function TitleOrnament({ className }: OrnamentProps) {

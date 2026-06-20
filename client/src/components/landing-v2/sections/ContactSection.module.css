@@ -19,7 +19,7 @@
   position: static;
   inset: auto;
   max-width: none;
-  margin-top: 24px;
+  margin-top: 0;
   font-size: clamp(76px, 7vw, 128px);
   line-height: 0.92;
 }
@@ -156,7 +156,7 @@
   }
 
   .copy h2 {
-    margin-top: 24px;
+    margin-top: 0;
     font-size: clamp(46px, 12.5vw, 76px);
     line-height: 0.94;
   }

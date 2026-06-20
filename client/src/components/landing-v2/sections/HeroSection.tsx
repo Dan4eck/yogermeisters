@@ -22,7 +22,6 @@ export default function HeroSection({ language }: HeroSectionProps) {
 
   return (
     <section className={`section ${styles.section}${language === 'ru' ? ` ${styles.ru}` : ''}`} id='hero'>
-      <span className={styles.mantra}>{copy.mantra}</span>
       <h1 className={styles.title}>
         <span>{titleTop}</span>
         <span>{titleBottom}</span>

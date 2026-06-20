@@ -1,6 +1,5 @@
 import type { Language } from '@/lib/i18n';
 import { landingCopy } from '../content';
-import { SectionKicker } from '../ui';
 import styles from './PracticeVideoSection.module.css';
 
 interface PracticeVideoSectionProps {
@@ -13,7 +12,6 @@ export default function PracticeVideoSection({ language }: PracticeVideoSectionP
   return (
     <section className={`section ${styles.section}`} id='practice'>
       <div className={styles.copy}>
-        <SectionKicker>{copy.kicker}</SectionKicker>
         <h2>{copy.title}</h2>
         <p>{copy.description}</p>
       </div>

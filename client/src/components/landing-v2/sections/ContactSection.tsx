@@ -2,7 +2,7 @@ import { Mail, MoveDown } from 'lucide-react';
 
 import type { Language } from '@/lib/i18n';
 import { contactEmail, landingCopy } from '../content';
-import { ButtonLink, SectionKicker } from '../ui';
+import { ButtonLink } from '../ui';
 import styles from './ContactSection.module.css';
 
 interface ContactSectionProps {
@@ -15,7 +15,6 @@ export default function ContactSection({ language }: ContactSectionProps) {
   return (
     <section className={`section ${styles.section}`} id='contact'>
       <div className={styles.copy}>
-        <SectionKicker>{copy.kicker}</SectionKicker>
         <h2>{copy.title}</h2>
         <p>{copy.description}</p>
       </div>

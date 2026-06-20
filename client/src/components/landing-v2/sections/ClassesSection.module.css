@@ -8,17 +8,10 @@
     #f7f1ec;
 }
 
-.kicker {
-  position: absolute;
-  z-index: 5;
-  top: clamp(82px, 6.8vw, 108px);
-  left: clamp(58px, 6.1vw, 96px);
-}
-
 .title {
   position: absolute;
   z-index: 5;
-  top: clamp(122px, 10.2vw, 164px);
+  top: clamp(82px, 6.8vw, 108px);
   left: clamp(58px, 6.1vw, 96px);
   font-size: clamp(92px, 7.7vw, 144px);
   line-height: 0.9;
@@ -27,7 +20,7 @@
 .ornament {
   position: absolute;
   z-index: 5;
-  top: clamp(290px, 24.2vw, 382px);
+  top: clamp(250px, 20.8vw, 342px);
   left: clamp(82px, 8vw, 130px);
   display: grid;
   grid-template-columns: 118px 30px 118px;
@@ -236,7 +229,6 @@
     display: none;
   }
 
-  .kicker,
   .title,
   .card {
     position: relative;

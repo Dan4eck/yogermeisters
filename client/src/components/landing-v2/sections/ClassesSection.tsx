@@ -1,6 +1,6 @@
 import type { Language } from '@/lib/i18n';
 import { landingCopy } from '../content';
-import { SectionKicker, TitleOrnament } from '../ui';
+import { TitleOrnament } from '../ui';
 import styles from './ClassesSection.module.css';
 
 const cardPlacementClass = {
@@ -22,9 +22,6 @@ export default function ClassesSection({ language }: ClassesSectionProps) {
 
   return (
     <section className={`section ${styles.section}`} id='classes'>
-      <div className={styles.kicker}>
-        <SectionKicker>{copy.kicker}</SectionKicker>
-      </div>
       <h2 className={styles.title}>{copy.title}</h2>
       <TitleOrnament className={styles.ornament} />
       {copy.cards.map(({ placement, label, title, price, description, cta }) => (

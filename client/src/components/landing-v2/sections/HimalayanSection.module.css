@@ -17,7 +17,7 @@
 }
 
 .himalayan-copy h2 {
-  margin: 24px 0 0;
+  margin: 0;
   font-size: clamp(66px, 5.25vw, 108px);
   line-height: 0.88;
 }
@@ -134,7 +134,7 @@
   }
 
   .himalayan-copy h2 {
-    margin: 22px 0 0;
+    margin: 0;
     font-size: clamp(48px, 13vw, 78px);
     line-height: 0.94;
   }

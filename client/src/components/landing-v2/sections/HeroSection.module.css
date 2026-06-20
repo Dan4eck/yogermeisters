@@ -45,23 +45,6 @@
   font-size: clamp(86px, 7vw, 128px);
 }
 
-.mantra {
-  position: absolute;
-  z-index: 4;
-  top: clamp(82px, 6.9vw, 104px);
-  left: clamp(58px, 6.1vw, 96px);
-  color: #ad825e;
-  text-transform: uppercase;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.42em;
-  white-space: nowrap;
-}
-
-.ru .mantra {
-  top: clamp(98px, 8.1vw, 120px);
-}
-
 .ornament {
   position: absolute;
   z-index: 4;
@@ -338,12 +321,6 @@
     aspect-ratio: 16 / 9;
   }
 
-  .mantra {
-    top: 8.4vw;
-    font-size: 11px;
-    letter-spacing: 0.34em;
-  }
-
   .title {
     top: 12vw;
     width: 52vw;
@@ -451,7 +428,6 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "mantra"
       "title"
       "right"
       "left"
@@ -474,10 +450,6 @@
     position: relative;
     inset: auto;
     transform: none;
-  }
-
-  .mantra {
-    display: none;
   }
 
   .title {
@@ -644,11 +616,6 @@
     mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
     transform: translateX(calc(-50% - 48px));
     pointer-events: none;
-  }
-
-  .mantra {
-    font-size: 9px;
-    letter-spacing: 0.18em;
   }
 
   .title span {

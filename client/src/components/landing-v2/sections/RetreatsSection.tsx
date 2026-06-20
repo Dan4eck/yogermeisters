@@ -1,4 +1,3 @@
-import { Sparkle } from 'lucide-react';
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import { Link } from 'wouter';
 
@@ -23,7 +22,6 @@ interface RetreatCardView {
   readonly id: number;
   readonly title: string;
   readonly slug: RetreatSlug;
-  readonly eyebrow?: string;
   readonly text: string;
   readonly tone: RetreatTone;
   readonly image: string;
@@ -126,7 +124,6 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
       id: retreat?.id ?? -(index + 1),
       title: cardTitleOverrides[slug]?.[language] ?? retreat?.title ?? fallbackCopy.title,
       slug,
-      eyebrow: index === 0 ? sectionCopy.featuredEyebrow : undefined,
       text: retreat && dateLabel ? `${dateLabel} • ${retreat.location} • ${retreat.price}` : fallbackCopy.text,
       tone,
       image: (retreat ? getRetreatImageUrl(retreat.coverImage) : '') || fallbackImageBySlug[slug],
@@ -138,12 +135,6 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
   const renderCardContent = (card: RetreatCardView): ReactNode => (
     <>
       <div className={styles.cardCopy}>
-        {card.eyebrow ? (
-          <span className={styles.featuredLabel}>
-            <Sparkle aria-hidden='true' />
-            {card.eyebrow}
-          </span>
-        ) : null}
         <h3>{card.title}</h3>
         <span className={styles.titleRule}></span>
         <p>{card.text}</p>
@@ -177,7 +168,6 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
   return (
     <section className={`section ${styles.section}${language === 'ru' ? ` ${styles.ru}` : ''}`} id='retreats'>
       <div className={styles.copy}>
-        {language === 'ru' ? null : <span className={styles.mantra}>{sectionCopy.mantra}</span>}
         <h2>{sectionCopy.title}</h2>
         <TitleOrnament className={styles.ornament} />
         <p>{sectionCopy.description}</p>

@@ -21,7 +21,6 @@ type LandingCopy = {
     readonly closeMenuLabel: string;
   };
   readonly hero: {
-    readonly mantra: string;
     readonly titleLines: readonly [string, string];
     readonly description: string;
     readonly primaryCta: string;
@@ -32,13 +31,11 @@ type LandingCopy = {
     readonly socials: readonly SocialLink[];
   };
   readonly retreats: {
-    readonly mantra: string;
     readonly title: string;
     readonly description: string;
     readonly bookRetreat: string;
     readonly backToRetreats: string;
     readonly dateLocale: string;
-    readonly featuredEyebrow: string;
     readonly loading: string;
     readonly error: string;
     readonly detailLoading: string;
@@ -51,17 +48,14 @@ type LandingCopy = {
     readonly unavailableDescription: string;
   };
   readonly classes: {
-    readonly kicker: string;
     readonly title: string;
     readonly cards: readonly ClassCard[];
   };
   readonly himalayan: {
-    readonly kicker: string;
     readonly titleLines: readonly [string, string];
     readonly details: readonly [PracticeDetail, PracticeDetail];
   };
   readonly practice: {
-    readonly kicker: string;
     readonly title: string;
     readonly description: string;
     readonly frameLabel: string;
@@ -70,7 +64,6 @@ type LandingCopy = {
     readonly video: PracticeVideo;
   };
   readonly contact: {
-    readonly kicker: string;
     readonly title: string;
     readonly description: string;
     readonly panelTitle: string;
@@ -104,7 +97,6 @@ export const landingCopy = {
       closeMenuLabel: 'Close menu',
     },
     hero: {
-      mantra: 'Breathe • Move • Transform',
       titleLines: ['Himalayan', 'Yoga'],
       description:
         'Nastya shares Himalayan yoga through breath, attention and precise movement. Her practice helps the body grow stronger while the mind becomes quieter.',
@@ -135,14 +127,12 @@ export const landingCopy = {
       ],
     },
     retreats: {
-      mantra: 'Travel • Practice • Restore',
       title: 'Upcoming Retreats',
       description:
         'Retreats where route and practice work together: sea, mountains, silence, and a daily return to yourself.',
       bookRetreat: 'Sign Up',
       backToRetreats: 'Back to retreats',
       dateLocale: 'en-US',
-      featuredEyebrow: 'Featured',
       loading: 'Loading retreats...',
       error: 'Unable to load retreats right now.',
       detailLoading: 'Loading retreat...',
@@ -156,7 +146,6 @@ export const landingCopy = {
       unavailableDescription: 'Booking is not available for this retreat right now.',
     },
     classes: {
-      kicker: '02 — Classes',
       title: 'Classes',
       cards: [
         {
@@ -179,7 +168,6 @@ export const landingCopy = {
       ],
     },
     himalayan: {
-      kicker: '03 — Himalayan Yoga',
       titleLines: ['What is', 'Himalayan Yoga?'],
       details: [
         {
@@ -195,7 +183,6 @@ export const landingCopy = {
       ],
     },
     practice: {
-      kicker: '04 — Practice with me',
       title: 'How practice with me works',
       description:
         'Each session is a complete practice. We begin with a warm-up and breathwork to either calm or activate the nervous system, then move through every direction of mobility. Depending on the focus, the practice may deepen strength, flexibility, backbends, splits, or a specific part of the body.',
@@ -224,7 +211,6 @@ export const landingCopy = {
       },
     },
     contact: {
-      kicker: '05 — Contact',
       title: 'Begin with breath',
       description: 'Write to Nastya to book a class, ask about retreats, or find the practice rhythm that fits your body.',
       panelTitle: 'Practice inquiry',
@@ -254,7 +240,6 @@ export const landingCopy = {
       closeMenuLabel: 'Закрыть меню',
     },
     hero: {
-      mantra: 'Дыхание • Движение • Трансформация',
       titleLines: ['Гималайская', 'йога'],
       description:
         'Настя делится гималайской йогой через дыхание, внимание и точное движение. Практика помогает телу становиться сильнее, а уму — тише.',
@@ -285,14 +270,12 @@ export const landingCopy = {
       ],
     },
     retreats: {
-      mantra: 'Путешествие • Практика • Восстановление',
       title: 'Ближайшие ретриты',
       description:
         'Ретриты, где сочетаются познание внешнего и внутреннего: море, горы, тишина и ежедневное возвращение к себе.',
       bookRetreat: 'Записаться',
       backToRetreats: 'К ретритам',
       dateLocale: 'ru-RU',
-      featuredEyebrow: 'Главный',
       loading: 'Загружаем ретриты...',
       error: 'Сейчас не получается загрузить ретриты.',
       detailLoading: 'Загружаем ретрит...',
@@ -306,7 +289,6 @@ export const landingCopy = {
       unavailableDescription: 'На данный ретрит записаться сейчас нельзя.',
     },
     classes: {
-      kicker: '02 — Занятия',
       title: 'Занятия',
       cards: [
         {
@@ -329,7 +311,6 @@ export const landingCopy = {
       ],
     },
     himalayan: {
-      kicker: '03 — Гималайская йога',
       titleLines: ['Что такое', 'гималайская йога?'],
       details: [
         {
@@ -345,7 +326,6 @@ export const landingCopy = {
       ],
     },
     practice: {
-      kicker: '04 — Практика со мной',
       title: 'Как устроена практика со мной',
       description:
         'Каждая встреча — это полноценная практика. Мы начинаем с разминки и дыхания, чтобы успокоить или активировать нервную систему, затем проходим разные направления подвижности. В зависимости от фокуса практика может углублять силу, гибкость, прогибы, шпагаты или работу с конкретной частью тела.',
@@ -374,7 +354,6 @@ export const landingCopy = {
       },
     },
     contact: {
-      kicker: '05 — Контакты',
       title: 'Начните с дыхания',
       description: 'Напишите Насте, чтобы записаться на занятие, спросить о ретритах или найти ритм практики под ваше тело.',
       panelTitle: 'Запрос о практике',

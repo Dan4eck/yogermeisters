@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import type { Language } from '@/lib/i18n';
 import { landingCopy } from '../content';
-import { SectionKicker, TitleOrnament } from '../ui';
+import { TitleOrnament } from '../ui';
 import styles from './HimalayanSection.module.css';
 
 interface HimalayanSectionProps {
@@ -19,7 +19,6 @@ export default function HimalayanSection({ language }: HimalayanSectionProps) {
   return (
     <section className={`section ${styles['himalayan-section']}`} id='online'>
       <div className={styles['himalayan-copy']}>
-        <SectionKicker>{copy.kicker}</SectionKicker>
         <h2>
           {titleTop}
           <br />

@@ -190,14 +190,6 @@
   text-transform: uppercase;
 }
 
-.landing-v2-root .section-kicker {
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
 .landing-v2-root .extracted-photo {
   user-select: none;
   pointer-events: none;
