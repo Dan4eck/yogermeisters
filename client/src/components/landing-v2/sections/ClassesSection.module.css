@@ -1,0 +1,282 @@
+.section {
+  aspect-ratio: 16 / 9;
+  min-height: auto;
+  padding: 0;
+  background:
+    linear-gradient(90deg, rgba(247, 241, 236, 0.14), rgba(247, 241, 236, 0.02) 44%, rgba(247, 241, 236, 0.24)),
+    url("/assets/landing-v2/cutouts/classes-3-bg.png") center top / 100% 100% no-repeat,
+    #f7f1ec;
+}
+
+.kicker {
+  position: absolute;
+  z-index: 5;
+  top: clamp(82px, 6.8vw, 108px);
+  left: clamp(58px, 6.1vw, 96px);
+}
+
+.title {
+  position: absolute;
+  z-index: 5;
+  top: clamp(122px, 10.2vw, 164px);
+  left: clamp(58px, 6.1vw, 96px);
+  font-size: clamp(92px, 7.7vw, 144px);
+  line-height: 0.9;
+}
+
+.ornament {
+  position: absolute;
+  z-index: 5;
+  top: clamp(290px, 24.2vw, 382px);
+  left: clamp(82px, 8vw, 130px);
+  display: grid;
+  grid-template-columns: 118px 30px 118px;
+  align-items: center;
+  gap: 18px;
+  color: #bd9a78;
+  opacity: 0.86;
+}
+
+.ornament span {
+  height: 1px;
+  background: currentColor;
+}
+
+.ornament svg {
+  width: 30px;
+  height: 30px;
+  stroke-width: 1.45;
+}
+
+.card {
+  position: absolute;
+  z-index: 6;
+  top: auto;
+  bottom: clamp(44px, 4.8vw, 76px);
+  display: grid;
+  align-content: space-between;
+  width: clamp(318px, 23.8vw, 360px);
+  height: clamp(318px, 24.4vw, 360px);
+  min-width: 0;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255, 254, 252, 0.9), rgba(255, 254, 252, 0.64)),
+    var(--panel);
+  box-shadow: 0 28px 84px rgba(68, 59, 49, 0.12);
+  backdrop-filter: blur(18px);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(21, 21, 21, 0.07);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 82px rgba(68, 59, 49, 0.15);
+}
+
+.cardLeft {
+  left: clamp(58px, 6.1vw, 96px);
+}
+
+.cardRight {
+  left: calc(clamp(58px, 6.1vw, 96px) + clamp(318px, 23.8vw, 360px) + 24px);
+  right: auto;
+}
+
+.cardCopy {
+  position: relative;
+  z-index: 3;
+}
+
+.cardLabel {
+  display: block;
+  color: #ad825e;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.card h3 {
+  max-width: 260px;
+  margin: 20px 0 0;
+  font-family: var(--serif);
+  font-size: clamp(32px, 2.55vw, 42px);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+.titleRule {
+  display: block;
+  width: 58px;
+  height: 1px;
+  margin: 18px 0 0;
+  background: #ad825e;
+}
+
+.card p {
+  margin: 20px 0 0;
+  color: #1f1f1f;
+  font-family: var(--serif);
+  font-size: clamp(36px, 3vw, 48px);
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.card small {
+  display: block;
+  max-width: 272px;
+  margin-top: 16px;
+  color: var(--soft-ink);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.55;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.card:focus-visible {
+  outline: 2px solid rgba(173, 130, 94, 0.55);
+  outline-offset: 4px;
+}
+
+.photoPlaceholder {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 52%;
+  pointer-events: none;
+}
+
+.photoPlaceholder::before,
+.photoPlaceholder::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  pointer-events: none;
+}
+
+.photoPlaceholder::before {
+  height: 100%;
+  opacity: 0.58;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 100%);
+}
+
+.photoPlaceholder::after {
+  height: 70%;
+  background: linear-gradient(180deg, transparent, rgba(255, 254, 252, 0.84));
+}
+
+.online .photoPlaceholder::before {
+  background:
+    radial-gradient(ellipse at 72% 70%, rgba(189, 147, 105, 0.28), transparent 38%),
+    repeating-linear-gradient(125deg, transparent 0 18px, rgba(173, 130, 94, 0.16) 18px 20px, transparent 20px 44px),
+    linear-gradient(180deg, transparent, rgba(232, 218, 202, 0.54));
+}
+
+.offline .photoPlaceholder::before {
+  background:
+    radial-gradient(ellipse at 76% 72%, rgba(100, 114, 91, 0.28), transparent 42%),
+    repeating-linear-gradient(110deg, transparent 0 18px, rgba(91, 111, 88, 0.18) 18px 21px, transparent 21px 46px),
+    linear-gradient(180deg, transparent, rgba(154, 163, 139, 0.42));
+}
+
+@media (max-width: 1180px) and (min-width: 941px) {
+  .card {
+    width: 310px;
+    height: 318px;
+    padding: 22px;
+  }
+
+  .cardRight {
+    left: calc(clamp(58px, 6.1vw, 96px) + 334px);
+  }
+}
+
+@media (max-width: 940px) {
+  .section {
+    display: block;
+    aspect-ratio: auto;
+    min-height: 0;
+    padding: 96px 24px 64px;
+    background:
+      linear-gradient(180deg, rgba(247, 241, 236, 0.18), rgba(247, 241, 236, 0.9) 72%, #f7f1ec 100%),
+      url("/assets/landing-v2/cutouts/classes-3-bg.png") center 210px / min(940px, 154vw) auto no-repeat,
+      #f7f1ec;
+  }
+
+  .section::before {
+    display: none;
+  }
+
+  .section::after {
+    z-index: 0;
+  }
+
+  .ornament {
+    display: none;
+  }
+
+  .kicker,
+  .title,
+  .card {
+    position: relative;
+    inset: auto;
+    z-index: 5;
+    display: revert;
+    width: auto;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .title {
+    margin-top: 24px;
+    margin-bottom: clamp(250px, 56vw, 390px);
+    font-size: clamp(50px, 14vw, 86px);
+    line-height: 0.94;
+  }
+
+  .card {
+    height: 376px;
+    min-height: 0;
+    padding: 28px;
+  }
+
+  .cardLeft {
+    margin-top: 0;
+  }
+
+  .card + .card {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .section {
+    padding: 94px 18px 58px;
+  }
+
+  .title {
+    font-size: clamp(52px, 14vw, 64px);
+  }
+}

@@ -33,7 +33,7 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
 
       <main className='pt-28'>
         <div className='container mx-auto px-6'>
-          <Link href='/#tours'>
+          <Link href='/#retreats'>
             <a className='inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-white'>
               <ArrowLeft className='h-4 w-4' />
               {copy.backToRetreats}

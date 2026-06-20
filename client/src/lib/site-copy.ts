@@ -122,7 +122,7 @@ export const siteCopy = {
       ],
     },
     hero: {
-      badgeLabel: 'Early Birds',
+      badgeLabel: 'Раннее бронирование',
       badgeText: 'Йога-ретрит в Чиралы',
       titleTop: 'Практика, самопознание',
       titleBottom: 'и внутренняя опора',

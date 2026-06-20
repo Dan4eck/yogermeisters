@@ -50,6 +50,186 @@
   --radius: 0.375rem; /* 6px - tighter radius */
 }
 
+:root {
+  --font-bodoni: "Bodoni Moda", "Noto Serif Display", "Bodoni 72", Didot, "Times New Roman", serif;
+  --font-manrope: "Manrope", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.landing-v2-root {
+  --ink: #151515;
+  --soft-ink: #3d3d3d;
+  --line: rgba(21, 21, 21, 0.18);
+  --line-strong: rgba(21, 21, 21, 0.36);
+  --paper: #f7f6f3;
+  --paper-hot: #fbfaf8;
+  --paper-cool: #f1f2f1;
+  --sand: #ad825e;
+  --gold: #bd9369;
+  --panel: rgba(255, 254, 252, 0.76);
+  --panel-line: rgba(21, 21, 21, 0.12);
+  --shadow: 0 22px 70px rgba(40, 39, 36, 0.08);
+  --serif: var(--font-bodoni);
+  --sans: var(--font-manrope);
+  min-width: 320px;
+  overflow-x: hidden;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 38% 21%, rgba(255, 255, 255, 0.96), rgba(247, 246, 243, 0.62) 32%, transparent 56%),
+    linear-gradient(180deg, #f7f6f3 0%, #fbfaf8 34%, #f1f2f1 100%);
+  font-family: var(--sans);
+  font-size: 16px;
+}
+
+.landing-v2-root *,
+.landing-v2-root *::before,
+.landing-v2-root *::after {
+  box-sizing: border-box;
+}
+
+.landing-v2-root a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.landing-v2-root button,
+.landing-v2-root a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.landing-v2-root .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.landing-v2-root .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 24px;
+  border: 1px solid var(--ink);
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.landing-v2-root .button:hover {
+  transform: translateY(-2px);
+}
+
+.landing-v2-root .button-dark {
+  background: var(--ink);
+  color: white;
+}
+
+.landing-v2-root .arrow-button {
+  gap: 28px;
+  min-width: 214px;
+}
+
+.landing-v2-root .surface-panel {
+  border: 1px solid var(--panel-line);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 24px 70px rgba(68, 59, 49, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.landing-v2-root .round-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  color: white;
+  background: #c4a17d;
+}
+
+.landing-v2-root .round-icon svg {
+  width: 19px;
+  height: 19px;
+  stroke-width: 1.8;
+}
+
+.landing-v2-root .panel-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-top: 1px solid var(--panel-line);
+  color: var(--ink);
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.landing-v2-root .panel-link svg {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.7;
+}
+
+.landing-v2-root .section {
+  position: relative;
+  min-height: 100svh;
+  padding: 122px clamp(32px, 5.7vw, 96px) 56px;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.landing-v2-root .section h1,
+.landing-v2-root .section h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.landing-v2-root .section-kicker {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.landing-v2-root .extracted-photo {
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 940px) {
+  .landing-v2-root .section {
+    min-height: auto;
+    padding: 112px 24px 64px;
+  }
+}
+
+@media (max-width: 560px) {
+  .landing-v2-root .section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .landing-v2-root .button {
+    width: 100%;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
