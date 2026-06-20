@@ -47,7 +47,7 @@ const retreatSlots: readonly RetreatSlot[] = [
     tone: 'mountain',
     fallback: {
       en: {
-        title: 'Nepal Buddhist Pilgrimage Tour',
+        title: 'Nepal Pilgrimage Tour',
         text: 'August 2026 • Kathmandu Valley & Nagarkot, Nepal • €1450 early / €1650',
       },
       ru: {
@@ -98,6 +98,12 @@ const fallbackImageBySlug: Record<RetreatSlug, string> = {
   'yoga-and-mountains-retreat': '/assets/landing-v2/retreats/thumb-prague-retreat.png',
 };
 
+const cardTitleOverrides: Partial<Record<RetreatSlug, Partial<Record<Language, string>>>> = {
+  'nepal-buddhist-pilgrimage-tour': {
+    en: 'Nepal Pilgrimage Tour',
+  },
+};
+
 function isRetreatAvailable(retreat: RetreatRecord | undefined, today: string): boolean {
   return Boolean(retreat && retreat.status === 'active' && retreat.endDate >= today);
 }
@@ -118,7 +124,7 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
 
     return {
       id: retreat?.id ?? -(index + 1),
-      title: retreat?.title ?? fallbackCopy.title,
+      title: cardTitleOverrides[slug]?.[language] ?? retreat?.title ?? fallbackCopy.title,
       slug,
       eyebrow: index === 0 ? sectionCopy.featuredEyebrow : undefined,
       text: retreat && dateLabel ? `${dateLabel} • ${retreat.location} • ${retreat.price}` : fallbackCopy.text,
