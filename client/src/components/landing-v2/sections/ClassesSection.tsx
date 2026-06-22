@@ -1,5 +1,5 @@
 import type { Language } from '@/lib/i18n';
-import { landingCopy } from '../content';
+import { landingCopy, telegramUrl } from '../content';
 import { TitleOrnament } from '../ui';
 import styles from './ClassesSection.module.css';
 
@@ -27,9 +27,11 @@ export default function ClassesSection({ language }: ClassesSectionProps) {
       {copy.cards.map(({ placement, label, title, price, description, cta }) => (
         <a
           className={`${styles.card} ${cardPlacementClass[placement]} ${cardToneClass[placement]}`}
-          href='#contact'
+          href={telegramUrl}
           aria-label={cta}
           key={title}
+          rel='noreferrer'
+          target='_blank'
         >
           <div className={styles.cardCopy}>
             <span className={styles.cardLabel}>{label}</span>

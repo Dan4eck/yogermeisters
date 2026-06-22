@@ -1,6 +1,6 @@
 import Header from './Header';
+import BodhisattvaCtaSection from './sections/BodhisattvaCtaSection';
 import ClassesSection from './sections/ClassesSection';
-import ContactSection from './sections/ContactSection';
 import HeroSection from './sections/HeroSection';
 import HimalayanSection from './sections/HimalayanSection';
 import PracticeVideoSection from './sections/PracticeVideoSection';
@@ -22,7 +22,7 @@ export default function YogaLandingV2({ language, setLanguage }: YogaLandingV2Pr
         <ClassesSection language={language} />
         <HimalayanSection language={language} />
         <PracticeVideoSection language={language} />
-        <ContactSection language={language} />
+        <BodhisattvaCtaSection language={language} />
       </main>
     </div>
   );

@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 
-export type AnchorHref = `#${string}` | `mailto:${string}`;
+export type AnchorHref = `#${string}` | `mailto:${string}` | `https://${string}`;
 
 export type NavItem = {
   label: string;

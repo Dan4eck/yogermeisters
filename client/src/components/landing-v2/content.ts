@@ -1,12 +1,20 @@
-import { CalendarDays, Flower2, Instagram, Mail, Youtube } from 'lucide-react';
+import { CalendarDays, Flower2, Mail, Send, Youtube } from 'lucide-react';
 
 import type { Language } from '@/lib/i18n';
-import type { ClassCard, HeroAction, NavItem, PracticeBenefit, PracticeVideo, SocialLink } from './types';
+import type { AnchorHref, ClassCard, HeroAction, NavItem, PracticeBenefit, PracticeVideo, SocialLink } from './types';
 
 type PracticeDetail = {
   readonly label: string;
   readonly title: string;
   readonly text: string;
+};
+
+type BodhisattvaCtaPractice = {
+  readonly number: string;
+  readonly title: string;
+  readonly quote: string;
+  readonly cta: string;
+  readonly ctaHref: AnchorHref;
 };
 
 type LandingCopy = {
@@ -63,19 +71,21 @@ type LandingCopy = {
     readonly benefits: readonly PracticeBenefit[];
     readonly video: PracticeVideo;
   };
-  readonly contact: {
+  readonly bodhisattvaCta: {
     readonly title: string;
-    readonly description: string;
-    readonly panelTitle: string;
-    readonly panelDescription: string;
-    readonly responseLabel: string;
-    readonly responseTime: string;
-    readonly emailCta: string;
-    readonly backToTop: string;
+    readonly portraitAlt: string;
+    readonly previousLabel: string;
+    readonly nextLabel: string;
+    readonly footnote: string;
+    readonly practices: readonly [BodhisattvaCtaPractice, BodhisattvaCtaPractice, BodhisattvaCtaPractice];
   };
 };
 
 const practiceVideoSrc = 'https://www.youtube.com/embed/Z_AabfLhaHo';
+const youtubePracticeUrl = 'https://www.youtube.com/watch?v=Z_AabfLhaHo';
+export const telegramUrl = 'https://t.me/AnastasiaPagliacci';
+
+export const contactEmail = 'hello@yogermeisters.com';
 
 export const landingCopy = {
   en: {
@@ -85,7 +95,6 @@ export const landingCopy = {
       { label: 'Classes', href: '#classes' },
       { label: 'Online', href: '#online' },
       { label: 'Practice', href: '#practice' },
-      { label: 'Contact', href: '#contact' },
     ],
     header: {
       navigationLabel: 'Main navigation',
@@ -121,9 +130,9 @@ export const landingCopy = {
         },
       ],
       socials: [
-        { label: 'Instagram', href: '#contact', icon: Instagram },
-        { label: 'YouTube', href: '#contact', icon: Youtube },
-        { label: 'Email', href: '#contact', icon: Mail },
+        { label: 'Telegram', href: telegramUrl, icon: Send },
+        { label: 'YouTube', href: youtubePracticeUrl, icon: Youtube },
+        { label: 'Email', href: `mailto:${contactEmail}`, icon: Mail },
       ],
     },
     retreats: {
@@ -210,15 +219,37 @@ export const landingCopy = {
         title: 'Yogermeisters practice video',
       },
     },
-    contact: {
-      title: 'Begin with breath',
-      description: 'Write to Nastya to book a class, ask about retreats, or find the practice rhythm that fits your body.',
-      panelTitle: 'Practice inquiry',
-      panelDescription: 'Classes, retreats and online sessions. A short note is enough to begin.',
-      responseLabel: 'Response',
-      responseTime: '1-2 days',
-      emailCta: 'Email Nastya',
-      backToTop: 'Back to top',
+    bodhisattvaCta: {
+      title: 'Choose the next step while the conditions are here',
+      portraitAlt: 'Yoga teacher Nastya near a bamboo wall',
+      previousLabel: 'Show previous practice',
+      nextLabel: 'Show next practice',
+      footnote:
+        'Meaning-based selections inspired by The Thirty-Seven Practices of Bodhisattvas by Gyalse Tokme Zangpo.',
+      practices: [
+        {
+          number: 'Practice 1',
+          title: 'Precious human life',
+          quote:
+            'When body, time, and the chance to learn are already here, practice is not something to postpone.',
+          cta: 'Book a practice',
+          ctaHref: '#classes',
+        },
+        {
+          number: 'Practice 3',
+          title: 'Solitude',
+          quote: 'In quiet places, distraction softens; clarity and steady practice can naturally become stronger.',
+          cta: 'Join a retreat',
+          ctaHref: '#retreats',
+        },
+        {
+          number: 'Practice 10',
+          title: 'Bodhicitta',
+          quote: 'Practice opens wider when it is not only for ourselves, but also for greater kindness to others.',
+          cta: 'Write in Telegram',
+          ctaHref: telegramUrl,
+        },
+      ],
     },
   },
   ru: {
@@ -228,7 +259,6 @@ export const landingCopy = {
       { label: 'Занятия', href: '#classes' },
       { label: 'Онлайн', href: '#online' },
       { label: 'Практика', href: '#practice' },
-      { label: 'Контакты', href: '#contact' },
     ],
     header: {
       navigationLabel: 'Главная навигация',
@@ -264,9 +294,9 @@ export const landingCopy = {
         },
       ],
       socials: [
-        { label: 'Instagram', href: '#contact', icon: Instagram },
-        { label: 'YouTube', href: '#contact', icon: Youtube },
-        { label: 'Электронная почта', href: '#contact', icon: Mail },
+        { label: 'Telegram', href: telegramUrl, icon: Send },
+        { label: 'YouTube', href: youtubePracticeUrl, icon: Youtube },
+        { label: 'Электронная почта', href: `mailto:${contactEmail}`, icon: Mail },
       ],
     },
     retreats: {
@@ -353,17 +383,39 @@ export const landingCopy = {
         title: 'Видео практики Yogermeisters',
       },
     },
-    contact: {
-      title: 'Начните с дыхания',
-      description: 'Напишите Насте, чтобы записаться на занятие, спросить о ретритах или найти ритм практики под ваше тело.',
-      panelTitle: 'Запрос о практике',
-      panelDescription: 'Занятия, ретриты и онлайн-сессии. Достаточно короткого сообщения, чтобы начать.',
-      responseLabel: 'Ответ',
-      responseTime: '1–2 дня',
-      emailCta: 'Написать Насте',
-      backToTop: 'Наверх',
+    bodhisattvaCta: {
+      title: 'Выберите следующий шаг, пока условия уже есть',
+      portraitAlt: 'Преподаватель йоги Настя у бамбуковой стены',
+      previousLabel: 'Показать предыдущую практику',
+      nextLabel: 'Показать следующую практику',
+      footnote:
+        'Смысловые выдержки по мотивам текста «37 практик бодхисаттвы» Гьялсе Тогме Зангпо.',
+      practices: [
+        {
+          number: 'Практика 1',
+          title: 'Драгоценная человеческая жизнь',
+          quote:
+            'Раз у нас есть тело, время и возможность встретиться с путем, практику стоит начинать сейчас, не откладывая.',
+          cta: 'Записаться на практику',
+          ctaHref: '#classes',
+        },
+        {
+          number: 'Практика 3',
+          title: 'Уединение',
+          quote:
+            'В тишине меньше отвлечений: ясность становится ближе, а практика естественно набирает силу.',
+          cta: 'Поехать на ретрит',
+          ctaHref: '#retreats',
+        },
+        {
+          number: 'Практика 10',
+          title: 'Бодхичитта',
+          quote:
+            'Практика раскрывается шире, когда она не только для себя, но и ради большей доброты к другим.',
+          cta: 'Написать в Telegram',
+          ctaHref: telegramUrl,
+        },
+      ],
     },
   },
 } satisfies Record<Language, LandingCopy>;
-
-export const contactEmail = 'hello@yogermeisters.com';

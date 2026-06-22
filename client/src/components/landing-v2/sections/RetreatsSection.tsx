@@ -6,7 +6,7 @@ import { getRetreatImageUrl } from '@/lib/retreat-assets';
 import type { Language } from '@/lib/i18n';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { listRetreats, type RetreatRecord } from '@shared/retreat-content';
-import { landingCopy } from '../content';
+import { landingCopy, telegramUrl } from '../content';
 import { ButtonLink, TitleOrnament } from '../ui';
 import styles from './RetreatsSection.module.css';
 
@@ -171,7 +171,7 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
         <h2>{sectionCopy.title}</h2>
         <TitleOrnament className={styles.ornament} />
         <p>{sectionCopy.description}</p>
-        <ButtonLink className={styles.button} href='#contact'>
+        <ButtonLink className={styles.button} href={telegramUrl}>
           {sectionCopy.bookRetreat}
         </ButtonLink>
       </div>

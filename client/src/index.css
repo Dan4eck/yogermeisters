@@ -173,7 +173,7 @@
   stroke-width: 1.7;
 }
 
-.landing-v2-root .section {
+:where(.landing-v2-root .section) {
   position: relative;
   min-height: 100svh;
   padding: 122px clamp(32px, 5.7vw, 96px) 56px;
@@ -181,8 +181,8 @@
   overflow: hidden;
 }
 
-.landing-v2-root .section h1,
-.landing-v2-root .section h2 {
+:where(.landing-v2-root .section h1),
+:where(.landing-v2-root .section h2) {
   margin: 0;
   font-family: var(--serif);
   font-weight: 400;
@@ -196,14 +196,14 @@
 }
 
 @media (max-width: 940px) {
-  .landing-v2-root .section {
+  :where(.landing-v2-root .section) {
     min-height: auto;
     padding: 96px 24px 64px;
   }
 }
 
 @media (max-width: 560px) {
-  .landing-v2-root .section {
+  :where(.landing-v2-root .section) {
     padding-left: 18px;
     padding-right: 18px;
   }
