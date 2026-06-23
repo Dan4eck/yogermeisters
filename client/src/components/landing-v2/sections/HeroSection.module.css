@@ -495,8 +495,7 @@
     gap: 16px;
     aspect-ratio: auto;
     min-height: auto;
-    padding-top: 88px;
-    padding-bottom: 44px;
+    padding: 88px 24px 44px;
     background:
       linear-gradient(180deg, rgba(251, 250, 247, 0.1), rgba(251, 250, 247, 0.74) 66%, #f7f3ed 100%),
       url("/assets/landing-v2/cutouts/hero2-bg.png") center top 220px / min(720px, 128vw) auto no-repeat,
@@ -532,6 +531,7 @@
   }
 
   .ru .title {
+    inset: auto;
     width: auto;
   }
 
@@ -551,7 +551,7 @@
     grid-area: left;
     width: auto;
     z-index: 5;
-    margin-top: clamp(280px, 62vw, 390px);
+    margin-top: clamp(300px, 66vw, 410px);
   }
 
   .copy p {
@@ -562,6 +562,7 @@
   }
 
   .ru .copy {
+    inset: auto;
     width: auto;
   }
 
@@ -583,7 +584,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
     max-width: 560px;
-    margin-top: 18px;
+    margin-top: 8px;
     padding: 0;
     gap: 10px;
     border: 0;
@@ -656,8 +657,7 @@
 @media (max-width: 560px) {
   .section {
     gap: 14px;
-    padding-top: 76px;
-    padding-bottom: 40px;
+    padding: 76px 18px 40px;
     overflow: clip;
     background: #f7f3ed;
   }
@@ -666,10 +666,10 @@
     content: "";
     position: absolute;
     z-index: 1;
-    top: 356px;
+    top: clamp(328px, 88vw, 372px);
     left: 0;
     width: 100%;
-    height: min(388px, 100vw);
+    height: min(372px, 96vw);
     background: url("/assets/landing-v2/cutouts/hero2-bg.png") center / min(690px, 178vw) auto no-repeat;
     filter: contrast(1.12) saturate(1.08);
     -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
@@ -686,19 +686,19 @@
   }
 
   .ru .title span {
-    font-size: clamp(36px, 10.8vw, 50px);
+    font-size: clamp(30px, 8.5vw, 38px);
   }
 
   .ru .title span + span {
-    font-size: clamp(46px, 13.2vw, 60px);
+    font-size: clamp(46px, 13.2vw, 58px);
   }
 
   .ru.section::before {
-    top: 356px;
+    top: clamp(328px, 88vw, 372px);
   }
 
   .copy {
-    margin-top: clamp(288px, 88vw, 340px);
+    margin-top: clamp(340px, 95vw, 430px);
   }
 
   .copy p {
@@ -734,7 +734,7 @@
   .actionsPanel {
     grid-template-columns: 1fr;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 0;
     max-width: 360px;
     justify-self: center;
   }

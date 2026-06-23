@@ -2,6 +2,7 @@ import { useState, type MouseEvent } from 'react';
 import { useLocation } from 'wouter';
 
 import { languageToggleLabel, type Language } from '@/lib/i18n';
+import { scrollToAnchor } from '@/lib/scroll-to-anchor';
 import { landingCopy } from './content';
 import styles from './Header.module.css';
 import { useActiveSection } from './useActiveSection';
@@ -24,30 +25,23 @@ export default function Header({ language, setLanguage }: HeaderProps) {
 
   const getAnchorHref = (href: `#${string}`): string => (isHomePage ? href : `/${href}`);
 
-  const scrollToSection = (href: `#${string}`): boolean => {
-    const section = document.getElementById(href.slice(1));
-
-    if (!section) {
-      return false;
-    }
-
-    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: Math.max(sectionTop - 76, 0), behavior: 'smooth' });
-    window.history.replaceState(null, '', href);
-    return true;
-  };
-
   const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>, href: `#${string}`): void => {
     event.preventDefault();
     setIsOpen(false);
 
     if (isHomePage) {
-      scrollToSection(href);
+      if (scrollToAnchor(href)) {
+        window.history.replaceState(null, '', href);
+      }
       return;
     }
 
     navigate('/');
-    window.setTimeout(() => scrollToSection(href), 80);
+    window.setTimeout(() => {
+      if (scrollToAnchor(href)) {
+        window.history.replaceState(null, '', href);
+      }
+    }, 120);
   };
 
   return (

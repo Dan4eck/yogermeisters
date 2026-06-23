@@ -37,11 +37,9 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
 
       <main className={styles.main}>
         <div className={styles.topbar}>
-          <Link href='/#retreats'>
-            <a className={styles.backLink}>
-              <ArrowLeft aria-hidden='true' />
-              {copy.backToRetreats}
-            </a>
+          <Link href='/#retreats' className={styles.backLink}>
+            <ArrowLeft aria-hidden='true' />
+            {copy.backToRetreats}
           </Link>
         </div>
 

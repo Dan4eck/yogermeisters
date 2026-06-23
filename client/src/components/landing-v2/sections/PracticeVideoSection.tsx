@@ -19,7 +19,7 @@ export default function PracticeVideoSection({ language }: PracticeVideoSectionP
         <iframe
           src={copy.video.src}
           title={copy.video.title}
-          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen
         ></iframe>
       </div>

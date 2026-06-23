@@ -354,12 +354,39 @@
 }
 
 @media (max-width: 560px) {
+  .main {
+    padding-top: 96px;
+  }
+
+  .topbar {
+    margin-bottom: 22px;
+  }
+
+  .hero {
+    gap: 24px;
+  }
+
   .hero h1 {
-    font-size: clamp(42px, 12vw, 58px);
+    font-size: clamp(40px, 11vw, 54px);
   }
 
   .heroImage {
     min-height: 330px;
+  }
+
+  .content {
+    gap: 24px;
+  }
+
+  .content > h2,
+  .ctaPanel h2 {
+    font-size: clamp(34px, 10vw, 46px);
+  }
+
+  .callout,
+  .countdown,
+  .ctaPanel {
+    border-radius: 14px;
   }
 
   .countdownGrid {

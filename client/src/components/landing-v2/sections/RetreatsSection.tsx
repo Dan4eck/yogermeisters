@@ -152,8 +152,8 @@ export default function RetreatsSection({ language }: RetreatsSectionProps) {
 
     if (card.isAvailable) {
       return (
-        <Link href={`/retreats/${card.slug}`}>
-          <a className={cardClassName}>{renderCardContent(card)}</a>
+        <Link href={`/retreats/${card.slug}`} className={cardClassName}>
+          {renderCardContent(card)}
         </Link>
       );
     }
