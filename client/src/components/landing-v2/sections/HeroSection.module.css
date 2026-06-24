@@ -488,14 +488,14 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "title"
       "right"
+      "title"
       "left"
       "footer";
     gap: 16px;
     aspect-ratio: auto;
     min-height: auto;
-    padding: 88px 24px 44px;
+    padding: 104px 24px 44px;
     background:
       linear-gradient(180deg, rgba(251, 250, 247, 0.1), rgba(251, 250, 247, 0.74) 66%, #f7f3ed 100%),
       url("/assets/landing-v2/cutouts/hero2-bg.png") center top 220px / min(720px, 128vw) auto no-repeat,
@@ -656,8 +656,8 @@
 
 @media (max-width: 560px) {
   .section {
-    gap: 14px;
-    padding: 76px 18px 40px;
+    gap: 12px;
+    padding: 112px 18px 40px;
     overflow: clip;
     background: #f7f3ed;
   }
@@ -665,36 +665,44 @@
   .section::before {
     content: "";
     position: absolute;
-    z-index: 1;
-    top: clamp(328px, 88vw, 372px);
+    z-index: 4;
+    top: clamp(288px, 76vw, 336px);
     left: 0;
     width: 100%;
-    height: min(372px, 96vw);
-    background: url("/assets/landing-v2/cutouts/hero2-bg.png") center / min(690px, 178vw) auto no-repeat;
+    height: min(430px, 112vw);
+    background: url("/assets/landing-v2/cutouts/hero2-bg.png") center top / min(690px, 178vw) auto no-repeat;
     filter: contrast(1.12) saturate(1.08);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
-    mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
     pointer-events: none;
   }
 
+  .title {
+    z-index: 5;
+    margin-top: 38px;
+    padding-left: 6px;
+  }
+
   .title span {
-    font-size: clamp(38px, 12.4vw, 54px);
+    font-size: clamp(48px, 15.6vw, 68px);
+    line-height: 0.94;
   }
 
   .title span + span {
-    font-size: clamp(50px, 14vw, 62px);
+    margin-top: 6px;
+    font-size: clamp(62px, 18vw, 78px);
   }
 
   .ru .title span {
-    font-size: clamp(30px, 8.5vw, 38px);
+    font-size: clamp(38px, 11vw, 48px);
   }
 
   .ru .title span + span {
-    font-size: clamp(46px, 13.2vw, 58px);
+    font-size: clamp(56px, 15.5vw, 70px);
   }
 
   .ru.section::before {
-    top: clamp(328px, 88vw, 372px);
+    top: clamp(288px, 76vw, 336px);
   }
 
   .copy {
