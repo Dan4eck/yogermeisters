@@ -8,7 +8,7 @@ export const ciraliRetreat: RetreatSeed = {
   location: 'Cirali, Lycian Coast, Turkey',
   startDate: '2026-10-10',
   endDate: '2026-10-16',
-  price: '€750',
+  price: '€790',
   bookingUrl: 'https://t.me/AnastasiaPagliacci',
   coverImage: 'cirali-beach-cover.jpeg',
   translations: {
@@ -34,10 +34,10 @@ export const ciraliRetreat: RetreatSeed = {
       sortOrder: 2,
       type: 'callout',
       variant: 'sunrise',
-      text: '🔥 Only 3 spots left at the special price of €720 (standard price: €750).',
+      text: '🔥 Only 3 spots left at the special price of €750 (standard price: €790).',
       translations: {
         ru: {
-          text: '🔥 Осталось всего 3 места по специальной цене €720 (обычная цена — €750).',
+          text: '🔥 Осталось всего 3 места по специальной цене €750 (обычная цена — €790).',
         },
       },
     },
@@ -351,10 +351,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'not-included-and-price',
       sortOrder: 33,
       type: 'paragraph',
-      text: 'Flights, meals other than breakfasts, bicycle rental, and personal expenses are not included. Retreat price: €750. Special promo: €720 for the first participants (3 spots left). Deposit to reserve a place: €200.',
+      text: 'Flights, meals other than breakfasts, bicycle rental, and personal expenses are not included. Retreat price: €790. Special promo: €750 for the first participants (3 spots left). Deposit to reserve a place: €200.',
       translations: {
         ru: {
-          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Стоимость ретрита — €750. Спецпредложение: €720 для первых участников (осталось 3 места). Залог для брони места — €200.',
+          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Стоимость ретрита — €790. Спецпредложение: €750 для первых участников (осталось 3 места). Залог для брони места — €200.',
         },
       },
     },
