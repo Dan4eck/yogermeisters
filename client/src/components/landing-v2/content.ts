@@ -108,7 +108,7 @@ export const landingCopy = {
     hero: {
       titleLines: ['Himalayan', 'Yoga'],
       description:
-        'Nastya shares Himalayan yoga through breath, attention and precise movement. Her practice helps the body grow stronger while the mind becomes quieter.',
+        'I share Himalayan yoga through breath, attention and precise movement. My practice helps the body grow stronger while the mind becomes quieter.',
       primaryCta: 'Learn more',
       videoCta: 'Watch Practice',
       actionsLabel: 'Featured actions',

@@ -706,7 +706,7 @@
   }
 
   .copy {
-    margin-top: clamp(340px, 95vw, 430px);
+    margin-top: clamp(260px, 72vw, 340px);
   }
 
   .copy p {
