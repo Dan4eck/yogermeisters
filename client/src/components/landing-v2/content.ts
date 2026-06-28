@@ -30,9 +30,10 @@ type LandingCopy = {
   };
   readonly hero: {
     readonly titleLines: readonly [string, string];
-    readonly description: string;
+    readonly posterLine: string;
     readonly primaryCta: string;
-    readonly videoCta: string;
+    readonly secondaryCta: string;
+    readonly figureAlt: string;
     readonly actionsLabel: string;
     readonly socialsLabel: string;
     readonly actions: readonly HeroAction[];
@@ -107,10 +108,10 @@ export const landingCopy = {
     },
     hero: {
       titleLines: ['Himalayan', 'Yoga'],
-      description:
-        'I share Himalayan yoga through breath, attention and precise movement. My practice helps the body grow stronger while the mind becomes quieter.',
-      primaryCta: 'Learn more',
-      videoCta: 'Watch Practice',
+      posterLine: 'Between movement and stillness, there is practice',
+      primaryCta: 'Book a Retreat',
+      secondaryCta: 'Book a Class',
+      figureAlt: 'Yoga teacher Nastya practicing Himalayan yoga',
       actionsLabel: 'Featured actions',
       socialsLabel: 'Follow Nastya',
       actions: [
@@ -270,11 +271,11 @@ export const landingCopy = {
       closeMenuLabel: 'Закрыть меню',
     },
     hero: {
-      titleLines: ['Гималайская', 'йога'],
-      description:
-        'Настя делится гималайской йогой через дыхание, внимание и точное движение. Практика помогает телу становиться сильнее, а уму — тише.',
-      primaryCta: 'Узнать больше',
-      videoCta: 'Смотреть практику',
+      titleLines: ['Himalayan', 'Yoga'],
+      posterLine: 'Между движением и тишиной рождается практика',
+      primaryCta: 'Book a Retreat',
+      secondaryCta: 'Book a Class',
+      figureAlt: 'Преподаватель йоги Настя в практике гималайской йоги',
       actionsLabel: 'Главные действия',
       socialsLabel: 'Соцсети Насти',
       actions: [

@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yogermeisters Brand & Caption Font Tests</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Forum&family=Fraunces:opsz,wght@9..144,300..700&family=Sora:wght@300;400;500;600&family=Syne:wght@400;500;600;700&family=Tenor+Sans&display=swap" rel="stylesheet">
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --ink: #141414;
+        --accent: #d35f35;
+        --paper: #f5eee7;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: Inter, Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .pageHeader {
+        position: sticky;
+        z-index: 20;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        min-height: 72px;
+        padding: 0 clamp(18px, 4vw, 54px);
+        border-bottom: 1px solid rgba(20, 20, 20, 0.12);
+        background: rgba(248, 247, 245, 0.82);
+        backdrop-filter: blur(22px);
+      }
+
+      .pageHeader h1 {
+        margin: 0;
+        font-size: clamp(16px, 1.5vw, 22px);
+        font-weight: 700;
+      }
+
+      .pageHeader nav {
+        display: flex;
+        gap: 8px;
+      }
+
+      .pageHeader a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 14px;
+        border: 1px solid rgba(20, 20, 20, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.46);
+        font-size: 11px;
+        font-weight: 800;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        gap: 24px;
+        padding: clamp(18px, 3vw, 34px);
+      }
+
+      .variant {
+        position: relative;
+        display: grid;
+        min-height: min(720px, calc(100svh - 118px));
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid rgba(20, 20, 20, 0.1);
+        border-radius: 18px;
+        background: #f5eee7;
+      }
+
+      .variant::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(245, 238, 231, 0.04), rgba(245, 238, 231, 0.32) 78%, #f5eee7 100%),
+          url("/assets/landing-v2/cutouts/hero-bg.png") center / cover no-repeat;
+        opacity: 0.96;
+      }
+
+      .label {
+        position: absolute;
+        z-index: 8;
+        top: 22px;
+        left: 24px;
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.58);
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+        backdrop-filter: blur(12px);
+      }
+
+      .brand {
+        position: absolute;
+        z-index: 6;
+        top: clamp(54px, 8vw, 92px);
+        left: 50%;
+        margin: 0;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .title {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        width: min(93vw, 1320px);
+        margin: 0;
+        font-family: Impact, "Arial Black", "Arial Narrow", Haettenschweiler, sans-serif;
+        font-weight: 900;
+        line-height: 0.76;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .title span {
+        display: block;
+        font-size: clamp(78px, 10vw, 174px);
+      }
+
+      .title span + span {
+        margin-top: clamp(14px, 1.4vw, 26px);
+        color: var(--accent);
+        font-size: clamp(108px, 13.4vw, 238px);
+      }
+
+      .figure {
+        position: absolute;
+        z-index: 4;
+        top: 49%;
+        left: 50%;
+        width: min(86vw, 1160px);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .caption {
+        position: absolute;
+        z-index: 7;
+        left: 50%;
+        bottom: clamp(82px, 11vh, 118px);
+        width: min(76vw, 860px);
+        margin: 0;
+        text-align: center;
+        text-transform: uppercase;
+        transform: translateX(-50%);
+      }
+
+      .actions {
+        position: absolute;
+        z-index: 8;
+        left: 50%;
+        bottom: 30px;
+        display: flex;
+        gap: 12px;
+        transform: translateX(-50%);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        min-width: 176px;
+        min-height: 46px;
+        padding: 0 22px;
+        border-radius: 999px;
+        background: #141414;
+        color: white;
+        font-size: 10px;
+        font-weight: 800;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .v1 .brand {
+        font-family: Avenir Next, Avenir, Inter, Manrope, sans-serif;
+        font-size: clamp(28px, 3.15vw, 54px);
+        font-weight: 500;
+        letter-spacing: 0.005em;
+      }
+
+      .v1 .caption {
+        font-family: Avenir Next, Avenir, Inter, Manrope, sans-serif;
+        font-size: clamp(13px, 1.1vw, 18px);
+        font-weight: 500;
+        line-height: 1.36;
+        letter-spacing: 0.04em;
+      }
+
+      .v2 .brand {
+        font-family: Optima, Candara, "Avenir Next", Avenir, sans-serif;
+        font-size: clamp(30px, 3.3vw, 58px);
+        font-weight: 400;
+        letter-spacing: 0.01em;
+      }
+
+      .v2 .caption {
+        font-family: Optima, Candara, "Avenir Next", Avenir, sans-serif;
+        font-size: clamp(14px, 1.16vw, 19px);
+        font-weight: 500;
+        line-height: 1.38;
+        letter-spacing: 0.055em;
+      }
+
+      .v3 .brand {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: clamp(28px, 3vw, 52px);
+        font-weight: 300;
+        letter-spacing: -0.015em;
+      }
+
+      .v3 .caption {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: clamp(13px, 1vw, 17px);
+        font-weight: 500;
+        line-height: 1.34;
+        letter-spacing: 0.07em;
+      }
+
+      .v4 .brand {
+        font-family: "Gill Sans", "Gill Sans MT", Avenir, sans-serif;
+        font-size: clamp(30px, 3.25vw, 56px);
+        font-weight: 400;
+        letter-spacing: 0.01em;
+      }
+
+      .v4 .caption {
+        font-family: "Gill Sans", "Gill Sans MT", Avenir, sans-serif;
+        font-size: clamp(13px, 1.08vw, 18px);
+        font-weight: 600;
+        line-height: 1.34;
+        letter-spacing: 0.075em;
+      }
+
+      .v5 .brand {
+        font-family: Didot, "Bodoni 72", "Times New Roman", serif;
+        font-size: clamp(34px, 3.8vw, 66px);
+        font-weight: 400;
+        letter-spacing: -0.025em;
+      }
+
+      .v5 .caption {
+        font-family: "Bodoni 72", Didot, "Times New Roman", serif;
+        font-size: clamp(17px, 1.45vw, 26px);
+        font-weight: 400;
+        line-height: 1.16;
+        letter-spacing: 0.02em;
+      }
+
+      .v6 .brand {
+        font-family: "Cormorant Garamond", "Times New Roman", serif;
+        font-size: clamp(40px, 4.4vw, 76px);
+        font-weight: 500;
+        letter-spacing: -0.035em;
+      }
+
+      .v6 .caption {
+        font-family: "Sora", Inter, sans-serif;
+        font-size: clamp(12px, 0.98vw, 16px);
+        font-weight: 400;
+        line-height: 1.48;
+        letter-spacing: 0.11em;
+      }
+
+      .v7 .brand {
+        font-family: "Forum", "Times New Roman", serif;
+        font-size: clamp(38px, 4.15vw, 72px);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+      }
+
+      .v7 .caption {
+        font-family: "Forum", "Times New Roman", serif;
+        font-size: clamp(18px, 1.55vw, 28px);
+        font-weight: 400;
+        line-height: 1.18;
+        letter-spacing: 0.04em;
+      }
+
+      .v8 .brand {
+        font-family: "Tenor Sans", Avenir, sans-serif;
+        font-size: clamp(31px, 3.45vw, 60px);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+      }
+
+      .v8 .caption {
+        font-family: "Tenor Sans", Avenir, sans-serif;
+        font-size: clamp(13px, 1.08vw, 18px);
+        font-weight: 400;
+        line-height: 1.42;
+        letter-spacing: 0.09em;
+      }
+
+      .v9 .brand {
+        font-family: "Syne", Inter, sans-serif;
+        font-size: clamp(30px, 3.3vw, 58px);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+      }
+
+      .v9 .caption {
+        font-family: "Sora", Inter, sans-serif;
+        font-size: clamp(12px, 0.98vw, 16px);
+        font-weight: 500;
+        line-height: 1.48;
+        letter-spacing: 0.12em;
+      }
+
+      .v10 .brand {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-size: clamp(34px, 3.85vw, 66px);
+        font-variation-settings: "SOFT" 60, "WONK" 0;
+        font-weight: 430;
+        letter-spacing: -0.035em;
+      }
+
+      .v10 .caption {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-size: clamp(16px, 1.36vw, 24px);
+        font-variation-settings: "SOFT" 30, "WONK" 0;
+        font-weight: 360;
+        line-height: 1.2;
+        letter-spacing: 0.03em;
+      }
+
+      @media (max-width: 720px) {
+        .pageHeader {
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          padding-top: 12px;
+          padding-bottom: 12px;
+        }
+
+        .pageHeader nav {
+          flex-wrap: wrap;
+        }
+
+        .grid {
+          padding: 14px;
+        }
+
+        .variant {
+          min-height: 760px;
+          border-radius: 14px;
+        }
+
+        .label {
+          top: 14px;
+          left: 14px;
+        }
+
+        .brand {
+          top: 58px;
+        }
+
+        .title {
+          align-self: start;
+          width: 100%;
+          margin-top: 150px;
+        }
+
+        .title span {
+          font-size: clamp(40px, 12vw, 54px);
+        }
+
+        .title span + span {
+          margin-top: 0;
+          font-size: clamp(68px, 20vw, 90px);
+        }
+
+        .figure {
+          top: 47%;
+          width: min(210vw, 760px);
+        }
+
+        .caption {
+          bottom: 118px;
+          width: min(86vw, 360px);
+        }
+
+        .actions {
+          bottom: 44px;
+          width: min(86vw, 360px);
+        }
+
+        .button {
+          flex: 1;
+          min-width: 0;
+          padding: 0 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="pageHeader">
+      <h1>Brand + caption font options</h1>
+      <nav aria-label="Jump to variants">
+        <a href="#v1">V1</a>
+        <a href="#v2">V2</a>
+        <a href="#v3">V3</a>
+        <a href="#v4">V4</a>
+        <a href="#v5">V5</a>
+        <a href="#v6">V6</a>
+        <a href="#v7">V7</a>
+        <a href="#v8">V8</a>
+        <a href="#v9">V9</a>
+        <a href="#v10">V10</a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <section class="variant v1" id="v1">
+        <span class="label">V1 / Avenir calm</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v2" id="v2">
+        <span class="label">V2 / Optima soft</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v3" id="v3">
+        <span class="label">V3 / Helvetica light</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v4" id="v4">
+        <span class="label">V4 / Gill elegant</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v5" id="v5">
+        <span class="label">V5 / Didot editorial</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v6" id="v6">
+        <span class="label">V6 / Cormorant + Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v7" id="v7">
+        <span class="label">V7 / Forum ritual</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v8" id="v8">
+        <span class="label">V8 / Tenor Sans airy</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v9" id="v9">
+        <span class="label">V9 / Syne + Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant v10" id="v10">
+        <span class="label">V10 / Fraunces soft</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Syne Brand Hero Combinations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@80..125,600..900&family=Archivo+Black&family=Archivo+Narrow:wght@700&family=Barlow+Condensed:wght@700;800;900&family=Bebas+Neue&family=Big+Shoulders+Display:wght@700;800;900&family=Bodoni+Moda:opsz,wght@6..96,700..900&family=Chakra+Petch:wght@600;700&family=DM+Serif+Display&family=Fjalla+One&family=Fraunces:opsz,wght@9..144,600..900&family=Libre+Baskerville:wght@700&family=Libre+Caslon+Condensed:wght@700&family=Montserrat:wght@800;900&family=Notable&family=Oswald:wght@600;700&family=Playfair+Display:wght@800;900&family=Sora:wght@300;400;500;600&family=Space+Grotesk:wght@700&family=Syne:wght@400;500;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --ink: #141414;
+        --accent: #d35f35;
+        --paper: #f5eee7;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: Sora, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .pageHeader {
+        position: sticky;
+        z-index: 30;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        min-height: 76px;
+        padding: 10px clamp(18px, 4vw, 54px);
+        border-bottom: 1px solid rgba(20, 20, 20, 0.12);
+        background: rgba(248, 247, 245, 0.84);
+        backdrop-filter: blur(22px);
+      }
+
+      .pageHeader h1 {
+        margin: 0;
+        font-size: clamp(16px, 1.5vw, 22px);
+        font-weight: 600;
+      }
+
+      .pageHeader nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .pageHeader a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 12px;
+        border: 1px solid rgba(20, 20, 20, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.46);
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        gap: 24px;
+        padding: clamp(18px, 3vw, 34px);
+      }
+
+      .variant {
+        position: relative;
+        display: grid;
+        min-height: min(760px, calc(100svh - 120px));
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid rgba(20, 20, 20, 0.1);
+        border-radius: 18px;
+        background: #f5eee7;
+      }
+
+      .variant::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(245, 238, 231, 0.04), rgba(245, 238, 231, 0.32) 78%, #f5eee7 100%),
+          url("/assets/landing-v2/cutouts/hero-bg.png") center / cover no-repeat;
+        opacity: 0.96;
+      }
+
+      .label {
+        position: absolute;
+        z-index: 8;
+        top: 22px;
+        left: 24px;
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.58);
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+        backdrop-filter: blur(12px);
+      }
+
+      .brand {
+        position: absolute;
+        z-index: 6;
+        top: clamp(54px, 8vw, 92px);
+        left: 50%;
+        margin: 0;
+        font-family: Syne, Inter, sans-serif;
+        font-size: clamp(30px, 3.3vw, 58px);
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: -0.055em;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .title {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        width: min(93vw, 1380px);
+        margin: 0;
+        line-height: var(--title-line, 0.76);
+        text-align: center;
+        text-transform: uppercase;
+        pointer-events: none;
+      }
+
+      .title span {
+        display: block;
+        font-size: var(--top-size, clamp(82px, 10.8vw, 190px));
+        font-weight: var(--title-weight, 800);
+        letter-spacing: var(--title-tracking, 0);
+      }
+
+      .title span + span {
+        margin-top: var(--title-gap, clamp(14px, 1.6vw, 28px));
+        color: var(--accent);
+        font-size: var(--bottom-size, clamp(116px, 14.6vw, 260px));
+      }
+
+      .figure {
+        position: absolute;
+        z-index: 4;
+        top: 49%;
+        left: 50%;
+        width: min(88vw, 1200px);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .caption {
+        position: absolute;
+        z-index: 7;
+        left: 50%;
+        bottom: clamp(82px, 11vh, 118px);
+        width: min(76vw, 860px);
+        margin: 0;
+        font-family: Sora, Inter, sans-serif;
+        font-size: clamp(12px, 0.98vw, 16px);
+        font-weight: 500;
+        line-height: 1.48;
+        letter-spacing: 0.12em;
+        text-align: center;
+        text-transform: uppercase;
+        transform: translateX(-50%);
+      }
+
+      .caption.soft {
+        font-weight: 400;
+        letter-spacing: 0.1em;
+      }
+
+      .caption.syne {
+        font-family: Syne, Inter, sans-serif;
+        font-size: clamp(13px, 1.06vw, 18px);
+        font-weight: 500;
+        letter-spacing: 0.055em;
+      }
+
+      .actions {
+        position: absolute;
+        z-index: 8;
+        left: 50%;
+        bottom: 30px;
+        display: flex;
+        gap: 12px;
+        transform: translateX(-50%);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        min-width: 176px;
+        min-height: 46px;
+        padding: 0 22px;
+        border-radius: 999px;
+        background: #141414;
+        color: white;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .c1 .title {
+        --title-line: 0.74;
+        --title-gap: clamp(16px, 1.8vw, 34px);
+        --top-size: clamp(94px, 12.5vw, 224px);
+        --bottom-size: clamp(128px, 16.4vw, 298px);
+        font-family: "Big Shoulders Display", Impact, sans-serif;
+      }
+
+      .c2 .title {
+        --title-line: 0.76;
+        --title-gap: clamp(18px, 2vw, 38px);
+        --top-size: clamp(88px, 11.8vw, 214px);
+        --bottom-size: clamp(122px, 15.8vw, 286px);
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-weight: 400;
+      }
+
+      .c3 .title {
+        --title-line: 0.8;
+        --title-gap: clamp(14px, 1.4vw, 28px);
+        --title-tracking: -0.035em;
+        --top-size: clamp(82px, 10.8vw, 198px);
+        --bottom-size: clamp(112px, 14.2vw, 260px);
+        font-family: "Anybody", Syne, sans-serif;
+        font-stretch: 92%;
+      }
+
+      .c4 .title {
+        --title-line: 0.73;
+        --title-gap: clamp(18px, 2.2vw, 42px);
+        --title-tracking: -0.045em;
+        --top-size: clamp(84px, 11vw, 204px);
+        --bottom-size: clamp(118px, 15vw, 276px);
+        font-family: "Bodoni Moda", Didot, serif;
+        font-weight: 900;
+      }
+
+      .c5 .title {
+        --title-line: 0.78;
+        --title-gap: clamp(16px, 1.8vw, 34px);
+        --title-tracking: -0.025em;
+        --top-size: clamp(82px, 10.9vw, 202px);
+        --bottom-size: clamp(112px, 14.3vw, 264px);
+        font-family: Fraunces, "Times New Roman", serif;
+        font-variation-settings: "SOFT" 40, "WONK" 0;
+      }
+
+      .c6 .title {
+        --title-line: 0.74;
+        --title-gap: clamp(18px, 2vw, 38px);
+        --title-tracking: 0.01em;
+        --top-size: clamp(82px, 10.7vw, 198px);
+        --bottom-size: clamp(112px, 14.1vw, 258px);
+        font-family: Oswald, Impact, sans-serif;
+      }
+
+      .c7 .title {
+        --title-line: 0.78;
+        --title-gap: clamp(12px, 1.4vw, 28px);
+        --title-tracking: 0.01em;
+        --top-size: clamp(78px, 10.2vw, 188px);
+        --bottom-size: clamp(104px, 13.4vw, 248px);
+        font-family: "Chakra Petch", Sora, sans-serif;
+      }
+
+      .c8 .title {
+        --title-line: 0.73;
+        --title-gap: clamp(18px, 2.2vw, 42px);
+        --title-tracking: -0.02em;
+        --top-size: clamp(84px, 11.2vw, 206px);
+        --bottom-size: clamp(118px, 15vw, 276px);
+        font-family: "Libre Caslon Condensed", Georgia, serif;
+      }
+
+      .c9 .title {
+        --title-line: 0.74;
+        --title-gap: clamp(16px, 1.8vw, 34px);
+        --title-tracking: -0.025em;
+        --top-size: clamp(80px, 10.8vw, 200px);
+        --bottom-size: clamp(112px, 14.5vw, 266px);
+        font-family: "Barlow Condensed", Impact, sans-serif;
+        font-weight: 900;
+      }
+
+      .c10 .title {
+        --title-line: 0.78;
+        --title-gap: clamp(14px, 1.55vw, 30px);
+        --title-tracking: -0.04em;
+        --top-size: clamp(76px, 10vw, 184px);
+        --bottom-size: clamp(104px, 13.2vw, 244px);
+        font-family: "Archivo Black", Impact, sans-serif;
+      }
+
+      .c11 .title {
+        --title-line: 0.78;
+        --title-gap: clamp(14px, 1.6vw, 30px);
+        --title-tracking: -0.045em;
+        --top-size: clamp(78px, 10.3vw, 190px);
+        --bottom-size: clamp(108px, 13.7vw, 252px);
+        font-family: Montserrat, Inter, sans-serif;
+        font-weight: 900;
+      }
+
+      .c12 .title {
+        --title-line: 0.75;
+        --title-gap: clamp(18px, 2vw, 38px);
+        --title-tracking: -0.025em;
+        --top-size: clamp(80px, 10.4vw, 194px);
+        --bottom-size: clamp(110px, 13.8vw, 256px);
+        font-family: Unbounded, Syne, sans-serif;
+        font-weight: 800;
+      }
+
+      .c13 .title {
+        --title-line: 0.76;
+        --title-gap: clamp(18px, 2vw, 38px);
+        --title-tracking: -0.02em;
+        --top-size: clamp(78px, 10.3vw, 190px);
+        --bottom-size: clamp(108px, 13.8vw, 254px);
+        font-family: "Space Grotesk", Syne, sans-serif;
+        font-weight: 700;
+      }
+
+      .c14 .title {
+        --title-line: 0.7;
+        --title-gap: clamp(20px, 2.3vw, 44px);
+        --title-tracking: -0.045em;
+        --top-size: clamp(82px, 10.8vw, 200px);
+        --bottom-size: clamp(116px, 14.7vw, 272px);
+        font-family: "Playfair Display", Didot, serif;
+        font-weight: 900;
+      }
+
+      .c15 .title {
+        --title-line: 0.72;
+        --title-gap: clamp(18px, 2.2vw, 42px);
+        --title-tracking: -0.015em;
+        --top-size: clamp(76px, 10vw, 186px);
+        --bottom-size: clamp(106px, 13.6vw, 252px);
+        font-family: "DM Serif Display", Georgia, serif;
+        font-weight: 400;
+      }
+
+      .c16 .title {
+        --title-line: 0.78;
+        --title-gap: clamp(14px, 1.55vw, 30px);
+        --title-tracking: 0;
+        --top-size: clamp(76px, 10vw, 184px);
+        --bottom-size: clamp(106px, 13.5vw, 250px);
+        font-family: "Fjalla One", Impact, sans-serif;
+        font-weight: 400;
+      }
+
+      .c17 .title {
+        --title-line: 0.86;
+        --title-gap: clamp(10px, 1.2vw, 24px);
+        --title-tracking: -0.04em;
+        --top-size: clamp(70px, 9.3vw, 172px);
+        --bottom-size: clamp(96px, 12.2vw, 226px);
+        font-family: Notable, Impact, sans-serif;
+        font-weight: 400;
+      }
+
+      .c18 .title {
+        --title-line: 0.78;
+        --title-gap: clamp(16px, 1.8vw, 34px);
+        --title-tracking: -0.02em;
+        --top-size: clamp(76px, 10vw, 184px);
+        --bottom-size: clamp(104px, 13.2vw, 244px);
+        font-family: "Archivo Narrow", Impact, sans-serif;
+        font-weight: 700;
+      }
+
+      @media (max-width: 720px) {
+        .pageHeader {
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .grid {
+          padding: 14px;
+        }
+
+        .variant {
+          min-height: 760px;
+          border-radius: 14px;
+        }
+
+        .label {
+          top: 14px;
+          left: 14px;
+        }
+
+        .brand {
+          top: 58px;
+          font-size: clamp(28px, 7.5vw, 42px);
+        }
+
+        .title {
+          align-self: start;
+          width: 100%;
+          margin-top: 150px;
+        }
+
+        .title span {
+          font-size: clamp(40px, 12vw, 54px);
+        }
+
+        .title span + span {
+          margin-top: 0;
+          font-size: clamp(68px, 20vw, 90px);
+        }
+
+        .figure {
+          top: 47%;
+          width: min(210vw, 760px);
+        }
+
+        .caption {
+          bottom: 118px;
+          width: min(86vw, 360px);
+        }
+
+        .actions {
+          bottom: 44px;
+          width: min(86vw, 360px);
+        }
+
+        .button {
+          flex: 1;
+          min-width: 0;
+          padding: 0 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="pageHeader">
+      <h1>Syne/Sora brand with big-title combinations</h1>
+      <nav aria-label="Jump to variants">
+        <a href="#c1">C1</a>
+        <a href="#c2">C2</a>
+        <a href="#c3">C3</a>
+        <a href="#c4">C4</a>
+        <a href="#c5">C5</a>
+        <a href="#c6">C6</a>
+        <a href="#c7">C7</a>
+        <a href="#c8">C8</a>
+        <a href="#c9">C9</a>
+        <a href="#c10">C10</a>
+        <a href="#c11">C11</a>
+        <a href="#c12">C12</a>
+        <a href="#c13">C13</a>
+        <a href="#c14">C14</a>
+        <a href="#c15">C15</a>
+        <a href="#c16">C16</a>
+        <a href="#c17">C17</a>
+        <a href="#c18">C18</a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <section class="variant c1" id="c1">
+        <span class="label">C1 / Big Shoulders + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c2" id="c2">
+        <span class="label">C2 / Bebas Neue + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c3" id="c3">
+        <span class="label">C3 / Anybody variable + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption soft">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c4" id="c4">
+        <span class="label">C4 / Bodoni Moda + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c5" id="c5">
+        <span class="label">C5 / Fraunces + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption syne">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c6" id="c6">
+        <span class="label">C6 / Oswald + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c7" id="c7">
+        <span class="label">C7 / Chakra Petch + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption soft">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c8" id="c8">
+        <span class="label">C8 / Libre Caslon Condensed + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption syne">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c9" id="c9">
+        <span class="label">C9 / Barlow Condensed + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c10" id="c10">
+        <span class="label">C10 / Archivo Black + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption soft">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c11" id="c11">
+        <span class="label">C11 / Montserrat Black + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c12" id="c12">
+        <span class="label">C12 / Unbounded + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption syne">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c13" id="c13">
+        <span class="label">C13 / Space Grotesk + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c14" id="c14">
+        <span class="label">C14 / Playfair Display + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption soft">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c15" id="c15">
+        <span class="label">C15 / DM Serif Display + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption syne">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c16" id="c16">
+        <span class="label">C16 / Fjalla One + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c17" id="c17">
+        <span class="label">C17 / Notable + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption soft">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+
+      <section class="variant c18" id="c18">
+        <span class="label">C18 / Archivo Narrow + Syne/Sora</span>
+        <p class="brand">yogermeisters.</p>
+        <h2 class="title"><span>Himalayan</span><span>Yoga</span></h2>
+        <div class="figure"><img src="/assets/landing-v2/cutouts/hero-person-no-bg.png" alt=""></div>
+        <p class="caption">Between movement and stillness, there is practice</p>
+        <div class="actions"><a class="button" href="#">Book a Retreat -&gt;</a><a class="button" href="#">Book a Class -&gt;</a></div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -53,7 +53,6 @@ export default function Header({ language, setLanguage }: HeaderProps) {
         onClick={(event) => handleAnchorClick(event, '#hero')}
       >
         <img src='/assets/brand/yogermeisters-logo-black-128.png' alt='' />
-        <span>Yogermeisters</span>
       </a>
       <nav className={styles.mainNav}>
         {copy.navItems.map(({ label, href }) => (
