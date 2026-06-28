@@ -3,9 +3,9 @@
   min-height: auto;
   padding: 0;
   background:
-    linear-gradient(90deg, rgba(247, 241, 236, 0.14), rgba(247, 241, 236, 0.02) 44%, rgba(247, 241, 236, 0.24)),
+    linear-gradient(90deg, rgba(245, 238, 231, 0.14), rgba(245, 238, 231, 0.02) 44%, rgba(245, 238, 231, 0.24)),
     url("/assets/landing-v2/cutouts/classes-3-bg.png") center top / 100% 100% no-repeat,
-    #f7f1ec;
+    #f5eee7;
 }
 
 .title {
@@ -13,8 +13,11 @@
   z-index: 5;
   top: clamp(82px, 6.8vw, 108px);
   left: clamp(58px, 6.1vw, 96px);
+  font-family: var(--font-oswald);
   font-size: clamp(92px, 7.7vw, 144px);
+  font-weight: 700;
   line-height: 0.9;
+  letter-spacing: 0.01em;
 }
 
 .ornament {
@@ -26,7 +29,7 @@
   grid-template-columns: 118px 30px 118px;
   align-items: center;
   gap: 18px;
-  color: #bd9a78;
+  color: #d35f35;
   opacity: 0.86;
 }
 
@@ -95,20 +98,22 @@
 
 .cardLabel {
   display: block;
-  color: #ad825e;
+  color: #d35f35;
   text-transform: uppercase;
+  font-family: var(--font-sora);
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 500;
   letter-spacing: 0.18em;
 }
 
 .card h3 {
   max-width: 260px;
   margin: 20px 0 0;
-  font-family: var(--serif);
+  font-family: var(--font-syne);
   font-size: clamp(32px, 2.55vw, 42px);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 0.95;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   white-space: normal;
 }
@@ -118,13 +123,13 @@
   width: 58px;
   height: 1px;
   margin: 18px 0 0;
-  background: #ad825e;
+  background: #d35f35;
 }
 
 .card p {
   margin: 20px 0 0;
   color: #1f1f1f;
-  font-family: var(--serif);
+  font-family: var(--font-sora);
   font-size: clamp(36px, 3vw, 48px);
   font-weight: 400;
   line-height: 0.9;
@@ -135,8 +140,9 @@
   max-width: 272px;
   margin-top: 16px;
   color: var(--soft-ink);
+  font-family: var(--font-sora);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.55;
   display: -webkit-box;
   overflow: hidden;
@@ -145,7 +151,7 @@
 }
 
 .card:focus-visible {
-  outline: 2px solid rgba(173, 130, 94, 0.55);
+  outline: 2px solid rgba(211, 95, 53, 0.55);
   outline-offset: 4px;
 }
 
@@ -176,14 +182,14 @@
 
 .photoPlaceholder::after {
   height: 70%;
-  background: linear-gradient(180deg, transparent, rgba(255, 254, 252, 0.84));
+  background: linear-gradient(180deg, transparent, rgba(245, 238, 231, 0.84));
 }
 
 .online .photoPlaceholder::before {
   background:
-    radial-gradient(ellipse at 72% 70%, rgba(189, 147, 105, 0.28), transparent 38%),
-    repeating-linear-gradient(125deg, transparent 0 18px, rgba(173, 130, 94, 0.16) 18px 20px, transparent 20px 44px),
-    linear-gradient(180deg, transparent, rgba(232, 218, 202, 0.54));
+    radial-gradient(ellipse at 72% 70%, rgba(211, 95, 53, 0.22), transparent 38%),
+    repeating-linear-gradient(125deg, transparent 0 18px, rgba(211, 95, 53, 0.12) 18px 20px, transparent 20px 44px),
+    linear-gradient(180deg, transparent, rgba(245, 238, 231, 0.54));
 }
 
 .offline .photoPlaceholder::before {
@@ -212,9 +218,9 @@
     min-height: 0;
     padding: 96px 24px 64px;
     background:
-      linear-gradient(180deg, rgba(247, 241, 236, 0.18), rgba(247, 241, 236, 0.9) 72%, #f7f1ec 100%),
+      linear-gradient(180deg, rgba(245, 238, 231, 0.18), rgba(245, 238, 231, 0.9) 72%, #f5eee7 100%),
       url("/assets/landing-v2/cutouts/classes-3-bg.png") center 210px / min(940px, 154vw) auto no-repeat,
-      #f7f1ec;
+      #f5eee7;
   }
 
   .section::before {

@@ -12,8 +12,8 @@
   padding-bottom: clamp(40px, 4vw, 64px);
   overflow-anchor: none;
   background:
-    linear-gradient(90deg, rgba(247, 241, 236, 0.96), rgba(247, 241, 236, 0.78) 52%, rgba(247, 241, 236, 0.42)),
-    #f7f1ec;
+    linear-gradient(90deg, rgba(245, 238, 231, 0.96), rgba(245, 238, 231, 0.78) 52%, rgba(245, 238, 231, 0.42)),
+    #f5eee7;
 }
 
 .section * {
@@ -42,7 +42,7 @@
   height: 60px;
   padding: 0;
   border: 0;
-  color: rgba(173, 130, 94, 0.74);
+  color: rgba(211, 95, 53, 0.74);
   background: transparent;
   cursor: pointer;
   transition:
@@ -81,20 +81,22 @@
   height: 360px;
   margin: 0;
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--font-oswald);
   font-size: clamp(34px, 3.45vw, 58px);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.05;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
 }
 
 .practiceMeta {
   max-width: 520px;
   margin: 0;
-  color: #ad825e;
+  color: #d35f35;
   text-transform: uppercase;
+  font-family: var(--font-sora);
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 500;
   line-height: 1.55;
   letter-spacing: 0.18em;
 }
@@ -103,10 +105,10 @@
   width: 230px;
   min-width: 230px;
   margin-top: 0;
-  border-color: rgba(174, 133, 93, 0.86);
+  border-color: rgba(17, 17, 17, 0.22);
   border-radius: 999px;
-  background: rgba(255, 254, 252, 0.42);
-  color: #ad825e;
+  background: rgba(255, 255, 255, 0.52);
+  color: #111;
   box-shadow: none;
 }
 
@@ -120,8 +122,9 @@
   max-width: 620px;
   margin: clamp(26px, 2.6vw, 40px) 0 0 calc(28px + clamp(16px, 2vw, 30px));
   color: rgba(21, 21, 21, 0.5);
+  font-family: var(--font-sora);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.58;
 }
 
@@ -172,7 +175,7 @@
     height: auto;
     min-height: auto;
     padding: 96px 24px 64px;
-    background: #f7f1ec;
+    background: #f5eee7;
   }
 
   .copy {
