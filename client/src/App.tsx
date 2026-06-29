@@ -17,6 +17,9 @@ function Router() {
       <Route path="/retreats/:slug">
         {(params) => <RetreatPage slug={params.slug} language={language} setLanguage={setLanguage} />}
       </Route>
+      <Route path="/the-yoga-method">
+        <HimalayanYogaCoursePage language={language} setLanguage={setLanguage} />
+      </Route>
       <Route path="/himalayan-yoga-course">
         <HimalayanYogaCoursePage language={language} setLanguage={setLanguage} />
       </Route>

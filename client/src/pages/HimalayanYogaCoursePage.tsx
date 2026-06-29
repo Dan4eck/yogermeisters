@@ -21,6 +21,8 @@ interface CourseModule {
 interface Tariff {
   readonly label: string;
   readonly title: string;
+  readonly badge: string;
+  readonly originalPrice: string;
   readonly price: string;
   readonly description: string;
   readonly features: readonly string[];
@@ -80,13 +82,17 @@ const tariffs: readonly Tariff[] = [
   {
     label: 'Запись',
     title: 'Курс в записи',
+    badge: 'Предпродажа',
+    originalPrice: '€69',
     price: '€49',
     description: 'Самостоятельный доступ к программе курса в удобном темпе.',
-    features: ['полная программа курса', 'короткие практики на каждый день', 'медитации и йога-нидра'],
+    features: ['полная программа курса', 'практики на каждый день', 'медитации и йога-нидра'],
   },
   {
     label: 'Поток',
     title: 'Онлайн-поток',
+    badge: 'Предпродажа',
+    originalPrice: '€99',
     price: '€79',
     description: 'Групповое прохождение с поддержкой, чатом и комментариями от учителя.',
     features: ['доступ к записям', 'групповой чат', 'комментарии от преподавателя'],
@@ -95,7 +101,9 @@ const tariffs: readonly Tariff[] = [
   {
     label: 'Лично',
     title: 'Индивидуальный',
-    price: '€200',
+    badge: 'Предпродажа',
+    originalPrice: '€200',
+    price: '€180',
     description: 'Курс с двумя персональными практиками от преподавателя.',
     features: ['всё из онлайн-потока', 'две индивидуальные практики', 'персональная корректировка фокуса'],
   },
@@ -212,9 +220,15 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
                 className={`${styles.tariffCard}${tariff.isFeatured ? ` ${styles.featuredTariff}` : ''}`}
                 key={tariff.title}
               >
-                <span className={styles.tariffLabel}>{tariff.label}</span>
+                <div className={styles.tariffMeta}>
+                  <span className={styles.tariffLabel}>{tariff.label}</span>
+                  <span className={styles.presaleBadge}>{tariff.badge}</span>
+                </div>
                 <h3>{tariff.title}</h3>
-                <p className={styles.tariffPrice}>{tariff.price}</p>
+                <div className={styles.priceStack}>
+                  <span className={styles.originalPrice}>{tariff.originalPrice}</span>
+                  <p className={styles.tariffPrice}>{tariff.price}</p>
+                </div>
                 <p className={styles.tariffDescription}>{tariff.description}</p>
                 <ul>
                   {tariff.features.map((feature) => (

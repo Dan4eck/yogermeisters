@@ -84,7 +84,7 @@ type LandingCopy = {
 
 const practiceVideoSrc = 'https://www.youtube.com/embed/Z_AabfLhaHo';
 const youtubePracticeUrl = 'https://www.youtube.com/watch?v=Z_AabfLhaHo';
-const himalayanYogaCourseUrl = '/himalayan-yoga-course';
+const himalayanYogaCourseUrl = '/the-yoga-method';
 export const telegramUrl = 'https://t.me/AnastasiaPagliacci';
 
 export const contactEmail = 'hello@yogermeisters.com';
