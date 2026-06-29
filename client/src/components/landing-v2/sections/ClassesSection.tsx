@@ -52,16 +52,16 @@ export default function ClassesSection({ language }: ClassesSectionProps) {
   );
 
   return (
-    <section className={`section ${styles.section}`} id='classes' ref={sectionRef}>
+    <section className={`section ${styles.section}${language === 'ru' ? ` ${styles.ru}` : ''}`} id='classes' ref={sectionRef}>
       <div className={styles.header}>
         <h2 className={styles.title}>{copy.title}</h2>
         <TitleOrnament className={styles.ornament} />
       </div>
       <div className={styles.sliderWrap}>
         <div className={styles.track} ref={trackRef}>
-          {copy.cards.map((card) => (
+          {copy.cards.map((card, idx) => (
             <Link
-              key={card.title}
+              key={idx}
               href={card.href}
               className={styles.card}
               aria-label={card.cta}

@@ -97,15 +97,24 @@
 }
 
 .card h3 {
-  max-width: 280px;
+  max-width: 300px;
   margin: 20px 0 0;
   font-family: var(--font-syne);
-  font-size: clamp(30px, 2.4vw, 40px);
+  font-size: clamp(28px, 2.2vw, 36px);
   font-weight: 600;
   line-height: 0.96;
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
+
+.ru .card h3 {
+  font-family: var(--font-sora);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.ru {}
 
 .titleRule {
   display: block;
