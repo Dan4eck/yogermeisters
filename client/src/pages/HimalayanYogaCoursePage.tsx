@@ -25,6 +25,7 @@ interface Tariff {
   readonly originalPrice: string;
   readonly price: string;
   readonly description: string;
+  readonly note?: string;
   readonly features: readonly string[];
   readonly isFeatured?: boolean;
 }
@@ -95,6 +96,7 @@ const tariffs: readonly Tariff[] = [
     originalPrice: '€99',
     price: '€79',
     description: 'Групповое прохождение с поддержкой, чатом и комментариями от учителя.',
+    note: 'Старт потока — 24 июля.',
     features: ['доступ к записям', 'Групповые онлайн практики + чат', 'комментарии от преподавателя'],
     isFeatured: true,
   },
@@ -231,6 +233,7 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
                   <p className={styles.tariffPrice}>{tariff.price}</p>
                 </div>
                 <p className={styles.tariffDescription}>{tariff.description}</p>
+                {tariff.note ? <p className={styles.tariffNote}>{tariff.note}</p> : null}
                 <ul>
                   {tariff.features.map((feature) => (
                     <li key={feature}>

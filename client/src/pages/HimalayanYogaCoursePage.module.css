@@ -455,6 +455,15 @@
   line-height: 1.6;
 }
 
+.tariffNote {
+  margin: -8px 0 0;
+  color: #d35f35;
+  font-family: var(--font-sora);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
 .tariffButton {
   width: 100%;
   margin-top: 8px;
