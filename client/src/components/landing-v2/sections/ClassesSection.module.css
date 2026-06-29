@@ -1,41 +1,35 @@
 .section {
-  aspect-ratio: 16 / 9;
-  min-height: auto;
+  min-height: 100svh;
   padding: 0;
-  background:
-    linear-gradient(90deg, rgba(245, 238, 231, 0.14), rgba(245, 238, 231, 0.02) 44%, rgba(245, 238, 231, 0.24)),
-    url("/assets/landing-v2/cutouts/classes-3-bg.png") center top / 100% 100% no-repeat,
-    #f5eee7;
+  display: flex;
+  flex-direction: column;
+  background: #f5eee7;
+  overflow: hidden;
+}
+
+.header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2vw, 32px);
+  padding: clamp(86px, 8vw, 122px) clamp(18px, 4.8vw, 82px) 0;
 }
 
 .title {
-  position: absolute;
-  z-index: 5;
-  top: clamp(82px, 6.8vw, 108px);
-  left: clamp(58px, 6.1vw, 96px);
+  margin: 0;
   font-family: var(--font-oswald);
-  font-size: clamp(92px, 7.7vw, 144px);
+  font-size: clamp(48px, 4.2vw, 82px);
   font-weight: 700;
   line-height: 0.9;
   letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .ornament {
-  position: absolute;
-  z-index: 5;
-  top: clamp(250px, 20.8vw, 342px);
-  left: clamp(82px, 8vw, 130px);
-  display: grid;
-  grid-template-columns: 118px 30px 118px;
-  align-items: center;
-  gap: 18px;
   color: #d35f35;
   opacity: 0.86;
-}
-
-.ornament span {
-  height: 1px;
-  background: currentColor;
+  flex: 0 0 auto;
 }
 
 .ornament svg {
@@ -44,56 +38,52 @@
   stroke-width: 1.45;
 }
 
-.card {
-  position: absolute;
-  z-index: 6;
-  top: auto;
-  bottom: clamp(44px, 4.8vw, 76px);
-  display: grid;
-  align-content: space-between;
-  width: clamp(318px, 23.8vw, 360px);
-  height: clamp(318px, 24.4vw, 360px);
-  min-width: 0;
-  padding: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 18px;
+.sliderWrap {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
   overflow: hidden;
-  background:
-    linear-gradient(145deg, rgba(255, 254, 252, 0.9), rgba(255, 254, 252, 0.64)),
-    var(--panel);
-  box-shadow: 0 28px 84px rgba(68, 59, 49, 0.12);
-  backdrop-filter: blur(18px);
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease;
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  border: 1px solid rgba(21, 21, 21, 0.07);
-  border-radius: 14px;
-  pointer-events: none;
+.track {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 clamp(18px, 4.8vw, 82px);
+  will-change: transform;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  width: clamp(300px, 26vw, 380px);
+  height: clamp(400px, 52vh, 480px);
+  padding: clamp(28px, 2.5vw, 40px);
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.52);
+  box-shadow: 0 24px 74px rgba(68, 59, 49, 0.1);
+  backdrop-filter: blur(12px);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 82px rgba(68, 59, 49, 0.15);
-}
-
-.cardLeft {
-  left: clamp(58px, 6.1vw, 96px);
-}
-
-.cardRight {
-  left: calc(clamp(58px, 6.1vw, 96px) + clamp(318px, 23.8vw, 360px) + 24px);
-  right: auto;
+  transform: translateY(-6px);
+  border-color: rgba(211, 95, 53, 0.5);
+  box-shadow: 0 34px 88px rgba(68, 59, 49, 0.16);
 }
 
 .cardCopy {
   position: relative;
-  z-index: 3;
+  z-index: 2;
 }
 
 .cardLabel {
@@ -107,15 +97,14 @@
 }
 
 .card h3 {
-  max-width: 260px;
+  max-width: 280px;
   margin: 20px 0 0;
   font-family: var(--font-syne);
-  font-size: clamp(32px, 2.55vw, 42px);
+  font-size: clamp(30px, 2.4vw, 40px);
   font-weight: 600;
-  line-height: 0.95;
+  line-height: 0.96;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  white-space: normal;
 }
 
 .titleRule {
@@ -126,174 +115,130 @@
   background: #d35f35;
 }
 
-.card p {
-  margin: 20px 0 0;
+.cardPrice {
+  margin: 24px 0 0;
   color: #1f1f1f;
   font-family: var(--font-sora);
-  font-size: clamp(36px, 3vw, 48px);
+  font-size: clamp(32px, 2.6vw, 44px);
   font-weight: 400;
   line-height: 0.9;
 }
 
 .card small {
   display: block;
-  max-width: 272px;
-  margin-top: 16px;
+  max-width: 280px;
+  margin-top: 18px;
   color: var(--soft-ink);
   font-family: var(--font-sora);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.55;
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
 
-.card:focus-visible {
-  outline: 2px solid rgba(211, 95, 53, 0.55);
-  outline-offset: 4px;
+.cardCta {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 28px;
+  border: 1px solid rgba(17, 17, 17, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.52);
+  color: #111;
+  text-transform: uppercase;
+  font-family: var(--font-sora);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
 }
 
-.photoPlaceholder {
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 52%;
-  pointer-events: none;
-}
-
-.photoPlaceholder::before,
-.photoPlaceholder::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  pointer-events: none;
-}
-
-.photoPlaceholder::before {
-  height: 100%;
-  opacity: 0.58;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 100%);
-}
-
-.photoPlaceholder::after {
-  height: 70%;
-  background: linear-gradient(180deg, transparent, rgba(245, 238, 231, 0.84));
-}
-
-.online .photoPlaceholder::before {
-  background:
-    radial-gradient(ellipse at 72% 70%, rgba(211, 95, 53, 0.22), transparent 38%),
-    repeating-linear-gradient(125deg, transparent 0 18px, rgba(211, 95, 53, 0.12) 18px 20px, transparent 20px 44px),
-    linear-gradient(180deg, transparent, rgba(245, 238, 231, 0.54));
-}
-
-.offline .photoPlaceholder::before {
-  background:
-    radial-gradient(ellipse at 76% 72%, rgba(100, 114, 91, 0.28), transparent 42%),
-    repeating-linear-gradient(110deg, transparent 0 18px, rgba(91, 111, 88, 0.18) 18px 21px, transparent 21px 46px),
-    linear-gradient(180deg, transparent, rgba(154, 163, 139, 0.42));
-}
-
-@media (max-width: 1180px) and (min-width: 941px) {
-  .card {
-    width: 310px;
-    height: 318px;
-    padding: 22px;
-  }
-
-  .cardRight {
-    left: calc(clamp(58px, 6.1vw, 96px) + 334px);
-  }
+.card:hover .cardCta {
+  background: #151515;
+  border-color: #151515;
+  color: #fff;
 }
 
 @media (max-width: 940px) {
   .section {
-    display: block;
-    aspect-ratio: auto;
-    min-height: 0;
-    padding: 96px 24px 64px;
-    background:
-      linear-gradient(180deg, rgba(245, 238, 231, 0.18), rgba(245, 238, 231, 0.9) 72%, #f5eee7 100%),
-      url("/assets/landing-v2/cutouts/classes-3-bg.png") center 210px / min(940px, 154vw) auto no-repeat,
-      #f5eee7;
+    min-height: auto;
+    padding: 96px 0 64px;
   }
 
-  .section::before {
-    display: none;
-  }
-
-  .section::after {
-    z-index: 0;
-  }
-
-  .ornament {
-    display: none;
-  }
-
-  .title,
-  .card {
-    position: relative;
-    inset: auto;
-    z-index: 5;
-    display: revert;
-    width: auto;
-    max-width: none;
-    margin-left: 0;
-    margin-right: 0;
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 24px;
   }
 
   .title {
-    margin-top: 24px;
-    margin-bottom: clamp(320px, 70vw, 460px);
-    font-size: clamp(50px, 14vw, 86px);
-    line-height: 0.94;
+    font-size: clamp(36px, 11vw, 56px);
+    white-space: normal;
+  }
+
+  .sliderWrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .track {
+    padding: 34px 24px 0;
+    gap: 16px;
+    will-change: auto;
   }
 
   .card {
-    display: grid;
-    width: 100%;
-    height: 376px;
-    min-height: 0;
-    padding: 28px;
+    width: 280px;
+    height: auto;
+    min-height: 400px;
+    scroll-snap-align: start;
   }
 
-  .cardLeft {
-    margin-top: 0;
+  .card h3 {
+    font-size: clamp(26px, 7vw, 32px);
   }
 
-  .card + .card {
-    margin-top: 16px;
+  .cardPrice {
+    font-size: clamp(28px, 8vw, 36px);
   }
 }
 
 @media (max-width: 560px) {
   .section {
-    padding: 94px 18px 58px;
+    padding: 94px 0 58px;
+  }
+
+  .header {
+    padding: 0 18px;
   }
 
   .title {
-    font-size: clamp(52px, 14vw, 64px);
-    margin-bottom: clamp(300px, 82vw, 380px);
+    font-size: clamp(32px, 9vw, 44px);
+  }
+
+  .track {
+    padding: 28px 18px 0;
+    gap: 14px;
   }
 
   .card {
-    height: auto;
-    min-height: 342px;
+    width: 260px;
+    min-height: 380px;
     padding: 24px;
     border-radius: 14px;
   }
 
-  .card h3 {
-    font-size: clamp(28px, 8.8vw, 36px);
-    line-height: 1;
-  }
-
-  .card p {
-    font-size: clamp(31px, 10vw, 40px);
+  .cardCta {
+    width: 100%;
+    align-self: stretch;
   }
 }

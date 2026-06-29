@@ -34,12 +34,12 @@ export type RetreatCard = {
 };
 
 export type ClassCard = {
-  placement: "left" | "right";
   label: string;
   title: string;
   price: string;
   description: string;
   cta: string;
+  href: AnchorHref;
 };
 
 export type PracticeBenefit = {
