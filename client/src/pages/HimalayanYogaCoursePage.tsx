@@ -110,6 +110,7 @@ const tariffs: readonly Tariff[] = [
 ];
 
 const courseVideoSrc = 'https://4c312672-588a-49d9-9475-4f2a2f2b54e4.selstorage.ru/course-website_1.mp4';
+const courseVideoPosterSrc = '/assets/landing-v2/course-video-poster.jpg';
 
 export default function HimalayanYogaCoursePage({ language, setLanguage }: HimalayanYogaCoursePageProps) {
   const handleTelegramClick = (): void => {
@@ -141,7 +142,7 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
 
           <div className={styles.heroMedia}>
             <div className={styles.heroVideo} aria-label='Видео-пример курса'>
-              <video controls playsInline preload='metadata' src={courseVideoSrc}>
+              <video controls playsInline poster={courseVideoPosterSrc} preload='metadata' src={courseVideoSrc}>
                 Ваш браузер не поддерживает видео.
               </video>
             </div>
