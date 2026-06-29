@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'wouter';
 import { ArrowLeft, Check, ExternalLink } from 'lucide-react';
 
@@ -115,6 +116,10 @@ const courseVideoSrc = 'https://4c312672-588a-49d9-9475-4f2a2f2b54e4.selstorage.
 const courseVideoPosterSrc = '/assets/landing-v2/course-video-poster.jpg';
 
 export default function HimalayanYogaCoursePage({ language, setLanguage }: HimalayanYogaCoursePageProps) {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   const handleTelegramClick = (): void => {
     openExternal(telegramUrl);
   };
@@ -127,7 +132,7 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
         <div className={styles.topbar}>
           <Link href='/#classes' className={styles.backLink}>
             <ArrowLeft aria-hidden='true' />
-            К занятиям
+            На главную
           </Link>
         </div>
 

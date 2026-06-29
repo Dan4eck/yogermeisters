@@ -381,6 +381,26 @@
   border-color: rgba(211, 95, 53, 0.44);
   background:
     linear-gradient(145deg, rgba(255, 254, 252, 0.92), rgba(239, 211, 176, 0.58));
+  animation: featuredTariffPulse 3.6s ease-in-out infinite;
+}
+
+@keyframes featuredTariffPulse {
+  0%,
+  100% {
+    box-shadow: 0 24px 70px rgba(68, 59, 49, 0.1), 0 0 0 rgba(211, 95, 53, 0);
+    transform: translateY(0);
+  }
+
+  50% {
+    box-shadow: 0 30px 84px rgba(68, 59, 49, 0.14), 0 0 0 8px rgba(211, 95, 53, 0.08);
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featuredTariff {
+    animation: none;
+  }
 }
 
 .tariffMeta {
