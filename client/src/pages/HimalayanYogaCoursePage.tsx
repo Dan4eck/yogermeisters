@@ -109,7 +109,7 @@ const tariffs: readonly Tariff[] = [
   },
 ];
 
-const courseVideoSrc = 'https://4c312672-588a-49d9-9475-4f2a2f2b54e4.selstorage.ru/course-website_1.mp4';
+const courseVideoSrc = 'https://4c312672-588a-49d9-9475-4f2a2f2b54e4.selstorage.ru/course-website_2.mp4';
 const courseVideoPosterSrc = '/assets/landing-v2/course-video-poster.jpg';
 
 export default function HimalayanYogaCoursePage({ language, setLanguage }: HimalayanYogaCoursePageProps) {
