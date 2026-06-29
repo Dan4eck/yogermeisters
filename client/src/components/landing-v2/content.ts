@@ -84,6 +84,7 @@ type LandingCopy = {
 
 const practiceVideoSrc = 'https://www.youtube.com/embed/Z_AabfLhaHo';
 const youtubePracticeUrl = 'https://www.youtube.com/watch?v=Z_AabfLhaHo';
+const himalayanYogaCourseUrl = '/himalayan-yoga-course';
 export const telegramUrl = 'https://t.me/AnastasiaPagliacci';
 
 export const contactEmail = 'hello@yogermeisters.com';
@@ -165,7 +166,7 @@ export const landingCopy = {
           description:
             'A structured online course covering the foundations of Himalayan yoga with pranayama, biomechanics and meditation.',
           cta: 'Learn more',
-          href: youtubePracticeUrl,
+          href: himalayanYogaCourseUrl,
         },
         {
           label: 'Online',
@@ -355,7 +356,7 @@ export const landingCopy = {
           description:
             'Структурированный онлайн-курс по основам гималайской йоги: пранаяма, биомеханика и медитация в удобном темпе.',
           cta: 'Узнать подробнее',
-          href: youtubePracticeUrl,
+          href: himalayanYogaCourseUrl,
         },
         {
           label: 'Онлайн',

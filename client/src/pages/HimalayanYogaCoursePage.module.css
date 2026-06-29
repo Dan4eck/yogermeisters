@@ -1,0 +1,514 @@
+.page {
+  min-height: 100vh;
+}
+
+.main {
+  padding: 124px clamp(24px, 5vw, 76px) 82px;
+}
+
+.topbar,
+.hero,
+.introSection,
+.resultsSection,
+.programSection,
+.tariffsSection {
+  max-width: 1180px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.topbar {
+  margin-bottom: 28px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--soft-ink);
+  text-transform: uppercase;
+  font-family: var(--font-sora);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.backLink svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.9;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.62fr) minmax(560px, 1fr);
+  gap: clamp(28px, 4.4vw, 64px);
+  align-items: center;
+}
+
+.heroCopy {
+  display: grid;
+  align-content: end;
+}
+
+.eyebrow,
+.tariffLabel {
+  color: #d35f35;
+  text-transform: uppercase;
+  font-family: var(--font-sora);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.courseName {
+  color: #d35f35;
+  font-family: var(--font-syne);
+  font-size: clamp(25px, 2.7vw, 42px);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+}
+
+.hero h1,
+.introCopy h2,
+.resultsSection h2,
+.sectionHeader h2 {
+  margin: 0;
+  font-family: var(--font-oswald);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 520px;
+  margin-top: 22px;
+  font-size: clamp(42px, 4.35vw, 68px);
+}
+
+.heroCopy p {
+  max-width: 520px;
+  margin: 24px 0 0;
+  color: #292827;
+  font-family: var(--font-sora);
+  font-size: clamp(16px, 1.08vw, 18px);
+  font-weight: 400;
+  line-height: 1.68;
+}
+
+.heroMedia {
+  display: grid;
+  gap: 18px;
+  align-self: start;
+  padding-top: clamp(14px, 2.2vw, 30px);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: flex-start;
+  margin-top: 34px;
+}
+
+.mobileActions {
+  display: none;
+}
+
+.primaryButton,
+.secondaryButton,
+.tariffButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  font-family: var(--font-sora);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+.primaryButton,
+.tariffButton {
+  gap: 14px;
+  border: 1px solid #151515;
+  background: #151515;
+  color: #fff;
+}
+
+.primaryButton span,
+.tariffButton span {
+  color: #fff;
+}
+
+.secondaryButton {
+  border: 1px solid var(--line);
+  background: rgba(255, 254, 252, 0.58);
+  color: #151515;
+}
+
+.secondaryButton span {
+  color: #151515;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.tariffButton:hover {
+  transform: translateY(-2px);
+}
+
+.heroVideo {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(211, 95, 53, 0.12), transparent 32%),
+    linear-gradient(145deg, rgba(255, 254, 252, 0.84), rgba(230, 217, 202, 0.58)),
+    rgba(255, 254, 252, 0.66);
+  box-shadow: 0 28px 84px rgba(68, 59, 49, 0.12);
+}
+
+.heroVideo video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.introSection,
+.resultsSection,
+.programSection,
+.tariffsSection {
+  margin-top: clamp(58px, 8vw, 108px);
+}
+
+.introSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.introCopy,
+.fitPanel,
+.resultCard,
+.moduleCard,
+.tariffCard {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 18px;
+  background: rgba(255, 254, 252, 0.72);
+  box-shadow: 0 24px 70px rgba(68, 59, 49, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.introCopy {
+  padding: clamp(30px, 5vw, 54px);
+}
+
+.introCopy h2,
+.resultsSection h2,
+.sectionHeader h2 {
+  font-size: clamp(38px, 4.8vw, 72px);
+}
+
+.introCopy p {
+  max-width: 760px;
+  margin: 24px 0 0;
+  color: #292827;
+  font-family: var(--font-sora);
+  font-size: clamp(16px, 1.18vw, 20px);
+  line-height: 1.74;
+}
+
+.fitPanel {
+  display: grid;
+  align-content: end;
+  padding: clamp(28px, 4vw, 42px);
+  background:
+    linear-gradient(145deg, rgba(255, 254, 252, 0.86), rgba(239, 211, 176, 0.62));
+}
+
+.fitPanel span {
+  color: #d35f35;
+  text-transform: uppercase;
+  font-family: var(--font-sora);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.fitPanel p {
+  margin: 18px 0 0;
+  color: #151515;
+  font-family: var(--font-sora);
+  font-size: clamp(19px, 1.8vw, 28px);
+  line-height: 1.42;
+}
+
+.resultsSection {
+  display: grid;
+  gap: 30px;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.resultCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 104px;
+  padding: 24px;
+}
+
+.resultCard svg,
+.moduleCard li svg,
+.tariffCard li svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  color: #d35f35;
+  stroke-width: 2;
+}
+
+.resultCard p {
+  margin: 0;
+  color: #292827;
+  font-family: var(--font-sora);
+  font-size: clamp(17px, 1.25vw, 20px);
+  line-height: 1.5;
+}
+
+.programSection,
+.tariffsSection {
+  display: grid;
+  gap: 30px;
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 14px;
+  max-width: 820px;
+}
+
+.modules {
+  display: grid;
+  gap: 18px;
+}
+
+.moduleCard {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.46fr) minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 48px);
+  padding: clamp(26px, 4.6vw, 48px);
+}
+
+.moduleHeader span {
+  color: rgba(211, 95, 53, 0.16);
+  font-family: var(--font-oswald);
+  font-size: clamp(72px, 9vw, 132px);
+  font-weight: 700;
+  line-height: 0.82;
+}
+
+.moduleHeader h3,
+.tariffCard h3 {
+  margin: 18px 0 0;
+  color: #151515;
+  font-family: var(--font-sora);
+  font-size: clamp(22px, 2vw, 32px);
+  font-weight: 500;
+  line-height: 1.12;
+}
+
+.moduleCard ul,
+.tariffCard ul {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.moduleCard li,
+.tariffCard li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #292827;
+  font-family: var(--font-sora);
+  line-height: 1.5;
+}
+
+.moduleCard li {
+  font-size: clamp(18px, 1.34vw, 21px);
+}
+
+.tariffCard li {
+  font-size: clamp(15px, 1.1vw, 18px);
+}
+
+.tariffGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tariffCard {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+  padding: clamp(26px, 3.6vw, 38px);
+}
+
+.featuredTariff {
+  border-color: rgba(211, 95, 53, 0.44);
+  background:
+    linear-gradient(145deg, rgba(255, 254, 252, 0.92), rgba(239, 211, 176, 0.58));
+}
+
+.tariffCard h3 {
+  margin-top: 0;
+}
+
+.tariffPrice {
+  margin: 0;
+  color: #151515;
+  font-family: var(--font-oswald);
+  font-size: clamp(54px, 6vw, 84px);
+  font-weight: 700;
+  line-height: 0.9;
+}
+
+.tariffDescription {
+  margin: 0;
+  color: #292827;
+  font-family: var(--font-sora);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.tariffButton {
+  width: 100%;
+  margin-top: 8px;
+  font: inherit;
+  font-family: var(--font-sora);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tariffButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 980px) {
+  .main {
+    padding: 100px 18px 64px;
+  }
+
+  .hero,
+  .introSection,
+  .moduleCard,
+  .tariffGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroVideo {
+    max-width: 760px;
+  }
+
+  .desktopActions {
+    display: none;
+  }
+
+  .mobileActions {
+    display: flex;
+    margin-top: 4px;
+  }
+
+  .resultsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 620px) {
+  .topbar {
+    margin-bottom: 22px;
+  }
+
+  .hero {
+    gap: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 11.2vw, 50px);
+  }
+
+  .heroActions {
+    display: flex;
+    justify-content: center;
+  }
+
+  .desktopActions {
+    display: none;
+  }
+
+  .mobileActions {
+    display: flex;
+    justify-content: center;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    flex: 0 1 auto;
+    min-height: 68px;
+    padding-right: 24px;
+    padding-left: 24px;
+    font-size: 15px;
+  }
+
+  .heroVideo {
+    border-radius: 14px;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .resultCard {
+    justify-content: flex-start;
+    min-height: 92px;
+    padding: 20px 22px;
+    text-align: left;
+  }
+
+  .resultCard p {
+    font-size: clamp(20px, 5.2vw, 24px);
+    line-height: 1.34;
+  }
+
+  .moduleCard,
+  .introCopy,
+  .fitPanel,
+  .tariffCard {
+    border-radius: 14px;
+  }
+}
