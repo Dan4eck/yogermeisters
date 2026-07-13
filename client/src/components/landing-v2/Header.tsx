@@ -67,6 +67,13 @@ export default function Header({ language, setLanguage }: HeaderProps) {
         ))}
       </nav>
       <div className={styles.headerActions}>
+        <div className={styles.mobileSocials} aria-label={copy.hero.socialsLabel}>
+          {copy.hero.socials.map(({ label, href, icon: Icon }) => (
+            <a href={href} aria-label={label} key={label} target='_blank' rel='noreferrer'>
+              <Icon aria-hidden='true' />
+            </a>
+          ))}
+        </div>
         <button
           type='button'
           className={styles.languageButton}

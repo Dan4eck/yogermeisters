@@ -1,4 +1,4 @@
-import { CalendarDays, Flower2, Mail, Send, Youtube } from 'lucide-react';
+import { CalendarDays, Flower2, Send, Youtube } from 'lucide-react';
 
 import type { Language } from '@/lib/i18n';
 import type { AnchorHref, ClassCard, HeroAction, NavItem, PracticeBenefit, PracticeVideo, SocialLink } from './types';
@@ -67,6 +67,9 @@ type LandingCopy = {
   readonly practice: {
     readonly title: string;
     readonly description: string;
+    readonly primaryCta: string;
+    readonly secondaryCta: string;
+    readonly sequence: readonly [string, string, string];
     readonly frameLabel: string;
     readonly benefitsLabel: string;
     readonly benefits: readonly PracticeBenefit[];
@@ -74,6 +77,16 @@ type LandingCopy = {
   };
   readonly bodhisattvaCta: {
     readonly title: string;
+    readonly description: string;
+    readonly practiceTitle: string;
+    readonly practiceText: string;
+    readonly practiceCta: string;
+    readonly retreatTitle: string;
+    readonly retreatText: string;
+    readonly retreatCta: string;
+    readonly helpText: string;
+    readonly helpCta: string;
+    readonly location: string;
     readonly portraitAlt: string;
     readonly previousLabel: string;
     readonly nextLabel: string;
@@ -83,11 +96,9 @@ type LandingCopy = {
 };
 
 const practiceVideoSrc = 'https://www.youtube.com/embed/Z_AabfLhaHo';
-const youtubePracticeUrl = 'https://www.youtube.com/watch?v=Z_AabfLhaHo';
+export const youtubePracticeUrl = 'https://www.youtube.com/watch?v=Z_AabfLhaHo';
 const himalayanYogaCourseUrl = '/the-yoga-method';
 export const telegramUrl = 'https://t.me/AnastasiaPagliacci';
-
-export const contactEmail = 'hello@yogermeisters.com';
 
 export const landingCopy = {
   en: {
@@ -134,7 +145,6 @@ export const landingCopy = {
       socials: [
         { label: 'Telegram', href: telegramUrl, icon: Send },
         { label: 'YouTube', href: youtubePracticeUrl, icon: Youtube },
-        { label: 'Email', href: `mailto:${contactEmail}`, icon: Mail },
       ],
     },
     retreats: {
@@ -220,9 +230,12 @@ export const landingCopy = {
       ],
     },
     practice: {
-      title: 'How practice with me works',
+      title: 'Feel the method before your first class',
       description:
-        'Each session is a complete practice. We begin with a warm-up and breathwork to either calm or activate the nervous system, then move through every direction of mobility. Depending on the focus, the practice may deepen strength, flexibility, backbends, splits, or a specific part of the body.',
+        'Begin with this guided practice for breath, mobility, and steady strength. It is a simple way to meet my approach and notice how it feels in your own body.',
+      primaryCta: 'Try the practice',
+      secondaryCta: 'Book a private class',
+      sequence: ['Breath', 'Movement', 'Integration'],
       frameLabel: 'YouTube practice video',
       benefitsLabel: 'Practice benefits',
       benefits: [
@@ -248,7 +261,18 @@ export const landingCopy = {
       },
     },
     bodhisattvaCta: {
-      title: 'Choose the next step while the conditions are here',
+      title: 'Choose the format that fits you now',
+      description:
+        'Start with personal guidance or step away from the everyday rhythm for a deeper retreat experience.',
+      practiceTitle: 'Personal practice',
+      practiceText: 'Online or in Prague — with attention to your body, goals, and current level.',
+      practiceCta: 'Book a class',
+      retreatTitle: 'Retreat',
+      retreatText: 'Several days of practice, nature, and space to return to yourself.',
+      retreatCta: 'Explore retreats',
+      helpText: 'Not sure which format to choose? Write to me — I will answer personally and help you decide.',
+      helpCta: 'Write in Telegram',
+      location: 'Prague · Online · Retreats',
       portraitAlt: 'Yoga teacher Nastya near a bamboo wall',
       previousLabel: 'Show previous practice',
       nextLabel: 'Show next practice',
@@ -324,7 +348,6 @@ export const landingCopy = {
       socials: [
         { label: 'Telegram', href: telegramUrl, icon: Send },
         { label: 'YouTube', href: youtubePracticeUrl, icon: Youtube },
-        { label: 'Электронная почта', href: `mailto:${contactEmail}`, icon: Mail },
       ],
     },
     retreats: {
@@ -410,9 +433,12 @@ export const landingCopy = {
       ],
     },
     practice: {
-      title: 'Как устроена практика со мной',
+      title: 'Почувствуйте метод до первого занятия',
       description:
-        'Каждая встреча — это полноценная практика. Мы начинаем с разминки и дыхания, чтобы успокоить или активировать нервную систему, затем проходим разные направления подвижности. В зависимости от фокуса практика может углублять силу, гибкость, прогибы, шпагаты или работу с конкретной частью тела.',
+        'Начните с практики на дыхание, подвижность и устойчивую силу. Это простой способ познакомиться с моим подходом и почувствовать его на собственном теле.',
+      primaryCta: 'Попробовать практику',
+      secondaryCta: 'Записаться на индивидуальное занятие',
+      sequence: ['Дыхание', 'Движение', 'Интеграция'],
       frameLabel: 'Видео практики на YouTube',
       benefitsLabel: 'Польза практики',
       benefits: [
@@ -438,7 +464,18 @@ export const landingCopy = {
       },
     },
     bodhisattvaCta: {
-      title: 'Выберите следующий шаг, пока условия уже есть',
+      title: 'Выберите формат, который подходит вам сейчас',
+      description:
+        'Начните с персонального сопровождения или выйдите из повседневного ритма ради более глубокого опыта ретрита.',
+      practiceTitle: 'Личная практика',
+      practiceText: 'Онлайн или в Праге — с вниманием к вашему телу, задаче и текущему уровню.',
+      practiceCta: 'Записаться на занятие',
+      retreatTitle: 'Ретрит',
+      retreatText: 'Несколько дней практики, природы и пространства для возвращения к себе.',
+      retreatCta: 'Посмотреть ретриты',
+      helpText: 'Не знаете, какой формат выбрать? Напишите мне — я отвечу лично и помогу определиться.',
+      helpCta: 'Написать в Telegram',
+      location: 'Прага · Онлайн · Ретриты',
       portraitAlt: 'Преподаватель йоги Настя у бамбуковой стены',
       previousLabel: 'Показать предыдущую практику',
       nextLabel: 'Показать следующую практику',

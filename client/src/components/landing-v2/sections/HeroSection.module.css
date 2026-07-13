@@ -218,6 +218,10 @@
 }
 
 @media (max-width: 940px) {
+  .socials {
+    display: none;
+  }
+
   .section {
     min-height: 100svh;
     padding: 86px 18px 28px;

@@ -1,5 +1,6 @@
 import type { Language } from '@/lib/i18n';
-import { landingCopy } from '../content';
+import { landingCopy, youtubePracticeUrl } from '../content';
+import { ButtonLink } from '../ui';
 import styles from './PracticeVideoSection.module.css';
 
 interface PracticeVideoSectionProps {
@@ -14,26 +15,32 @@ export default function PracticeVideoSection({ language }: PracticeVideoSectionP
       <div className={styles.copy}>
         <h2>{copy.title}</h2>
         <p>{copy.description}</p>
+        <div className={styles.actions}>
+          <ButtonLink className={styles.primaryButton} href={youtubePracticeUrl} icon={null}>
+            {copy.primaryCta}
+          </ButtonLink>
+          <ButtonLink className={styles.secondaryButton} href='#classes' icon={null}>
+            {copy.secondaryCta}
+          </ButtonLink>
+        </div>
       </div>
-      <div className={`${styles.frame} surface-panel`} aria-label={copy.frameLabel}>
-        <iframe
-          src={copy.video.src}
-          title={copy.video.title}
-          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-          allowFullScreen
-        ></iframe>
-      </div>
-      <div className={styles.benefits} aria-label={copy.benefitsLabel}>
-        {copy.benefits.map(({ accent, title, text }, index) => (
-          <article className={`${styles.benefitCard} ${styles[`benefitCard${index + 1}`]}`} key={title}>
-            <span className={styles.benefitGhost} aria-hidden='true'>
-              {accent}
-            </span>
-            <h3>{title}</h3>
-            <span className={styles.titleRule}></span>
-            <p>{text}</p>
-          </article>
-        ))}
+      <div className={styles.media}>
+        <div className={styles.frame} aria-label={copy.frameLabel}>
+          <iframe
+            src={copy.video.src}
+            title={copy.video.title}
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+            allowFullScreen
+          ></iframe>
+        </div>
+        <ol className={styles.sequence} aria-label={copy.benefitsLabel}>
+          {copy.sequence.map((item, index) => (
+            <li key={item}>
+              <span>0{index + 1}</span>
+              {item}
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

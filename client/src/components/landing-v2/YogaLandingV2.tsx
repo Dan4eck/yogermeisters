@@ -4,6 +4,7 @@ import { scrollToAnchor } from '@/lib/scroll-to-anchor';
 import type { Language } from '@/lib/i18n';
 import Header from './Header';
 import BodhisattvaCtaSection from './sections/BodhisattvaCtaSection';
+import BodhisattvaInterlude from './sections/BodhisattvaInterlude';
 import ClassesSection from './sections/ClassesSection';
 import HeroSection from './sections/HeroSection';
 import HimalayanSection from './sections/HimalayanSection';
@@ -57,6 +58,7 @@ export default function YogaLandingV2({ language, setLanguage }: YogaLandingV2Pr
         <ClassesSection language={language} />
         <HimalayanSection language={language} />
         <PracticeVideoSection language={language} />
+        <BodhisattvaInterlude language={language} />
         <BodhisattvaCtaSection language={language} />
       </main>
     </div>

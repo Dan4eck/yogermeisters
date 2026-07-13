@@ -71,6 +71,10 @@
   font-weight: 600;
 }
 
+.mobileSocials {
+  display: none;
+}
+
 
 .languageButton {
   display: inline-flex;
@@ -143,6 +147,29 @@
 
   .headerActions {
     display: flex;
+    gap: 10px;
+  }
+
+  .mobileSocials {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mobileSocials a {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--ink);
+  }
+
+  .mobileSocials svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.8;
   }
 
   .menuButton {
@@ -190,5 +217,23 @@
   .menuButton {
     width: 38px;
     height: 38px;
+  }
+
+  .headerActions {
+    gap: 7px;
+  }
+
+  .mobileSocials {
+    gap: 4px;
+  }
+
+  .mobileSocials a {
+    width: 28px;
+    height: 28px;
+  }
+
+  .mobileSocials svg {
+    width: 14px;
+    height: 14px;
   }
 }
