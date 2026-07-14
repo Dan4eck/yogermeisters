@@ -105,10 +105,9 @@ export const telegramUrl = 'https://t.me/AnastasiaPagliacci';
 export const landingCopy = {
   en: {
     navItems: [
-      { label: 'About', href: '#hero' },
       { label: 'Retreats', href: '#retreats' },
       { label: 'Classes', href: '#classes' },
-      { label: 'Online', href: '#online' },
+      { label: 'About', href: '#about' },
       { label: 'Practice', href: '#practice' },
     ],
     header: {
@@ -309,10 +308,9 @@ export const landingCopy = {
   },
   ru: {
     navItems: [
-      { label: 'О проекте', href: '#hero' },
       { label: 'Ретриты', href: '#retreats' },
       { label: 'Занятия', href: '#classes' },
-      { label: 'Онлайн', href: '#online' },
+      { label: 'О проекте', href: '#about' },
       { label: 'Практика', href: '#practice' },
     ],
     header: {

@@ -17,7 +17,7 @@ export default function HimalayanSection({ language }: HimalayanSectionProps) {
   const [titleTop, titleBottom] = copy.titleLines;
 
   return (
-    <section className={`section ${styles['himalayan-section']}`} id='online'>
+    <section className={`section ${styles['himalayan-section']}`} id='about'>
       <div className={styles['himalayan-copy']}>
         <h2>
           {titleTop}
