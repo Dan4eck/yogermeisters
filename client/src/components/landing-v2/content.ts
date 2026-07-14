@@ -1,7 +1,8 @@
-import { CalendarDays, Flower2, Send, Youtube } from 'lucide-react';
+import { CalendarDays, Send, Youtube } from 'lucide-react';
 
 import type { Language } from '@/lib/i18n';
 import type { AnchorHref, ClassCard, HeroAction, NavItem, PracticeBenefit, PracticeVideo, SocialLink } from './types';
+import VajraIcon from './VajraIcon';
 
 type PracticeDetail = {
   readonly label: string;
@@ -77,15 +78,16 @@ type LandingCopy = {
   };
   readonly bodhisattvaCta: {
     readonly title: string;
-    readonly description: string;
     readonly practiceTitle: string;
     readonly practiceText: string;
     readonly practiceCta: string;
     readonly retreatTitle: string;
     readonly retreatText: string;
     readonly retreatCta: string;
+    readonly courseTitle: string;
+    readonly courseText: string;
+    readonly courseCta: string;
     readonly helpText: string;
-    readonly helpCta: string;
     readonly location: string;
     readonly portraitAlt: string;
     readonly previousLabel: string;
@@ -138,7 +140,7 @@ export const landingCopy = {
           title: 'Join a retreat',
           text: 'Transformative retreats in the Himalayas',
           href: '#retreats',
-          icon: Flower2,
+          icon: VajraIcon,
           tone: 'gold',
         },
       ],
@@ -230,7 +232,7 @@ export const landingCopy = {
       ],
     },
     practice: {
-      title: 'Feel the method before your first class',
+      title: 'Feel the effect before your first class',
       description:
         'Begin with this guided practice for breath, mobility, and steady strength. It is a simple way to meet my approach and notice how it feels in your own body.',
       primaryCta: 'Try the practice',
@@ -262,16 +264,17 @@ export const landingCopy = {
     },
     bodhisattvaCta: {
       title: 'Choose the format that fits you now',
-      description:
-        'Start with personal guidance or step away from the everyday rhythm for a deeper retreat experience.',
       practiceTitle: 'Personal practice',
-      practiceText: 'Online or in Prague — with attention to your body, goals, and current level.',
+      practiceText: 'Online or in Prague - with attention to your body, goals, and current level.',
       practiceCta: 'Book a class',
       retreatTitle: 'Retreat',
-      retreatText: 'Several days of practice, nature, and space to return to yourself.',
+      retreatText: 'A chance to step out of routine and immerse yourself in practice, travel, new experiences, and connections.',
       retreatCta: 'Explore retreats',
-      helpText: 'Not sure which format to choose? Write to me — I will answer personally and help you decide.',
-      helpCta: 'Write in Telegram',
+      courseTitle: 'the yoga method',
+      courseText: 'A structured online course for strength, mobility, and an independent practice at your own pace.',
+      courseCta: 'Explore the course',
+      helpText:
+        'Namaste, Yogermeisters! Thank you for taking the time to visit my website. Now is the perfect time to return to practice!',
       location: 'Prague · Online · Retreats',
       portraitAlt: 'Yoga teacher Nastya near a bamboo wall',
       previousLabel: 'Show previous practice',
@@ -341,7 +344,7 @@ export const landingCopy = {
           title: 'Поехать в ретрит',
           text: 'Трансформирующие ретриты в Гималаях и у моря',
           href: '#retreats',
-          icon: Flower2,
+          icon: VajraIcon,
           tone: 'gold',
         },
       ],
@@ -361,9 +364,9 @@ export const landingCopy = {
       error: 'Сейчас не получается загрузить ретриты.',
       detailLoading: 'Загружаем ретрит...',
       detailError: 'Сейчас не получается загрузить этот ретрит.',
-      detailCtaTitle: 'Готовы присоединиться к ретриту?',
+      detailCtaTitle: 'Хочешь присоединиться к ретриту?',
       detailCtaDescription:
-        'Напишите мне в Telegram, и я отправлю актуальные детали, наличие мест и расскажу, как сделать бронирование.',
+        'Напиши мне в Telegram, и я отправлю актуальные детали, наличие мест и расскажу, как забронировать место.',
       destinationsLabel: 'Направления ретритов',
       empty: 'Ближайшие ретриты скоро появятся.',
       unavailableTitle: 'Запись недоступна',
@@ -394,7 +397,7 @@ export const landingCopy = {
           label: 'Офлайн. Прага',
           title: 'Индивид',
           price: '€49',
-          description: 'Индивидуальная практика в йога-студии в Праге, с полным вниманием к выравниванию, дыханию и вашим целям.',
+          description: 'Индивидуальная практика в йога-студии в Праге, с полным вниманием к выравниванию, дыханию и твоим целям.',
           cta: 'Записаться',
           href: telegramUrl,
         },
@@ -411,7 +414,7 @@ export const landingCopy = {
           title: 'Йога-буст',
           price: 'Donation',
           description:
-            'Совместная групповая практика онлайн. Дыхание, движение и медитация вместе - платите, сколько чувствуете уместным.',
+            'Совместная групповая практика онлайн. Дыхание, движение и медитация вместе - плати, сколько считаешь уместным.',
           cta: 'Присоединиться',
           href: telegramUrl,
         },
@@ -433,11 +436,11 @@ export const landingCopy = {
       ],
     },
     practice: {
-      title: 'Почувствуйте метод до первого занятия',
+      title: 'Почувствуй эффект до первого занятия',
       description:
-        'Начните с практики на дыхание, подвижность и устойчивую силу. Это простой способ познакомиться с моим подходом и почувствовать его на собственном теле.',
+        'Начни с практики на дыхание, подвижность и устойчивую силу. Это простой способ познакомиться с моим подходом и почувствовать его на собственном теле.',
       primaryCta: 'Попробовать практику',
-      secondaryCta: 'Записаться на индивидуальное занятие',
+      secondaryCta: 'Записаться на индивид',
       sequence: ['Дыхание', 'Движение', 'Интеграция'],
       frameLabel: 'Видео практики на YouTube',
       benefitsLabel: 'Польза практики',
@@ -464,17 +467,18 @@ export const landingCopy = {
       },
     },
     bodhisattvaCta: {
-      title: 'Выберите формат, который подходит вам сейчас',
-      description:
-        'Начните с персонального сопровождения или выйдите из повседневного ритма ради более глубокого опыта ретрита.',
+      title: 'Выбери формат, который подходит сейчас',
       practiceTitle: 'Личная практика',
-      practiceText: 'Онлайн или в Праге — с вниманием к вашему телу, задаче и текущему уровню.',
+      practiceText: 'Онлайн или в Праге - с вниманием к телу, задаче и текущему уровню.',
       practiceCta: 'Записаться на занятие',
       retreatTitle: 'Ретрит',
-      retreatText: 'Несколько дней практики, природы и пространства для возвращения к себе.',
+      retreatText: 'Возможность вырваться из рутины и погрузиться в практику, путешествие, новый опыт и знакомства',
       retreatCta: 'Посмотреть ретриты',
-      helpText: 'Не знаете, какой формат выбрать? Напишите мне — я отвечу лично и помогу определиться.',
-      helpCta: 'Написать в Telegram',
+      courseTitle: 'the yoga method',
+      courseText: 'Структурированный онлайн-курс для силы, подвижности и самостоятельной практики в удобном темпе.',
+      courseCta: 'Посмотреть курс',
+      helpText:
+        'Намасте, йогермейстерс! Спасибо, что уделили внимание моему сайту. Самое время вернуться к практике!',
       location: 'Прага · Онлайн · Ретриты',
       portraitAlt: 'Преподаватель йоги Настя у бамбуковой стены',
       previousLabel: 'Показать предыдущую практику',

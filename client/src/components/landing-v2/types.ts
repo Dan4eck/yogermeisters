@@ -1,4 +1,6 @@
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType, SVGProps } from 'react';
+
+export type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 export type AnchorHref = `#${string}` | `/${string}` | `mailto:${string}` | `https://${string}`;
 
@@ -13,22 +15,22 @@ export type HeroAction = {
   title: string;
   text: string;
   href: `#${string}`;
-  icon: LucideIcon;
+  icon: IconComponent;
   tone: HeroActionTone;
 };
 
 export type SocialLink = {
   label: string;
   href: AnchorHref;
-  icon: LucideIcon;
+  icon: IconComponent;
 };
 
 export type RetreatCard = {
   number: `${number}${number}`;
   title: string;
-  icon: LucideIcon;
+  icon: IconComponent;
   meta: readonly [date: string, season: string, theme: string];
-  seasonIcon: LucideIcon;
+  seasonIcon: IconComponent;
   description: readonly string[];
   image: string;
 };

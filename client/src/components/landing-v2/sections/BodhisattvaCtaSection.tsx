@@ -1,9 +1,9 @@
-import { Flower2, Send } from 'lucide-react';
 import type { ReactElement } from 'react';
 
 import type { Language } from '@/lib/i18n';
-import { landingCopy, telegramUrl } from '../content';
+import { landingCopy } from '../content';
 import { ButtonLink } from '../ui';
+import VajraIcon from '../VajraIcon';
 import styles from './BodhisattvaCtaSection.module.css';
 
 interface BodhisattvaCtaSectionProps {
@@ -17,11 +17,16 @@ export default function BodhisattvaCtaSection({ language }: BodhisattvaCtaSectio
     <section className={`section ${styles.section}`} id='cta'>
       <header className={styles.header}>
         <h2>{copy.title}</h2>
-        <p>{copy.description}</p>
       </header>
 
       <div className={styles.paths}>
         <article className={styles.pathCard}>
+          <img
+            className={`${styles.cardIllustration} ${styles.personalIllustration}`}
+            src='/assets/landing-v2/icons/practice.png'
+            alt=''
+            aria-hidden='true'
+          />
           <span className={styles.cardNumber}>01</span>
           <h3>{copy.practiceTitle}</h3>
           <p>{copy.practiceText}</p>
@@ -31,12 +36,27 @@ export default function BodhisattvaCtaSection({ language }: BodhisattvaCtaSectio
         </article>
 
         <article className={`${styles.pathCard} ${styles.retreatCard}`}>
-          <Flower2 aria-hidden='true' className={styles.flower} />
+          <img
+            className={`${styles.cardIllustration} ${styles.retreatIllustration}`}
+            src='/assets/landing-v2/icons/retreat.png'
+            alt=''
+            aria-hidden='true'
+          />
           <span className={styles.cardNumber}>02</span>
           <h3>{copy.retreatTitle}</h3>
           <p>{copy.retreatText}</p>
           <ButtonLink className={styles.pathButton} href='#retreats'>
             {copy.retreatCta}
+          </ButtonLink>
+        </article>
+
+        <article className={`${styles.pathCard} ${styles.courseCard}`}>
+          <VajraIcon className={`${styles.cardIllustration} ${styles.courseIllustration}`} aria-hidden='true' />
+          <span className={styles.cardNumber}>03</span>
+          <h3>{copy.courseTitle}</h3>
+          <p>{copy.courseText}</p>
+          <ButtonLink className={styles.pathButton} href='/the-yoga-method'>
+            {copy.courseCta}
           </ButtonLink>
         </article>
       </div>
@@ -47,9 +67,6 @@ export default function BodhisattvaCtaSection({ language }: BodhisattvaCtaSectio
           <p>{copy.location}</p>
         </div>
         <p className={styles.helpText}>{copy.helpText}</p>
-        <ButtonLink className={styles.contactButton} href={telegramUrl} icon={Send}>
-          {copy.helpCta}
-        </ButtonLink>
       </footer>
     </section>
   );

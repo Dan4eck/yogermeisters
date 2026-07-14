@@ -37,7 +37,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: '🔥 Only 3 spots left at the special price of €750 (standard price: €790).',
       translations: {
         ru: {
-          text: '🔥 Осталось всего 3 места по специальной цене €750 (обычная цена — €790).',
+          text: '🔥 Осталось всего 3 места по специальной цене €750 (обычная цена - €790).',
         },
       },
     },
@@ -68,10 +68,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-1-heading',
       sortOrder: 6,
       type: 'heading',
-      text: 'Day 1 – Arrival and recovery',
+      text: 'Day 1 - Arrival and recovery',
       translations: {
         ru: {
-          text: 'День 1 – Заселение и восстановление',
+          text: 'День 1 - Заселение и восстановление',
         },
       },
     },
@@ -114,10 +114,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-2-heading',
       sortOrder: 10,
       type: 'heading',
-      text: 'Day 2 – Bikes, beach, and activation',
+      text: 'Day 2 - Bikes, beach, and activation',
       translations: {
         ru: {
-          text: 'День 2 – Велосипеды, пляж и активация',
+          text: 'День 2 - Велосипеды, пляж и активация',
         },
       },
     },
@@ -128,7 +128,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'We ride bikes through the village and scenic surroundings, then slow down on the beach and, if we are lucky, meet sea turtles. Morning practice is Himalayan yoga with pranayama for activation. Evening practice moves into meta-breathing and OSHO meditation.',
       translations: {
         ru: {
-          text: 'Сегодня катаемся на велосипедах по деревушке и живописным окрестностям, а потом замедляемся на пляже и, если повезёт, встречаем морских черепах. Утром — гималайская йога и пранаяма на активацию энергии. Вечером — мета-дыхание и ОШО-медитация.',
+          text: 'Сегодня катаемся на велосипедах по деревушке и живописным окрестностям, а потом замедляемся на пляже и, если повезёт, встречаем морских черепах. Утром - гималайская йога и пранаяма на активацию энергии. Вечером - мета-дыхание и ОШО-медитация.',
         },
       },
     },
@@ -148,10 +148,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-3-heading',
       sortOrder: 13,
       type: 'heading',
-      text: 'Day 3 – SUP and spaciousness',
+      text: 'Day 3 - SUP and spaciousness',
       translations: {
         ru: {
-          text: 'День 3 – SUP по тихим бухтам',
+          text: 'День 3 - SUP по тихим бухтам',
         },
       },
     },
@@ -162,7 +162,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'We meet the morning with SUP boarding in quiet bays. After that there is real free time: beach, books, sleep, or complete idleness under the sound of the surf. Morning focus: hand balances. Evening: Buddhist meditation and yoga nidra.',
       translations: {
         ru: {
-          text: 'Встречаем утро SUP-бордингом по тихим бухтам. После этого — настоящее свободное время: пляж, книги, сон или честное ничегонеделание под шум прибоя. Утром фокус на балансах на руках, вечером — буддийская медитация и йога-нидра.',
+          text: 'Встречаем утро SUP-бордингом по тихим бухтам. После этого - настоящее свободное время: пляж, книги, сон или честное ничегонеделание под шум прибоя. Утром фокус на балансах на руках, вечером - буддийская медитация и йога-нидра.',
         },
       },
     },
@@ -182,10 +182,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-4-heading',
       sortOrder: 16,
       type: 'heading',
-      text: 'Day 4 – Lycian Way and Black Beach',
+      text: 'Day 4 - Lycian Way and Black Beach',
       translations: {
         ru: {
-          text: 'День 4 – Ликийская тропа и Чёрный пляж',
+          text: 'День 4 - Ликийская тропа и Чёрный пляж',
         },
       },
     },
@@ -196,7 +196,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'We hike the Lycian Way toward the secluded Black Beach through pines, cliffs, and sea views. The route ends with a swim in clear water and a picnic by the shore. Morning practice opens the hips and supports lymphatic drainage; evening practice combines ecstatic dance and moving meditation.',
       translations: {
         ru: {
-          text: 'Выдвигаемся в поход по Ликийской тропе к уединённому Чёрному пляжу через сосны, скалы и виды на море. Финал дня — купание в кристально чистой воде и пикник на берегу. Утром — практика на раскрытие таза и лимфодренаж, вечером — экстатик-дэнс и медитация в движении.',
+          text: 'Выдвигаемся в поход по Ликийской тропе к уединённому Чёрному пляжу через сосны, скалы и виды на море. Финал дня - купание в кристально чистой воде и пикник на берегу. Утром - практика на раскрытие таза и лимфодренаж, вечером - экстатик-дэнс и медитация в движении.',
         },
       },
     },
@@ -216,10 +216,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-5-heading',
       sortOrder: 19,
       type: 'heading',
-      text: 'Day 5 – Five bays by boat',
+      text: 'Day 5 - Five bays by boat',
       translations: {
         ru: {
-          text: 'День 5 – Пять бухт на лодке',
+          text: 'День 5 - Пять бухт на лодке',
         },
       },
     },
@@ -230,7 +230,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'We spend the day on a boat traveling through five bays, snorkeling in hidden lagoons, eating lunch on board, and letting the body feel sun and salt water. Morning practice is dynamic yoga for energy. Evening: meta-breathing and a silence-of-mind practice.',
       translations: {
         ru: {
-          text: 'Отправляемся в лодочное путешествие по пяти бухтам: снорклинг в укромных лагунах, обед на борту и целый день на воде, в котором тело снова вспоминает солнце и соль. Утром — динамическая йога для энергии. Вечером — мета-дыхание и практика «тишины ума».',
+          text: 'Отправляемся в лодочное путешествие по пяти бухтам: снорклинг в укромных лагунах, обед на борту и целый день на воде, в котором тело снова вспоминает солнце и соль. Утром - динамическая йога для энергии. Вечером - мета-дыхание и практика «тишины ума».',
         },
       },
     },
@@ -250,10 +250,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-6-heading',
       sortOrder: 22,
       type: 'heading',
-      text: 'Day 6 – Chimaera and silence',
+      text: 'Day 6 - Chimaera and silence',
       translations: {
         ru: {
-          text: 'День 6 – Химера и тишина',
+          text: 'День 6 - Химера и тишина',
         },
       },
     },
@@ -264,7 +264,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'We hike toward the eternal flames of Chimaera and sit in meditation under the stars. Morning practice turns toward strength, handstands, and inversions. Evening returns us to candle meditation and yoga nidra.',
       translations: {
         ru: {
-          text: 'Впереди ещё один хайк — идём к огненной Химере, где вечером садимся в медитацию под звёздами и в полной тишине. Утром практика уходит в силу, стойки на руках и инверсии. Вечером — медитация на свечу и йога-нидра.',
+          text: 'Впереди ещё один хайк - идём к огненной Химере, где вечером садимся в медитацию под звёздами и в полной тишине. Утром практика уходит в силу, стойки на руках и инверсии. Вечером - медитация на свечу и йога-нидра.',
         },
       },
     },
@@ -284,10 +284,10 @@ export const ciraliRetreat: RetreatSeed = {
       id: 'day-7-heading',
       sortOrder: 25,
       type: 'heading',
-      text: 'Day 7 – Olympos, local market & soft return',
+      text: 'Day 7 - Olympos, local market & soft return',
       translations: {
         ru: {
-          text: 'День 7 – Олимпос, местный рынок и мягкое возвращение',
+          text: 'День 7 - Олимпос, местный рынок и мягкое возвращение',
         },
       },
     },
@@ -298,7 +298,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'We explore ancient Olympos, where nature and history are woven together, and then go to the local market for fruit, spices, and Turkish sweets. Morning is integration yoga with pranayama. Evening ends with ecstatic dance and OSHO dynamic meditation.',
       translations: {
         ru: {
-          text: 'День начинается с исследования древнего Олимпоса, где природа переплетается с историей. Затем едем на местный рынок за фруктами, специями и турецкими сладостями. Утро — интеграционная йога с пранаямой. Вечер заканчивается экстатик-дэнсом и ОШО динамической медитацией.',
+          text: 'День начинается с исследования древнего Олимпоса, где природа переплетается с историей. Затем едем на местный рынок за фруктами, специями и турецкими сладостями. Утро - интеграционная йога с пранаямой. Вечер заканчивается экстатик-дэнсом и ОШО динамической медитацией.',
         },
       },
     },
@@ -321,7 +321,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'The final day is for a slow breakfast, a stop at a natural cosmetics shop for gifts, and a gentle return home. The retreat ends, but the feeling of spaciousness, strength, and inner quiet stays much longer.',
       translations: {
         ru: {
-          text: 'Последний день — для неспешного завтрака, заезда в лавку натуральной косметики за сувенирами и мягкого возвращения домой. Сам ретрит заканчивается, но ощущение внутреннего пространства, силы и тишины остаётся с тобой ещё долго.',
+          text: 'Последний день - для неспешного завтрака, заезда в лавку натуральной косметики за сувенирами и мягкого возвращения домой. Сам ретрит заканчивается, но ощущение внутреннего пространства, силы и тишины остаётся с тобой ещё долго.',
         },
       },
     },
@@ -354,7 +354,7 @@ export const ciraliRetreat: RetreatSeed = {
       text: 'Flights, meals other than breakfasts, bicycle rental, and personal expenses are not included. Retreat price: €790. Special promo: €750 for the first participants (3 spots left). Deposit to reserve a place: €200.',
       translations: {
         ru: {
-          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Стоимость ретрита — €790. Спецпредложение: €750 для первых участников (осталось 3 места). Залог для брони места — €200.',
+          text: 'Не включены в стоимость: перелёты, питание кроме завтраков, аренда велосипедов и прочие личные расходы. Стоимость ретрита - €790. Спецпредложение: €750 для первых участников (осталось 3 места). Залог для брони места - €200.',
         },
       },
     },

@@ -27,7 +27,7 @@
 
 .ornament {
   display: grid;
-  grid-template-columns: 118px 30px 118px;
+  grid-template-columns: 118px 60px 118px;
   align-items: center;
   gap: 18px;
   width: max-content;
@@ -42,8 +42,8 @@
 }
 
 .ornament svg {
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
   stroke-width: 1.45;
 }
 

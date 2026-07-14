@@ -27,7 +27,7 @@ export const nepalRetreat: RetreatSeed = {
       text: 'An 8-day Buddhist pilgrimage through Nepal designed as a living practice: sacred stupas, monasteries, meditation, yoga, and deep cultural immersion in the Kathmandu Valley. The journey culminates with an overnight stay in Nagarkot for sunset and sunrise views over the Himalayan range. Exact travel dates in August will be announced separately.',
       translations: {
         ru: {
-          text: '8-дневный буддийский паломнический тур по Непалу в формате живой практики: священные ступы, монастыри, медитация, йога и глубокое погружение в культуру долины Катманду. Кульминация путешествия — ночевка в Нагаркоте с видами на закат и рассвет над Гималаями. Точные даты в августе будут объявлены отдельно.',
+          text: '8-дневный буддийский паломнический тур по Непалу в формате живой практики: священные ступы, монастыри, медитация, йога и глубокое погружение в культуру долины Катманду. Кульминация путешествия - ночевка в Нагаркоте с видами на закат и рассвет над Гималаями. Точные даты в августе будут объявлены отдельно.',
         },
       },
     },
@@ -38,7 +38,7 @@ export const nepalRetreat: RetreatSeed = {
       text: 'Our route includes Boudhanath and Swayambhunath (Monkey Temple), monastery visits and private puja, evening meditation and restorative yoga, plus daily moments for integration. The rhythm is built to support both inner work and meaningful travel without rushing from point to point.',
       translations: {
         ru: {
-          text: 'В маршруте — Боднатх и Сваямбунатх (Monkey Temple), посещение монастырей и частная пуджа для группы, вечерние медитации и мягкая расслабляющая йога, а также ежедневные паузы на интеграцию опыта. Ритм выстроен так, чтобы совместить внутреннюю работу и насыщенное путешествие без суеты.',
+          text: 'В маршруте - Боднатх и Сваямбунатх (Monkey Temple), посещение монастырей и частная пуджа для группы, вечерние медитации и мягкая расслабляющая йога, а также ежедневные паузы на интеграцию опыта. Ритм выстроен так, чтобы совместить внутреннюю работу и насыщенное путешествие без суеты.',
         },
       },
     },
@@ -84,7 +84,7 @@ export const nepalRetreat: RetreatSeed = {
       text: 'This tour is guided in a personal format with my full support on the route: translation, navigation, timing, and a carefully held group process so you can stay in practice rather than logistics.',
       translations: {
         ru: {
-          text: 'Тур проходит в личном формате с моим полным сопровождением по маршруту: перевод, логистика, тайминг и бережное ведение группы, чтобы вы могли оставаться в практике, а не в организационных задачах.',
+          text: 'Тур проходит в личном формате с моим полным сопровождением по маршруту: перевод, логистика, тайминг и бережное ведение группы, чтобы оставаться в практике, а не в организационных задачах.',
         },
       },
     },
@@ -107,7 +107,7 @@ export const nepalRetreat: RetreatSeed = {
       text: 'The final days are dedicated to deeper integration: mountain silence, sunrise practice, and a softer pace that helps the experience settle into the body and mind before returning home. If this route resonates with you, reserve your place now: a €300 deposit secures your spot (refundable until April 30), and spaces are limited.',
       translations: {
         ru: {
-          text: 'Финальные дни посвящены более глубокой интеграции: горная тишина, практика на рассвете и более мягкий ритм, чтобы опыт успел уложиться в теле и уме перед возвращением домой. Если вам откликается этот маршрут, записывайтесь уже сейчас: депозит €300 фиксирует место (возвратный до 30 апреля), а количество мест ограничено.',
+          text: 'Финальные дни посвящены более глубокой интеграции: горная тишина, практика на рассвете и более мягкий ритм, чтобы опыт успел уложиться в теле и уме перед возвращением домой. Если тебе откликается этот маршрут, записывайся уже сейчас: депозит €300 фиксирует место (возвратный до 30 апреля), а количество мест ограничено.',
         },
       },
     },

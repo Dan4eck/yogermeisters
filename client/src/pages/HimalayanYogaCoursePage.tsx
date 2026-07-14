@@ -34,39 +34,39 @@ interface Tariff {
 const modules: readonly CourseModule[] = [
   {
     number: '01',
-    title: 'Здоровое тело — фундамент практики',
+    title: 'Здоровое тело - фундамент практики',
     lessons: [
-      'Здоровье спины и осанка — 38 минут',
-      'Мышцы кора. Сила. Разгибание в тазобедренных суставах. Прогибы — 47 минут',
-      'Общая практика на всё тело — 50 минут',
-      'Короткая сбалансированная практика — 30 минут',
+      'Здоровье спины и осанка - 38 минут',
+      'Мышцы кора. Сила. Разгибание в тазобедренных суставах. Прогибы - 47 минут',
+      'Общая практика на всё тело - 50 минут',
+      'Короткая сбалансированная практика - 30 минут',
     ],
   },
   {
     number: '02',
     title: 'Гибкость без травм',
     lessons: [
-      'Углубление прогибов — 40 минут',
-      'Углубление продольного шпагата — 40 минут',
-      'Углубление поперечного шпагата — 40 минут',
+      'Углубление прогибов - 40 минут',
+      'Углубление продольного шпагата - 40 минут',
+      'Углубление поперечного шпагата - 40 минут',
     ],
   },
   {
     number: '03',
     title: 'Техника выполнения асан',
     lessons: [
-      'Отстройка базовых асан — 15 минут',
-      'Разбор балансов на руках — 10 минут',
+      'Отстройка базовых асан - 15 минут',
+      'Разбор балансов на руках - 10 минут',
     ],
   },
   {
     number: '04',
     title: 'Восстановление и расслабление',
     lessons: [
-      'Медитация — 20 минут',
-      'Практика для раскрытия таза и пробуждения энергии — 15 минут',
-      'Йога-нидра, аудио — 30 минут',
-      'Медитация Метта, аудио — 20 минут',
+      'Медитация - 20 минут',
+      'Практика для раскрытия таза и пробуждения энергии - 15 минут',
+      'Йога-нидра, аудио - 30 минут',
+      'Медитация Метта, аудио - 20 минут',
     ],
   },
 ];
@@ -97,7 +97,7 @@ const tariffs: readonly Tariff[] = [
     originalPrice: '€99',
     price: '€79',
     description: 'Групповое прохождение с поддержкой, чатом и комментариями от учителя.',
-    note: 'Старт потока — 24 июля.',
+    note: 'Старт потока - 24 июля.',
     features: ['доступ к записям', 'Групповые онлайн практики + чат', 'комментарии от преподавателя'],
     isFeatured: true,
   },
@@ -150,7 +150,7 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
           <div className={styles.heroMedia}>
             <div className={styles.heroVideo} aria-label='Видео-пример курса'>
               <video controls playsInline poster={courseVideoPosterSrc} preload='metadata' src={courseVideoSrc}>
-                Ваш браузер не поддерживает видео.
+                Этот браузер не поддерживает видео.
               </video>
             </div>
             <HeroActions className={styles.mobileActions} />
@@ -166,7 +166,7 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
               расслабления.
             </p>
             <p>
-              Внутри вас ждут полноценные тренировки, короткие практики на каждый день, медитации, йога-нидра,
+              Внутри курса тебя ждут полноценные тренировки, короткие практики на каждый день, медитации, йога-нидра,
               фейс-йога и подробные объяснения техники выполнения.
             </p>
           </div>
@@ -179,7 +179,7 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
         </section>
 
         <section className={styles.resultsSection} aria-label='Результаты курса'>
-          <h2>В результате вы получите</h2>
+          <h2>В результате ты получишь</h2>
           <div className={styles.resultsGrid}>
             {results.map((result) => (
               <article className={styles.resultCard} key={result}>
@@ -219,7 +219,7 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
         <section className={styles.tariffsSection} id='tariffs'>
           <div className={styles.sectionHeader}>
             <span className={styles.eyebrow}>Тарифы</span>
-            <h2>Выберите формат прохождения</h2>
+            <h2>Выбери формат прохождения</h2>
           </div>
 
           <div className={styles.tariffGrid}>

@@ -12,8 +12,12 @@ export default function BodhisattvaInterlude({ language }: BodhisattvaInterludeP
   return (
     <aside className={styles.interlude} id='bodhisattva-practices' aria-label={copy.footnote}>
       <div className={styles.track}>
-        {copy.practices.map((practice) => (
-          <figure className={styles.practice} key={practice.number}>
+        {[...copy.practices, ...copy.practices].map((practice, index) => (
+          <figure
+            className={`${styles.practice}${index >= copy.practices.length ? ` ${styles.duplicate}` : ''}`}
+            key={`${practice.number}-${index}`}
+            aria-hidden={index >= copy.practices.length ? 'true' : undefined}
+          >
             <blockquote>“{practice.quote}”</blockquote>
             <figcaption>
               {practice.number} · {practice.title}

@@ -28,6 +28,10 @@
   border-left: 1px solid rgba(211, 95, 53, 0.24);
 }
 
+.duplicate {
+  display: none;
+}
+
 .practice blockquote {
   margin: 0;
   color: rgba(21, 21, 21, 0.76);
@@ -70,24 +74,28 @@
 
   .track {
     display: flex;
-    gap: 0;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    animation: bodhisattvaMarquee 48s linear infinite;
   }
 
-  .track::-webkit-scrollbar {
-    display: none;
+  .interlude {
+    overflow: hidden;
   }
 
   .practice {
-    flex: 0 0 84%;
+    flex: 0 0 82vw;
+    width: 82vw;
     padding: 0 28px;
-    scroll-snap-align: start;
   }
 
   .practice:first-child {
     padding-left: 0;
+  }
+
+  .duplicate {
+    display: block;
   }
 
   .practice blockquote {
@@ -101,6 +109,22 @@
   }
 }
 
+@keyframes bodhisattvaMarquee {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}
+
 @media (max-width: 560px) {
   .interlude {
     padding-right: 18px;
@@ -108,6 +132,7 @@
   }
 
   .practice {
-    flex-basis: 92%;
+    flex-basis: 88vw;
+    width: 88vw;
   }
 }

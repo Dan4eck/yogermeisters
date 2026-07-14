@@ -6,7 +6,6 @@ import { useGSAP } from '@gsap/react';
 
 import type { Language } from '@/lib/i18n';
 import { landingCopy } from '../content';
-import { TitleOrnament } from '../ui';
 import styles from './ClassesSection.module.css';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -55,7 +54,6 @@ export default function ClassesSection({ language }: ClassesSectionProps) {
     <section className={`section ${styles.section}${language === 'ru' ? ` ${styles.ru}` : ''}`} id='classes' ref={sectionRef}>
       <div className={styles.header}>
         <h2 className={styles.title}>{copy.title}</h2>
-        <TitleOrnament className={styles.ornament} />
       </div>
       <div className={styles.sliderWrap}>
         <div className={styles.track} ref={trackRef}>

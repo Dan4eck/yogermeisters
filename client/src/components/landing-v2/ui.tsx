@@ -1,7 +1,8 @@
-import { ArrowRight, Flower2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { AnchorHref } from './types';
+import VajraIcon from './VajraIcon';
 
 type ButtonLinkProps = {
   children: ReactNode;
@@ -31,7 +32,7 @@ export function TitleOrnament({ className }: OrnamentProps) {
   return (
     <div className={className} aria-hidden='true'>
       <span></span>
-      <Flower2 />
+      <VajraIcon />
       <span></span>
     </div>
   );

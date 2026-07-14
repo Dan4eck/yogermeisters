@@ -26,18 +26,6 @@
   white-space: nowrap;
 }
 
-.ornament {
-  color: #d35f35;
-  opacity: 0.86;
-  flex: 0 0 auto;
-}
-
-.ornament svg {
-  width: 30px;
-  height: 30px;
-  stroke-width: 1.45;
-}
-
 .sliderWrap {
   flex: 1 1 auto;
   display: flex;
