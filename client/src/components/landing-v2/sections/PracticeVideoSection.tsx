@@ -19,9 +19,6 @@ export default function PracticeVideoSection({ language }: PracticeVideoSectionP
           <ButtonLink className={styles.primaryButton} href={youtubePracticeUrl} icon={null}>
             {copy.primaryCta}
           </ButtonLink>
-          <ButtonLink className={styles.secondaryButton} href='#classes' icon={null}>
-            {copy.secondaryCta}
-          </ButtonLink>
         </div>
       </div>
       <div className={styles.media}>

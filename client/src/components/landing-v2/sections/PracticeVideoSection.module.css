@@ -41,8 +41,7 @@
   margin-top: 34px;
 }
 
-.primaryButton,
-.secondaryButton {
+.primaryButton {
   min-width: 0;
   min-height: 52px;
   border-radius: 999px;
@@ -55,12 +54,6 @@
 .primaryButton {
   background: #151515;
   color: #fff;
-}
-
-.secondaryButton {
-  border-color: var(--line);
-  background: rgba(255, 254, 252, 0.58);
-  color: #151515;
 }
 
 .media {
@@ -154,8 +147,7 @@
     margin-top: 28px;
   }
 
-  .primaryButton,
-  .secondaryButton {
+  .primaryButton {
     width: 100%;
   }
 

@@ -183,14 +183,23 @@
   .sliderWrap {
     overflow-x: auto;
     overflow-y: hidden;
+    scroll-padding-inline: 24px;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
 
   .track {
-    padding: 34px 24px 0;
+    padding: 34px 0 0;
     gap: 16px;
     will-change: auto;
+  }
+
+  .card:first-child {
+    margin-left: 24px;
+  }
+
+  .card:last-child {
+    margin-right: 24px;
   }
 
   .card {
@@ -218,13 +227,25 @@
     padding: 0 18px;
   }
 
+  .sliderWrap {
+    scroll-padding-inline: 18px;
+  }
+
   .title {
     font-size: clamp(32px, 9vw, 44px);
   }
 
   .track {
-    padding: 28px 18px 0;
+    padding-top: 28px;
     gap: 14px;
+  }
+
+  .card:first-child {
+    margin-left: 18px;
+  }
+
+  .card:last-child {
+    margin-right: 18px;
   }
 
   .card {
