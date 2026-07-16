@@ -6,7 +6,7 @@ import { courseModules, courses, lessons } from './schema';
 const courseSeed = {
   slug: 'the-yoga-method',
   title: 'the yoga method',
-  description: 'Курс для здоровой спины, сильного тела, безопасной гибкости и глубокого расслабления.',
+  description: 'Фундамент гималайской йоги – Крепкое тело, прогибы, шпагаты, пранаямы и техники глубокого расслабления',
   modules: [
     {
       title: 'Здоровое тело — фундамент практики',
