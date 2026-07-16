@@ -54,39 +54,27 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
           {state.kind === 'error' ? <Status title={copy.cabinet.errorTitle} message={state.message} /> : null}
           {state.kind === 'ready' ? (
             <div>
-              <div className={styles.cabinetHero}>
-                <span className={styles.sectionNumber}>01</span>
-                <div className={styles.profile}>
-                  {state.user.avatarUrl ? <img src={state.user.avatarUrl} alt='' referrerPolicy='no-referrer' /> : null}
-                  <div>
-                    <span className={styles.eyebrow}>{copy.cabinet.eyebrow}</span>
-                    <h1>{state.user.name}</h1>
-                    <p>{state.user.email}</p>
-                  </div>
-                </div>
-                <div className={styles.heroActions}>
-                  <p>{copy.cabinet.courseCount(state.courses.length)}</p>
-                  <button type='button' className={styles.logoutButton} onClick={() => void logout()}>
-                    {copy.cabinet.logout}
-                    <LogOut aria-hidden='true' />
-                  </button>
-                </div>
-              </div>
-              <div className={styles.sectionHeading}>
+              <header className={styles.cabinetHeader}>
+                <h1>{copy.cabinet.title}</h1>
+                <button type='button' className={styles.logoutButton} onClick={() => void logout()}>
+                  {copy.cabinet.logout}
+                  <LogOut aria-hidden='true' />
+                </button>
+              </header>
+              <div className={styles.profile}>
+                {state.user.avatarUrl ? <img src={state.user.avatarUrl} alt='' referrerPolicy='no-referrer' /> : null}
                 <div>
-                  <span className={styles.eyebrow}>{copy.cabinet.practiceLabel}</span>
-                  <h2>{copy.cabinet.coursesTitle}</h2>
+                  <h2>{state.user.name}</h2>
+                  <p>{state.user.email}</p>
                 </div>
-                <span className={styles.titleRule} aria-hidden='true'></span>
               </div>
+              <h2 className={styles.sectionTitle}>{copy.cabinet.coursesTitle}</h2>
               {state.courses.length === 0 ? (
                 <Status title={copy.cabinet.emptyTitle} message={copy.cabinet.emptyText} />
               ) : (
                 <div className={styles.courseGrid}>
-                  {state.courses.map((course, index) => (
+                  {state.courses.map((course) => (
                     <article className={styles.courseCard} key={course.slug}>
-                      <span className={styles.courseNumber}>{String(index + 1).padStart(2, '0')}</span>
-                      <span className={styles.eyebrow}>{copy.cabinet.courseLabel}</span>
                       <h3>{course.title}</h3>
                       <p>{course.description}</p>
                       <Link href={`/cabinet/courses/${course.slug}`} className={styles.courseLink}>

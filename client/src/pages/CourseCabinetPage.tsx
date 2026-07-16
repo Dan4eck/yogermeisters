@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Play } from 'lucide-react';
+import { ArrowLeft, Play } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
@@ -63,34 +63,18 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
           {error ? <div className={styles.errorNotice}>{error}</div> : null}
           {course ? (
             <div>
-              <div className={styles.courseHero}>
-                <span className={styles.sectionNumber}>02</span>
-                <span className={styles.eyebrow}>{copy.course.eyebrow}</span>
+              <div className={styles.courseIntro}>
                 <h1>{course.title}</h1>
                 <p className={styles.lead}>{course.description}</p>
               </div>
-              <div className={styles.sectionHeading}>
-                <div>
-                  <span className={styles.eyebrow}>{copy.cabinet.practiceLabel}</span>
-                  <h2>{copy.course.routeTitle}</h2>
-                </div>
-                <span className={styles.titleRule} aria-hidden='true'></span>
-              </div>
-              {mediaUrl ? <video className={styles.player} controls playsInline src={mediaUrl} /> : <p className={styles.mediaHint}>{copy.course.mediaHint}</p>}
+              {mediaUrl ? <video className={styles.player} controls playsInline src={mediaUrl} /> : null}
               <div className={styles.moduleList}>
                 {course.modules.map((module) => (
                   <section className={styles.moduleCard} key={module.sortOrder}>
-                    <div className={styles.moduleHead}>
-                      <span>{String(module.sortOrder).padStart(2, '0')}</span>
-                      <div>
-                        <p className={styles.eyebrow}>{copy.course.moduleLabel}</p>
-                        <h3>{module.title}</h3>
-                      </div>
-                    </div>
+                    <h2>{module.title}</h2>
                     <ol>
                       {module.lessons.map((lesson, index) => (
                         <li key={lesson.slug}>
-                          <span className={styles.lessonIndex}>{String(index + 1).padStart(2, '0')}</span>
                           <span className={styles.lessonTitle}>{lesson.title}</span>
                           <button
                             type='button'
@@ -100,7 +84,6 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                           >
                             <Play aria-hidden='true' />
                             {loadingLesson === lesson.slug ? copy.course.loadingMedia : copy.course.watch}
-                            <ArrowUpRight aria-hidden='true' />
                           </button>
                         </li>
                       ))}
