@@ -6,6 +6,10 @@ import { rm, readFile } from "fs/promises";
 // which helps cold start times
 const allowlist = [
   "express",
+  "express-session",
+  "connect-pg-simple",
+  "passport",
+  "passport-google-oauth20",
 ];
 
 async function buildAll() {

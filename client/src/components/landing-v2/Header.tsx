@@ -1,5 +1,6 @@
 import { useState, type MouseEvent } from 'react';
-import { useLocation } from 'wouter';
+import { UserRound } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
 
 import { languageToggleLabel, type Language } from '@/lib/i18n';
 import { scrollToAnchor } from '@/lib/scroll-to-anchor';
@@ -74,6 +75,14 @@ export default function Header({ language, setLanguage }: HeaderProps) {
             </a>
           ))}
         </div>
+        <Link
+          href='/cabinet'
+          className={styles.cabinetLink}
+          aria-label={language === 'ru' ? 'Личный кабинет' : 'Student cabinet'}
+        >
+          <UserRound aria-hidden='true' />
+          <span>{language === 'ru' ? 'Кабинет' : 'Cabinet'}</span>
+        </Link>
         <button
           type='button'
           className={styles.languageButton}

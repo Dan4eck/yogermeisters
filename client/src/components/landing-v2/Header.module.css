@@ -75,6 +75,25 @@
   display: none;
 }
 
+.cabinetLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.cabinetLink:hover {
+  border-color: var(--line-strong);
+}
+
+.cabinetLink svg {
+  width: 14px;
+  height: 14px;
+}
+
 
 .languageButton {
   display: inline-flex;
@@ -172,6 +191,16 @@
     stroke-width: 1.8;
   }
 
+  .cabinetLink span {
+    display: none;
+  }
+
+  .cabinetLink {
+    justify-content: center;
+    width: 32px;
+    padding: 0;
+  }
+
   .menuButton {
     display: grid;
     place-items: center;
@@ -214,7 +243,8 @@
   }
 
   .languageButton,
-  .menuButton {
+  .menuButton,
+  .cabinetLink {
     width: 38px;
     height: 38px;
   }

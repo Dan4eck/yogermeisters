@@ -1,65 +1,74 @@
-import express, { type Request, type Response, type NextFunction } from "express";
-import { serveStatic } from "./static";
-import { createServer } from "http";
+import 'dotenv/config';
 
-const app = express();
-const httpServer = createServer(app);
+import { createServer } from 'http';
 
-httpServer.on("clientError", (err, socket) => {
-  log(`client error: ${err.message}`, "http");
-  if (socket.writable) {
-    socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
-  }
-});
+import { createApp } from './app';
+import { createAuthentication, createUnavailableAuthentication } from './auth';
+import { readRuntimeConfig } from './config';
+import { DrizzleCourseRepository } from './course-repository';
+import { createDatabase } from './db/client';
+import { serveStatic } from './static';
+import { createSelectelMediaSigner, type MediaSigner, StorageConfigurationError } from './storage/selectel';
 
-export function log(message: string, source = "express") {
-  const formattedTime = new Date().toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    second: "2-digit",
+export function log(message: string, source = 'express'): void {
+  const formattedTime = new Date().toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
     hour12: true,
   });
 
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-app.get("/healthz", (_req, res) => {
-  res.status(200).json({ ok: true });
-});
+async function startServer(): Promise<void> {
+  const config = readRuntimeConfig();
+  const database = config.databaseUrl ? createDatabase(config.databaseUrl) : undefined;
+  const repository = database ? new DrizzleCourseRepository(database.db) : undefined;
+  const authentication = database && repository
+    ? createAuthentication(config, database.pool, repository)
+    : createUnavailableAuthentication();
 
-(async () => {
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (process.env.NODE_ENV === "production") {
+  let mediaSigner: MediaSigner | undefined;
+  try {
+    mediaSigner = createSelectelMediaSigner(config);
+  } catch (error) {
+    if (!(error instanceof StorageConfigurationError)) {
+      throw error;
+    }
+  }
+
+  const app = createApp({
+    repository,
+    mediaSigner,
+    authMiddleware: authentication.middleware,
+    authRouter: authentication.router,
+    logError: (message) => log(message, 'error'),
+  });
+  const httpServer = createServer(app);
+
+  httpServer.on('clientError', (error, socket) => {
+    log(`client error: ${error.message}`, 'http');
+    if (socket.writable) {
+      socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+    }
+  });
+
+  if (process.env.NODE_ENV === 'production') {
     serveStatic(app);
   } else {
-    const { setupVite } = await import("./vite");
+    const { setupVite } = await import('./vite');
     await setupVite(httpServer, app);
   }
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || (err instanceof URIError ? 400 : 500);
-    const message =
-      err instanceof URIError
-        ? "Malformed request path"
-        : err.message || "Internal Server Error";
-
-    log(`${status} ${message}`, "error");
-
-    if (res.headersSent) {
-      return;
-    }
-
-    res.status(status).json({ message });
-  });
-
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 3001 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "3001", 10);
-  httpServer.listen(port, "0.0.0.0", () => {
+  const port = Number.parseInt(process.env.PORT || '3001', 10);
+  httpServer.listen(port, '0.0.0.0', () => {
     log(`serving on port ${port}`);
   });
-})();
+}
+
+void startServer().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : 'Unknown startup error';
+  log(message, 'startup-error');
+  process.exit(1);
+});

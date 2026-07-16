@@ -1,0 +1,204 @@
+.page {
+  min-height: 100vh;
+  padding: 48px 24px;
+  background: #f2f0eb;
+  color: #171715;
+  font-family: Arial, sans-serif;
+}
+
+.authCard,
+.cabinetShell {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 64px);
+  border: 1px solid rgba(23, 23, 21, 0.12);
+  border-radius: 24px;
+  background: #fbfaf7;
+}
+
+.authCard {
+  width: min(560px, 100%);
+  margin-top: 8vh;
+  text-align: center;
+}
+
+.authCard h1,
+.cabinetShell h1 {
+  margin: 18px 0 12px;
+  font-family: Georgia, serif;
+  font-size: clamp(34px, 5vw, 60px);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.brand {
+  display: inline-block;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  display: block;
+  margin-top: 28px;
+  color: #6e6b64;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid #171715;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.primaryButton {
+  margin: 24px 0;
+  background: #171715;
+  color: white;
+}
+
+.secondaryButton {
+  background: transparent;
+  color: inherit;
+}
+
+.textLink {
+  color: #57534d;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.cabinetHeader,
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.cabinetHeader {
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(23, 23, 21, 0.12);
+}
+
+.profile {
+  justify-content: flex-start;
+  margin: 42px 0 58px;
+}
+
+.profile img {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+}
+
+.profile .eyebrow,
+.courseCard .eyebrow {
+  margin-top: 0;
+}
+
+.profile h1 {
+  margin: 7px 0 4px;
+  font-size: 38px;
+}
+
+.profile p,
+.lead {
+  color: #6e6b64;
+}
+
+.courseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.courseCard,
+.moduleCard,
+.status {
+  padding: 28px;
+  border: 1px solid rgba(23, 23, 21, 0.12);
+  border-radius: 18px;
+  background: white;
+}
+
+.courseCard h3 {
+  margin: 12px 0;
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.moduleList {
+  display: grid;
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.moduleCard h2 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+.moduleCard ol {
+  padding-left: 24px;
+}
+
+.moduleCard li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(23, 23, 21, 0.1);
+}
+
+.player {
+  width: 100%;
+  max-height: 620px;
+  margin-top: 28px;
+  border-radius: 18px;
+  background: black;
+}
+
+.errorNotice {
+  margin: 24px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f4dfdc;
+  color: #7d261e;
+}
+
+.status {
+  margin-top: 32px;
+  text-align: center;
+}
+
+@media (max-width: 620px) {
+  .page {
+    padding: 12px;
+  }
+
+  .cabinetHeader,
+  .moduleCard li {
+    align-items: flex-start;
+  }
+
+  .profile {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

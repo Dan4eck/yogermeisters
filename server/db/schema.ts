@@ -1,0 +1,66 @@
+import { integer, pgEnum, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
+
+export const userRole = pgEnum('user_role', ['student', 'admin']);
+export const contentStatus = pgEnum('content_status', ['draft', 'published', 'archived']);
+export const accessStatus = pgEnum('access_status', ['active', 'revoked']);
+
+export const users = pgTable('users', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  googleSubject: varchar('google_subject', { length: 255 }).notNull().unique(),
+  email: varchar('email', { length: 320 }).notNull().unique(),
+  name: varchar('name', { length: 255 }).notNull(),
+  avatarUrl: text('avatar_url'),
+  role: userRole('role').notNull().default('student'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const courses = pgTable('courses', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  slug: varchar('slug', { length: 160 }).notNull().unique(),
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description').notNull(),
+  status: contentStatus('status').notNull().default('draft'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const courseModules = pgTable(
+  'course_modules',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    courseId: uuid('course_id').notNull().references(() => courses.id, { onDelete: 'cascade' }),
+    title: varchar('title', { length: 255 }).notNull(),
+    sortOrder: integer('sort_order').notNull(),
+    status: contentStatus('status').notNull().default('draft'),
+  },
+  (table) => [uniqueIndex('course_modules_course_sort_unique').on(table.courseId, table.sortOrder)],
+);
+
+export const lessons = pgTable(
+  'lessons',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    courseId: uuid('course_id').notNull().references(() => courses.id, { onDelete: 'cascade' }),
+    moduleId: uuid('module_id').notNull().references(() => courseModules.id, { onDelete: 'cascade' }),
+    slug: varchar('slug', { length: 160 }).notNull(),
+    title: varchar('title', { length: 255 }).notNull(),
+    description: text('description').notNull().default(''),
+    sortOrder: integer('sort_order').notNull(),
+    status: contentStatus('status').notNull().default('draft'),
+    mediaObjectKey: text('media_object_key'),
+  },
+  (table) => [uniqueIndex('lessons_course_slug_unique').on(table.courseId, table.slug)],
+);
+
+export const courseAccess = pgTable(
+  'course_access',
+  {
+    userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+    courseId: uuid('course_id').notNull().references(() => courses.id, { onDelete: 'cascade' }),
+    status: accessStatus('status').notNull().default('active'),
+    grantedAt: timestamp('granted_at', { withTimezone: true }).notNull().defaultNow(),
+    revokedAt: timestamp('revoked_at', { withTimezone: true }),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.courseId] })],
+);
