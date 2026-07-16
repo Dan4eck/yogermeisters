@@ -28,7 +28,7 @@ export interface CabinetCourseDetails extends CabinetCourse {
 }
 
 export class ApiError extends Error {
-  constructor(readonly status: number, message: string) {
+  constructor(readonly status: number, readonly code: string | undefined, message: string) {
     super(message);
     this.name = 'ApiError';
   }
@@ -41,8 +41,8 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
   });
 
   if (!response.ok) {
-    const body = await response.json().catch(() => ({})) as { message?: string };
-    throw new ApiError(response.status, body.message || 'Не удалось выполнить запрос');
+    const body = await response.json().catch(() => ({})) as { code?: string; message?: string };
+    throw new ApiError(response.status, body.code, body.message || 'Request could not be completed');
   }
 
   return response.status === 204 ? undefined as T : response.json() as Promise<T>;

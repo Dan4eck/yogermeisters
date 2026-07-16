@@ -26,10 +26,14 @@ function Router() {
       <Route path="/himalayan-yoga-course">
         <HimalayanYogaCoursePage language={language} setLanguage={setLanguage} />
       </Route>
-      <Route path="/login" component={LoginPage} />
-      <Route path="/cabinet" component={CabinetPage} />
+      <Route path="/login">
+        <LoginPage language={language} setLanguage={setLanguage} />
+      </Route>
+      <Route path="/cabinet">
+        <CabinetPage language={language} setLanguage={setLanguage} />
+      </Route>
       <Route path="/cabinet/courses/:slug">
-        {(params) => <CourseCabinetPage slug={params.slug} />}
+        {(params) => <CourseCabinetPage slug={params.slug} language={language} setLanguage={setLanguage} />}
       </Route>
       <Route component={NotFound} />
     </Switch>
