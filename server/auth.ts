@@ -7,6 +7,7 @@ import type { Pool } from 'pg';
 
 import type { RuntimeConfig } from './config';
 import type { CourseRepository } from './course-repository';
+import type { AuthenticatedUser } from './types';
 
 export interface Authentication {
   readonly middleware: readonly RequestHandler[];
@@ -24,6 +25,29 @@ export function createUnavailableAuthentication(): Authentication {
   router.post('/logout', (_req, res) => res.status(204).end());
 
   return { middleware: [], router };
+}
+
+export function createDevelopmentAuthentication(repository: CourseRepository, email: string): Authentication {
+  const router = Router();
+  router.get('/google', (_req, res) => res.redirect('/cabinet'));
+  router.get('/google/callback', (_req, res) => res.redirect('/cabinet'));
+  router.post('/logout', (_req, res) => res.status(204).end());
+
+  let userPromise: Promise<AuthenticatedUser | null> | undefined;
+  const middleware: RequestHandler = (req, _res, next) => {
+    userPromise ??= repository.findUserByEmail(email);
+    void userPromise
+      .then((user) => {
+        if (user) {
+          req.user = user;
+          req.isAuthenticated = (() => true) as typeof req.isAuthenticated;
+        }
+        next();
+      })
+      .catch(next);
+  };
+
+  return { middleware: [middleware], router };
 }
 
 export function createAuthentication(

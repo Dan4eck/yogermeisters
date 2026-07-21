@@ -3,7 +3,7 @@ import request from 'supertest';
 import { describe, expect, it, vi } from 'vitest';
 
 import { createApp } from './app';
-import { createLogoutHandler, createUnavailableAuthentication } from './auth';
+import { createDevelopmentAuthentication, createLogoutHandler, createUnavailableAuthentication } from './auth';
 import type { CourseRepository, GoogleProfileInput } from './course-repository';
 import type { AuthenticatedUser, CourseDetails, CourseSummary, LessonMedia } from './types';
 
@@ -35,6 +35,10 @@ class FakeRepository implements CourseRepository {
   ) {}
 
   async findUserById(): Promise<AuthenticatedUser | null> {
+    return user;
+  }
+
+  async findUserByEmail(): Promise<AuthenticatedUser | null> {
     return user;
   }
 
@@ -148,6 +152,21 @@ describe('cabinet API', () => {
 });
 
 describe('authentication setup', () => {
+  it('uses the configured development user without Google OAuth', async () => {
+    const repository = new FakeRepository(true);
+    const authentication = createDevelopmentAuthentication(repository, user.email);
+    const app = createApp({
+      repository,
+      authMiddleware: authentication.middleware,
+      authRouter: authentication.router,
+    });
+
+    const response = await request(app).get('/api/me');
+
+    expect(response.status).toBe(200);
+    expect(response.body.user.email).toBe(user.email);
+  });
+
   it('reports missing OAuth configuration without exposing environment values', async () => {
     const authentication = createUnavailableAuthentication();
     const response = await request(createApp({ authRouter: authentication.router })).get('/auth/google');

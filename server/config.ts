@@ -5,6 +5,7 @@ export interface RuntimeConfig {
   readonly googleClientId?: string;
   readonly googleClientSecret?: string;
   readonly googleCallbackUrl: string;
+  readonly developmentAuthEmail?: string;
   readonly s3Endpoint?: string;
   readonly s3Region?: string;
   readonly s3Bucket?: string;
@@ -23,6 +24,7 @@ export function readRuntimeConfig(env: NodeJS.ProcessEnv = process.env): Runtime
     googleClientId: emptyToUndefined(env.GOOGLE_CLIENT_ID),
     googleClientSecret: emptyToUndefined(env.GOOGLE_CLIENT_SECRET),
     googleCallbackUrl: env.GOOGLE_CALLBACK_URL || `${appUrl}/auth/google/callback`,
+    developmentAuthEmail: emptyToUndefined(env.DEV_AUTH_EMAIL),
     s3Endpoint: emptyToUndefined(env.S3_ENDPOINT),
     s3Region: emptyToUndefined(env.S3_REGION),
     s3Bucket: emptyToUndefined(env.S3_BUCKET),

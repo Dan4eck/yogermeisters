@@ -29,6 +29,8 @@ cp .env.example .env
 
 Сервер, миграции, seed и CLI управления доступами автоматически загружают этот файл. `.env` уже исключён из Git. Переменные, которые Railway или shell передали процессу, имеют приоритет и не перезаписываются значениями из файла.
 
+Для локальной проверки кабинета без Google OAuth задайте `DEV_AUTH_EMAIL` с email уже созданного ученика. Этот режим работает только при `NODE_ENV=development` и `APP_URL` на `localhost` или `127.0.0.1`; в production он не включается.
+
 ### 2. Добавить PostgreSQL в Railway
 
 1. В существующем Railway project добавьте PostgreSQL service.

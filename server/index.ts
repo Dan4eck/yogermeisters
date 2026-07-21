@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { createServer } from 'http';
 
 import { createApp } from './app';
-import { createAuthentication, createUnavailableAuthentication } from './auth';
+import { createAuthentication, createDevelopmentAuthentication, createUnavailableAuthentication } from './auth';
 import { readRuntimeConfig } from './config';
 import { DrizzleCourseRepository } from './course-repository';
 import { createDatabase } from './db/client';
@@ -26,7 +26,9 @@ async function startServer(): Promise<void> {
   const database = config.databaseUrl ? createDatabase(config.databaseUrl) : undefined;
   const repository = database ? new DrizzleCourseRepository(database.db) : undefined;
   const authentication = database && repository
-    ? createAuthentication(config, database.pool, repository)
+    ? shouldUseDevelopmentAuthentication(config)
+      ? createDevelopmentAuthentication(repository, config.developmentAuthEmail!)
+      : createAuthentication(config, database.pool, repository)
     : createUnavailableAuthentication();
 
   let mediaSigner: MediaSigner | undefined;
@@ -65,6 +67,15 @@ async function startServer(): Promise<void> {
   httpServer.listen(port, '0.0.0.0', () => {
     log(`serving on port ${port}`);
   });
+}
+
+function shouldUseDevelopmentAuthentication(config: ReturnType<typeof readRuntimeConfig>): boolean {
+  if (process.env.NODE_ENV !== 'development' || !config.developmentAuthEmail) {
+    return false;
+  }
+
+  const hostname = new URL(config.appUrl).hostname;
+  return hostname === 'localhost' || hostname === '127.0.0.1';
 }
 
 void startServer().catch((error: unknown) => {

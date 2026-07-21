@@ -13,6 +13,7 @@ export interface GoogleProfileInput {
 
 export interface CourseRepository {
   findUserById(id: string): Promise<AuthenticatedUser | null>;
+  findUserByEmail(email: string): Promise<AuthenticatedUser | null>;
   upsertGoogleUser(profile: GoogleProfileInput): Promise<AuthenticatedUser>;
   listCoursesForUser(userId: string): Promise<readonly CourseSummary[]>;
   getCourseForUser(userId: string, slug: string): Promise<CourseDetails | null>;
@@ -27,6 +28,16 @@ export class DrizzleCourseRepository implements CourseRepository {
       .select(userSelection)
       .from(users)
       .where(eq(users.id, id))
+      .limit(1);
+
+    return user ?? null;
+  }
+
+  async findUserByEmail(email: string): Promise<AuthenticatedUser | null> {
+    const [user] = await this.db
+      .select(userSelection)
+      .from(users)
+      .where(eq(users.email, email.toLowerCase()))
       .limit(1);
 
     return user ?? null;
