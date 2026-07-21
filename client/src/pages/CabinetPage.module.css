@@ -243,6 +243,11 @@
   margin-top: 12px;
 }
 
+.emptyStatus {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .errorNotice {
   border-color: rgba(211, 95, 53, 0.38);
   color: var(--cabinet-accent);

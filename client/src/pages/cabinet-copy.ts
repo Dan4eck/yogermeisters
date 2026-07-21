@@ -36,8 +36,8 @@ type CabinetCopy = {
 export const cabinetCopy: Record<Language, CabinetCopy> = {
   en: {
     login: {
-      title: 'Sign in to continue learning',
-      description: 'Use the Google account whose email has been given access to your course.',
+      title: 'Sign in to start learning',
+      description: 'You’re almost a Yogermeister. Just one more step!',
       googleAction: 'Sign in with Google',
       returnHome: 'Back to home',
     },
@@ -68,8 +68,8 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
   },
   ru: {
     login: {
-      title: 'Войдите, чтобы продолжить обучение',
-      description: 'Используйте Google-аккаунт, на email которого был выдан доступ к курсу.',
+      title: 'Войдите, чтобы начать обучение',
+      description: 'Ты уже почти йогермейстер. Еще один шаг!',
       googleAction: 'Войти через Google',
       returnHome: 'Вернуться на сайт',
     },
