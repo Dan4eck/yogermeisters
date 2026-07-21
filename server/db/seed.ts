@@ -37,12 +37,17 @@ const courseSeed = {
   ],
 } as const;
 
-const lessonMediaObjectKeys: Readonly<Partial<Record<string, string>>> = {
-  'module-1-lesson-1': 'yoger-2305.mp4',
-  'module-1-lesson-2': 'yoger-1805.mp4',
-  'module-1-lesson-3': 'yoger-1505.mp4',
-  'module-2-lesson-1': 'yoger-1905.mp4',
-  'module-2-lesson-3': 'yoger-2105.mp4',
+interface LessonSeedContent {
+  readonly mediaObjectKey?: string;
+  readonly description?: string;
+}
+
+const lessonContent: Readonly<Partial<Record<string, LessonSeedContent>>> = {
+  'module-1-lesson-1': { mediaObjectKey: 'yoger-2305.mp4' },
+  'module-1-lesson-2': { mediaObjectKey: 'yoger-1805.mp4' },
+  'module-1-lesson-3': { mediaObjectKey: 'yoger-1505.mp4' },
+  'module-2-lesson-1': { mediaObjectKey: 'yoger-1905.mp4' },
+  'module-2-lesson-3': { mediaObjectKey: 'yoger-2105.mp4' },
 };
 
 async function seed(): Promise<void> {
@@ -100,7 +105,9 @@ async function seed(): Promise<void> {
         for (let lessonIndex = 0; lessonIndex < moduleSeed.lessons.length; lessonIndex += 1) {
           const title = moduleSeed.lessons[lessonIndex];
           const slug = `module-${moduleIndex + 1}-lesson-${lessonIndex + 1}`;
-          const mediaObjectKey = lessonMediaObjectKeys[slug];
+          const content = lessonContent[slug];
+          const mediaObjectKey = content?.mediaObjectKey;
+          const description = content?.description;
           await tx
             .insert(lessons)
             .values({
@@ -111,6 +118,7 @@ async function seed(): Promise<void> {
               sortOrder: lessonIndex + 1,
               status: 'published',
               ...(mediaObjectKey ? { mediaObjectKey } : {}),
+              ...(description !== undefined ? { description } : {}),
             })
             .onConflictDoUpdate({
               target: [lessons.courseId, lessons.slug],
@@ -120,6 +128,7 @@ async function seed(): Promise<void> {
                 sortOrder: lessonIndex + 1,
                 status: 'published',
                 ...(mediaObjectKey ? { mediaObjectKey } : {}),
+                ...(description !== undefined ? { description } : {}),
               },
             });
         }

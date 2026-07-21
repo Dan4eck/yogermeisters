@@ -22,6 +22,7 @@ type CabinetCopy = {
     readonly loading: string;
     readonly errorTitle: string;
     readonly watch: string;
+    readonly close: string;
     readonly loadingMedia: string;
   };
   readonly errors: {
@@ -55,6 +56,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       loading: 'Loading course…',
       errorTitle: 'Unable to open course',
       watch: 'Watch',
+      close: 'Close',
       loadingMedia: 'Loading…',
     },
     errors: {
@@ -86,6 +88,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       loading: 'Загружаем курс…',
       errorTitle: 'Не удалось открыть курс',
       watch: 'Смотреть',
+      close: 'Свернуть',
       loadingMedia: 'Загрузка…',
     },
     errors: {

@@ -67,7 +67,6 @@
 
 .primaryButton,
 .courseLink,
-.lessonButton,
 .logoutButton {
   display: inline-flex;
   align-items: center;
@@ -95,8 +94,7 @@
 }
 
 .primaryButton:hover,
-.courseLink:hover,
-.lessonButton:hover {
+.courseLink:hover {
   border-color: var(--cabinet-accent);
   background: var(--cabinet-accent);
   color: #fff;
@@ -142,7 +140,7 @@
 
 .logoutButton svg,
 .courseLink svg,
-.lessonButton svg,
+.lessonControl svg,
 .backLink svg {
   width: 15px;
   height: 15px;
@@ -271,8 +269,9 @@
 .player {
   display: block;
   width: 100%;
+  aspect-ratio: 16 / 9;
   max-height: 620px;
-  margin: 0 0 28px;
+  margin: 0;
   border-radius: 14px;
   background: #111;
 }
@@ -299,12 +298,25 @@
 }
 
 .moduleCard li {
+  border-top: 1px solid var(--cabinet-line);
+}
+
+.moduleCard li.activeLesson {
+  border-top-color: rgba(211, 95, 53, 0.48);
+}
+
+.lessonTrigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   gap: 18px;
-  padding: 13px 0;
-  border-top: 1px solid var(--cabinet-line);
+  padding: 15px 0;
+  border: 0;
+  background: transparent;
+  color: var(--cabinet-ink);
+  cursor: pointer;
+  text-align: left;
 }
 
 .lessonTitle {
@@ -314,22 +326,102 @@
   line-height: 1.4;
 }
 
-.lessonButton {
+.lessonControl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   flex: 0 0 auto;
-  min-height: 36px;
-  padding: 0 12px;
-  background: transparent;
-  color: var(--cabinet-ink);
-  cursor: pointer;
+  min-width: 94px;
+  color: var(--cabinet-copy);
+  font-family: var(--font-sora);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: color 160ms ease;
 }
 
-.lessonButton svg {
+.lessonControl svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 180ms ease;
+}
+
+.playIcon {
   fill: currentColor;
 }
 
-.lessonButton:disabled {
-  cursor: wait;
-  opacity: 0.56;
+.lessonTrigger:hover .lessonControl,
+.lessonTrigger:focus-visible .lessonControl {
+  color: var(--cabinet-accent);
+}
+
+.lessonTrigger:focus-visible {
+  outline: 2px solid var(--cabinet-accent);
+  outline-offset: 4px;
+}
+
+.activeLesson .lessonControl {
+  color: var(--cabinet-accent);
+}
+
+.activeLesson .lessonControl svg:not(.loadingIcon) {
+  transform: rotate(180deg);
+}
+
+.loadingIcon {
+  animation: lesson-spin 800ms linear infinite;
+}
+
+.lessonPanel {
+  margin: 0 0 20px;
+  padding: 14px;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.46);
+  animation: lesson-panel-in 220ms ease-out both;
+}
+
+.lessonLoading,
+.lessonMediaError,
+.lessonDescription {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.lessonLoading {
+  padding: 10px 4px;
+  color: var(--cabinet-copy);
+}
+
+.lessonMediaError {
+  padding: 8px 4px;
+  color: var(--cabinet-accent);
+}
+
+.lessonDescription {
+  padding: 16px 4px 2px;
+  color: var(--cabinet-copy);
+}
+
+@keyframes lesson-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lesson-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 620px) {
@@ -357,9 +449,16 @@
     margin-bottom: 34px;
   }
 
-  .moduleCard li {
+  .lessonTrigger {
     align-items: flex-start;
-    flex-direction: column;
     gap: 10px;
+  }
+
+  .lessonControl {
+    min-width: auto;
+  }
+
+  .lessonPanel {
+    padding: 10px;
   }
 }

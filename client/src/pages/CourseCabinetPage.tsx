@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { ArrowLeft, Play } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, ChevronDown, LoaderCircle, Play } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
@@ -17,9 +17,13 @@ interface CourseCabinetPageProps {
 export default function CourseCabinetPage({ slug, language, setLanguage }: CourseCabinetPageProps) {
   const [, navigate] = useLocation();
   const [course, setCourse] = useState<CabinetCourseDetails | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [courseError, setCourseError] = useState<string | null>(null);
+  const [mediaError, setMediaError] = useState<string | null>(null);
+  const [selectedLessonSlug, setSelectedLessonSlug] = useState<string | null>(null);
   const [mediaUrl, setMediaUrl] = useState<string | null>(null);
   const [loadingLesson, setLoadingLesson] = useState<string | null>(null);
+  const mediaRequestId = useRef(0);
+  const activeLessonRef = useRef<HTMLDivElement | null>(null);
   const copy = cabinetCopy[language];
 
   useEffect(() => {
@@ -30,25 +34,51 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
           navigate('/login');
           return;
         }
-        setError(getCourseError(requestError, copy));
+        setCourseError(getCourseError(requestError, copy));
       });
   }, [navigate, slug]);
 
   const openLesson = async (lessonSlug: string): Promise<void> => {
-    setError(null);
+    if (selectedLessonSlug === lessonSlug) {
+      mediaRequestId.current += 1;
+      setSelectedLessonSlug(null);
+      setMediaUrl(null);
+      setMediaError(null);
+      setLoadingLesson(null);
+      return;
+    }
+
+    const requestId = mediaRequestId.current + 1;
+    mediaRequestId.current = requestId;
+    setSelectedLessonSlug(lessonSlug);
     setMediaUrl(null);
+    setMediaError(null);
     setLoadingLesson(lessonSlug);
     try {
       const media = await apiRequest<{ url: string; expiresIn: number }>(
         `/api/courses/${encodeURIComponent(slug)}/lessons/${encodeURIComponent(lessonSlug)}/media`,
       );
-      setMediaUrl(media.url);
+      if (requestId === mediaRequestId.current) {
+        setMediaUrl(media.url);
+      }
     } catch (requestError) {
-      setError(getCourseError(requestError, copy));
+      if (requestId === mediaRequestId.current) {
+        setMediaError(getCourseError(requestError, copy));
+      }
     } finally {
-      setLoadingLesson(null);
+      if (requestId === mediaRequestId.current) {
+        setLoadingLesson(null);
+      }
     }
   };
+
+  useEffect(() => {
+    if (!mediaUrl || !activeLessonRef.current) {
+      return;
+    }
+
+    activeLessonRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [mediaUrl]);
 
   return (
     <div className={`landing-v2-root ${styles.cabinetRoot} ${styles[language]}`}>
@@ -59,34 +89,62 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
             <ArrowLeft aria-hidden='true' />
             {copy.course.back}
           </Link>
-          {!course && !error ? <div className={styles.status}><h2>{copy.course.loading}</h2></div> : null}
-          {error ? <div className={styles.errorNotice}>{error}</div> : null}
+          {!course && !courseError ? <div className={styles.status}><h2>{copy.course.loading}</h2></div> : null}
+          {courseError ? <div className={styles.errorNotice}>{courseError}</div> : null}
           {course ? (
             <div>
               <div className={styles.courseIntro}>
                 <h1>{course.title}</h1>
                 <p className={styles.lead}>{course.description}</p>
               </div>
-              {mediaUrl ? <video className={styles.player} controls playsInline src={mediaUrl} /> : null}
               <div className={styles.moduleList}>
                 {course.modules.map((module) => (
                   <section className={styles.moduleCard} key={module.sortOrder}>
                     <h2>{module.title}</h2>
                     <ol>
-                      {module.lessons.map((lesson, index) => (
-                        <li key={lesson.slug}>
-                          <span className={styles.lessonTitle}>{lesson.title}</span>
-                          <button
-                            type='button'
-                            className={styles.lessonButton}
-                            onClick={() => void openLesson(lesson.slug)}
-                            disabled={loadingLesson === lesson.slug}
-                          >
-                            <Play aria-hidden='true' />
-                            {loadingLesson === lesson.slug ? copy.course.loadingMedia : copy.course.watch}
-                          </button>
-                        </li>
-                      ))}
+                      {module.lessons.map((lesson) => {
+                        const isSelected = selectedLessonSlug === lesson.slug;
+                        const isLoading = loadingLesson === lesson.slug;
+                        const panelId = `lesson-${lesson.slug}`;
+
+                        return (
+                          <li className={isSelected ? styles.activeLesson : undefined} key={lesson.slug}>
+                            <button
+                              type='button'
+                              className={styles.lessonTrigger}
+                              onClick={() => void openLesson(lesson.slug)}
+                              aria-expanded={isSelected}
+                              aria-controls={isSelected ? panelId : undefined}
+                            >
+                              <span className={styles.lessonTitle}>{lesson.title}</span>
+                              <span className={styles.lessonControl}>
+                                {isLoading ? copy.course.loadingMedia : isSelected ? copy.course.close : copy.course.watch}
+                                {isLoading ? (
+                                  <LoaderCircle className={styles.loadingIcon} aria-hidden='true' />
+                                ) : isSelected ? (
+                                  <ChevronDown aria-hidden='true' />
+                                ) : (
+                                  <Play className={styles.playIcon} aria-hidden='true' />
+                                )}
+                              </span>
+                            </button>
+                            {isSelected ? (
+                              <div className={styles.lessonPanel} id={panelId} ref={activeLessonRef}>
+                                {isLoading ? <div className={styles.lessonLoading}>{copy.course.loadingMedia}</div> : null}
+                                {mediaError ? <div className={styles.lessonMediaError}>{mediaError}</div> : null}
+                                {mediaUrl ? (
+                                  <div className={styles.lessonMedia}>
+                                    <video className={styles.player} controls playsInline src={mediaUrl} />
+                                    {lesson.description.trim() ? (
+                                      <p className={styles.lessonDescription}>{lesson.description}</p>
+                                    ) : null}
+                                  </div>
+                                ) : null}
+                              </div>
+                            ) : null}
+                          </li>
+                        );
+                      })}
                     </ol>
                   </section>
                 ))}
