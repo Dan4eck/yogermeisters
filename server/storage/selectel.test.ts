@@ -4,8 +4,8 @@ import { readRuntimeConfig } from '../config';
 import { createSelectelMediaSigner, StorageConfigurationError } from './selectel';
 
 describe('Selectel media signer', () => {
-  it('uses a two-hour default URL lifetime for long lessons', () => {
-    expect(readRuntimeConfig({}).s3SignedUrlTtlSeconds).toBe(7200);
+  it('uses a ninety-minute default URL lifetime for long lessons', () => {
+    expect(readRuntimeConfig({}).s3SignedUrlTtlSeconds).toBe(5400);
   });
 
   it('rejects incomplete storage configuration', () => {

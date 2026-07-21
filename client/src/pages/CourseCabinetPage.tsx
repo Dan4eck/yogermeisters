@@ -134,7 +134,14 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                                 {mediaError ? <div className={styles.lessonMediaError}>{mediaError}</div> : null}
                                 {mediaUrl ? (
                                   <div className={styles.lessonMedia}>
-                                    <video className={styles.player} controls playsInline src={mediaUrl} />
+                                    <video
+                                      className={styles.player}
+                                      controls
+                                      controlsList='nodownload'
+                                      playsInline
+                                      src={mediaUrl}
+                                      onContextMenu={(event) => event.preventDefault()}
+                                    />
                                     {lesson.description.trim() ? (
                                       <p className={styles.lessonDescription}>{lesson.description}</p>
                                     ) : null}

@@ -30,7 +30,7 @@ export function readRuntimeConfig(env: NodeJS.ProcessEnv = process.env): Runtime
     s3Bucket: emptyToUndefined(env.S3_BUCKET),
     s3AccessKeyId: emptyToUndefined(env.S3_ACCESS_KEY_ID),
     s3SecretAccessKey: emptyToUndefined(env.S3_SECRET_ACCESS_KEY),
-    s3SignedUrlTtlSeconds: readPositiveInteger(env.S3_SIGNED_URL_TTL_SECONDS, 7200),
+    s3SignedUrlTtlSeconds: readPositiveInteger(env.S3_SIGNED_URL_TTL_SECONDS, 5400),
   };
 }
 
