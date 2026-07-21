@@ -15,6 +15,7 @@ type CabinetCopy = {
     readonly coursesTitle: string;
     readonly emptyTitle: string;
     readonly emptyText: string;
+    readonly catalogCourseDescription: string;
     readonly openCourse: string;
   };
   readonly course: {
@@ -42,13 +43,14 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       returnHome: 'Back to home',
     },
     cabinet: {
-      title: 'Student cabinet',
+      title: 'Yoga shala',
       logout: 'Log out',
-      loading: 'Loading your cabinet…',
+      loading: 'Unfolding the yoga mat...',
       errorTitle: 'Something went wrong',
       coursesTitle: 'My courses',
-      emptyTitle: 'No courses available yet',
-      emptyText: 'Your course will appear here after an administrator activates access.',
+      emptyTitle: 'No courses available yet 😓',
+      emptyText: 'Choose one from the catalog below:',
+      catalogCourseDescription: 'A Himalayan yoga course for a strong body, safe flexibility, and deep relaxation.',
       openCourse: 'Open course',
     },
     course: {
@@ -74,13 +76,14 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       returnHome: 'Вернуться на сайт',
     },
     cabinet: {
-      title: 'Личный кабинет',
+      title: 'Йога-шала',
       logout: 'Выйти',
-      loading: 'Загружаем кабинет…',
+      loading: 'Разворачиваем йога-коврик...',
       errorTitle: 'Что-то пошло не так',
       coursesTitle: 'Мои курсы',
-      emptyTitle: 'Пока нет доступных курсов',
-      emptyText: 'Доступ появится здесь после того, как администратор активирует его.',
+      emptyTitle: 'Пока нет доступных курсов 😓',
+      emptyText: 'Выбери из каталога ниже:',
+      catalogCourseDescription: 'Курс гималайской йоги для крепкого тела, безопасной гибкости и глубокого расслабления.',
       openCourse: 'Открыть курс',
     },
     course: {

@@ -78,10 +78,10 @@ export default function Header({ language, setLanguage }: HeaderProps) {
         <Link
           href='/cabinet'
           className={styles.cabinetLink}
-          aria-label={language === 'ru' ? 'Личный кабинет' : 'Student cabinet'}
+          aria-label={language === 'ru' ? 'Йога-шала' : 'Yoga shala'}
         >
           <UserRound aria-hidden='true' />
-          <span>{language === 'ru' ? 'Кабинет' : 'Cabinet'}</span>
+          <span>{language === 'ru' ? 'Шала' : 'Shala'}</span>
         </Link>
         <button
           type='button'
@@ -99,6 +99,7 @@ export default function Header({ language, setLanguage }: HeaderProps) {
         aria-expanded={isOpen}
         onClick={() => setIsOpen((current) => !current)}
       >
+        <span></span>
         <span></span>
         <span></span>
       </button>

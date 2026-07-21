@@ -70,11 +70,22 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
               </div>
               <h2 className={styles.sectionTitle}>{copy.cabinet.coursesTitle}</h2>
               {state.courses.length === 0 ? (
-                <Status
-                  title={copy.cabinet.emptyTitle}
-                  message={copy.cabinet.emptyText}
-                  className={styles.emptyStatus}
-                />
+                <div className={styles.emptyCatalog}>
+                  <p className={styles.emptyMessage}>
+                    <span>{copy.cabinet.emptyTitle}</span>
+                    {copy.cabinet.emptyText}
+                  </p>
+                  <div className={styles.catalogGrid}>
+                    <Link href='/the-yoga-method' className={styles.catalogCard}>
+                      <div className={styles.catalogCardHeader}>
+                        <h3>the yoga method</h3>
+                        <ArrowUpRight aria-hidden='true' />
+                      </div>
+                      <p>{copy.cabinet.catalogCourseDescription}</p>
+                      <span className={styles.catalogCardAction}>{copy.cabinet.openCourse}</span>
+                    </Link>
+                  </div>
+                </div>
               ) : (
                 <div className={styles.courseGrid}>
                   {state.courses.map((course) => (
@@ -97,18 +108,8 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
   );
 }
 
-function Status({
-  title,
-  message,
-  className,
-}: {
-  readonly title: string;
-  readonly message?: string;
-  readonly className?: string;
-}) {
-  const statusClassName = className ? `${styles.status} ${className}` : styles.status;
-
-  return <div className={statusClassName}><h2>{title}</h2>{message ? <p>{message}</p> : null}</div>;
+function Status({ title, message }: { readonly title: string; readonly message?: string }) {
+  return <div className={styles.status}><h2>{title}</h2>{message ? <p>{message}</p> : null}</div>;
 }
 
 function getErrorMessage(error: unknown, copy: typeof cabinetCopy.en): string {

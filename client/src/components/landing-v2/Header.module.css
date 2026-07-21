@@ -126,8 +126,20 @@
   display: block;
   width: 18px;
   height: 1px;
-  margin: 5px auto;
   background: var(--ink);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.menuButton[aria-expanded='true'] span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menuButton[aria-expanded='true'] span:nth-child(2) {
+  opacity: 0;
+}
+
+.menuButton[aria-expanded='true'] span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 @media (max-width: 1180px) {
@@ -202,8 +214,11 @@
   }
 
   .menuButton {
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
     cursor: pointer;
   }
 
