@@ -10,6 +10,9 @@ export interface CourseSummary {
   readonly slug: string;
   readonly title: string;
   readonly description: string;
+  readonly completedLessons: number;
+  readonly totalLessons: number;
+  readonly progressPercent: number;
 }
 
 export interface LessonSummary {
@@ -17,6 +20,7 @@ export interface LessonSummary {
   readonly title: string;
   readonly description: string;
   readonly sortOrder: number;
+  readonly completed: boolean;
 }
 
 export interface CourseModuleSummary {

@@ -19,11 +19,14 @@ const course: CourseDetails = {
   slug: 'the-yoga-method',
   title: 'the yoga method',
   description: 'Course description',
+  completedLessons: 0,
+  totalLessons: 1,
+  progressPercent: 0,
   modules: [
     {
       title: 'Module 1',
       sortOrder: 1,
-      lessons: [{ slug: 'lesson-1', title: 'Lesson 1', description: '', sortOrder: 1 }],
+      lessons: [{ slug: 'lesson-1', title: 'Lesson 1', description: '', sortOrder: 1, completed: false }],
     },
   ],
 };
@@ -57,6 +60,10 @@ class FakeRepository implements CourseRepository {
   async getLessonMediaForUser(): Promise<LessonMedia | null> {
     return this.hasAccess ? this.media : null;
   }
+
+  async completeLessonForUser(): Promise<boolean> {
+    return this.hasAccess;
+  }
 }
 
 const mockAuthentication: RequestHandler = (req, _res, next) => {
@@ -78,6 +85,14 @@ describe('cabinet API', () => {
 
   it.each(['/api/me', '/api/courses'])('returns 401 for %s without a session', async (path) => {
     const response = await request(createApp({ authMiddleware: [mockAuthentication] })).get(path);
+    expect(response.status).toBe(401);
+    expect(response.body.code).toBe('unauthorized');
+  });
+
+  it('returns 401 when completing a lesson without a session', async () => {
+    const response = await request(createApp({ authMiddleware: [mockAuthentication] }))
+      .put('/api/courses/the-yoga-method/lessons/lesson-1/completion');
+
     expect(response.status).toBe(401);
     expect(response.body.code).toBe('unauthorized');
   });
@@ -148,6 +163,28 @@ describe('cabinet API', () => {
       message: 'Private media storage is not configured',
     });
     expect(JSON.stringify(response.body)).not.toContain('media_object_key');
+  });
+
+  it('marks an accessible lesson as completed', async () => {
+    const repository = new FakeRepository(true);
+    const completeLessonForUser = vi.spyOn(repository, 'completeLessonForUser');
+    const app = createApp({ repository, authMiddleware: [mockAuthentication] });
+    const response = await request(app)
+      .put('/api/courses/the-yoga-method/lessons/lesson-1/completion')
+      .set('x-test-user', 'active');
+
+    expect(response.status).toBe(204);
+    expect(completeLessonForUser).toHaveBeenCalledWith(user.id, 'the-yoga-method', 'lesson-1');
+  });
+
+  it('does not mark a lesson as completed without course access', async () => {
+    const app = createApp({ repository: new FakeRepository(false), authMiddleware: [mockAuthentication] });
+    const response = await request(app)
+      .put('/api/courses/the-yoga-method/lessons/lesson-1/completion')
+      .set('x-test-user', 'active');
+
+    expect(response.status).toBe(403);
+    expect(response.body.code).toBe('course_access_denied');
   });
 });
 

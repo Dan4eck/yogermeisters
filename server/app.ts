@@ -45,7 +45,7 @@ export function createApp(dependencies: AppDependencies = {}): Express {
     asyncRoute(async (req, res) => {
       const repository = requireRepository(dependencies.repository);
       const courses = await repository.listCoursesForUser(req.user!.id);
-      res.json({ courses });
+      res.set('Cache-Control', 'private, no-store').json({ courses });
     }),
   );
 
@@ -59,7 +59,26 @@ export function createApp(dependencies: AppDependencies = {}): Express {
         res.status(403).json({ code: 'course_access_denied', message: 'You do not have access to this course' });
         return;
       }
-      res.json({ course });
+      res.set('Cache-Control', 'private, no-store').json({ course });
+    }),
+  );
+
+  app.put(
+    '/api/courses/:slug/lessons/:lessonSlug/completion',
+    requireUser,
+    asyncRoute(async (req, res) => {
+      const repository = requireRepository(dependencies.repository);
+      const completed = await repository.completeLessonForUser(
+        req.user!.id,
+        req.params.slug,
+        req.params.lessonSlug,
+      );
+      if (!completed) {
+        res.status(403).json({ code: 'course_access_denied', message: 'You do not have access to this lesson' });
+        return;
+      }
+
+      res.status(204).end();
     }),
   );
 

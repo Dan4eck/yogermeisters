@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ChevronDown, LoaderCircle, Play } from 'lucide-react';
+import { ArrowLeft, Check, ChevronDown, LoaderCircle, Play } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
@@ -22,6 +22,7 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
   const [selectedLessonSlug, setSelectedLessonSlug] = useState<string | null>(null);
   const [mediaUrl, setMediaUrl] = useState<string | null>(null);
   const [loadingLesson, setLoadingLesson] = useState<string | null>(null);
+  const [completingLessonSlug, setCompletingLessonSlug] = useState<string | null>(null);
   const mediaRequestId = useRef(0);
   const activeLessonRef = useRef<HTMLDivElement | null>(null);
   const copy = cabinetCopy[language];
@@ -72,6 +73,26 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
     }
   };
 
+  const completeLesson = async (lessonSlug: string): Promise<void> => {
+    if (completingLessonSlug === lessonSlug || isLessonCompleted(course, lessonSlug)) {
+      return;
+    }
+
+    setCompletingLessonSlug(lessonSlug);
+    try {
+      await apiRequest<void>(
+        `/api/courses/${encodeURIComponent(slug)}/lessons/${encodeURIComponent(lessonSlug)}/completion`,
+        { method: 'PUT' },
+      );
+      setCourse((currentCourse) => markLessonCompleted(currentCourse, lessonSlug));
+      setMediaError(null);
+    } catch {
+      setMediaError(copy.course.progressSaveError);
+    } finally {
+      setCompletingLessonSlug(null);
+    }
+  };
+
   useEffect(() => {
     if (!mediaUrl || !activeLessonRef.current) {
       return;
@@ -116,7 +137,14 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                               aria-expanded={isSelected}
                               aria-controls={isSelected ? panelId : undefined}
                             >
-                              <span className={styles.lessonTitle}>{lesson.title}</span>
+                              <span className={styles.lessonHeading}>
+                                <span className={styles.lessonTitle}>{lesson.title}</span>
+                                {lesson.completed ? (
+                                  <span className={styles.completionMark} aria-label={copy.course.completed}>
+                                    <Check aria-hidden='true' />
+                                  </span>
+                                ) : null}
+                              </span>
                               <span className={styles.lessonControl}>
                                 {isLoading ? copy.course.loadingMedia : isSelected ? copy.course.close : copy.course.watch}
                                 {isLoading ? (
@@ -140,6 +168,7 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                                       controlsList='nodownload'
                                       playsInline
                                       src={mediaUrl}
+                                      onEnded={() => void completeLesson(lesson.slug)}
                                       onContextMenu={(event) => event.preventDefault()}
                                     />
                                     {lesson.description.trim() ? (
@@ -162,6 +191,35 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
       </main>
     </div>
   );
+}
+
+function isLessonCompleted(course: CabinetCourseDetails | null, lessonSlug: string): boolean {
+  return course?.modules.some((module) => (
+    module.lessons.some((lesson) => lesson.slug === lessonSlug && lesson.completed)
+  )) ?? false;
+}
+
+function markLessonCompleted(
+  course: CabinetCourseDetails | null,
+  lessonSlug: string,
+): CabinetCourseDetails | null {
+  if (!course || isLessonCompleted(course, lessonSlug)) {
+    return course;
+  }
+
+  const completedLessons = Math.min(course.completedLessons + 1, course.totalLessons);
+
+  return {
+    ...course,
+    completedLessons,
+    progressPercent: course.totalLessons === 0 ? 0 : Math.round((completedLessons / course.totalLessons) * 100),
+    modules: course.modules.map((module) => ({
+      ...module,
+      lessons: module.lessons.map((lesson) => (
+        lesson.slug === lessonSlug ? { ...lesson, completed: true } : lesson
+      )),
+    })),
+  };
 }
 
 function getCourseError(error: unknown, copy: typeof cabinetCopy.en): string {

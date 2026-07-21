@@ -16,6 +16,7 @@ type CabinetCopy = {
     readonly emptyTitle: string;
     readonly emptyText: string;
     readonly catalogCourseDescription: string;
+    readonly progressLabel: string;
     readonly openCourse: string;
   };
   readonly course: {
@@ -25,6 +26,8 @@ type CabinetCopy = {
     readonly watch: string;
     readonly close: string;
     readonly loadingMedia: string;
+    readonly completed: string;
+    readonly progressSaveError: string;
   };
   readonly errors: {
     readonly unavailable: string;
@@ -51,15 +54,18 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       emptyTitle: 'No courses available yet 😓',
       emptyText: 'Choose one from the catalog below:',
       catalogCourseDescription: 'A Himalayan yoga course for a strong body, safe flexibility, and deep relaxation.',
+      progressLabel: 'Karma earned',
       openCourse: 'Open course',
     },
     course: {
       back: 'My courses',
-      loading: 'Loading course…',
+      loading: 'Unfolding the yoga mat...',
       errorTitle: 'Unable to open course',
       watch: 'Watch',
       close: 'Close',
       loadingMedia: 'Loading…',
+      completed: 'Completed',
+      progressSaveError: 'Could not save your progress. Please try again.',
     },
     errors: {
       unavailable: 'Please try again in a moment.',
@@ -84,15 +90,18 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       emptyTitle: 'Пока нет доступных курсов 😓',
       emptyText: 'Выбери из каталога ниже:',
       catalogCourseDescription: 'Курс гималайской йоги для крепкого тела, безопасной гибкости и глубокого расслабления.',
+      progressLabel: 'Наработано кармы',
       openCourse: 'Открыть курс',
     },
     course: {
       back: 'Мои курсы',
-      loading: 'Загружаем курс…',
+      loading: 'Разворачиваем йога-коврик...',
       errorTitle: 'Не удалось открыть курс',
       watch: 'Смотреть',
       close: 'Свернуть',
       loadingMedia: 'Загрузка…',
+      completed: 'Пройдено',
+      progressSaveError: 'Не удалось сохранить прогресс. Попробуйте ещё раз.',
     },
     errors: {
       unavailable: 'Попробуйте ещё раз через минуту.',

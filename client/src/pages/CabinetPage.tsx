@@ -92,6 +92,22 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
                     <article className={styles.courseCard} key={course.slug}>
                       <h3>{course.title}</h3>
                       <p>{course.description}</p>
+                      <div
+                        className={styles.courseProgress}
+                        role='progressbar'
+                        aria-label={copy.cabinet.progressLabel}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={course.progressPercent}
+                      >
+                        <div className={styles.progressMeta}>
+                          <span>{copy.cabinet.progressLabel}</span>
+                          <strong>{course.progressPercent}%</strong>
+                        </div>
+                        <div className={styles.progressTrack} aria-hidden='true'>
+                          <span style={{ width: `${course.progressPercent}%` }} />
+                        </div>
+                      </div>
                       <Link href={`/cabinet/courses/${course.slug}`} className={styles.courseLink}>
                         {copy.cabinet.openCourse}
                         <ArrowUpRight aria-hidden='true' />

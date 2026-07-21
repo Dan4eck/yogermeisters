@@ -155,9 +155,9 @@ export const landingCopy = {
       bookRetreat: 'Sign Up',
       backToRetreats: 'Back to retreats',
       dateLocale: 'en-US',
-      loading: 'Loading retreats...',
+      loading: 'Unfolding the yoga mat...',
       error: 'Unable to load retreats right now.',
-      detailLoading: 'Loading retreat...',
+      detailLoading: 'Unfolding the yoga mat...',
       detailError: 'Unable to load this retreat right now.',
       detailCtaTitle: 'Ready to join this retreat?',
       detailCtaDescription:
@@ -358,9 +358,9 @@ export const landingCopy = {
       bookRetreat: 'Записаться',
       backToRetreats: 'К ретритам',
       dateLocale: 'ru-RU',
-      loading: 'Загружаем ретриты...',
+      loading: 'Разворачиваем йога-коврик...',
       error: 'Сейчас не получается загрузить ретриты.',
-      detailLoading: 'Загружаем ретрит...',
+      detailLoading: 'Разворачиваем йога-коврик...',
       detailError: 'Сейчас не получается загрузить этот ретрит.',
       detailCtaTitle: 'Хочешь присоединиться к ретриту?',
       detailCtaDescription:

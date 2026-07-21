@@ -1,6 +1,6 @@
-import { and, asc, eq } from 'drizzle-orm';
+import { and, asc, count, eq } from 'drizzle-orm';
 
-import { courseAccess, courseModules, courses, lessons, users } from './db/schema';
+import { courseAccess, courseModules, courses, lessonProgress, lessons, users } from './db/schema';
 import type { Database } from './db/client';
 import type { AuthenticatedUser, CourseDetails, CourseSummary, LessonMedia } from './types';
 
@@ -18,6 +18,7 @@ export interface CourseRepository {
   listCoursesForUser(userId: string): Promise<readonly CourseSummary[]>;
   getCourseForUser(userId: string, slug: string): Promise<CourseDetails | null>;
   getLessonMediaForUser(userId: string, courseSlug: string, lessonSlug: string): Promise<LessonMedia | null>;
+  completeLessonForUser(userId: string, courseSlug: string, lessonSlug: string): Promise<boolean>;
 }
 
 export class DrizzleCourseRepository implements CourseRepository {
@@ -66,19 +67,35 @@ export class DrizzleCourseRepository implements CourseRepository {
   }
 
   async listCoursesForUser(userId: string): Promise<readonly CourseSummary[]> {
-    return this.db
+    const rows = await this.db
       .select({
         slug: courses.slug,
         title: courses.title,
         description: courses.description,
+        totalLessons: count(lessons.id),
+        completedLessons: count(lessonProgress.lessonId),
       })
       .from(courses)
       .innerJoin(
         courseAccess,
         and(eq(courseAccess.courseId, courses.id), eq(courseAccess.userId, userId)),
       )
+      .leftJoin(
+        lessons,
+        and(eq(lessons.courseId, courses.id), eq(lessons.status, 'published')),
+      )
+      .leftJoin(
+        lessonProgress,
+        and(eq(lessonProgress.lessonId, lessons.id), eq(lessonProgress.userId, userId)),
+      )
       .where(and(eq(courseAccess.status, 'active'), eq(courses.status, 'published')))
+      .groupBy(courses.id)
       .orderBy(asc(courses.createdAt));
+
+    return rows.map((course) => ({
+      ...course,
+      progressPercent: calculateProgressPercent(course.completedLessons, course.totalLessons),
+    }));
   }
 
   async getCourseForUser(userId: string, slug: string): Promise<CourseDetails | null> {
@@ -120,19 +137,35 @@ export class DrizzleCourseRepository implements CourseRepository {
         title: lessons.title,
         description: lessons.description,
         sortOrder: lessons.sortOrder,
+        completedAt: lessonProgress.completedAt,
       })
       .from(lessons)
+      .leftJoin(
+        lessonProgress,
+        and(eq(lessonProgress.lessonId, lessons.id), eq(lessonProgress.userId, userId)),
+      )
       .where(and(eq(lessons.courseId, course.id), eq(lessons.status, 'published')))
       .orderBy(asc(lessons.sortOrder));
+
+    const completedLessons = lessonRows.filter((lesson) => lesson.completedAt !== null).length;
+    const totalLessons = lessonRows.length;
 
     return {
       slug: course.slug,
       title: course.title,
       description: course.description,
+      completedLessons,
+      totalLessons,
+      progressPercent: calculateProgressPercent(completedLessons, totalLessons),
       modules: moduleRows.map((module) => ({
         title: module.title,
         sortOrder: module.sortOrder,
-        lessons: lessonRows.filter((lesson) => lesson.moduleId === module.id).map(({ moduleId: _moduleId, ...lesson }) => lesson),
+        lessons: lessonRows
+          .filter((lesson) => lesson.moduleId === module.id)
+          .map(({ moduleId: _moduleId, completedAt, ...lesson }) => ({
+            ...lesson,
+            completed: completedAt !== null,
+          })),
       })),
     };
   }
@@ -163,6 +196,46 @@ export class DrizzleCourseRepository implements CourseRepository {
 
     return lesson ?? null;
   }
+
+  async completeLessonForUser(
+    userId: string,
+    courseSlug: string,
+    lessonSlug: string,
+  ): Promise<boolean> {
+    const [lesson] = await this.db
+      .select({ id: lessons.id })
+      .from(lessons)
+      .innerJoin(courses, eq(lessons.courseId, courses.id))
+      .innerJoin(
+        courseAccess,
+        and(eq(courseAccess.courseId, courses.id), eq(courseAccess.userId, userId)),
+      )
+      .where(
+        and(
+          eq(courses.slug, courseSlug),
+          eq(lessons.slug, lessonSlug),
+          eq(courses.status, 'published'),
+          eq(lessons.status, 'published'),
+          eq(courseAccess.status, 'active'),
+        ),
+      )
+      .limit(1);
+
+    if (!lesson) {
+      return false;
+    }
+
+    await this.db
+      .insert(lessonProgress)
+      .values({ userId, lessonId: lesson.id })
+      .onConflictDoNothing({ target: [lessonProgress.userId, lessonProgress.lessonId] });
+
+    return true;
+  }
+}
+
+function calculateProgressPercent(completedLessons: number, totalLessons: number): number {
+  return totalLessons === 0 ? 0 : Math.round((completedLessons / totalLessons) * 100);
 }
 
 const userSelection = {

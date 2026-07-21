@@ -3,6 +3,7 @@
   --cabinet-ink: #111;
   --cabinet-copy: #292827;
   --cabinet-accent: #d35f35;
+  --cabinet-success: #4f7f59;
   --cabinet-line: rgba(17, 17, 17, 0.12);
   min-height: 100vh;
   background:
@@ -200,7 +201,44 @@
 }
 
 .courseCard p {
+  margin-bottom: 18px;
+}
+
+.courseProgress {
   margin-bottom: 26px;
+}
+
+.progressMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+  color: var(--cabinet-copy);
+  font-family: var(--font-sora);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+
+.progressMeta strong {
+  color: var(--cabinet-success);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.progressTrack {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(79, 127, 89, 0.14);
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--cabinet-success);
+  transition: width 300ms ease;
 }
 
 .courseCard h3,
@@ -445,6 +483,33 @@
   line-height: 1.4;
 }
 
+.lessonHeading {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.completionMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 19px;
+  height: 19px;
+  border: 1px solid rgba(79, 127, 89, 0.34);
+  border-radius: 50%;
+  background: rgba(79, 127, 89, 0.12);
+  color: var(--cabinet-success);
+  animation: completion-pop 220ms ease-out both;
+}
+
+.completionMark svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.5;
+}
+
 .lessonControl {
   display: inline-flex;
   align-items: center;
@@ -540,6 +605,18 @@
 @keyframes lesson-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes completion-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
