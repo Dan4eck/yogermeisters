@@ -27,7 +27,14 @@ const course: CourseDetails = {
     {
       title: 'Module 1',
       sortOrder: 1,
-      lessons: [{ slug: 'lesson-1', title: 'Lesson 1', description: '', sortOrder: 1, completed: false }],
+      lessons: [{
+        slug: 'lesson-1',
+        title: 'Lesson 1',
+        description: '',
+        sortOrder: 1,
+        mediaAvailable: true,
+        completed: false,
+      }],
     },
   ],
 };

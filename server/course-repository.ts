@@ -139,6 +139,7 @@ export class DrizzleCourseRepository implements CourseRepository {
         title: lessons.title,
         description: lessons.description,
         sortOrder: lessons.sortOrder,
+        mediaObjectKey: lessons.mediaObjectKey,
         completedAt: lessonProgress.completedAt,
       })
       .from(lessons)
@@ -165,8 +166,9 @@ export class DrizzleCourseRepository implements CourseRepository {
         sortOrder: module.sortOrder,
         lessons: lessonRows
           .filter((lesson) => lesson.moduleId === module.id)
-          .map(({ moduleId: _moduleId, completedAt, ...lesson }) => ({
+          .map(({ moduleId: _moduleId, completedAt, mediaObjectKey, ...lesson }) => ({
             ...lesson,
+            mediaAvailable: mediaObjectKey !== null,
             completed: completedAt !== null,
           })),
       })),

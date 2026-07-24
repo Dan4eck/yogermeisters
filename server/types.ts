@@ -20,6 +20,7 @@ export interface LessonSummary {
   readonly title: string;
   readonly description: string;
   readonly sortOrder: number;
+  readonly mediaAvailable: boolean;
   readonly completed: boolean;
 }
 

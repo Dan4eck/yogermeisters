@@ -24,6 +24,7 @@ type CabinetCopy = {
     readonly loading: string;
     readonly errorTitle: string;
     readonly watch: string;
+    readonly read: string;
     readonly close: string;
     readonly loadingMedia: string;
     readonly introLesson: string;
@@ -63,6 +64,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       loading: 'Unfolding the yoga mat...',
       errorTitle: 'Unable to open course',
       watch: 'Watch',
+      read: 'Read',
       close: 'Close',
       loadingMedia: 'Loading…',
       introLesson: 'Intro lesson',
@@ -100,6 +102,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       loading: 'Разворачиваем йога-коврик...',
       errorTitle: 'Не удалось открыть курс',
       watch: 'Смотреть',
+      read: 'Читать',
       close: 'Свернуть',
       loadingMedia: 'Загрузка…',
       introLesson: 'Вводный урок',

@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Check, ChevronDown, LoaderCircle, Play } from 'lucide-react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
+import { ArrowLeft, BookOpen, Check, ChevronDown, LoaderCircle, Play } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
 import type { Language } from '@/lib/i18n';
-import { ApiError, apiRequest, type CabinetCourseDetails } from '@/lib/cabinet-api';
+import { ApiError, apiRequest, type CabinetCourseDetails, type CabinetLesson } from '@/lib/cabinet-api';
 import { cabinetCopy } from './cabinet-copy';
 import styles from './CabinetPage.module.css';
 
@@ -69,7 +69,8 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
     }
   };
 
-  const openLesson = async (lessonSlug: string): Promise<void> => {
+  const openLesson = async (lesson: CabinetLesson): Promise<void> => {
+    const lessonSlug = lesson.slug;
     if (selectedLessonSlug === lessonSlug) {
       mediaRequestId.current += 1;
       setSelectedLessonSlug(null);
@@ -86,6 +87,13 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
     setMediaUrl(null);
     setMediaKind(null);
     setMediaError(null);
+
+    if (!lesson.mediaAvailable && lesson.description.trim()) {
+      setLoadingLesson(null);
+      void completeLesson(lessonSlug);
+      return;
+    }
+
     setLoadingLesson(lessonSlug);
     try {
       const media = await apiRequest<{ url: string; expiresIn: number; kind?: 'audio' | 'video' }>(
@@ -106,7 +114,7 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
     }
   };
 
-  const completeLesson = async (lessonSlug: string): Promise<void> => {
+  async function completeLesson(lessonSlug: string): Promise<void> {
     if (completingLessonSlug === lessonSlug || isLessonCompleted(course, lessonSlug)) {
       return;
     }
@@ -124,7 +132,7 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
     } finally {
       setCompletingLessonSlug(null);
     }
-  };
+  }
 
   useEffect(() => {
     if (!mediaUrl || !activeLessonRef.current) {
@@ -200,6 +208,7 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                       {module.lessons.map((lesson) => {
                         const isSelected = selectedLessonSlug === lesson.slug;
                         const isLoading = loadingLesson === lesson.slug;
+                        const isTextLesson = !lesson.mediaAvailable && Boolean(lesson.description.trim());
                         const panelId = `lesson-${lesson.slug}`;
 
                         return (
@@ -207,7 +216,7 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                             <button
                               type='button'
                               className={styles.lessonTrigger}
-                              onClick={() => void openLesson(lesson.slug)}
+                              onClick={() => void openLesson(lesson)}
                               aria-expanded={isSelected}
                               aria-controls={isSelected ? panelId : undefined}
                             >
@@ -220,11 +229,19 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                                 ) : null}
                               </span>
                               <span className={styles.lessonControl}>
-                                {isLoading ? copy.course.loadingMedia : isSelected ? copy.course.close : copy.course.watch}
+                                {isLoading
+                                  ? copy.course.loadingMedia
+                                  : isSelected
+                                    ? copy.course.close
+                                    : isTextLesson
+                                      ? copy.course.read
+                                      : copy.course.watch}
                                 {isLoading ? (
                                   <LoaderCircle className={styles.loadingIcon} aria-hidden='true' />
                                 ) : isSelected ? (
                                   <ChevronDown aria-hidden='true' />
+                                ) : isTextLesson ? (
+                                  <BookOpen aria-hidden='true' />
                                 ) : (
                                   <Play className={styles.playIcon} aria-hidden='true' />
                                 )}
@@ -256,10 +273,12 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                                         onContextMenu={(event) => event.preventDefault()}
                                       />
                                     )}
-                                    {lesson.description.trim() ? (
-                                      <p className={styles.lessonDescription}>{lesson.description}</p>
-                                    ) : null}
                                   </div>
+                                ) : null}
+                                {isTextLesson ? (
+                                  <LessonTextContent description={lesson.description} />
+                                ) : lesson.description.trim() ? (
+                                  <p className={styles.lessonDescription}>{lesson.description}</p>
                                 ) : null}
                               </div>
                             ) : null}
@@ -325,4 +344,19 @@ function getCourseError(error: unknown, copy: typeof cabinetCopy.en): string {
 
 function getMediaKindFromUrl(url: string): 'audio' | 'video' {
   return /\.(?:mp3|m4a|aac|ogg|wav)(?:$|[?#])/i.test(url) ? 'audio' : 'video';
+}
+
+function LessonTextContent({ description }: { readonly description: string }): ReactElement {
+  const [heading, ...paragraphs] = description
+    .split('\n\n')
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  return (
+    <div className={styles.lessonTextContent}>
+      {heading ? <h3>{heading}</h3> : null}
+      <hr />
+      {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+    </div>
+  );
 }

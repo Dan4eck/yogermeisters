@@ -685,6 +685,38 @@
   color: var(--cabinet-copy);
 }
 
+.lessonTextContent {
+  max-width: 780px;
+  padding: 8px 4px 4px;
+  color: var(--cabinet-copy);
+  font-family: var(--font-sora);
+}
+
+.lessonTextContent h3 {
+  margin: 0;
+  color: var(--cabinet-ink);
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.lessonTextContent hr {
+  margin: 18px 0;
+  border: 0;
+  border-top: 1px solid var(--cabinet-line);
+}
+
+.lessonTextContent p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.75;
+}
+
+.lessonTextContent p + p {
+  margin-top: 16px;
+}
+
 @keyframes lesson-panel-in {
   from {
     opacity: 0;

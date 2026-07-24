@@ -5,6 +5,14 @@ import { and, eq } from 'drizzle-orm';
 import { createDatabase } from './client';
 import { courseModules, courses, lessons } from './schema';
 
+const contraindicationsDescription = [
+  'Противопоказания к практике',
+  'При наличии хронических заболеваний, травм, беременности или в период восстановления после операций рекомендуется предварительно проконсультироваться с врачом.',
+  'Во время менструации не рекомендуется выполнять перевёрнутые асаны, капалабхати, бхастрику, уддияна-бандху и другие техники, повышающие внутрибрюшное давление.',
+  'При любых острых состояниях, повышенной температуре, сильном недомогании или боли практику следует временно прекратить.',
+  'Главный принцип практики — уважение к своему телу и его текущему состоянию. Йога означает «связь» или «единение». На занятиях мы учимся восстанавливать эту связь с телом, дыханием и вниманием, поэтому важно практиковать осознанно и без насилия над собой.',
+].join('\n\n');
+
 const courseSeed = {
   slug: 'the-yoga-method',
   title: 'the yoga method',
@@ -26,7 +34,7 @@ const courseSeed = {
     },
     {
       title: 'Техника выполнения асан',
-      lessons: ['Отстройка базовых асан', 'Разбор Сурья Намаскар'],
+      lessons: ['Отстройка базовых асан', 'Разбор Сурья Намаскар', 'Противопоказания'],
     },
     {
       title: 'Восстановление и расслабление',
@@ -50,8 +58,10 @@ const lessonContent: Readonly<Partial<Record<string, LessonSeedContent>>> = {
   'module-1-lesson-3': { mediaObjectKey: 'yoger-1505.mp4' },
   'module-1-lesson-4': { mediaObjectKey: 'yoger2406_f.mp4' },
   'module-2-lesson-1': { mediaObjectKey: 'yoger-1905.mp4' },
+  'module-2-lesson-2': { mediaObjectKey: 'yoger-1705-f.mp4' },
   'module-2-lesson-3': { mediaObjectKey: 'yoger-2105.mp4' },
   'module-3-lesson-1': { mediaObjectKey: 'отстрои\u0306ки-f.mp4' },
+  'module-3-lesson-3': { description: contraindicationsDescription },
   'module-4-lesson-1': { mediaObjectKey: 'yoger2005-nomind.mp4' },
   'module-4-lesson-2': { mediaObjectKey: 'либид.mp4' },
   'module-4-lesson-3': { mediaObjectKey: 'nidra-f.mp3' },
