@@ -83,6 +83,25 @@ export function createApp(dependencies: AppDependencies = {}): Express {
   );
 
   app.get(
+    '/api/courses/:slug/intro-media',
+    requireUser,
+    asyncRoute(async (req, res) => {
+      const repository = requireRepository(dependencies.repository);
+      const media = await repository.getCourseIntroMediaForUser(req.user!.id, req.params.slug);
+      if (!media) {
+        res.status(403).json({ code: 'course_access_denied', message: 'You do not have access to this course' });
+        return;
+      }
+      if (!media.objectKey) {
+        res.status(409).json({ code: 'media_not_ready', message: 'Intro media has not been uploaded' });
+        return;
+      }
+
+      await sendSignedMedia(res, dependencies.mediaSigner, media.objectKey);
+    }),
+  );
+
+  app.get(
     '/api/courses/:slug/lessons/:lessonSlug/media',
     requireUser,
     asyncRoute(async (req, res) => {
@@ -96,12 +115,7 @@ export function createApp(dependencies: AppDependencies = {}): Express {
         res.status(409).json({ code: 'media_not_ready', message: 'Media has not been uploaded for this lesson' });
         return;
       }
-      if (!dependencies.mediaSigner) {
-        throw new StorageConfigurationError();
-      }
-
-      const signedMedia = await dependencies.mediaSigner.createDownloadUrl(media.objectKey);
-      res.set('Cache-Control', 'private, no-store').json(signedMedia);
+      await sendSignedMedia(res, dependencies.mediaSigner, media.objectKey);
     }),
   );
 
@@ -157,3 +171,23 @@ function asyncRoute(
 }
 
 class ServiceConfigurationError extends Error {}
+
+function getMediaKind(objectKey: string): 'audio' | 'video' {
+  return /\.(?:mp3|m4a|aac|ogg|wav)$/i.test(objectKey) ? 'audio' : 'video';
+}
+
+async function sendSignedMedia(
+  res: Response,
+  mediaSigner: MediaSigner | undefined,
+  objectKey: string,
+): Promise<void> {
+  if (!mediaSigner) {
+    throw new StorageConfigurationError();
+  }
+
+  const signedMedia = await mediaSigner.createDownloadUrl(objectKey);
+  res.set('Cache-Control', 'private, no-store').json({
+    ...signedMedia,
+    kind: getMediaKind(objectKey),
+  });
+}

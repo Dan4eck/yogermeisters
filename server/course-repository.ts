@@ -17,6 +17,7 @@ export interface CourseRepository {
   upsertGoogleUser(profile: GoogleProfileInput): Promise<AuthenticatedUser>;
   listCoursesForUser(userId: string): Promise<readonly CourseSummary[]>;
   getCourseForUser(userId: string, slug: string): Promise<CourseDetails | null>;
+  getCourseIntroMediaForUser(userId: string, courseSlug: string): Promise<LessonMedia | null>;
   getLessonMediaForUser(userId: string, courseSlug: string, lessonSlug: string): Promise<LessonMedia | null>;
   completeLessonForUser(userId: string, courseSlug: string, lessonSlug: string): Promise<boolean>;
 }
@@ -105,6 +106,7 @@ export class DrizzleCourseRepository implements CourseRepository {
         slug: courses.slug,
         title: courses.title,
         description: courses.description,
+        introMediaObjectKey: courses.introMediaObjectKey,
       })
       .from(courses)
       .innerJoin(
@@ -154,6 +156,7 @@ export class DrizzleCourseRepository implements CourseRepository {
       slug: course.slug,
       title: course.title,
       description: course.description,
+      introAvailable: course.introMediaObjectKey !== null,
       completedLessons,
       totalLessons,
       progressPercent: calculateProgressPercent(completedLessons, totalLessons),
@@ -168,6 +171,26 @@ export class DrizzleCourseRepository implements CourseRepository {
           })),
       })),
     };
+  }
+
+  async getCourseIntroMediaForUser(userId: string, courseSlug: string): Promise<LessonMedia | null> {
+    const [course] = await this.db
+      .select({ objectKey: courses.introMediaObjectKey })
+      .from(courses)
+      .innerJoin(
+        courseAccess,
+        and(eq(courseAccess.courseId, courses.id), eq(courseAccess.userId, userId)),
+      )
+      .where(
+        and(
+          eq(courses.slug, courseSlug),
+          eq(courses.status, 'published'),
+          eq(courseAccess.status, 'active'),
+        ),
+      )
+      .limit(1);
+
+    return course ?? null;
   }
 
   async getLessonMediaForUser(

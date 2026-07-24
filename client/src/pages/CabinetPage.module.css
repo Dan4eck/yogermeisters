@@ -423,6 +423,92 @@
   font-size: 15px;
 }
 
+.introAccordion {
+  margin-bottom: 14px;
+}
+
+.introTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 16px;
+  padding: 0 2px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--cabinet-ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.introTitle {
+  color: var(--cabinet-ink);
+  font-family: var(--font-oswald);
+  font-size: clamp(28px, 3.4vw, 38px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.introControl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 8px;
+  background: var(--cabinet-accent);
+  color: #fff;
+  font-family: var(--font-sora);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.introControl svg {
+  width: 16px;
+  height: 16px;
+}
+
+.introTrigger:focus-visible {
+  outline: 2px solid var(--cabinet-accent);
+  outline-offset: 4px;
+}
+
+.introPanel {
+  margin-bottom: 18px;
+  animation: lesson-panel-in 220ms ease-out both;
+}
+
+.introPlayer {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 520px;
+  border-radius: 12px;
+  background: var(--cabinet-success);
+  object-fit: cover;
+}
+
+.introStatus,
+.introError {
+  display: grid;
+  min-height: 120px;
+  place-items: center;
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.52);
+  color: var(--cabinet-copy);
+  font-family: var(--font-sora);
+  font-size: 12px;
+  text-align: center;
+}
+
+.introError {
+  color: var(--cabinet-accent);
+}
+
 .player {
   display: block;
   width: 100%;
@@ -431,6 +517,15 @@
   margin: 0;
   border-radius: 14px;
   background: #111;
+}
+
+.audioPlayer {
+  display: block;
+  width: 100%;
+  min-height: 54px;
+  margin: 0;
+  border-radius: 999px;
+  accent-color: var(--cabinet-accent);
 }
 
 .moduleList {
@@ -661,5 +756,9 @@
 
   .lessonPanel {
     padding: 10px;
+  }
+
+  .introTrigger {
+    gap: 12px;
   }
 }

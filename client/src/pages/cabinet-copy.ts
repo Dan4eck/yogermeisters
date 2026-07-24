@@ -26,6 +26,7 @@ type CabinetCopy = {
     readonly watch: string;
     readonly close: string;
     readonly loadingMedia: string;
+    readonly introLesson: string;
     readonly completed: string;
     readonly progressSaveError: string;
   };
@@ -64,6 +65,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       watch: 'Watch',
       close: 'Close',
       loadingMedia: 'Loading…',
+      introLesson: 'Intro lesson',
       completed: 'Completed',
       progressSaveError: 'Could not save your progress. Please try again.',
     },
@@ -100,6 +102,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       watch: 'Смотреть',
       close: 'Свернуть',
       loadingMedia: 'Загрузка…',
+      introLesson: 'Вводный урок',
       completed: 'Пройдено',
       progressSaveError: 'Не удалось сохранить прогресс. Попробуйте ещё раз.',
     },

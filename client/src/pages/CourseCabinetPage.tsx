@@ -21,6 +21,11 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
   const [mediaError, setMediaError] = useState<string | null>(null);
   const [selectedLessonSlug, setSelectedLessonSlug] = useState<string | null>(null);
   const [mediaUrl, setMediaUrl] = useState<string | null>(null);
+  const [mediaKind, setMediaKind] = useState<'audio' | 'video' | null>(null);
+  const [introUrl, setIntroUrl] = useState<string | null>(null);
+  const [introOpen, setIntroOpen] = useState(false);
+  const [introLoading, setIntroLoading] = useState(false);
+  const [introError, setIntroError] = useState<string | null>(null);
   const [loadingLesson, setLoadingLesson] = useState<string | null>(null);
   const [completingLessonSlug, setCompletingLessonSlug] = useState<string | null>(null);
   const mediaRequestId = useRef(0);
@@ -39,11 +44,37 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
       });
   }, [navigate, slug]);
 
+  const toggleIntro = async (): Promise<void> => {
+    if (introOpen) {
+      setIntroOpen(false);
+      return;
+    }
+
+    setIntroOpen(true);
+    if (introUrl) {
+      return;
+    }
+
+    setIntroLoading(true);
+    setIntroError(null);
+    try {
+      const media = await apiRequest<{ url: string; expiresIn: number }>(
+        `/api/courses/${encodeURIComponent(slug)}/intro-media`,
+      );
+      setIntroUrl(media.url);
+    } catch (requestError) {
+      setIntroError(getCourseError(requestError, copy));
+    } finally {
+      setIntroLoading(false);
+    }
+  };
+
   const openLesson = async (lessonSlug: string): Promise<void> => {
     if (selectedLessonSlug === lessonSlug) {
       mediaRequestId.current += 1;
       setSelectedLessonSlug(null);
       setMediaUrl(null);
+      setMediaKind(null);
       setMediaError(null);
       setLoadingLesson(null);
       return;
@@ -53,14 +84,16 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
     mediaRequestId.current = requestId;
     setSelectedLessonSlug(lessonSlug);
     setMediaUrl(null);
+    setMediaKind(null);
     setMediaError(null);
     setLoadingLesson(lessonSlug);
     try {
-      const media = await apiRequest<{ url: string; expiresIn: number }>(
+      const media = await apiRequest<{ url: string; expiresIn: number; kind?: 'audio' | 'video' }>(
         `/api/courses/${encodeURIComponent(slug)}/lessons/${encodeURIComponent(lessonSlug)}/media`,
       );
       if (requestId === mediaRequestId.current) {
         setMediaUrl(media.url);
+        setMediaKind(media.kind ?? getMediaKindFromUrl(media.url));
       }
     } catch (requestError) {
       if (requestId === mediaRequestId.current) {
@@ -118,6 +151,47 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                 <h1>{course.title}</h1>
                 <p className={styles.lead}>{course.description}</p>
               </div>
+              {course.introAvailable ? (
+                <div className={styles.introAccordion}>
+                  <button
+                    type='button'
+                    className={styles.introTrigger}
+                    onClick={() => void toggleIntro()}
+                    aria-expanded={introOpen}
+                    aria-controls={introOpen ? 'course-intro-player' : undefined}
+                  >
+                    <span className={styles.introTitle}>{copy.course.introLesson}</span>
+                    <span className={styles.introControl}>
+                      {introLoading ? copy.course.loadingMedia : introOpen ? copy.course.close : copy.course.watch}
+                      {introLoading ? (
+                        <LoaderCircle className={styles.loadingIcon} aria-hidden='true' />
+                      ) : introOpen ? (
+                        <ChevronDown aria-hidden='true' />
+                      ) : (
+                        <Play className={styles.playIcon} aria-hidden='true' />
+                      )}
+                    </span>
+                  </button>
+                  {introOpen ? (
+                    <div className={styles.introPanel} id='course-intro-player'>
+                      {introLoading ? <div className={styles.introStatus}>{copy.course.loadingMedia}</div> : null}
+                      {introError ? <div className={styles.introError}>{introError}</div> : null}
+                      {introUrl ? (
+                        <video
+                          className={styles.introPlayer}
+                          controls
+                          controlsList='nodownload'
+                          playsInline
+                          preload='metadata'
+                          poster='/assets/cabinet/course-intro-poster.jpg'
+                          src={introUrl}
+                          onContextMenu={(event) => event.preventDefault()}
+                        />
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
               <div className={styles.moduleList}>
                 {course.modules.map((module) => (
                   <section className={styles.moduleCard} key={module.sortOrder}>
@@ -162,15 +236,26 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                                 {mediaError ? <div className={styles.lessonMediaError}>{mediaError}</div> : null}
                                 {mediaUrl ? (
                                   <div className={styles.lessonMedia}>
-                                    <video
-                                      className={styles.player}
-                                      controls
-                                      controlsList='nodownload'
-                                      playsInline
-                                      src={mediaUrl}
-                                      onEnded={() => void completeLesson(lesson.slug)}
-                                      onContextMenu={(event) => event.preventDefault()}
-                                    />
+                                    {mediaKind === 'audio' ? (
+                                      <audio
+                                        className={styles.audioPlayer}
+                                        controls
+                                        controlsList='nodownload'
+                                        src={mediaUrl}
+                                        onEnded={() => void completeLesson(lesson.slug)}
+                                        onContextMenu={(event) => event.preventDefault()}
+                                      />
+                                    ) : (
+                                      <video
+                                        className={styles.player}
+                                        controls
+                                        controlsList='nodownload'
+                                        playsInline
+                                        src={mediaUrl}
+                                        onEnded={() => void completeLesson(lesson.slug)}
+                                        onContextMenu={(event) => event.preventDefault()}
+                                      />
+                                    )}
                                     {lesson.description.trim() ? (
                                       <p className={styles.lessonDescription}>{lesson.description}</p>
                                     ) : null}
@@ -236,4 +321,8 @@ function getCourseError(error: unknown, copy: typeof cabinetCopy.en): string {
   }
 
   return copy.errors.unavailable;
+}
+
+function getMediaKindFromUrl(url: string): 'audio' | 'video' {
+  return /\.(?:mp3|m4a|aac|ogg|wav)(?:$|[?#])/i.test(url) ? 'audio' : 'video';
 }

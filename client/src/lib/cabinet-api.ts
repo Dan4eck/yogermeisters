@@ -24,6 +24,7 @@ export interface CabinetLesson {
 }
 
 export interface CabinetCourseDetails extends CabinetCourse {
+  readonly introAvailable: boolean;
   readonly modules: readonly {
     readonly title: string;
     readonly sortOrder: number;

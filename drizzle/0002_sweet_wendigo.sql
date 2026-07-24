@@ -1,0 +1,1 @@
+ALTER TABLE "courses" ADD COLUMN "intro_media_object_key" text;

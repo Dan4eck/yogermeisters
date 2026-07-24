@@ -22,6 +22,7 @@ const course: CourseDetails = {
   completedLessons: 0,
   totalLessons: 1,
   progressPercent: 0,
+  introAvailable: true,
   modules: [
     {
       title: 'Module 1',
@@ -55,6 +56,10 @@ class FakeRepository implements CourseRepository {
 
   async getCourseForUser(): Promise<CourseDetails | null> {
     return this.hasAccess ? course : null;
+  }
+
+  async getCourseIntroMediaForUser(): Promise<LessonMedia | null> {
+    return this.hasAccess ? { objectKey: 'yoger-intro.mp4' } : null;
   }
 
   async getLessonMediaForUser(): Promise<LessonMedia | null> {
@@ -131,9 +136,51 @@ describe('cabinet API', () => {
       .set('x-test-user', 'active');
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ url: 'https://private.example/signed-object', expiresIn: 900 });
+    expect(response.body).toEqual({
+      url: 'https://private.example/signed-object',
+      expiresIn: 900,
+      kind: 'video',
+    });
     expect(response.headers['cache-control']).toBe('private, no-store');
     expect(createDownloadUrl).toHaveBeenCalledWith('courses/the-yoga-method/lesson-1.mp4');
+  });
+
+  it('signs the course intro only for a student with access', async () => {
+    const createDownloadUrl = vi.fn().mockResolvedValue({
+      url: 'https://private.example/signed-intro',
+      expiresIn: 900,
+    });
+    const app = createApp({
+      repository: new FakeRepository(true),
+      mediaSigner: { createDownloadUrl },
+      authMiddleware: [mockAuthentication],
+    });
+    const response = await request(app)
+      .get('/api/courses/the-yoga-method/intro-media')
+      .set('x-test-user', 'active');
+
+    expect(response.status).toBe(200);
+    expect(response.body.kind).toBe('video');
+    expect(createDownloadUrl).toHaveBeenCalledWith('yoger-intro.mp4');
+  });
+
+  it('identifies an audio lesson for the client player', async () => {
+    const app = createApp({
+      repository: new FakeRepository(true, { objectKey: 'nidra-f.mp3' }),
+      mediaSigner: {
+        createDownloadUrl: vi.fn().mockResolvedValue({
+          url: 'https://private.example/signed-audio',
+          expiresIn: 900,
+        }),
+      },
+      authMiddleware: [mockAuthentication],
+    });
+    const response = await request(app)
+      .get('/api/courses/the-yoga-method/lessons/lesson-1/media')
+      .set('x-test-user', 'active');
+
+    expect(response.status).toBe(200);
+    expect(response.body.kind).toBe('audio');
   });
 
   it('does not sign media when access is missing', async () => {

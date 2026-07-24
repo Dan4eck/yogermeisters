@@ -30,6 +30,7 @@ export interface CourseModuleSummary {
 }
 
 export interface CourseDetails extends CourseSummary {
+  readonly introAvailable: boolean;
   readonly modules: readonly CourseModuleSummary[];
 }
 

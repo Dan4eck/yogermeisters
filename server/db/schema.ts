@@ -20,6 +20,7 @@ export const courses = pgTable('courses', {
   slug: varchar('slug', { length: 160 }).notNull().unique(),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description').notNull(),
+  introMediaObjectKey: text('intro_media_object_key'),
   status: contentStatus('status').notNull().default('draft'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
