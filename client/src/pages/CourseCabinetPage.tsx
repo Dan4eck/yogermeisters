@@ -3,6 +3,7 @@ import { ArrowLeft, BookOpen, Check, ChevronDown, LoaderCircle, Play } from 'luc
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
+import YogaMatLoader from '@/components/YogaMatLoader';
 import type { Language } from '@/lib/i18n';
 import { ApiError, apiRequest, type CabinetCourseDetails, type CabinetLesson } from '@/lib/cabinet-api';
 import { cabinetCopy } from './cabinet-copy';
@@ -33,15 +34,39 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
   const copy = cabinetCopy[language];
 
   useEffect(() => {
-    void apiRequest<{ course: CabinetCourseDetails }>(`/api/courses/${encodeURIComponent(slug)}`)
-      .then((response) => setCourse(response.course))
-      .catch((requestError: unknown) => {
+    let isActive = true;
+
+    const loadCourse = async (): Promise<void> => {
+      setCourse(null);
+      setCourseError(null);
+
+      try {
+        const response = await apiRequest<{ course: CabinetCourseDetails }>(
+          `/api/courses/${encodeURIComponent(slug)}`,
+        );
+
+        if (isActive) {
+          setCourse(response.course);
+        }
+      } catch (requestError: unknown) {
         if (requestError instanceof ApiError && requestError.status === 401) {
-          navigate('/login');
+          if (isActive) {
+            navigate('/login');
+          }
           return;
         }
-        setCourseError(getCourseError(requestError, copy));
-      });
+
+        if (isActive) {
+          setCourseError(getCourseError(requestError, copy));
+        }
+      }
+    };
+
+    void loadCourse();
+
+    return () => {
+      isActive = false;
+    };
   }, [navigate, slug]);
 
   const toggleIntro = async (): Promise<void> => {
@@ -143,15 +168,21 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
   }, [mediaUrl]);
 
   return (
-    <div className={`landing-v2-root ${styles.cabinetRoot} ${styles[language]}`}>
+    <div
+      className={`landing-v2-root ${styles.cabinetRoot} ${styles[language]} ${
+        !course && !courseError ? styles.loadingRoot : ''
+      }`}
+    >
       <Header language={language} setLanguage={setLanguage} />
       <main className={styles.page}>
         <section className={styles.cabinetShell}>
-          <Link href='/cabinet' className={styles.backLink}>
-            <ArrowLeft aria-hidden='true' />
-            {copy.course.back}
-          </Link>
-          {!course && !courseError ? <div className={styles.status}><h2>{copy.course.loading}</h2></div> : null}
+          {course || courseError ? (
+            <Link href='/cabinet' className={styles.backLink}>
+              <ArrowLeft aria-hidden='true' />
+              {copy.course.back}
+            </Link>
+          ) : null}
+          {!course && !courseError ? <YogaMatLoader label={copy.course.loading} /> : null}
           {courseError ? <div className={styles.errorNotice}>{courseError}</div> : null}
           {course ? (
             <div>

@@ -11,6 +11,11 @@
     var(--cabinet-paper);
 }
 
+.cabinetRoot.loadingRoot {
+  --loader-paper: #f8f6ec;
+  background: var(--loader-paper);
+}
+
 .page {
   min-height: 100svh;
   padding: 142px clamp(18px, 5vw, 72px) 72px;

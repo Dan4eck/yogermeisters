@@ -3,6 +3,7 @@ import { ArrowUpRight, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
+import YogaMatLoader from '@/components/YogaMatLoader';
 import type { Language } from '@/lib/i18n';
 import { ApiError, apiRequest, type CabinetCourse, type CabinetUser } from '@/lib/cabinet-api';
 import { cabinetCopy } from './cabinet-copy';
@@ -38,20 +39,41 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
   const copy = cabinetCopy[language];
 
   useEffect(() => {
-    void Promise.all([
-      apiRequest<{ user: CabinetUser }>('/api/me'),
-      apiRequest<{ courses: readonly CabinetCourse[] }>('/api/courses'),
-    ])
-      .then(([userResponse, coursesResponse]) => {
-        setState({ kind: 'ready', user: userResponse.user, courses: coursesResponse.courses });
-      })
-      .catch((error: unknown) => {
-        if (error instanceof ApiError && error.status === 401) {
-          navigate('/login');
+    let isActive = true;
+
+    const loadCabinet = async (): Promise<void> => {
+      try {
+        const [userResponse, coursesResponse] = await Promise.all([
+          apiRequest<{ user: CabinetUser }>('/api/me'),
+          apiRequest<{ courses: readonly CabinetCourse[] }>('/api/courses'),
+        ]);
+
+        if (!isActive) {
           return;
         }
+
+        setState({ kind: 'ready', user: userResponse.user, courses: coursesResponse.courses });
+      } catch (error: unknown) {
+        if (error instanceof ApiError && error.status === 401) {
+          if (isActive) {
+            navigate('/login');
+          }
+          return;
+        }
+
+        if (!isActive) {
+          return;
+        }
+
         setState({ kind: 'error', message: getErrorMessage(error, copy) });
-      });
+      }
+    };
+
+    void loadCabinet();
+
+    return () => {
+      isActive = false;
+    };
   }, [navigate]);
 
   const logout = async (): Promise<void> => {
@@ -60,11 +82,15 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
   };
 
   return (
-    <div className={`landing-v2-root ${styles.cabinetRoot} ${styles[language]}`}>
+    <div
+      className={`landing-v2-root ${styles.cabinetRoot} ${styles[language]} ${
+        state.kind === 'loading' ? styles.loadingRoot : ''
+      }`}
+    >
       <Header language={language} setLanguage={setLanguage} />
       <main className={styles.page}>
         <section className={styles.cabinetShell}>
-          {state.kind === 'loading' ? <Status title={copy.cabinet.loading} /> : null}
+          {state.kind === 'loading' ? <YogaMatLoader label={copy.cabinet.loading} /> : null}
           {state.kind === 'error' ? <Status title={copy.cabinet.errorTitle} message={state.message} /> : null}
           {state.kind === 'ready' ? (
             <CabinetContent user={state.user} courses={state.courses} language={language} logout={logout} />
