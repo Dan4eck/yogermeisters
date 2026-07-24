@@ -53,7 +53,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
     cabinet: {
       title: 'Yoga shala',
       logout: 'Log out',
-      loading: 'Unfolding the yoga mat...',
+      loading: 'Loading yoga shala...',
       errorTitle: 'Something went wrong',
       coursesTitle: 'My courses',
       emptyTitle: 'You don’t have any courses yet',
@@ -67,7 +67,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
     },
     course: {
       back: 'My courses',
-      loading: 'Unfolding the yoga mat...',
+      loading: 'Loading course...',
       errorTitle: 'Unable to open course',
       watch: 'Watch',
       read: 'Read',
@@ -94,7 +94,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
     cabinet: {
       title: 'Йога-шала',
       logout: 'Выйти',
-      loading: 'Разворачиваем йога-коврик...',
+      loading: 'Загрузка йога-шалы...',
       errorTitle: 'Что-то пошло не так',
       coursesTitle: 'Мои курсы',
       emptyTitle: 'У тебя пока нет курсов',
@@ -108,7 +108,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
     },
     course: {
       back: 'Мои курсы',
-      loading: 'Разворачиваем йога-коврик...',
+      loading: 'Загрузка курса...',
       errorTitle: 'Не удалось открыть курс',
       watch: 'Смотреть',
       read: 'Читать',

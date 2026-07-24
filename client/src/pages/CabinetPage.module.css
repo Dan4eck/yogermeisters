@@ -489,6 +489,7 @@
 }
 
 .introPanel {
+  position: relative;
   margin-bottom: 18px;
   animation: lesson-panel-in 220ms ease-out both;
 }
@@ -503,7 +504,6 @@
   object-fit: cover;
 }
 
-.introStatus,
 .introError {
   display: grid;
   min-height: 120px;
@@ -665,6 +665,7 @@
 }
 
 .lessonPanel {
+  position: relative;
   margin: 0 0 20px;
   padding: 14px;
   border: 1px solid rgba(17, 17, 17, 0.1);
@@ -673,18 +674,21 @@
   animation: lesson-panel-in 220ms ease-out both;
 }
 
-.lessonLoading,
+.mediaPending {
+  position: absolute;
+  width: 1px !important;
+  height: 1px !important;
+  min-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .lessonMediaError,
 .lessonDescription {
   margin: 0;
   font-family: var(--font-sora);
   font-size: 13px;
   line-height: 1.6;
-}
-
-.lessonLoading {
-  padding: 10px 4px;
-  color: var(--cabinet-copy);
 }
 
 .lessonMediaError {

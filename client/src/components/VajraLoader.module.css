@@ -9,33 +9,20 @@
   min-height: min(60svh, 620px);
 }
 
-.media {
-  min-height: 190px;
-  border-radius: 12px;
+.overlay {
+  height: 100%;
 }
 
 .animation {
   display: block;
-  width: clamp(170px, 22vw, 240px);
+  width: clamp(210px, 26vw, 300px);
   height: auto;
   aspect-ratio: 1;
   object-fit: contain;
 }
 
-.media .animation {
-  width: clamp(112px, 16vw, 152px);
-}
-
 @media (max-width: 640px) {
   .animation {
-    width: min(48vw, 210px);
-  }
-
-  .media {
-    min-height: 160px;
-  }
-
-  .media .animation {
-    width: min(34vw, 138px);
+    width: min(58vw, 260px);
   }
 }

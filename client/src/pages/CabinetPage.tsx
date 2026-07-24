@@ -3,7 +3,7 @@ import { ArrowUpRight, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
-import YogaMatLoader from '@/components/YogaMatLoader';
+import VajraLoader from '@/components/VajraLoader';
 import type { Language } from '@/lib/i18n';
 import { ApiError, apiRequest, type CabinetCourse, type CabinetUser } from '@/lib/cabinet-api';
 import { cabinetCopy } from './cabinet-copy';
@@ -90,7 +90,7 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
       <Header language={language} setLanguage={setLanguage} />
       <main className={styles.page}>
         <section className={styles.cabinetShell}>
-          {state.kind === 'loading' ? <YogaMatLoader label={copy.cabinet.loading} /> : null}
+          {state.kind === 'loading' ? <VajraLoader label={copy.cabinet.loading} /> : null}
           {state.kind === 'error' ? <Status title={copy.cabinet.errorTitle} message={state.message} /> : null}
           {state.kind === 'ready' ? (
             <CabinetContent user={state.user} courses={state.courses} language={language} logout={logout} />

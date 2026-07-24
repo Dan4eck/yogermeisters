@@ -3,6 +3,7 @@ import { ArrowLeft, BookOpen, Check, ChevronDown, LoaderCircle, Play } from 'luc
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
+import VajraLoader from '@/components/VajraLoader';
 import YogaMatLoader from '@/components/YogaMatLoader';
 import type { Language } from '@/lib/i18n';
 import { ApiError, apiRequest, type CabinetCourseDetails, type CabinetLesson } from '@/lib/cabinet-api';
@@ -89,7 +90,6 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
       setIntroUrl(media.url);
     } catch (requestError) {
       setIntroError(getCourseError(requestError, copy));
-    } finally {
       setIntroLoading(false);
     }
   };
@@ -131,12 +131,27 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
     } catch (requestError) {
       if (requestId === mediaRequestId.current) {
         setMediaError(getCourseError(requestError, copy));
-      }
-    } finally {
-      if (requestId === mediaRequestId.current) {
         setLoadingLesson(null);
       }
     }
+  };
+
+  const handleIntroReady = (): void => {
+    setIntroLoading(false);
+  };
+
+  const handleIntroError = (): void => {
+    setIntroLoading(false);
+    setIntroError(copy.errors.unavailable);
+  };
+
+  const handleLessonMediaReady = (lessonSlug: string): void => {
+    setLoadingLesson((currentSlug) => (currentSlug === lessonSlug ? null : currentSlug));
+  };
+
+  const handleLessonMediaError = (lessonSlug: string): void => {
+    setLoadingLesson((currentSlug) => (currentSlug === lessonSlug ? null : currentSlug));
+    setMediaError(copy.errors.mediaNotReady);
   };
 
   async function completeLesson(lessonSlug: string): Promise<void> {
@@ -182,7 +197,7 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
               {copy.course.back}
             </Link>
           ) : null}
-          {!course && !courseError ? <YogaMatLoader label={copy.course.loading} /> : null}
+          {!course && !courseError ? <VajraLoader label={copy.course.loading} /> : null}
           {courseError ? <div className={styles.errorNotice}>{courseError}</div> : null}
           {course ? (
             <div>
@@ -213,18 +228,22 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                   </button>
                   {introOpen ? (
                     <div className={styles.introPanel} id='course-intro-player'>
-                      {introLoading ? <div className={styles.introStatus}>{copy.course.loadingMedia}</div> : null}
+                      {introLoading ? (
+                        <YogaMatLoader label={copy.course.loadingMedia} variant='media' />
+                      ) : null}
                       {introError ? <div className={styles.introError}>{introError}</div> : null}
                       {introUrl ? (
                         <video
-                          className={styles.introPlayer}
+                          className={`${styles.introPlayer} ${introLoading ? styles.mediaPending : ''}`}
                           controls
                           controlsList='nodownload'
                           playsInline
-                          preload='metadata'
+                          preload='auto'
                           poster='/assets/cabinet/course-intro-poster.jpg'
                           src={introUrl}
+                          onCanPlay={handleIntroReady}
                           onContextMenu={(event) => event.preventDefault()}
+                          onError={handleIntroError}
                         />
                       ) : null}
                     </div>
@@ -280,28 +299,36 @@ export default function CourseCabinetPage({ slug, language, setLanguage }: Cours
                             </button>
                             {isSelected ? (
                               <div className={styles.lessonPanel} id={panelId} ref={activeLessonRef}>
-                                {isLoading ? <div className={styles.lessonLoading}>{copy.course.loadingMedia}</div> : null}
+                                {isLoading ? (
+                                  <YogaMatLoader label={copy.course.loadingMedia} variant='media' />
+                                ) : null}
                                 {mediaError ? <div className={styles.lessonMediaError}>{mediaError}</div> : null}
                                 {mediaUrl ? (
                                   <div className={styles.lessonMedia}>
                                     {mediaKind === 'audio' ? (
                                       <audio
-                                        className={styles.audioPlayer}
+                                        className={`${styles.audioPlayer} ${isLoading ? styles.mediaPending : ''}`}
                                         controls
                                         controlsList='nodownload'
+                                        preload='auto'
                                         src={mediaUrl}
+                                        onCanPlay={() => handleLessonMediaReady(lesson.slug)}
                                         onEnded={() => void completeLesson(lesson.slug)}
                                         onContextMenu={(event) => event.preventDefault()}
+                                        onError={() => handleLessonMediaError(lesson.slug)}
                                       />
                                     ) : (
                                       <video
-                                        className={styles.player}
+                                        className={`${styles.player} ${isLoading ? styles.mediaPending : ''}`}
                                         controls
                                         controlsList='nodownload'
                                         playsInline
+                                        preload='auto'
                                         src={mediaUrl}
+                                        onCanPlay={() => handleLessonMediaReady(lesson.slug)}
                                         onEnded={() => void completeLesson(lesson.slug)}
                                         onContextMenu={(event) => event.preventDefault()}
+                                        onError={() => handleLessonMediaError(lesson.slug)}
                                       />
                                     )}
                                   </div>

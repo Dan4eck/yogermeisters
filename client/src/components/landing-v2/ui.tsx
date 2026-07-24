@@ -1,6 +1,7 @@
-import { ArrowRight } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { ArrowRight, type LucideIcon } from 'lucide-react';
+import { Link } from 'wouter';
+
 import type { AnchorHref } from './types';
 import VajraIcon from './VajraIcon';
 
@@ -20,10 +21,25 @@ type MultilineTextProps = {
 };
 
 export function ButtonLink({ children, className = '', href, icon: Icon = ArrowRight }: ButtonLinkProps) {
-  return (
-    <a className={`button button-dark arrow-button${className ? ` ${className}` : ''}`} href={href}>
+  const content = (
+    <>
       {children}
       {Icon ? <Icon aria-hidden='true' /> : null}
+    </>
+  );
+  const buttonClassName = `button button-dark arrow-button${className ? ` ${className}` : ''}`;
+
+  if (href.startsWith('/')) {
+    return (
+      <Link className={buttonClassName} href={href}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <a className={buttonClassName} href={href}>
+      {content}
     </a>
   );
 }
