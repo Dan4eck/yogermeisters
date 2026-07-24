@@ -18,6 +18,20 @@ interface CabinetPageProps {
   readonly setLanguage: (language: Language) => void;
 }
 
+interface CatalogCourse {
+  readonly slug: string;
+  readonly title: string;
+  readonly href: string;
+}
+
+const CATALOG_COURSES: readonly CatalogCourse[] = [
+  {
+    slug: 'the-yoga-method',
+    title: 'the yoga method',
+    href: '/the-yoga-method',
+  },
+];
+
 export default function CabinetPage({ language, setLanguage }: CabinetPageProps) {
   const [, navigate] = useLocation();
   const [state, setState] = useState<CabinetState>({ kind: 'loading' });
@@ -53,73 +67,108 @@ export default function CabinetPage({ language, setLanguage }: CabinetPageProps)
           {state.kind === 'loading' ? <Status title={copy.cabinet.loading} /> : null}
           {state.kind === 'error' ? <Status title={copy.cabinet.errorTitle} message={state.message} /> : null}
           {state.kind === 'ready' ? (
-            <div>
-              <header className={styles.cabinetHeader}>
-                <h1>{copy.cabinet.title}</h1>
-                <button type='button' className={styles.logoutButton} onClick={() => void logout()}>
-                  {copy.cabinet.logout}
-                  <LogOut aria-hidden='true' />
-                </button>
-              </header>
-              <div className={styles.profile}>
-                {state.user.avatarUrl ? <img src={state.user.avatarUrl} alt='' referrerPolicy='no-referrer' /> : null}
-                <div>
-                  <h2>{state.user.name}</h2>
-                  <p>{state.user.email}</p>
-                </div>
-              </div>
-              <h2 className={styles.sectionTitle}>{copy.cabinet.coursesTitle}</h2>
-              {state.courses.length === 0 ? (
-                <div className={styles.emptyCatalog}>
-                  <p className={styles.emptyMessage}>
-                    <span>{copy.cabinet.emptyTitle}</span>
-                    {copy.cabinet.emptyText}
-                  </p>
-                  <div className={styles.catalogGrid}>
-                    <Link href='/the-yoga-method' className={styles.catalogCard}>
-                      <div className={styles.catalogCardHeader}>
-                        <h3>the yoga method</h3>
-                        <ArrowUpRight aria-hidden='true' />
-                      </div>
-                      <p>{copy.cabinet.catalogCourseDescription}</p>
-                      <span className={styles.catalogCardAction}>{copy.cabinet.openCourse}</span>
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                <div className={styles.courseGrid}>
-                  {state.courses.map((course) => (
-                    <article className={styles.courseCard} key={course.slug}>
-                      <h3>{course.title}</h3>
-                      <p>{course.description}</p>
-                      <div
-                        className={styles.courseProgress}
-                        role='progressbar'
-                        aria-label={copy.cabinet.progressLabel}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-valuenow={course.progressPercent}
-                      >
-                        <div className={styles.progressMeta}>
-                          <span>{copy.cabinet.progressLabel}</span>
-                          <strong>{course.progressPercent}%</strong>
-                        </div>
-                        <div className={styles.progressTrack} aria-hidden='true'>
-                          <span style={{ width: `${course.progressPercent}%` }} />
-                        </div>
-                      </div>
-                      <Link href={`/cabinet/courses/${course.slug}`} className={styles.courseLink}>
-                        {copy.cabinet.openCourse}
-                        <ArrowUpRight aria-hidden='true' />
-                      </Link>
-                    </article>
-                  ))}
-                </div>
-              )}
-            </div>
+            <CabinetContent user={state.user} courses={state.courses} language={language} logout={logout} />
           ) : null}
         </section>
       </main>
+    </div>
+  );
+}
+
+function CabinetContent({
+  user,
+  courses,
+  language,
+  logout,
+}: {
+  readonly user: CabinetUser;
+  readonly courses: readonly CabinetCourse[];
+  readonly language: Language;
+  readonly logout: () => Promise<void>;
+}) {
+  const copy = cabinetCopy[language];
+  const purchasedCourseSlugs = new Set(courses.map((course) => course.slug));
+  const availableCourses = CATALOG_COURSES.filter((course) => !purchasedCourseSlugs.has(course.slug));
+
+  return (
+    <div>
+      <header className={styles.cabinetHeader}>
+        <h1>{copy.cabinet.title}</h1>
+        <button type='button' className={styles.logoutButton} onClick={() => void logout()}>
+          {copy.cabinet.logout}
+          <LogOut aria-hidden='true' />
+        </button>
+      </header>
+      <div className={styles.profile}>
+        {user.avatarUrl ? <img src={user.avatarUrl} alt='' referrerPolicy='no-referrer' /> : null}
+        <div>
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+        </div>
+      </div>
+
+      <section className={styles.coursesSection} aria-labelledby='my-courses-title'>
+        <h2 className={styles.sectionTitle} id='my-courses-title'>
+          {copy.cabinet.coursesTitle}
+        </h2>
+        {courses.length === 0 ? (
+          <p className={styles.emptyMessage}>
+            <span>{copy.cabinet.emptyTitle}</span>
+            {copy.cabinet.emptyText}
+          </p>
+        ) : (
+          <div className={styles.cardGrid}>
+            {courses.map((course) => (
+              <article className={styles.courseCard} key={course.slug}>
+                <h3>{course.title}</h3>
+                <p>{course.description}</p>
+                <div
+                  className={styles.courseProgress}
+                  role='progressbar'
+                  aria-label={copy.cabinet.progressLabel}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={course.progressPercent}
+                >
+                  <div className={styles.progressMeta}>
+                    <span>{copy.cabinet.progressLabel}</span>
+                    <strong>{course.progressPercent}%</strong>
+                  </div>
+                  <div className={styles.progressTrack} aria-hidden='true'>
+                    <span style={{ width: `${course.progressPercent}%` }} />
+                  </div>
+                </div>
+                <Link href={`/cabinet/courses/${course.slug}`} className={styles.courseLink}>
+                  {copy.cabinet.openCourse}
+                  <ArrowUpRight aria-hidden='true' />
+                </Link>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className={styles.coursesSection} aria-labelledby='catalog-title'>
+        <h2 className={styles.sectionTitle} id='catalog-title'>
+          {copy.cabinet.catalogTitle}
+        </h2>
+        {availableCourses.length === 0 ? (
+          <p className={styles.catalogEmpty}>{copy.cabinet.catalogEmpty}</p>
+        ) : (
+          <div className={styles.cardGrid}>
+            {availableCourses.map((course) => (
+              <Link href={course.href} className={styles.catalogCard} key={course.slug}>
+                <div className={styles.catalogCardHeader}>
+                  <h3>{course.title}</h3>
+                  <ArrowUpRight aria-hidden='true' />
+                </div>
+                <p>{copy.cabinet.catalogCourseDescription}</p>
+                <span className={styles.catalogCardAction}>{copy.cabinet.viewCourse}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

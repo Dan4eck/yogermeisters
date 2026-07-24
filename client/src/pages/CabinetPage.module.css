@@ -178,9 +178,13 @@
   font-size: clamp(30px, 3.6vw, 42px);
 }
 
-.courseGrid {
+.coursesSection + .coursesSection {
+  margin-top: 52px;
+}
+
+.cardGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 360px));
   gap: 16px;
 }
 
@@ -196,12 +200,16 @@
 .courseCard {
   display: flex;
   flex-direction: column;
-  min-height: 170px;
-  padding: 26px;
+  height: 280px;
+  padding: 22px;
 }
 
 .courseCard p {
   margin-bottom: 18px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .courseProgress {
@@ -285,12 +293,8 @@
   margin-top: 12px;
 }
 
-.emptyCatalog {
-  margin-top: 28px;
-}
-
 .emptyMessage {
-  margin: 0 0 22px;
+  margin: 0;
   color: var(--cabinet-copy);
   font-family: var(--font-sora);
   font-size: clamp(15px, 1.7vw, 18px);
@@ -303,16 +307,19 @@
   font-weight: 500;
 }
 
-.catalogGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 360px);
+.catalogEmpty {
+  margin: 0;
+  color: var(--cabinet-copy);
+  font-family: var(--font-sora);
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .catalogCard {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 174px;
+  height: 280px;
   padding: 22px;
   overflow: hidden;
   border: 1px solid var(--cabinet-line);
@@ -759,7 +766,7 @@
     padding: 22px;
   }
 
-  .catalogGrid {
+  .cardGrid {
     grid-template-columns: minmax(0, 1fr);
   }
 

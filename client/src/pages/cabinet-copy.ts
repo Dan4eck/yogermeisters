@@ -15,9 +15,12 @@ type CabinetCopy = {
     readonly coursesTitle: string;
     readonly emptyTitle: string;
     readonly emptyText: string;
+    readonly catalogTitle: string;
+    readonly catalogEmpty: string;
     readonly catalogCourseDescription: string;
     readonly progressLabel: string;
     readonly openCourse: string;
+    readonly viewCourse: string;
   };
   readonly course: {
     readonly back: string;
@@ -53,11 +56,14 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       loading: 'Unfolding the yoga mat...',
       errorTitle: 'Something went wrong',
       coursesTitle: 'My courses',
-      emptyTitle: 'No courses available yet 😓',
+      emptyTitle: 'You don’t have any courses yet',
       emptyText: 'Choose one from the catalog below:',
+      catalogTitle: 'Courses available to purchase',
+      catalogEmpty: 'You already have access to every available course.',
       catalogCourseDescription: 'A Himalayan yoga course for a strong body, safe flexibility, and deep relaxation.',
       progressLabel: 'Karma earned',
       openCourse: 'Open course',
+      viewCourse: 'View course',
     },
     course: {
       back: 'My courses',
@@ -91,11 +97,14 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       loading: 'Разворачиваем йога-коврик...',
       errorTitle: 'Что-то пошло не так',
       coursesTitle: 'Мои курсы',
-      emptyTitle: 'Пока нет доступных курсов 😓',
-      emptyText: 'Выбери из каталога ниже:',
+      emptyTitle: 'У тебя пока нет курсов',
+      emptyText: 'Выбери подходящий курс из каталога ниже.',
+      catalogTitle: 'Курсы, доступные к покупке',
+      catalogEmpty: 'У тебя уже есть доступ ко всем курсам.',
       catalogCourseDescription: 'Курс гималайской йоги для крепкого тела, безопасной гибкости и глубокого расслабления.',
       progressLabel: 'Наработано кармы',
       openCourse: 'Открыть курс',
+      viewCourse: 'Посмотреть курс',
     },
     course: {
       back: 'Мои курсы',
