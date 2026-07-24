@@ -1,7 +1,5 @@
 import 'dotenv/config';
 
-import { and, eq } from 'drizzle-orm';
-
 import { createDatabase } from './client';
 import { courseModules, courses, lessons } from './schema';
 
@@ -40,8 +38,9 @@ const courseSeed = {
       title: 'Восстановление и расслабление',
       lessons: [
         'Медитация No Mind',
-        'Практика для раскрытия таза и пробуждения энергии',
+        'Практика для активации либидо',
         'Йога-нидра',
+        'Face Yoga',
       ],
     },
   ],
@@ -65,9 +64,8 @@ const lessonContent: Readonly<Partial<Record<string, LessonSeedContent>>> = {
   'module-4-lesson-1': { mediaObjectKey: 'yoger2005-nomind.mp4' },
   'module-4-lesson-2': { mediaObjectKey: 'либид.mp4' },
   'module-4-lesson-3': { mediaObjectKey: 'nidra-f.mp3' },
+  'module-4-lesson-4': { mediaObjectKey: 'face-yoga-f.mp4' },
 };
-
-const archivedLessonSlugs = ['module-4-lesson-4'] as const;
 
 async function seed(): Promise<void> {
   const databaseUrl = process.env.DATABASE_DIRECT_URL || process.env.DATABASE_URL;
@@ -153,13 +151,6 @@ async function seed(): Promise<void> {
               },
             });
         }
-      }
-
-      for (const lessonSlug of archivedLessonSlugs) {
-        await tx
-          .update(lessons)
-          .set({ status: 'archived' })
-          .where(and(eq(lessons.courseId, course.id), eq(lessons.slug, lessonSlug)));
       }
     });
     console.log('Seeded the-yoga-method course');
