@@ -1,4 +1,6 @@
-import { integer, pgEnum, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
+import { integer, jsonb, pgEnum, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
+
+import type { RetreatEditableData } from '@shared/retreats';
 
 export const userRole = pgEnum('user_role', ['student', 'admin']);
 export const contentStatus = pgEnum('content_status', ['draft', 'published', 'archived']);
@@ -6,7 +8,7 @@ export const accessStatus = pgEnum('access_status', ['active', 'revoked']);
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
-  googleSubject: varchar('google_subject', { length: 255 }).notNull().unique(),
+  googleSubject: varchar('google_subject', { length: 255 }).unique(),
   email: varchar('email', { length: 320 }).notNull().unique(),
   name: varchar('name', { length: 255 }).notNull(),
   avatarUrl: text('avatar_url'),
@@ -75,3 +77,11 @@ export const lessonProgress = pgTable(
   },
   (table) => [primaryKey({ columns: [table.userId, table.lessonId] })],
 );
+
+export const retreats = pgTable('retreats', {
+  id: integer('id').primaryKey(),
+  slug: varchar('slug', { length: 160 }).notNull().unique(),
+  data: jsonb('data').$type<RetreatEditableData>().notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});

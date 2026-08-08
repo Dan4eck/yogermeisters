@@ -45,6 +45,9 @@ export interface RetreatSeed {
   readonly blocks: readonly RetreatBlockSeed[];
 }
 
+export type RetreatEditableData = Omit<RetreatSeed, 'id' | 'slug'>;
+export type RetreatUpdate = Partial<RetreatEditableData>;
+
 export interface RetreatPostBlock {
   readonly id: string;
   readonly type: RetreatBlockType;

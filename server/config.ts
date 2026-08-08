@@ -1,6 +1,7 @@
 export interface RuntimeConfig {
   readonly appUrl: string;
   readonly databaseUrl?: string;
+  readonly adminApiKey?: string;
   readonly sessionSecret?: string;
   readonly googleClientId?: string;
   readonly googleClientSecret?: string;
@@ -20,6 +21,7 @@ export function readRuntimeConfig(env: NodeJS.ProcessEnv = process.env): Runtime
   return {
     appUrl,
     databaseUrl: emptyToUndefined(env.DATABASE_URL),
+    adminApiKey: readAdminApiKey(env.ADMIN_API_KEY),
     sessionSecret: emptyToUndefined(env.SESSION_SECRET),
     googleClientId: emptyToUndefined(env.GOOGLE_CLIENT_ID),
     googleClientSecret: emptyToUndefined(env.GOOGLE_CLIENT_SECRET),
@@ -32,6 +34,14 @@ export function readRuntimeConfig(env: NodeJS.ProcessEnv = process.env): Runtime
     s3SecretAccessKey: emptyToUndefined(env.S3_SECRET_ACCESS_KEY),
     s3SignedUrlTtlSeconds: readPositiveInteger(env.S3_SIGNED_URL_TTL_SECONDS, 5400),
   };
+}
+
+function readAdminApiKey(value: string | undefined): string | undefined {
+  const apiKey = emptyToUndefined(value);
+  if (apiKey && apiKey.length < 32) {
+    throw new Error('ADMIN_API_KEY must contain at least 32 characters');
+  }
+  return apiKey;
 }
 
 function emptyToUndefined(value: string | undefined): string | undefined {

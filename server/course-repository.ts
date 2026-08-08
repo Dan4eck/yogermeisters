@@ -46,25 +46,88 @@ export class DrizzleCourseRepository implements CourseRepository {
   }
 
   async upsertGoogleUser(profile: GoogleProfileInput): Promise<AuthenticatedUser> {
-    const [user] = await this.db
-      .insert(users)
-      .values(profile)
-      .onConflictDoUpdate({
-        target: users.googleSubject,
-        set: {
-          email: profile.email,
-          name: profile.name,
-          avatarUrl: profile.avatarUrl,
-          updatedAt: new Date(),
-        },
-      })
-      .returning(userSelection);
+    const normalizedProfile = { ...profile, email: profile.email.toLowerCase() };
+    return this.db.transaction(async (tx) => {
+      const [existingGoogleUser] = await tx
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.googleSubject, profile.googleSubject))
+        .limit(1);
 
-    if (!user) {
-      throw new Error('Could not create the user');
-    }
+      if (existingGoogleUser) {
+        const [emailUser] = await tx
+          .select({ id: users.id, googleSubject: users.googleSubject })
+          .from(users)
+          .where(eq(users.email, normalizedProfile.email))
+          .limit(1);
 
-    return user;
+        if (emailUser && emailUser.id !== existingGoogleUser.id) {
+          if (emailUser.googleSubject !== null) {
+            throw new Error('The Google account email belongs to another authenticated user');
+          }
+
+          const pendingAccess = await tx
+            .select({ courseId: courseAccess.courseId, grantedAt: courseAccess.grantedAt })
+            .from(courseAccess)
+            .where(and(eq(courseAccess.userId, emailUser.id), eq(courseAccess.status, 'active')));
+
+          for (const access of pendingAccess) {
+            await tx
+              .insert(courseAccess)
+              .values({
+                userId: existingGoogleUser.id,
+                courseId: access.courseId,
+                status: 'active',
+                grantedAt: access.grantedAt,
+                revokedAt: null,
+              })
+              .onConflictDoUpdate({
+                target: [courseAccess.userId, courseAccess.courseId],
+                set: { status: 'active', grantedAt: access.grantedAt, revokedAt: null },
+              });
+          }
+
+          await tx.delete(users).where(eq(users.id, emailUser.id));
+        }
+
+        const [user] = await tx
+          .update(users)
+          .set({
+            email: normalizedProfile.email,
+            name: profile.name,
+            avatarUrl: profile.avatarUrl,
+            updatedAt: new Date(),
+          })
+          .where(eq(users.id, existingGoogleUser.id))
+          .returning(userSelection);
+
+        if (!user) {
+          throw new Error('Could not update the user');
+        }
+
+        return user;
+      }
+
+      const [user] = await tx
+        .insert(users)
+        .values(normalizedProfile)
+        .onConflictDoUpdate({
+          target: users.email,
+          set: {
+            googleSubject: profile.googleSubject,
+            name: profile.name,
+            avatarUrl: profile.avatarUrl,
+            updatedAt: new Date(),
+          },
+        })
+        .returning(userSelection);
+
+      if (!user) {
+        throw new Error('Could not create the user');
+      }
+
+      return user;
+    });
   }
 
   async listCoursesForUser(userId: string): Promise<readonly CourseSummary[]> {

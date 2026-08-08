@@ -1,0 +1,259 @@
+{
+  "status": "ready",
+  "category": "asset-fusion",
+  "duration_s": 3.6,
+  "fps": 30,
+  "canvas": {
+    "w": 1920,
+    "h": 1080,
+    "aspect": "16:9"
+  },
+  "style": "Crisp retro pixel art with a fixed three-quarter camera, stable character scale, restrained warm UI palette, no antialiasing, no text, and no decorative clutter.",
+  "palette": [
+    "#F5F1EA",
+    "#151515",
+    "#E97832",
+    "#D8CAB9",
+    "#A94733"
+  ],
+  "font": "Inter",
+  "beats": [
+    0,
+    18,
+    36,
+    48,
+    66,
+    84,
+    108
+  ],
+  "export": "mp4",
+  "asset_needs": [],
+  "shot_brief": "A recognizable pixel-art version of the Yogermeisters heroine is visible immediately with a rolled orange mat. She leans, throws the roll forward, and the mat lands and unfurls through nine clean, readable poses. The completed mat holds as the visual payoff, then the same poses run backward with a slightly faster cadence so the final frame joins the opening frame without a jump. The single dominant motion idea is the orange roll travelling forward and transforming into a flat mat.",
+  "customize": {
+    "sprite_sheet": {
+      "master": "assets/yoga-mat-sprite-sheet.png",
+      "layout": "3x3",
+      "frame_count": 9,
+      "frame_size_px": [
+        410,
+        410
+      ],
+      "frame_order": "left-to-right, top-to-bottom",
+      "frames": [
+        "assets/frame-01.png",
+        "assets/frame-02.png",
+        "assets/frame-03.png",
+        "assets/frame-04.png",
+        "assets/frame-05.png",
+        "assets/frame-06.png",
+        "assets/frame-07.png",
+        "assets/frame-08.png",
+        "assets/frame-09.png"
+      ],
+      "rendering": "pixelated",
+      "camera": "fixed three-quarter side view",
+      "background": "warm neutral baked into every frame",
+      "phases": [
+        "calm ready pose holding a rolled mat",
+        "lean and backswing",
+        "forward release",
+        "rolled mat airborne",
+        "leading edge touches the floor",
+        "early unfurl",
+        "half unfurled",
+        "nearly flat",
+        "fully flat mat with calm finishing pose"
+      ]
+    },
+    "playback": {
+      "mode": "forward-hold-reverse-loop",
+      "duration_frames": 108,
+      "transition": "hard sprite-step only; no crossfade, tweening, or interpolation",
+      "timeline": [
+        {
+          "asset": "assets/frame-01.png",
+          "start_frame": 0,
+          "end_frame": 6,
+          "start_s": 0,
+          "end_s": 0.2,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-02.png",
+          "start_frame": 6,
+          "end_frame": 12,
+          "start_s": 0.2,
+          "end_s": 0.4,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-03.png",
+          "start_frame": 12,
+          "end_frame": 18,
+          "start_s": 0.4,
+          "end_s": 0.6,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-04.png",
+          "start_frame": 18,
+          "end_frame": 24,
+          "start_s": 0.6,
+          "end_s": 0.8,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-05.png",
+          "start_frame": 24,
+          "end_frame": 30,
+          "start_s": 0.8,
+          "end_s": 1,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-06.png",
+          "start_frame": 30,
+          "end_frame": 36,
+          "start_s": 1,
+          "end_s": 1.2,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-07.png",
+          "start_frame": 36,
+          "end_frame": 42,
+          "start_s": 1.2,
+          "end_s": 1.4,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-08.png",
+          "start_frame": 42,
+          "end_frame": 48,
+          "start_s": 1.4,
+          "end_s": 1.6,
+          "phase": "forward"
+        },
+        {
+          "asset": "assets/frame-09.png",
+          "start_frame": 48,
+          "end_frame": 66,
+          "start_s": 1.6,
+          "end_s": 2.2,
+          "phase": "hold"
+        },
+        {
+          "asset": "assets/frame-08.png",
+          "start_frame": 66,
+          "end_frame": 72,
+          "start_s": 2.2,
+          "end_s": 2.4,
+          "phase": "reverse"
+        },
+        {
+          "asset": "assets/frame-07.png",
+          "start_frame": 72,
+          "end_frame": 78,
+          "start_s": 2.4,
+          "end_s": 2.6,
+          "phase": "reverse"
+        },
+        {
+          "asset": "assets/frame-06.png",
+          "start_frame": 78,
+          "end_frame": 84,
+          "start_s": 2.6,
+          "end_s": 2.8,
+          "phase": "reverse"
+        },
+        {
+          "asset": "assets/frame-05.png",
+          "start_frame": 84,
+          "end_frame": 90,
+          "start_s": 2.8,
+          "end_s": 3,
+          "phase": "reverse"
+        },
+        {
+          "asset": "assets/frame-04.png",
+          "start_frame": 90,
+          "end_frame": 96,
+          "start_s": 3,
+          "end_s": 3.2,
+          "phase": "reverse"
+        },
+        {
+          "asset": "assets/frame-03.png",
+          "start_frame": 96,
+          "end_frame": 100,
+          "start_s": 3.2,
+          "end_s": 3.333333,
+          "phase": "reverse"
+        },
+        {
+          "asset": "assets/frame-02.png",
+          "start_frame": 100,
+          "end_frame": 104,
+          "start_s": 3.333333,
+          "end_s": 3.466667,
+          "phase": "reverse"
+        },
+        {
+          "asset": "assets/frame-01.png",
+          "start_frame": 104,
+          "end_frame": 108,
+          "start_s": 3.466667,
+          "end_s": 3.6,
+          "phase": "reverse"
+        }
+      ]
+    },
+    "layout": {
+      "hero_frame": "assets/frame-09.png",
+      "stage_anchor": "center",
+      "display_size_px": [
+        820,
+        820
+      ],
+      "title_safe_margin_px": 120,
+      "css": {
+        "object_fit": "contain",
+        "image_rendering": "pixelated"
+      }
+    }
+  },
+  "content": {
+    "data_type": "temporal",
+    "asset": "assets/yoga-mat-sprite-sheet.png",
+    "affordance": "The 3x3 grid is a temporal pose atlas: each equal cell is one discrete state of the same character-and-mat action, allowing deterministic stepped playback and exact reverse playback.",
+    "element_positions": {
+      "center": [
+        960,
+        540
+      ],
+      "extent": [
+        550,
+        130,
+        1370,
+        950
+      ],
+      "safe": [
+        [
+          120,
+          90,
+          1800,
+          990
+        ]
+      ],
+      "avoid": []
+    },
+    "derived_palette": [
+      "#F5F1EA",
+      "#151515",
+      "#E97832",
+      "#D8CAB9",
+      "#A94733"
+    ],
+    "connectors": []
+  }
+}

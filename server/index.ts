@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { createServer } from 'http';
 
 import { createApp } from './app';
+import { DrizzleAdminRepository } from './admin-repository';
 import { createAuthentication, createDevelopmentAuthentication, createUnavailableAuthentication } from './auth';
 import { readRuntimeConfig } from './config';
 import { DrizzleCourseRepository } from './course-repository';
@@ -25,6 +26,7 @@ async function startServer(): Promise<void> {
   const config = readRuntimeConfig();
   const database = config.databaseUrl ? createDatabase(config.databaseUrl) : undefined;
   const repository = database ? new DrizzleCourseRepository(database.db) : undefined;
+  const adminRepository = database ? new DrizzleAdminRepository(database.db) : undefined;
   const authentication = database && repository
     ? shouldUseDevelopmentAuthentication(config)
       ? createDevelopmentAuthentication(repository, config.developmentAuthEmail!)
@@ -42,6 +44,8 @@ async function startServer(): Promise<void> {
 
   const app = createApp({
     repository,
+    adminRepository,
+    adminApiKey: config.adminApiKey,
     mediaSigner,
     authMiddleware: authentication.middleware,
     authRouter: authentication.router,

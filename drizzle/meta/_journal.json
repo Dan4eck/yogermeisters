@@ -22,6 +22,20 @@
       "when": 1784870789711,
       "tag": "0002_sweet_wendigo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1785596467793,
+      "tag": "0003_thankful_drax",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786164289785,
+      "tag": "0004_watery_zuras",
+      "breakpoints": true
     }
   ]
 }

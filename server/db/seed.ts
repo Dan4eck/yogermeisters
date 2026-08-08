@@ -1,7 +1,9 @@
 import 'dotenv/config';
 
+import { retreatSeedData } from '@shared/retreats';
+
 import { createDatabase } from './client';
-import { courseModules, courses, lessons } from './schema';
+import { courseModules, courses, lessons, retreats } from './schema';
 
 const contraindicationsDescription = [
   'Противопоказания к практике',
@@ -60,6 +62,7 @@ const lessonContent: Readonly<Partial<Record<string, LessonSeedContent>>> = {
   'module-2-lesson-2': { mediaObjectKey: 'yoger-1705-f.mp4' },
   'module-2-lesson-3': { mediaObjectKey: 'yoger-2105.mp4' },
   'module-3-lesson-1': { mediaObjectKey: 'отстрои\u0306ки-f.mp4' },
+  'module-3-lesson-2': { mediaObjectKey: 'сурья нама.mp4' },
   'module-3-lesson-3': { description: contraindicationsDescription },
   'module-4-lesson-1': { mediaObjectKey: 'yoger2005-nomind.mp4' },
   'module-4-lesson-2': { mediaObjectKey: 'либид.mp4' },
@@ -152,8 +155,16 @@ async function seed(): Promise<void> {
             });
         }
       }
+
+      for (const retreat of retreatSeedData) {
+        const { id, slug, ...data } = retreat;
+        await tx
+          .insert(retreats)
+          .values({ id, slug, data })
+          .onConflictDoNothing({ target: retreats.slug });
+      }
     });
-    console.log('Seeded the-yoga-method course');
+    console.log('Seeded course and retreats');
   } finally {
     await pool.end();
   }

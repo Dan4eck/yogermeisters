@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "google_subject" DROP NOT NULL;

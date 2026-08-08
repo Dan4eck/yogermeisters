@@ -1,8 +1,9 @@
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { Link } from 'wouter';
 
 import { formatRetreatDateLabel } from '@/lib/retreat-date';
 import { getRetreatImageUrl } from '@/lib/retreat-assets';
+import { fetchRetreats } from '@/lib/retreat-api';
 import type { Language } from '@/lib/i18n';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { listRetreats, type RetreatRecord } from '@shared/retreat-content';
@@ -108,9 +109,18 @@ function isRetreatAvailable(retreat: RetreatRecord | undefined, today: string): 
 
 export default function RetreatsSection({ language }: RetreatsSectionProps) {
   const [unavailableRetreat, setUnavailableRetreat] = useState<RetreatCardView | null>(null);
+  const [retreats, setRetreats] = useState<readonly RetreatRecord[]>(() => listRetreats('all', language).retreats);
   const sectionCopy = landingCopy[language].retreats;
-  const data = listRetreats('all', language);
-  const retreats = data.retreats;
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setRetreats(listRetreats('all', language).retreats);
+    void fetchRetreats(language, 'all', controller.signal)
+      .then((response) => setRetreats(response.retreats))
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [language]);
+
   const today = new Date().toISOString().slice(0, 10);
   const retreatBySlug = new Map(retreats.map((retreat) => [retreat.slug, retreat]));
   const cards: readonly RetreatCardView[] = retreatSlots.map(({ slug, tone, fallback }, index) => {

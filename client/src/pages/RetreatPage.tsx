@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, ExternalLink, MapPin } from 'lucide-react';
 import Header from '@/components/landing-v2/Header';
 import { landingCopy } from '@/components/landing-v2/content';
 import { getRetreatImageUrl } from '@/lib/retreat-assets';
+import { fetchRetreat } from '@/lib/retreat-api';
 import { formatRetreatDateLabel } from '@/lib/retreat-date';
 import type { Language } from '@/lib/i18n';
 import { openExternal } from '@/lib/open-external';
@@ -25,7 +26,17 @@ const fallbackImageBySlug: Record<string, string> = {
 
 export default function RetreatPage({ slug, language, setLanguage }: RetreatPageProps) {
   const copy = landingCopy[language].retreats;
-  const retreat = getRetreatBySlug(slug, language);
+  const [retreat, setRetreat] = useState(() => getRetreatBySlug(slug, language));
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setRetreat(getRetreatBySlug(slug, language));
+    void fetchRetreat(slug, language, controller.signal)
+      .then(setRetreat)
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [language, slug]);
+
   const coverImage = retreat ? getRetreatImageUrl(retreat.coverImage) || fallbackImageBySlug[retreat.slug] : '';
   const dateLabel = retreat
     ? formatRetreatDateLabel(retreat.startDate, retreat.endDate, retreat.dateLabel, copy.dateLocale, language)

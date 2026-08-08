@@ -15,15 +15,26 @@ async function updateAccess(action: AccessAction, email: string, courseSlug: str
 
   const { db, pool } = createDatabase(databaseUrl);
   try {
+    const normalizedEmail = email.toLowerCase();
+    if (action === 'grant') {
+      await db
+        .insert(users)
+        .values({ email: normalizedEmail, name: normalizedEmail })
+        .onConflictDoUpdate({
+          target: users.email,
+          set: { updatedAt: new Date() },
+        });
+    }
+
     const [record] = await db
       .select({ userId: users.id, courseId: courses.id })
       .from(users)
       .crossJoin(courses)
-      .where(and(eq(users.email, email.toLowerCase()), eq(courses.slug, courseSlug)))
+      .where(and(eq(users.email, normalizedEmail), eq(courses.slug, courseSlug)))
       .limit(1);
 
     if (!record) {
-      throw new Error('User or course was not found. The user must sign in once before access can be granted.');
+      throw new Error(action === 'grant' ? 'Course was not found.' : 'User or course was not found.');
     }
 
     if (action === 'grant') {
@@ -41,7 +52,7 @@ async function updateAccess(action: AccessAction, email: string, courseSlug: str
         .where(and(eq(courseAccess.userId, record.userId), eq(courseAccess.courseId, record.courseId)));
     }
 
-    console.log(`${action} completed for ${email.toLowerCase()} and ${courseSlug}`);
+    console.log(`${action} completed for ${normalizedEmail} and ${courseSlug}`);
   } finally {
     await pool.end();
   }

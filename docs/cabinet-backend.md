@@ -37,7 +37,8 @@ cp .env.example .env
 1. В существующем Railway project добавьте PostgreSQL service.
 2. Откройте Variables приложения и добавьте reference на `DATABASE_URL` PostgreSQL-сервиса.
 3. Если миграции запускаются с локального компьютера по публичному адресу, добавьте `DATABASE_DIRECT_URL` с внешним connection URL. Не коммитьте его.
-4. Для production задайте `NODE_ENV=production`, `APP_URL=https://ваш-домен` и длинный случайный `SESSION_SECRET` минимум из 32 символов.
+4. Для production задайте `NODE_ENV=production`, `APP_URL=https://ваш-домен`, длинный случайный `SESSION_SECRET`
+   минимум из 32 символов и отдельный `ADMIN_API_KEY` минимум из 32 символов.
 5. Включите доступные в вашем тарифе backups/snapshots PostgreSQL и проверьте процедуру восстановления.
 
 Приложение использует `trust proxy = 1`, поэтому `Secure` session cookie корректно работает за Railway HTTPS proxy. В production cookie имеет `httpOnly`, `SameSite=Lax` и `Secure`.
@@ -107,14 +108,16 @@ TTL в 5400 секунд рассчитан на уроки продолжите
 
 ### 6. Выдать или отозвать доступ
 
-Ученик должен сначала один раз войти через Google, чтобы запись пользователя появилась в БД.
+Команда `grant` создаёт предварительную запись пользователя по email, если тот ещё не входил через Google.
+При первом входе запись привязывается к Google-аккаунту, а выданный доступ сохраняется.
 
 ```bash
 npm run access -- grant student@example.com the-yoga-method
 npm run access -- revoke student@example.com the-yoga-method
 ```
 
-Эквивалентно это можно сделать через Railway Database View или SQL. Для выдачи доступа:
+Предпочтителен скрипт или Admin API: они атомарно создают предварительного пользователя и выдают доступ.
+Прямое изменение таблицы `course_access` требует сначала создать запись в `users`.
 
 ```sql
 INSERT INTO course_access (user_id, course_id, status, granted_at, revoked_at)

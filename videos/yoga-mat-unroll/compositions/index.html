@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f4f0ea;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f4f0ea;
+      }
+
+      .frame-clip {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        width: 1920px;
+        height: 1080px;
+      }
+
+      .frame-media {
+        display: block;
+        width: 820px;
+        height: 820px;
+        object-fit: contain;
+        image-rendering: pixelated;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="3.6"
+      data-fps="30"
+      data-width="1920"
+      data-height="1080"
+    >
+      <section id="phase-01" class="clip frame-clip" data-start="0" data-duration="0.2" data-track-index="1">
+        <img id="phase-01-media" class="frame-media" src="assets/frame-01.png" alt="" />
+      </section>
+      <section id="phase-02" class="clip frame-clip" data-start="0.2" data-duration="0.2" data-track-index="2">
+        <img id="phase-02-media" class="frame-media" src="assets/frame-02.png" alt="" />
+      </section>
+      <section id="phase-03" class="clip frame-clip" data-start="0.4" data-duration="0.2" data-track-index="3">
+        <img id="phase-03-media" class="frame-media" src="assets/frame-03.png" alt="" />
+      </section>
+      <section id="phase-04" class="clip frame-clip" data-start="0.6" data-duration="0.2" data-track-index="4">
+        <img id="phase-04-media" class="frame-media" src="assets/frame-04.png" alt="" />
+      </section>
+      <section id="phase-05" class="clip frame-clip" data-start="0.8" data-duration="0.2" data-track-index="5">
+        <img id="phase-05-media" class="frame-media" src="assets/frame-05.png" alt="" />
+      </section>
+      <section id="phase-06" class="clip frame-clip" data-start="1" data-duration="0.2" data-track-index="6">
+        <img id="phase-06-media" class="frame-media" src="assets/frame-06.png" alt="" />
+      </section>
+      <section id="phase-07" class="clip frame-clip" data-start="1.2" data-duration="0.2" data-track-index="7">
+        <img id="phase-07-media" class="frame-media" src="assets/frame-07.png" alt="" />
+      </section>
+      <section id="phase-08" class="clip frame-clip" data-start="1.4" data-duration="0.2" data-track-index="8">
+        <img id="phase-08-media" class="frame-media" src="assets/frame-08.png" alt="" />
+      </section>
+      <section id="phase-09" class="clip frame-clip" data-start="1.6" data-duration="0.6" data-track-index="9">
+        <img id="phase-09-media" class="frame-media" src="assets/frame-09.png" alt="" />
+      </section>
+      <section id="phase-10" class="clip frame-clip" data-start="2.2" data-duration="0.2" data-track-index="10">
+        <img id="phase-10-media" class="frame-media" src="assets/reverse-08.png" alt="" />
+      </section>
+      <section id="phase-11" class="clip frame-clip" data-start="2.4" data-duration="0.2" data-track-index="11">
+        <img id="phase-11-media" class="frame-media" src="assets/reverse-07.png" alt="" />
+      </section>
+      <section id="phase-12" class="clip frame-clip" data-start="2.6" data-duration="0.2" data-track-index="12">
+        <img id="phase-12-media" class="frame-media" src="assets/reverse-06.png" alt="" />
+      </section>
+      <section id="phase-13" class="clip frame-clip" data-start="2.8" data-duration="0.2" data-track-index="13">
+        <img id="phase-13-media" class="frame-media" src="assets/reverse-05.png" alt="" />
+      </section>
+      <section id="phase-14" class="clip frame-clip" data-start="3" data-duration="0.2" data-track-index="14">
+        <img id="phase-14-media" class="frame-media" src="assets/reverse-04.png" alt="" />
+      </section>
+      <section id="phase-15" class="clip frame-clip" data-start="3.2" data-duration="0.133333" data-track-index="15">
+        <img id="phase-15-media" class="frame-media" src="assets/reverse-03.png" alt="" />
+      </section>
+      <section
+        id="phase-16"
+        class="clip frame-clip"
+        data-start="3.333333"
+        data-duration="0.133334"
+        data-track-index="16"
+      >
+        <img id="phase-16-media" class="frame-media" src="assets/reverse-02.png" alt="" />
+      </section>
+      <section
+        id="phase-17"
+        class="clip frame-clip"
+        data-start="3.466667"
+        data-duration="0.133333"
+        data-track-index="17"
+      >
+        <img id="phase-17-media" class="frame-media" src="assets/reverse-01.png" alt="" />
+      </section>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.set('.frame-media', { autoAlpha: 1 }, 0);
+      tl.to('.frame-media', { opacity: 0.985, duration: 1.8, ease: 'sine.inOut' }, 0);
+      tl.to('.frame-media', { opacity: 1, duration: 1.8, ease: 'sine.inOut' }, 1.8);
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

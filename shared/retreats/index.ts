@@ -14,6 +14,8 @@ import type {
   RetreatPostBlock,
   RetreatView,
   RetreatBlockType,
+  RetreatEditableData,
+  RetreatUpdate,
 } from './types';
 
 export type {
@@ -29,6 +31,8 @@ export type {
   RetreatPostBlock,
   RetreatView,
   RetreatBlockType,
+  RetreatEditableData,
+  RetreatUpdate,
 };
 
 export const retreatSeedData: readonly RetreatSeed[] = [ciraliRetreat, mountainsRetreat, nepalRetreat];
@@ -84,17 +88,38 @@ function localizeRetreat(seed: RetreatSeed, language: RetreatLanguage): RetreatR
 }
 
 export function mapSeedRetreats(language: RetreatLanguage): RetreatRecord[] {
-  return retreatSeedData.map((retreat) => localizeRetreat(retreat, language));
+  return mapRetreatSeeds(retreatSeedData, language);
+}
+
+export function mapRetreatSeeds(seeds: readonly RetreatSeed[], language: RetreatLanguage): RetreatRecord[] {
+  return seeds.map((retreat) => localizeRetreat(retreat, language));
 }
 
 export function listRetreats(view: RetreatView, language: RetreatLanguage, today = new Date().toISOString().slice(0, 10)): RetreatListResponse {
+  return listRetreatRecords(retreatSeedData, view, language, today);
+}
+
+export function listRetreatRecords(
+  seeds: readonly RetreatSeed[],
+  view: RetreatView,
+  language: RetreatLanguage,
+  today = new Date().toISOString().slice(0, 10),
+): RetreatListResponse {
   return {
     view,
     language,
-    retreats: mapSeedRetreats(language).filter((retreat) => matchesView(retreat, view, today)),
+    retreats: mapRetreatSeeds(seeds, language).filter((retreat) => matchesView(retreat, view, today)),
   };
 }
 
 export function getRetreatBySlug(slug: string, language: RetreatLanguage): RetreatRecord | null {
-  return mapSeedRetreats(language).find((retreat) => retreat.slug === slug) ?? null;
+  return getRetreatRecordBySlug(retreatSeedData, slug, language);
+}
+
+export function getRetreatRecordBySlug(
+  seeds: readonly RetreatSeed[],
+  slug: string,
+  language: RetreatLanguage,
+): RetreatRecord | null {
+  return mapRetreatSeeds(seeds, language).find((retreat) => retreat.slug === slug) ?? null;
 }
