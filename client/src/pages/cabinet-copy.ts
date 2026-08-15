@@ -7,6 +7,12 @@ type CabinetCopy = {
     readonly googleAction: string;
     readonly returnHome: string;
   };
+  readonly freeLessonLogin: {
+    readonly title: string;
+    readonly description: string;
+    readonly googleAction: string;
+    readonly returnHome: string;
+  };
   readonly cabinet: {
     readonly title: string;
     readonly logout: string;
@@ -50,6 +56,12 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       googleAction: 'Sign in with Google',
       returnHome: 'Back to home',
     },
+    freeLessonLogin: {
+      title: 'Sign in to get your free lesson',
+      description: 'Continue with Google and the full-body practice will open right away.',
+      googleAction: 'Get the free lesson with Google',
+      returnHome: 'Back to home',
+    },
     cabinet: {
       title: 'Yoga shala',
       logout: 'Log out',
@@ -89,6 +101,12 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
       title: 'Войдите, чтобы начать обучение',
       description: 'Ты уже почти йогермейстер. Еще один шаг!',
       googleAction: 'Войти через Google',
+      returnHome: 'Вернуться на сайт',
+    },
+    freeLessonLogin: {
+      title: 'Авторизуйтесь, чтобы получить бесплатный урок',
+      description: 'Продолжите через Google — и полная практика на всё тело откроется сразу после авторизации.',
+      googleAction: 'Получить урок через Google',
       returnHome: 'Вернуться на сайт',
     },
     cabinet: {
