@@ -187,6 +187,55 @@
   margin-top: 52px;
 }
 
+.freeLessonBanner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  margin-top: 42px;
+  padding: 24px;
+  border: 1px solid rgba(211, 95, 53, 0.28);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 92% 20%, rgba(211, 95, 53, 0.15), transparent 18rem),
+    rgba(255, 255, 255, 0.64);
+  box-shadow: 0 18px 48px rgba(54, 42, 33, 0.07);
+}
+
+.freeLessonIcon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cabinet-accent);
+  color: #fff;
+}
+
+.freeLessonIcon svg { width: 22px; height: 22px; }
+.freeLessonBanner h2 { margin: 0 0 6px; font: 600 clamp(21px, 2.3vw, 28px)/1.1 var(--font-syne); letter-spacing: -.035em; }
+.freeLessonBanner p { margin: 0; color: var(--cabinet-copy); font: 400 12px/1.5 var(--font-sora); }
+
+.freeLessonLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 17px;
+  border-radius: 8px;
+  background: var(--cabinet-ink);
+  color: #fff !important;
+  font: 500 11px var(--font-sora);
+  letter-spacing: .04em;
+  white-space: nowrap;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.freeLessonLink:hover { background: var(--cabinet-accent); transform: translateY(-2px); }
+.freeLessonLink svg { width: 16px; height: 16px; }
+
+.freeLessonBanner + .coursesSection { margin-top: 52px; }
+
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 360px));
@@ -777,6 +826,21 @@
 
   .cardGrid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .freeLessonBanner {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 20px;
+  }
+
+  .freeLessonIcon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .freeLessonLink {
+    grid-column: 1 / -1;
+    width: 100%;
   }
 
   .cabinetHeader {

@@ -56,6 +56,25 @@ export function createApp(dependencies: AppDependencies = {}): Express {
   });
 
   app.get(
+    '/api/free-lesson/media',
+    requireUser,
+    asyncRoute(async (_req, res) => {
+      const repository = requireRepository(dependencies.repository);
+      const media = await repository.getPublishedLessonMedia('the-yoga-method', 'module-1-lesson-3');
+      if (!media) {
+        res.status(404).json({ code: 'free_lesson_not_found', message: 'Free lesson not found' });
+        return;
+      }
+      if (!media.objectKey) {
+        res.status(409).json({ code: 'media_not_ready', message: 'Free lesson media has not been uploaded' });
+        return;
+      }
+
+      await sendSignedMedia(res, dependencies.mediaSigner, media.objectKey);
+    }),
+  );
+
+  app.get(
     '/api/retreats',
     asyncRoute(async (req, res) => {
       const repository = requireAdminRepository(dependencies.adminRepository);

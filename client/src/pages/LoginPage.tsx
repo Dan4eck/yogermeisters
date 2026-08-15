@@ -12,6 +12,8 @@ interface LoginPageProps {
 
 export default function LoginPage({ language, setLanguage }: LoginPageProps) {
   const copy = cabinetCopy[language].login;
+  const nextPath = new URLSearchParams(window.location.search).get('next');
+  const safeNextPath = nextPath && /^\/cabinet(?:\/|$)/.test(nextPath) ? nextPath : '/cabinet';
 
   return (
     <div className={`landing-v2-root ${styles.cabinetRoot} ${styles[language]}`}>
@@ -20,7 +22,9 @@ export default function LoginPage({ language, setLanguage }: LoginPageProps) {
         <section className={styles.authCard}>
           <h1>{copy.title}</h1>
           <p className={styles.authDescription}>{copy.description}</p>
-          <a className={styles.primaryButton} href='/auth/google'>{copy.googleAction}</a>
+          <a className={styles.primaryButton} href={`/auth/google?next=${encodeURIComponent(safeNextPath)}`}>
+            {copy.googleAction}
+          </a>
           <Link href='/' className={styles.textLink}>{copy.returnHome}</Link>
         </section>
       </main>

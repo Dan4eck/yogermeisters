@@ -6,6 +6,7 @@ import { useLanguage } from '@/hooks/use-language';
 import Home from '@/pages/Home';
 import CabinetPage from '@/pages/CabinetPage';
 import CourseCabinetPage from '@/pages/CourseCabinetPage';
+import FreeLessonPage from '@/pages/FreeLessonPage';
 import HimalayanYogaCoursePage from '@/pages/HimalayanYogaCoursePage';
 import LoginPage from '@/pages/LoginPage';
 import NotFound from '@/pages/not-found';
@@ -56,6 +57,9 @@ function Router() {
         </Route>
         <Route path="/cabinet">
           <CabinetPage language={language} setLanguage={setLanguage} />
+        </Route>
+        <Route path="/cabinet/free-lesson">
+          <FreeLessonPage language={language} setLanguage={setLanguage} />
         </Route>
         <Route path="/cabinet/courses/:slug">
           {(params) => <CourseCabinetPage slug={params.slug} language={language} setLanguage={setLanguage} />}

@@ -19,6 +19,7 @@ export interface CourseRepository {
   getCourseForUser(userId: string, slug: string): Promise<CourseDetails | null>;
   getCourseIntroMediaForUser(userId: string, courseSlug: string): Promise<LessonMedia | null>;
   getLessonMediaForUser(userId: string, courseSlug: string, lessonSlug: string): Promise<LessonMedia | null>;
+  getPublishedLessonMedia(courseSlug: string, lessonSlug: string): Promise<LessonMedia | null>;
   completeLessonForUser(userId: string, courseSlug: string, lessonSlug: string): Promise<boolean>;
 }
 
@@ -278,6 +279,24 @@ export class DrizzleCourseRepository implements CourseRepository {
           eq(courses.status, 'published'),
           eq(lessons.status, 'published'),
           eq(courseAccess.status, 'active'),
+        ),
+      )
+      .limit(1);
+
+    return lesson ?? null;
+  }
+
+  async getPublishedLessonMedia(courseSlug: string, lessonSlug: string): Promise<LessonMedia | null> {
+    const [lesson] = await this.db
+      .select({ objectKey: lessons.mediaObjectKey })
+      .from(lessons)
+      .innerJoin(courses, eq(lessons.courseId, courses.id))
+      .where(
+        and(
+          eq(courses.slug, courseSlug),
+          eq(lessons.slug, lessonSlug),
+          eq(courses.status, 'published'),
+          eq(lessons.status, 'published'),
         ),
       )
       .limit(1);

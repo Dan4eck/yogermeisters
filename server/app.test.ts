@@ -86,6 +86,10 @@ class FakeRepository implements CourseRepository {
     return this.hasAccess ? this.media : null;
   }
 
+  async getPublishedLessonMedia(): Promise<LessonMedia | null> {
+    return this.media;
+  }
+
   async completeLessonForUser(): Promise<boolean> {
     return this.hasAccess;
   }
@@ -364,6 +368,26 @@ describe('cabinet API', () => {
     expect(createDownloadUrl).toHaveBeenCalledWith('courses/the-yoga-method/lesson-1.mp4');
   });
 
+  it('opens the free lesson for any authenticated user without course access', async () => {
+    const createDownloadUrl = vi.fn().mockResolvedValue({
+      url: 'https://private.example/free-lesson',
+      expiresIn: 900,
+    });
+    const app = createApp({
+      repository: new FakeRepository(false, { objectKey: 'yoger-1505.mp4' }),
+      mediaSigner: { createDownloadUrl },
+      authMiddleware: [mockAuthentication],
+    });
+
+    const unauthenticated = await request(app).get('/api/free-lesson/media');
+    const authenticated = await request(app).get('/api/free-lesson/media').set('x-test-user', 'active');
+
+    expect(unauthenticated.status).toBe(401);
+    expect(authenticated.status).toBe(200);
+    expect(authenticated.body.kind).toBe('video');
+    expect(createDownloadUrl).toHaveBeenCalledWith('yoger-1505.mp4');
+  });
+
   it('signs the course intro only for a student with access', async () => {
     const createDownloadUrl = vi.fn().mockResolvedValue({
       url: 'https://private.example/signed-intro',
@@ -468,6 +492,18 @@ describe('authentication setup', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.user.email).toBe(user.email);
+  });
+
+  it('returns to the free lesson after development sign-in and rejects external redirects', async () => {
+    const authentication = createDevelopmentAuthentication(new FakeRepository(true), user.email);
+    const app = createApp({ authRouter: authentication.router });
+
+    const freeLessonResponse = await request(app).get('/auth/google?next=%2Fcabinet%2Ffree-lesson');
+    const unsafeResponse = await request(app).get('/auth/google?next=https%3A%2F%2Fevil.example');
+
+    expect(freeLessonResponse.status).toBe(302);
+    expect(freeLessonResponse.headers.location).toBe('/cabinet/free-lesson');
+    expect(unsafeResponse.headers.location).toBe('/cabinet');
   });
 
   it('reports missing OAuth configuration without exposing environment values', async () => {

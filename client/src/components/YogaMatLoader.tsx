@@ -2,7 +2,7 @@ import styles from './YogaMatLoader.module.css';
 
 interface YogaMatLoaderProps {
   readonly label: string;
-  readonly variant?: 'page' | 'media';
+  readonly variant?: 'page' | 'media' | 'heroMedia';
 }
 
 export default function YogaMatLoader({ label, variant = 'page' }: YogaMatLoaderProps) {

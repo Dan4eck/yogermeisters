@@ -29,7 +29,7 @@ export function createUnavailableAuthentication(): Authentication {
 
 export function createDevelopmentAuthentication(repository: CourseRepository, email: string): Authentication {
   const router = Router();
-  router.get('/google', (_req, res) => res.redirect('/cabinet'));
+  router.get('/google', (req, res) => res.redirect(readSafeReturnTo(req.query.next)));
   router.get('/google/callback', (_req, res) => res.redirect('/cabinet'));
   router.post('/logout', (_req, res) => res.status(204).end());
 
@@ -120,11 +120,22 @@ export function createAuthentication(
   );
 
   const router = Router();
-  router.get('/google', passport.authenticate('google', { scope: ['openid', 'profile', 'email'] }));
+  router.get(
+    '/google',
+    (req, _res, next) => {
+      req.session.oauthReturnTo = readSafeReturnTo(req.query.next);
+      next();
+    },
+    passport.authenticate('google', { scope: ['openid', 'profile', 'email'] }),
+  );
   router.get(
     '/google/callback',
     passport.authenticate('google', { failureRedirect: '/login?error=oauth' }),
-    (_req, res) => res.redirect('/cabinet'),
+    (req, res) => {
+      const returnTo = readSafeReturnTo(req.session.oauthReturnTo);
+      delete req.session.oauthReturnTo;
+      res.redirect(returnTo);
+    },
   );
   router.post('/logout', createLogoutHandler());
 
@@ -132,6 +143,10 @@ export function createAuthentication(
     middleware: [sessionMiddleware, passport.initialize(), passport.session()],
     router,
   };
+}
+
+function readSafeReturnTo(value: unknown): string {
+  return typeof value === 'string' && /^\/cabinet(?:\/|$)/.test(value) ? value : '/cabinet';
 }
 
 export function createLogoutHandler(cookieName = 'yogermeisters.sid'): RequestHandler {
