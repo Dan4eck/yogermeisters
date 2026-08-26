@@ -130,7 +130,7 @@ export function createAuthentication(
   );
   router.get(
     '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login?error=oauth' }),
+    passport.authenticate('google', { failureRedirect: '/login?error=oauth', keepSessionInfo: true }),
     (req, res) => {
       const returnTo = readSafeReturnTo(req.session.oauthReturnTo);
       delete req.session.oauthReturnTo;

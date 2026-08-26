@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Gift, LogOut } from 'lucide-react';
+import { ArrowUpRight, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
@@ -172,24 +172,6 @@ function CabinetContent({
             ))}
           </div>
         )}
-      </section>
-
-      <section className={styles.freeLessonBanner} aria-labelledby='free-lesson-title'>
-        <div className={styles.freeLessonIcon}><Gift aria-hidden='true' /></div>
-        <div>
-          <h2 id='free-lesson-title'>
-            {language === 'ru' ? 'Общая практика на всё тело' : 'Full-body yoga practice'}
-          </h2>
-          <p>
-            {language === 'ru'
-              ? 'Бесплатный полноценный урок из курса the yoga method.'
-              : 'A free complete lesson from the yoga method course.'}
-          </p>
-        </div>
-        <Link href='/cabinet/free-lesson' className={styles.freeLessonLink}>
-          {language === 'ru' ? 'Начать практику' : 'Start practice'}
-          <ArrowUpRight aria-hidden='true' />
-        </Link>
       </section>
 
       <section className={styles.coursesSection} aria-labelledby='catalog-title'>
