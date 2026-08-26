@@ -37,13 +37,6 @@
   box-shadow: 0 24px 60px rgba(54, 42, 33, 0.07);
 }
 
-.freeLessonAuthCard {
-  border-color: rgba(211, 95, 53, 0.28);
-  background:
-    radial-gradient(circle at 100% 0, rgba(211, 95, 53, 0.14), transparent 16rem),
-    rgba(255, 255, 255, 0.58);
-}
-
 .authCard h1,
 .cabinetHeader h1,
 .courseIntro h1,

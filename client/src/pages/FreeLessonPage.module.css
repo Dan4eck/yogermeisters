@@ -63,6 +63,69 @@
 
 .titleBlock { position: relative; z-index: 1; }
 
+.authPanel {
+  position: relative;
+  z-index: 1;
+  padding: clamp(28px, 3.4vw, 44px);
+  border: 1px solid rgba(211, 95, 53, 0.28);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(211, 95, 53, 0.14), transparent 17rem),
+    rgba(255, 255, 255, 0.58);
+  box-shadow: 0 24px 70px rgba(59, 46, 36, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.authEyebrow {
+  color: var(--free-accent);
+  font-family: var(--font-syne);
+  font-size: clamp(18px, 1.8vw, 25px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.authPanel h1 {
+  margin: 20px 0 0;
+  color: var(--free-ink);
+  font-family: var(--font-oswald);
+  font-size: clamp(31px, 3vw, 46px);
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.page .googleLoginButton {
+  display: flex;
+  width: 100%;
+  min-height: 54px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 28px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--free-ink);
+  color: #fff;
+  font-family: var(--font-sora);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.page .googleLoginButton:hover {
+  background: var(--free-accent);
+  transform: translateY(-2px);
+}
+
+.page .googleLoginButton svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
 .courseName,
 .afterHeading > span {
   color: var(--free-accent);
@@ -125,6 +188,61 @@
   height: 100%;
   object-fit: cover;
 }
+
+.lockedVideoFrame {
+  isolation: isolate;
+  border-color: rgba(255, 255, 255, 0.52);
+}
+
+.lockedPoster,
+.lockedVideoShade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lockedPoster {
+  z-index: -2;
+  object-fit: cover;
+  filter: saturate(0.78) contrast(0.94);
+}
+
+.lockedVideoShade {
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(17, 16, 15, 0.18), rgba(17, 16, 15, 0.64)),
+    radial-gradient(circle at center, transparent, rgba(17, 16, 15, 0.3));
+  backdrop-filter: blur(2px);
+}
+
+.lockedVideoMessage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 30px;
+  color: #fff;
+  font-family: var(--font-sora);
+  text-align: center;
+}
+
+.lockIcon {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+}
+
+.lockIcon svg { width: 23px; height: 23px; }
+.lockedVideoMessage strong { font-size: clamp(18px, 2vw, 25px); font-weight: 600; }
+.lockedVideoMessage > span:last-child { margin-top: 9px; color: rgba(255, 255, 255, 0.78); font-size: 12px; }
 
 .videoLoader {
   position: absolute;
@@ -253,6 +371,7 @@
 
 @media (max-width: 960px) {
   .lessonHero { grid-template-columns: 1fr; }
+  .lockedLessonHero { gap: 22px; }
   .videoFrame { min-height: 0; }
   .courseCta { grid-template-columns: 1fr; }
 }
@@ -262,6 +381,7 @@
   .topbar { align-items: flex-start; }
   .giftLabel { font-size: 9px; }
   .titleBlock h1 { font-size: clamp(42px, 11.8vw, 52px); }
+  .authPanel { padding: 28px 24px; border-radius: 16px; }
   .videoFrame { border-radius: 14px; }
   .benefitStrip { grid-template-columns: 1fr; }
   .benefitStrip > div { min-height: 96px; padding: 22px 8px; }
@@ -271,5 +391,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ctaLink { transition: none; }
+  .ctaLink,
+  .googleLoginButton { transition: none; }
 }

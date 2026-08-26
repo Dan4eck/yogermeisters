@@ -9,7 +9,6 @@ type CabinetCopy = {
   };
   readonly freeLessonLogin: {
     readonly title: string;
-    readonly description: string;
     readonly googleAction: string;
     readonly returnHome: string;
   };
@@ -58,8 +57,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
     },
     freeLessonLogin: {
       title: 'Sign in to get your free lesson',
-      description: 'Continue with Google and the full-body practice will open right away.',
-      googleAction: 'Get the free lesson with Google',
+      googleAction: 'Sign in with Google',
       returnHome: 'Back to home',
     },
     cabinet: {
@@ -105,8 +103,7 @@ export const cabinetCopy: Record<Language, CabinetCopy> = {
     },
     freeLessonLogin: {
       title: 'Авторизуйтесь, чтобы получить бесплатный урок',
-      description: 'Продолжите через Google — и полная практика на всё тело откроется сразу после авторизации.',
-      googleAction: 'Получить урок через Google',
+      googleAction: 'Войти через Google',
       returnHome: 'Вернуться на сайт',
     },
     cabinet: {
