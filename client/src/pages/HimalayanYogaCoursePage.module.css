@@ -366,8 +366,12 @@
 
 .tariffGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+  width: 100%;
+  max-width: 920px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .tariffCard {
@@ -377,54 +381,12 @@
   padding: clamp(26px, 3.6vw, 38px);
 }
 
-.featuredTariff {
-  border-color: rgba(211, 95, 53, 0.44);
-  background:
-    linear-gradient(145deg, rgba(255, 254, 252, 0.92), rgba(239, 211, 176, 0.58));
-  animation: featuredTariffPulse 3.6s ease-in-out infinite;
-}
-
-@keyframes featuredTariffPulse {
-  0%,
-  100% {
-    box-shadow: 0 24px 70px rgba(68, 59, 49, 0.1), 0 0 0 rgba(211, 95, 53, 0);
-    transform: translateY(0);
-  }
-
-  50% {
-    box-shadow: 0 30px 84px rgba(68, 59, 49, 0.14), 0 0 0 8px rgba(211, 95, 53, 0.08);
-    transform: translateY(-3px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .featuredTariff {
-    animation: none;
-  }
-}
-
 .tariffMeta {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  justify-content: space-between;
-}
-
-.presaleBadge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 0 12px;
-  border: 1px solid rgba(211, 95, 53, 0.42);
-  border-radius: 999px;
-  background: rgba(211, 95, 53, 0.08);
-  color: #d35f35;
-  text-transform: uppercase;
-  font-family: var(--font-sora);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  justify-content: flex-start;
 }
 
 .tariffCard h3 {
@@ -473,15 +435,6 @@
   font-family: var(--font-sora);
   font-size: 15px;
   line-height: 1.6;
-}
-
-.tariffNote {
-  margin: -8px 0 0;
-  color: #d35f35;
-  font-family: var(--font-sora);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
 }
 
 .tariffButton {

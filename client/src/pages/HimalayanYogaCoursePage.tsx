@@ -22,13 +22,10 @@ interface CourseModule {
 interface Tariff {
   readonly label: string;
   readonly title: string;
-  readonly badge: string;
   readonly originalPrice: string;
   readonly price: string;
   readonly description: string;
-  readonly note?: string;
   readonly features: readonly string[];
-  readonly isFeatured?: boolean;
 }
 
 const modules: readonly CourseModule[] = [
@@ -85,31 +82,18 @@ const tariffs: readonly Tariff[] = [
   {
     label: 'Запись',
     title: 'Курс в записи',
-    badge: 'Предпродажа',
-    originalPrice: '€69',
-    price: '€49',
+    originalPrice: '€79',
+    price: '€59',
     description: 'Самостоятельный доступ к программе курса в удобном темпе.',
     features: ['полная программа курса', 'практики на каждый день', 'медитации и йога-нидра'],
   },
   {
-    label: 'Поток',
-    title: 'Онлайн-поток',
-    badge: 'Предпродажа',
-    originalPrice: '€99',
-    price: '€79',
-    description: 'Групповое прохождение с поддержкой, чатом и комментариями от учителя.',
-    note: 'Старт потока - 24 июля.',
-    features: ['доступ к записям', 'Групповые онлайн практики + чат', 'комментарии от преподавателя'],
-    isFeatured: true,
-  },
-  {
     label: 'Лично',
     title: 'Индивидуальный',
-    badge: 'Предпродажа',
     originalPrice: '€200',
     price: '€180',
     description: 'Курс с двумя персональными практиками от преподавателя.',
-    features: ['всё из онлайн-потока', 'две индивидуальные практики', 'персональная корректировка фокуса'],
+    features: ['всё из курса в записи', 'две индивидуальные практики', 'персональная корректировка фокуса'],
   },
 ];
 
@@ -225,13 +209,9 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
 
           <div className={styles.tariffGrid}>
             {tariffs.map((tariff) => (
-              <article
-                className={`${styles.tariffCard}${tariff.isFeatured ? ` ${styles.featuredTariff}` : ''}`}
-                key={tariff.title}
-              >
+              <article className={styles.tariffCard} key={tariff.title}>
                 <div className={styles.tariffMeta}>
                   <span className={styles.tariffLabel}>{tariff.label}</span>
-                  <span className={styles.presaleBadge}>{tariff.badge}</span>
                 </div>
                 <h3>{tariff.title}</h3>
                 <div className={styles.priceStack}>
@@ -239,7 +219,6 @@ export default function HimalayanYogaCoursePage({ language, setLanguage }: Himal
                   <p className={styles.tariffPrice}>{tariff.price}</p>
                 </div>
                 <p className={styles.tariffDescription}>{tariff.description}</p>
-                {tariff.note ? <p className={styles.tariffNote}>{tariff.note}</p> : null}
                 <ul>
                   {tariff.features.map((feature) => (
                     <li key={feature}>
