@@ -6,8 +6,11 @@
   "scripts": {
     "dev:client": "vite dev --port 5000",
     "dev": "NODE_ENV=development tsx watch server/index.ts",
+    "dev:bot": "NODE_ENV=development tsx watch telegram-bot/index.ts",
     "build": "tsx script/build.ts",
+    "build:bot": "tsx script/build-bot.ts",
     "start": "NODE_ENV=production node dist/index.cjs",
+    "start:bot": "NODE_ENV=production node dist/telegram-bot.cjs",
     "check": "tsc",
     "test": "vitest run --config vitest.config.ts",
     "db:generate": "drizzle-kit generate",

@@ -1,10 +1,25 @@
-import { integer, jsonb, pgEnum, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core';
+import {
+  bigint,
+  index,
+  integer,
+  jsonb,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core';
 
 import type { RetreatEditableData } from '@shared/retreats';
 
 export const userRole = pgEnum('user_role', ['student', 'admin']);
 export const contentStatus = pgEnum('content_status', ['draft', 'published', 'archived']);
 export const accessStatus = pgEnum('access_status', ['active', 'revoked']);
+export const telegramSubscriberStatus = pgEnum('telegram_subscriber_status', ['active', 'blocked']);
+export const telegramDeliveryStatus = pgEnum('telegram_delivery_status', ['pending', 'sent', 'failed']);
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -85,3 +100,47 @@ export const retreats = pgTable('retreats', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+export const telegramSubscribers = pgTable(
+  'telegram_subscribers',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    telegramUserId: bigint('telegram_user_id', { mode: 'number' }).notNull().unique(),
+    chatId: bigint('chat_id', { mode: 'number' }).notNull().unique(),
+    username: varchar('username', { length: 255 }),
+    firstName: varchar('first_name', { length: 255 }).notNull(),
+    lastName: varchar('last_name', { length: 255 }),
+    languageCode: varchar('language_code', { length: 35 }),
+    firstStartPayload: varchar('first_start_payload', { length: 255 }),
+    latestStartPayload: varchar('latest_start_payload', { length: 255 }),
+    status: telegramSubscriberStatus('status').notNull().default('active'),
+    startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
+    lastInteractionAt: timestamp('last_interaction_at', { withTimezone: true }).notNull().defaultNow(),
+    blockedAt: timestamp('blocked_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index('telegram_subscribers_status_idx').on(table.status)],
+);
+
+export const telegramDeliveries = pgTable(
+  'telegram_deliveries',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    subscriberId: uuid('subscriber_id')
+      .notNull()
+      .references(() => telegramSubscribers.id, { onDelete: 'cascade' }),
+    contentKey: varchar('content_key', { length: 160 }).notNull(),
+    status: telegramDeliveryStatus('status').notNull().default('pending'),
+    attempts: integer('attempts').notNull().default(1),
+    telegramMessageId: bigint('telegram_message_id', { mode: 'number' }),
+    lastError: text('last_error'),
+    sentAt: timestamp('sent_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('telegram_deliveries_subscriber_content_unique').on(table.subscriberId, table.contentKey),
+    index('telegram_deliveries_status_idx').on(table.status),
+  ],
+);
