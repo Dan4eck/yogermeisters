@@ -19,7 +19,12 @@ export const userRole = pgEnum('user_role', ['student', 'admin']);
 export const contentStatus = pgEnum('content_status', ['draft', 'published', 'archived']);
 export const accessStatus = pgEnum('access_status', ['active', 'revoked']);
 export const telegramSubscriberStatus = pgEnum('telegram_subscriber_status', ['active', 'blocked']);
-export const telegramDeliveryStatus = pgEnum('telegram_delivery_status', ['pending', 'sent', 'failed']);
+export const telegramDeliveryStatus = pgEnum('telegram_delivery_status', [
+  'pending',
+  'processing',
+  'sent',
+  'failed',
+]);
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -135,6 +140,7 @@ export const telegramDeliveries = pgTable(
     attempts: integer('attempts').notNull().default(1),
     telegramMessageId: bigint('telegram_message_id', { mode: 'number' }),
     lastError: text('last_error'),
+    scheduledAt: timestamp('scheduled_at', { withTimezone: true }),
     sentAt: timestamp('sent_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
@@ -142,5 +148,6 @@ export const telegramDeliveries = pgTable(
   (table) => [
     uniqueIndex('telegram_deliveries_subscriber_content_unique').on(table.subscriberId, table.contentKey),
     index('telegram_deliveries_status_idx').on(table.status),
+    index('telegram_deliveries_schedule_idx').on(table.status, table.scheduledAt),
   ],
 );

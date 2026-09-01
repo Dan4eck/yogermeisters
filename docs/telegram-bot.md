@@ -7,9 +7,12 @@
 1. Пользователь открывает бота и нажимает Start.
 2. Telegram отправляет `/start` на защищённый webhook `POST /telegram/webhook`.
 3. Бот сохраняет Telegram user ID, chat ID, username, имя, язык и параметр источника из deep link.
-4. Бот резервирует выдачу `welcome_meditation_v1`, чтобы повторный webhook не отправил аудио дважды.
-5. Бот отправляет медитацию и сохраняет Telegram message ID и время успешной доставки.
-6. Если Telegram сообщает, что пользователь заблокировал бота, подписчик получает статус `blocked` и исключается из будущих рассылок.
+4. Бот резервирует постоянную выдачу `welcome_meditation_v1` для пользователя.
+5. Бот отправляет медитацию только при первом `/start` и сохраняет Telegram message ID и время успешной доставки.
+6. После успешной отправки бот создаёт в PostgreSQL отложенную доставку follow-up сообщения через 30 минут.
+7. Встроенный worker забирает наступившие доставки, отправляет сообщение и повторяет временно неудачные попытки.
+8. Все последующие `/start` не отправляют медитацию и не запускают follow-up повторно.
+9. Если Telegram сообщает, что пользователь заблокировал бота, подписчик получает статус `blocked` и исключается из будущих рассылок.
 
 Ссылки из разных источников могут выглядеть так:
 
@@ -57,6 +60,9 @@ TELEGRAM_WEBHOOK_URL=https://bot-service-domain.up.railway.app/telegram/webhook
 DATABASE_URL=reference-to-the-existing-postgresql-service
 MEDITATION_AUDIO_FILE_ID=telegram-file-id
 MEDITATION_CAPTION=Ваша медитация
+MEDITATION_FOLLOW_UP_DELAY_MINUTES=30
+MEDITATION_FOLLOW_UP_MESSAGE=Сообщение после практики
+TELEGRAM_WORKER_POLL_SECONDS=15
 TELEGRAM_TEST_MODE=false
 TELEGRAM_TEST_MESSAGE=Бот работает. Аудиозапись с медитацией будет добавлена немного позже.
 ```
@@ -75,6 +81,10 @@ openssl rand -hex 32
 
 Перед production-запуском с медитацией задайте `TELEGRAM_TEST_MODE=false` и добавьте аудио. Без аудио и без тестового режима
 сервис не запускается.
+
+Follow-up создаётся только после успешной отправки настоящего аудио. Расписание хранится в PostgreSQL и не теряется при
+перезапуске Railway. Worker проверяет очередь каждые `TELEGRAM_WORKER_POLL_SECONDS` секунд. Временные ошибки повторяются с
+увеличивающейся задержкой, максимум пять попыток.
 
 ## Настройка Railway
 

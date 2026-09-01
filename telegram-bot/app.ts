@@ -2,11 +2,9 @@ import { timingSafeEqual } from 'crypto';
 
 import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 
+import { FOLLOW_UP_CONTENT_KEY, MEDITATION_CONTENT_KEY, TEST_CONTENT_KEY } from './content';
 import { TelegramApiError } from './telegram-api';
 import type { TelegramClient, TelegramSubscriberRepository, TelegramUserProfile } from './types';
-
-const MEDITATION_CONTENT_KEY = 'welcome_meditation_v1';
-const TEST_CONTENT_KEY = 'welcome_test_v1';
 
 interface TelegramBotAppDependencies {
   readonly repository: TelegramSubscriberRepository;
@@ -15,6 +13,7 @@ interface TelegramBotAppDependencies {
   readonly meditationAudio?: string;
   readonly meditationCaption?: string;
   readonly testMessage: string;
+  readonly followUpDelayMs: number;
   readonly logError?: (message: string) => void;
 }
 
@@ -95,7 +94,17 @@ async function handleStart(
           dependencies.meditationCaption,
         )
       : await dependencies.telegramClient.sendMessage(profile.chatId, dependencies.testMessage);
-    await dependencies.repository.markDeliverySent(subscriber.id, contentKey, messageId);
+    if (dependencies.meditationAudio) {
+      await dependencies.repository.markMeditationSentAndScheduleFollowUp(
+        subscriber.id,
+        contentKey,
+        messageId,
+        FOLLOW_UP_CONTENT_KEY,
+        new Date(Date.now() + dependencies.followUpDelayMs),
+      );
+    } else {
+      await dependencies.repository.markDeliverySent(subscriber.id, contentKey, messageId);
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown Telegram delivery error';
     await dependencies.repository.markDeliveryFailed(subscriber.id, contentKey, message);
@@ -107,7 +116,9 @@ async function handleStart(
   }
 }
 
-function parseStartUpdate(update: TelegramUpdate): { profile: TelegramUserProfile; startPayload?: string } | undefined {
+function parseStartUpdate(
+  update: TelegramUpdate,
+): { updateId: number; profile: TelegramUserProfile; startPayload?: string } | undefined {
   const message = update.message;
   const text = typeof message?.text === 'string' ? message.text : undefined;
   const match = text?.match(/^\/start(?:@[A-Za-z0-9_]+)?(?:\s+([^\s]{1,255}))?\s*$/);
@@ -115,14 +126,16 @@ function parseStartUpdate(update: TelegramUpdate): { profile: TelegramUserProfil
     return undefined;
   }
 
+  const updateId = readSafeInteger(update.update_id);
   const telegramUserId = readSafeInteger(message.from?.id);
   const chatId = readSafeInteger(message.chat.id);
   const firstName = readRequiredString(message.from?.first_name);
-  if (telegramUserId === undefined || chatId === undefined || firstName === undefined) {
+  if (updateId === undefined || telegramUserId === undefined || chatId === undefined || firstName === undefined) {
     return undefined;
   }
 
   return {
+    updateId,
     profile: {
       telegramUserId,
       chatId,

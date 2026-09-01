@@ -7,8 +7,22 @@ export interface TelegramBotConfig {
   readonly meditationCaption?: string;
   readonly testMode: boolean;
   readonly testMessage: string;
+  readonly followUpMessage: string;
+  readonly followUpDelayMs: number;
+  readonly workerPollIntervalMs: number;
   readonly port: number;
 }
+
+const DEFAULT_FOLLOW_UP_MESSAGE = [
+  'После практики не спеши возвращаться к обычным делам. ' +
+    'Посиди ещё несколько минут в тишине.',
+  'И просто спроси себя: «Если моя жизнь действительно конечна, ' +
+    'что для меня сейчас самое важное?»',
+  'Не ищи правильный ответ. Просто побудь с этим вопросом.',
+  'Если еще не выполнил практику, найди удобное время и место ' +
+    'и включи запись. Эта медитация останется с тобой навсегда. ' +
+    'Старайся практиковать регулярно 🙏',
+].join('\n\n');
 
 export function readTelegramBotConfig(env: NodeJS.ProcessEnv = process.env): TelegramBotConfig {
   const token = requireValue(env.TELEGRAM_BOT_TOKEN, 'TELEGRAM_BOT_TOKEN');
@@ -35,7 +49,12 @@ export function readTelegramBotConfig(env: NodeJS.ProcessEnv = process.env): Tel
     testMode,
     testMessage:
       emptyToUndefined(env.TELEGRAM_TEST_MESSAGE) ||
-      'Бот работает. Аудиозапись с медитацией будет добавлена немного позже.',
+      'Бот работает. Аудиозапись с медитацией будет добавлена ' +
+        'немного позже.',
+    followUpMessage:
+      emptyToUndefined(env.MEDITATION_FOLLOW_UP_MESSAGE) || DEFAULT_FOLLOW_UP_MESSAGE,
+    followUpDelayMs: readPositiveInteger(env.MEDITATION_FOLLOW_UP_DELAY_MINUTES, 30) * 60_000,
+    workerPollIntervalMs: readPositiveInteger(env.TELEGRAM_WORKER_POLL_SECONDS, 15) * 1_000,
     port: readPort(env.PORT),
   };
 }
@@ -71,4 +90,12 @@ function readPort(value: string | undefined): number {
     throw new Error('PORT must be a valid TCP port');
   }
   return port;
+}
+
+function readPositiveInteger(value: string | undefined, fallback: number): number {
+  if (!value) {
+    return fallback;
+  }
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 }

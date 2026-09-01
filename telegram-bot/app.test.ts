@@ -13,7 +13,12 @@ function createDependencies(claimDelivery: DeliveryClaimResult = 'claimed'): {
       upsertFromStart: vi.fn().mockResolvedValue({ id: 'subscriber-id' }),
       claimDelivery: vi.fn().mockResolvedValue(claimDelivery),
       markDeliverySent: vi.fn().mockResolvedValue(undefined),
+      markMeditationSentAndScheduleFollowUp: vi.fn().mockResolvedValue(undefined),
       markDeliveryFailed: vi.fn().mockResolvedValue(undefined),
+      claimDueDeliveries: vi.fn().mockResolvedValue([]),
+      markScheduledDeliverySent: vi.fn().mockResolvedValue(undefined),
+      rescheduleDelivery: vi.fn().mockResolvedValue(undefined),
+      markScheduledDeliveryFailed: vi.fn().mockResolvedValue(undefined),
       markBlocked: vi.fn().mockResolvedValue(undefined),
     },
     telegramClient: {
@@ -48,6 +53,7 @@ describe('createTelegramBotApp', () => {
       webhookSecret: 'secret',
       meditationAudio: 'audio-file-id',
       testMessage: 'Тестовое сообщение',
+      followUpDelayMs: 30 * 60_000,
     });
 
     await request(app).post('/telegram/webhook').send(startUpdate).expect(401);
@@ -62,6 +68,7 @@ describe('createTelegramBotApp', () => {
       meditationAudio: 'audio-file-id',
       meditationCaption: 'Ваша медитация',
       testMessage: 'Тестовое сообщение',
+      followUpDelayMs: 30 * 60_000,
     });
 
     await request(app)
@@ -86,20 +93,23 @@ describe('createTelegramBotApp', () => {
       'audio-file-id',
       'Ваша медитация',
     );
-    expect(dependencies.repository.markDeliverySent).toHaveBeenCalledWith(
+    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).toHaveBeenCalledWith(
       'subscriber-id',
       'welcome_meditation_v1',
       456,
+      'meditation_follow_up_v1',
+      expect.any(Date),
     );
   });
 
-  it('does not send the meditation twice after it has already been delivered', async () => {
+  it('does not send the meditation twice for the same Telegram update', async () => {
     const dependencies = createDependencies('already_sent');
     const app = createTelegramBotApp({
       ...dependencies,
       webhookSecret: 'secret',
       meditationAudio: 'audio-file-id',
       testMessage: 'Тестовое сообщение',
+      followUpDelayMs: 30 * 60_000,
     });
 
     await request(app)
@@ -110,6 +120,45 @@ describe('createTelegramBotApp', () => {
 
     expect(dependencies.repository.upsertFromStart).toHaveBeenCalledOnce();
     expect(dependencies.telegramClient.sendAudio).not.toHaveBeenCalled();
+    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).not.toHaveBeenCalled();
+  });
+
+  it('does not restart the pipeline for a later start activation', async () => {
+    const dependencies = createDependencies();
+    vi.mocked(dependencies.repository.claimDelivery)
+      .mockResolvedValueOnce('claimed')
+      .mockResolvedValueOnce('already_sent');
+    const app = createTelegramBotApp({
+      ...dependencies,
+      webhookSecret: 'secret',
+      meditationAudio: 'audio-file-id',
+      testMessage: 'Тестовое сообщение',
+      followUpDelayMs: 30 * 60_000,
+    });
+
+    await request(app)
+      .post('/telegram/webhook')
+      .set('X-Telegram-Bot-Api-Secret-Token', 'secret')
+      .send(startUpdate)
+      .expect(204);
+    await request(app)
+      .post('/telegram/webhook')
+      .set('X-Telegram-Bot-Api-Secret-Token', 'secret')
+      .send({ ...startUpdate, update_id: 101 })
+      .expect(204);
+
+    expect(dependencies.repository.claimDelivery).toHaveBeenNthCalledWith(
+      1,
+      'subscriber-id',
+      'welcome_meditation_v1',
+    );
+    expect(dependencies.repository.claimDelivery).toHaveBeenNthCalledWith(
+      2,
+      'subscriber-id',
+      'welcome_meditation_v1',
+    );
+    expect(dependencies.telegramClient.sendAudio).toHaveBeenCalledOnce();
+    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).toHaveBeenCalledOnce();
   });
 
   it('ignores messages other than start', async () => {
@@ -119,6 +168,7 @@ describe('createTelegramBotApp', () => {
       webhookSecret: 'secret',
       meditationAudio: 'audio-file-id',
       testMessage: 'Тестовое сообщение',
+      followUpDelayMs: 30 * 60_000,
     });
 
     await request(app)
@@ -136,6 +186,7 @@ describe('createTelegramBotApp', () => {
       ...dependencies,
       webhookSecret: 'secret',
       testMessage: 'Тестовый бот работает',
+      followUpDelayMs: 30 * 60_000,
     });
 
     await request(app)
@@ -144,12 +195,16 @@ describe('createTelegramBotApp', () => {
       .send(startUpdate)
       .expect(204);
 
-    expect(dependencies.telegramClient.sendMessage).toHaveBeenCalledWith(123456789, 'Тестовый бот работает');
+    expect(dependencies.telegramClient.sendMessage).toHaveBeenCalledWith(
+      123456789,
+      'Тестовый бот работает',
+    );
     expect(dependencies.telegramClient.sendAudio).not.toHaveBeenCalled();
     expect(dependencies.repository.markDeliverySent).toHaveBeenCalledWith(
       'subscriber-id',
       'welcome_test_v1',
       789,
     );
+    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).not.toHaveBeenCalled();
   });
 });

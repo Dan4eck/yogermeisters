@@ -6,6 +6,7 @@ import { createTelegramBotApp } from './app';
 import { readTelegramBotConfig } from './config';
 import { DrizzleTelegramSubscriberRepository } from './repository';
 import { BotApiTelegramClient } from './telegram-api';
+import { startFollowUpWorker } from './worker';
 import { createDatabase } from '../server/db/client';
 
 function log(message: string, source = 'telegram-bot'): void {
@@ -30,9 +31,17 @@ async function startTelegramBot(): Promise<void> {
     meditationAudio: config.meditationAudio,
     meditationCaption: config.meditationCaption,
     testMessage: config.testMessage,
+    followUpDelayMs: config.followUpDelayMs,
     logError: (message) => log(message, 'error'),
   });
   const server = createServer(app);
+  const followUpWorker = startFollowUpWorker({
+    repository,
+    telegramClient,
+    message: config.followUpMessage,
+    pollIntervalMs: config.workerPollIntervalMs,
+    logError: (message) => log(message, 'follow-up-error'),
+  });
 
   server.on('clientError', (error, socket) => {
     log(`client error: ${error.message}`, 'http');
@@ -57,7 +66,10 @@ async function startTelegramBot(): Promise<void> {
 
   const shutdown = (): void => {
     server.close(() => {
-      void database.pool.end().finally(() => process.exit(0));
+      void followUpWorker
+        .stop()
+        .then(() => database.pool.end())
+        .finally(() => process.exit(0));
     });
   };
   process.once('SIGTERM', shutdown);

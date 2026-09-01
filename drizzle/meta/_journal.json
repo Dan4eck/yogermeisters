@@ -43,6 +43,20 @@
       "when": 1788187339935,
       "tag": "0005_mushy_wither",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788253906903,
+      "tag": "0006_silky_mongu",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1788254430647,
+      "tag": "0007_normalize_telegram_meditation_pipeline",
+      "breakpoints": true
     }
   ]
 }
