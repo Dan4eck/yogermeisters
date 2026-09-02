@@ -16,6 +16,16 @@ This document contains essential information for agentic coding assistants worki
 ### Testing
 No test framework is currently configured. When adding tests, use a common framework like Vitest and update this file.
 
+## Production Deployment Workflow
+
+- Deploy application code exclusively through GitHub: verify the change, commit it, and push the intended branch.
+- Railway must build and deploy the pushed GitHub commit through its GitHub integration. A deployment is complete only
+  after the Railway deployment is online and its source commit matches the pushed SHA.
+- Use Railway CLI for status, logs, health checks, and explicitly authorized infrastructure operations. Never upload
+  local source with `railway up` or use a local archive as the production deployment source.
+- If production was deployed from local source, reconcile it immediately by committing the exact source, pushing it to
+  GitHub, and waiting for the GitHub-triggered Railway deployment before making further application changes.
+
 ## Code Style Guidelines
 
 ### TypeScript Configuration
