@@ -12,7 +12,13 @@ export const DAY_ONE_REMINDER_CONTENT_KEY = 'meditation_day_one_reminder_v1';
 export const DAY_TWO_MESSAGE_CONTENT_KEY = 'meditation_day_two_message_v1';
 
 export const MEDITATION_AUDIO_TITLE = 'Медитация на непостоянство';
-export const MEDITATION_AUDIO_CAPTION = 'Ваша медитация';
+export const MEDITATION_AUDIO_CAPTION = [
+  'Ты здесь. Значит, тема непостоянства и смерти тебя чем-то задела.',
+  'Я подготовила для тебя медитацию на непостоянство и смерть. Она не о том, чтобы пугать себя смертью.',
+  'Она о том, чтобы посмотреть на конечность жизни прямо - и благодаря этому почувствовать её ценность. ' +
+    'Найди спокойное место, где тебя никто не будет отвлекать.',
+  'Если готов - начинай.',
+].join('\n\n');
 
 export const FOLLOW_UP_MESSAGE = [
   'После практики не спеши возвращаться к обычным делам. Посиди ещё несколько минут в тишине.',

@@ -6,6 +6,7 @@ import {
   DAY_ONE_MESSAGE_CONTENT_KEY,
   DAY_TWO_MESSAGE,
   DAY_TWO_MESSAGE_CONTENT_KEY,
+  MEDITATION_AUDIO_CAPTION,
 } from './content';
 import { createTelegramFunnel } from './funnel';
 import { TelegramApiError, TelegramTransportError } from './telegram-api';
@@ -52,6 +53,19 @@ function createPlan(): TelegramFunnelPlan {
 }
 
 describe('createTelegramFunnel', () => {
+  it('uses the complete introductory text as the audio caption', () => {
+    expect(MEDITATION_AUDIO_CAPTION).toBe(
+      [
+        'Ты здесь. Значит, тема непостоянства и смерти тебя чем-то задела.',
+        'Я подготовила для тебя медитацию на непостоянство и смерть. Она не о том, чтобы пугать себя смертью.',
+        'Она о том, чтобы посмотреть на конечность жизни прямо - и благодаря этому почувствовать её ценность. ' +
+          'Найди спокойное место, где тебя никто не будет отвлекать.',
+        'Если готов - начинай.',
+      ].join('\n\n'),
+    );
+    expect(MEDITATION_AUDIO_CAPTION.length).toBeLessThanOrEqual(1_024);
+  });
+
   it('defines all five funnel steps with fixed delays from start', () => {
     const plan = createPlan();
 
@@ -90,7 +104,7 @@ describe('createTelegramFunnel', () => {
     expect(dependencies.telegramClient.sendAudio).toHaveBeenCalledWith(
       123456789,
       'audio-file-id',
-      'Ваша медитация',
+      MEDITATION_AUDIO_CAPTION,
       'Медитация на непостоянство',
     );
     expect(dependencies.store.completeDelivery).toHaveBeenCalledWith(
