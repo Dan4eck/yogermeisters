@@ -2,18 +2,12 @@ import { timingSafeEqual } from 'crypto';
 
 import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 
-import { FOLLOW_UP_CONTENT_KEY, MEDITATION_CONTENT_KEY, TEST_CONTENT_KEY } from './content';
-import { TelegramApiError } from './telegram-api';
-import type { TelegramClient, TelegramSubscriberRepository, TelegramUserProfile } from './types';
+import type { TelegramFunnel, TelegramUserProfile } from './types';
 
 interface TelegramBotAppDependencies {
-  readonly repository: TelegramSubscriberRepository;
-  readonly telegramClient: TelegramClient;
+  readonly funnel: TelegramFunnel;
   readonly webhookSecret: string;
-  readonly meditationAudio?: string;
-  readonly meditationCaption?: string;
-  readonly testMessage: string;
-  readonly followUpDelayMs: number;
+  readonly notifyWork?: () => void;
   readonly logError?: (message: string) => void;
 }
 
@@ -54,7 +48,8 @@ export function createTelegramBotApp(dependencies: TelegramBotAppDependencies): 
     try {
       const start = parseStartUpdate(req.body as TelegramUpdate);
       if (start) {
-        await handleStart(start.profile, start.startPayload, dependencies);
+        await dependencies.funnel.acceptStart(start);
+        dependencies.notifyWork?.();
       }
       res.status(204).end();
     } catch (error) {
@@ -71,57 +66,12 @@ export function createTelegramBotApp(dependencies: TelegramBotAppDependencies): 
   return app;
 }
 
-async function handleStart(
-  profile: TelegramUserProfile,
-  startPayload: string | undefined,
-  dependencies: TelegramBotAppDependencies,
-): Promise<void> {
-  const subscriber = await dependencies.repository.upsertFromStart(profile, startPayload);
-  const contentKey = dependencies.meditationAudio ? MEDITATION_CONTENT_KEY : TEST_CONTENT_KEY;
-  const claim = await dependencies.repository.claimDelivery(subscriber.id, contentKey);
-  if (claim === 'already_sent') {
-    return;
-  }
-  if (claim === 'in_progress') {
-    throw new Error('Meditation delivery is already in progress');
-  }
-
-  try {
-    const messageId = dependencies.meditationAudio
-      ? await dependencies.telegramClient.sendAudio(
-          profile.chatId,
-          dependencies.meditationAudio,
-          dependencies.meditationCaption,
-        )
-      : await dependencies.telegramClient.sendMessage(profile.chatId, dependencies.testMessage);
-    if (dependencies.meditationAudio) {
-      await dependencies.repository.markMeditationSentAndScheduleFollowUp(
-        subscriber.id,
-        contentKey,
-        messageId,
-        FOLLOW_UP_CONTENT_KEY,
-        new Date(Date.now() + dependencies.followUpDelayMs),
-      );
-    } else {
-      await dependencies.repository.markDeliverySent(subscriber.id, contentKey, messageId);
-    }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown Telegram delivery error';
-    await dependencies.repository.markDeliveryFailed(subscriber.id, contentKey, message);
-    if (error instanceof TelegramApiError && (error.status === 403 || error.errorCode === 403)) {
-      await dependencies.repository.markBlocked(subscriber.id);
-      return;
-    }
-    throw error;
-  }
-}
-
 function parseStartUpdate(
   update: TelegramUpdate,
 ): { updateId: number; profile: TelegramUserProfile; startPayload?: string } | undefined {
   const message = update.message;
   const text = typeof message?.text === 'string' ? message.text : undefined;
-  const match = text?.match(/^\/start(?:@[A-Za-z0-9_]+)?(?:\s+([^\s]{1,255}))?\s*$/);
+  const match = text?.match(/^\/start(?:@[A-Za-z0-9_]+)?(?:\s+([A-Za-z0-9_-]{1,64}))?\s*$/);
   if (!match || message?.chat?.type !== 'private' || message.from?.is_bot === true) {
     return undefined;
   }

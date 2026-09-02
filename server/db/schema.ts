@@ -19,11 +19,13 @@ export const userRole = pgEnum('user_role', ['student', 'admin']);
 export const contentStatus = pgEnum('content_status', ['draft', 'published', 'archived']);
 export const accessStatus = pgEnum('access_status', ['active', 'revoked']);
 export const telegramSubscriberStatus = pgEnum('telegram_subscriber_status', ['active', 'blocked']);
+export const telegramFunnelStatus = pgEnum('telegram_funnel_status', ['active', 'completed', 'cancelled']);
 export const telegramDeliveryStatus = pgEnum('telegram_delivery_status', [
   'pending',
   'processing',
   'sent',
   'failed',
+  'ambiguous',
 ]);
 
 export const users = pgTable('users', {
@@ -128,26 +130,58 @@ export const telegramSubscribers = pgTable(
   (table) => [index('telegram_subscribers_status_idx').on(table.status)],
 );
 
-export const telegramDeliveries = pgTable(
-  'telegram_deliveries',
+export const telegramUpdates = pgTable('telegram_updates', {
+  updateId: bigint('update_id', { mode: 'number' }).primaryKey(),
+  receivedAt: timestamp('received_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const telegramFunnelEnrollments = pgTable(
+  'telegram_funnel_enrollments',
   {
     id: uuid('id').primaryKey().defaultRandom(),
     subscriberId: uuid('subscriber_id')
       .notNull()
       .references(() => telegramSubscribers.id, { onDelete: 'cascade' }),
+    funnelKey: varchar('funnel_key', { length: 160 }).notNull(),
+    funnelVersion: varchar('funnel_version', { length: 80 }).notNull(),
+    status: telegramFunnelStatus('status').notNull().default('active'),
+    startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('telegram_funnel_enrollments_subscriber_funnel_unique').on(
+      table.subscriberId,
+      table.funnelKey,
+      table.funnelVersion,
+    ),
+    index('telegram_funnel_enrollments_status_idx').on(table.status),
+  ],
+);
+
+export const telegramDeliveries = pgTable(
+  'telegram_deliveries',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    enrollmentId: uuid('enrollment_id')
+      .notNull()
+      .references(() => telegramFunnelEnrollments.id, { onDelete: 'cascade' }),
     contentKey: varchar('content_key', { length: 160 }).notNull(),
+    stepOrder: integer('step_order').notNull(),
     status: telegramDeliveryStatus('status').notNull().default('pending'),
-    attempts: integer('attempts').notNull().default(1),
+    attempts: integer('attempts').notNull().default(0),
     telegramMessageId: bigint('telegram_message_id', { mode: 'number' }),
     lastError: text('last_error'),
-    scheduledAt: timestamp('scheduled_at', { withTimezone: true }),
+    scheduledAt: timestamp('scheduled_at', { withTimezone: true }).notNull(),
     sentAt: timestamp('sent_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
-    uniqueIndex('telegram_deliveries_subscriber_content_unique').on(table.subscriberId, table.contentKey),
+    uniqueIndex('telegram_deliveries_enrollment_content_unique').on(table.enrollmentId, table.contentKey),
+    uniqueIndex('telegram_deliveries_enrollment_step_unique').on(table.enrollmentId, table.stepOrder),
     index('telegram_deliveries_status_idx').on(table.status),
-    index('telegram_deliveries_schedule_idx').on(table.status, table.scheduledAt),
+    index('telegram_deliveries_schedule_idx').on(table.status, table.contentKey, table.scheduledAt),
   ],
 );

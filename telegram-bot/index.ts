@@ -4,10 +4,14 @@ import { createServer } from 'http';
 
 import { createTelegramBotApp } from './app';
 import { readTelegramBotConfig } from './config';
-import { DrizzleTelegramSubscriberRepository } from './repository';
+import { createMeditationFunnelPlan } from './content';
+import { createTelegramFunnel } from './funnel';
+import { DrizzleTelegramFunnelStore } from './repository';
 import { BotApiTelegramClient } from './telegram-api';
-import { startFollowUpWorker } from './worker';
+import { startTelegramDeliveryWorker } from './worker';
 import { createDatabase } from '../server/db/client';
+
+const WORKER_POLL_INTERVAL_MS = 15_000;
 
 function log(message: string, source = 'telegram-bot'): void {
   const formattedTime = new Date().toLocaleTimeString('en-US', {
@@ -23,25 +27,26 @@ async function startTelegramBot(): Promise<void> {
   const config = readTelegramBotConfig();
   const database = createDatabase(config.databaseUrl);
   const telegramClient = new BotApiTelegramClient(config.token);
-  const repository = new DrizzleTelegramSubscriberRepository(database.db);
-  const app = createTelegramBotApp({
-    repository,
+  const store = new DrizzleTelegramFunnelStore(database.db);
+  const plan = createMeditationFunnelPlan(config.meditationAudio);
+  const funnel = createTelegramFunnel({
+    store,
     telegramClient,
+    plan,
+    logError: (message) => log(message, 'error'),
+  });
+  const deliveryWorker = startTelegramDeliveryWorker({
+    funnel,
+    pollIntervalMs: WORKER_POLL_INTERVAL_MS,
+    logError: (message) => log(message, 'delivery-error'),
+  });
+  const app = createTelegramBotApp({
+    funnel,
     webhookSecret: config.webhookSecret,
-    meditationAudio: config.meditationAudio,
-    meditationCaption: config.meditationCaption,
-    testMessage: config.testMessage,
-    followUpDelayMs: config.followUpDelayMs,
+    notifyWork: deliveryWorker.wake,
     logError: (message) => log(message, 'error'),
   });
   const server = createServer(app);
-  const followUpWorker = startFollowUpWorker({
-    repository,
-    telegramClient,
-    message: config.followUpMessage,
-    pollIntervalMs: config.workerPollIntervalMs,
-    logError: (message) => log(message, 'follow-up-error'),
-  });
 
   server.on('clientError', (error, socket) => {
     log(`client error: ${error.message}`, 'http');
@@ -64,13 +69,22 @@ async function startTelegramBot(): Promise<void> {
     log(`webhook registered at ${config.webhookUrl}`);
   }
 
+  let shuttingDown = false;
   const shutdown = (): void => {
-    server.close(() => {
-      void followUpWorker
-        .stop()
-        .then(() => database.pool.end())
-        .finally(() => process.exit(0));
-    });
+    if (shuttingDown) {
+      return;
+    }
+    shuttingDown = true;
+    const forceExit = setTimeout(() => process.exit(1), 15_000);
+    forceExit.unref();
+    const closeServer = new Promise<void>((resolve) => server.close(() => resolve()));
+    void Promise.all([closeServer, deliveryWorker.stop()])
+      .then(() => database.pool.end())
+      .then(() => process.exit(0))
+      .catch((error: unknown) => {
+        log(error instanceof Error ? error.message : 'Unknown shutdown error', 'shutdown-error');
+        process.exit(1);
+      });
   };
   process.once('SIGTERM', shutdown);
   process.once('SIGINT', shutdown);

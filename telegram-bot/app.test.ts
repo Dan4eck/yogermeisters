@@ -2,30 +2,12 @@ import request from 'supertest';
 import { describe, expect, it, vi } from 'vitest';
 
 import { createTelegramBotApp } from './app';
-import type { DeliveryClaimResult, TelegramClient, TelegramSubscriberRepository } from './types';
+import type { TelegramFunnel } from './types';
 
-function createDependencies(claimDelivery: DeliveryClaimResult = 'claimed'): {
-  readonly repository: TelegramSubscriberRepository;
-  readonly telegramClient: TelegramClient;
-} {
+function createFunnel(): TelegramFunnel {
   return {
-    repository: {
-      upsertFromStart: vi.fn().mockResolvedValue({ id: 'subscriber-id' }),
-      claimDelivery: vi.fn().mockResolvedValue(claimDelivery),
-      markDeliverySent: vi.fn().mockResolvedValue(undefined),
-      markMeditationSentAndScheduleFollowUp: vi.fn().mockResolvedValue(undefined),
-      markDeliveryFailed: vi.fn().mockResolvedValue(undefined),
-      claimDueDeliveries: vi.fn().mockResolvedValue([]),
-      markScheduledDeliverySent: vi.fn().mockResolvedValue(undefined),
-      rescheduleDelivery: vi.fn().mockResolvedValue(undefined),
-      markScheduledDeliveryFailed: vi.fn().mockResolvedValue(undefined),
-      markBlocked: vi.fn().mockResolvedValue(undefined),
-    },
-    telegramClient: {
-      sendAudio: vi.fn().mockResolvedValue(456),
-      sendMessage: vi.fn().mockResolvedValue(789),
-      setWebhook: vi.fn().mockResolvedValue(undefined),
-    },
+    acceptStart: vi.fn().mockResolvedValue(undefined),
+    runDueBatch: vi.fn().mockResolvedValue(0),
   };
 }
 
@@ -47,29 +29,18 @@ const startUpdate = {
 
 describe('createTelegramBotApp', () => {
   it('rejects requests without the Telegram webhook secret', async () => {
-    const dependencies = createDependencies();
-    const app = createTelegramBotApp({
-      ...dependencies,
-      webhookSecret: 'secret',
-      meditationAudio: 'audio-file-id',
-      testMessage: 'Тестовое сообщение',
-      followUpDelayMs: 30 * 60_000,
-    });
+    const funnel = createFunnel();
+    const app = createTelegramBotApp({ funnel, webhookSecret: 'secret' });
 
     await request(app).post('/telegram/webhook').send(startUpdate).expect(401);
-    expect(dependencies.repository.upsertFromStart).not.toHaveBeenCalled();
+
+    expect(funnel.acceptStart).not.toHaveBeenCalled();
   });
 
-  it('stores the subscriber and sends the meditation after start', async () => {
-    const dependencies = createDependencies();
-    const app = createTelegramBotApp({
-      ...dependencies,
-      webhookSecret: 'secret',
-      meditationAudio: 'audio-file-id',
-      meditationCaption: 'Ваша медитация',
-      testMessage: 'Тестовое сообщение',
-      followUpDelayMs: 30 * 60_000,
-    });
+  it('persists a start update and wakes the delivery worker', async () => {
+    const funnel = createFunnel();
+    const notifyWork = vi.fn();
+    const app = createTelegramBotApp({ funnel, webhookSecret: 'secret', notifyWork });
 
     await request(app)
       .post('/telegram/webhook')
@@ -77,8 +48,9 @@ describe('createTelegramBotApp', () => {
       .send(startUpdate)
       .expect(204);
 
-    expect(dependencies.repository.upsertFromStart).toHaveBeenCalledWith(
-      {
+    expect(funnel.acceptStart).toHaveBeenCalledWith({
+      updateId: 100,
+      profile: {
         telegramUserId: 123456789,
         chatId: 123456789,
         firstName: 'Анна',
@@ -86,90 +58,14 @@ describe('createTelegramBotApp', () => {
         username: 'anna_yoga',
         languageCode: 'ru',
       },
-      'instagram_reels_01',
-    );
-    expect(dependencies.telegramClient.sendAudio).toHaveBeenCalledWith(
-      123456789,
-      'audio-file-id',
-      'Ваша медитация',
-    );
-    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).toHaveBeenCalledWith(
-      'subscriber-id',
-      'welcome_meditation_v1',
-      456,
-      'meditation_follow_up_v1',
-      expect.any(Date),
-    );
-  });
-
-  it('does not send the meditation twice for the same Telegram update', async () => {
-    const dependencies = createDependencies('already_sent');
-    const app = createTelegramBotApp({
-      ...dependencies,
-      webhookSecret: 'secret',
-      meditationAudio: 'audio-file-id',
-      testMessage: 'Тестовое сообщение',
-      followUpDelayMs: 30 * 60_000,
+      startPayload: 'instagram_reels_01',
     });
-
-    await request(app)
-      .post('/telegram/webhook')
-      .set('X-Telegram-Bot-Api-Secret-Token', 'secret')
-      .send(startUpdate)
-      .expect(204);
-
-    expect(dependencies.repository.upsertFromStart).toHaveBeenCalledOnce();
-    expect(dependencies.telegramClient.sendAudio).not.toHaveBeenCalled();
-    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).not.toHaveBeenCalled();
-  });
-
-  it('does not restart the pipeline for a later start activation', async () => {
-    const dependencies = createDependencies();
-    vi.mocked(dependencies.repository.claimDelivery)
-      .mockResolvedValueOnce('claimed')
-      .mockResolvedValueOnce('already_sent');
-    const app = createTelegramBotApp({
-      ...dependencies,
-      webhookSecret: 'secret',
-      meditationAudio: 'audio-file-id',
-      testMessage: 'Тестовое сообщение',
-      followUpDelayMs: 30 * 60_000,
-    });
-
-    await request(app)
-      .post('/telegram/webhook')
-      .set('X-Telegram-Bot-Api-Secret-Token', 'secret')
-      .send(startUpdate)
-      .expect(204);
-    await request(app)
-      .post('/telegram/webhook')
-      .set('X-Telegram-Bot-Api-Secret-Token', 'secret')
-      .send({ ...startUpdate, update_id: 101 })
-      .expect(204);
-
-    expect(dependencies.repository.claimDelivery).toHaveBeenNthCalledWith(
-      1,
-      'subscriber-id',
-      'welcome_meditation_v1',
-    );
-    expect(dependencies.repository.claimDelivery).toHaveBeenNthCalledWith(
-      2,
-      'subscriber-id',
-      'welcome_meditation_v1',
-    );
-    expect(dependencies.telegramClient.sendAudio).toHaveBeenCalledOnce();
-    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).toHaveBeenCalledOnce();
+    expect(notifyWork).toHaveBeenCalledOnce();
   });
 
   it('ignores messages other than start', async () => {
-    const dependencies = createDependencies();
-    const app = createTelegramBotApp({
-      ...dependencies,
-      webhookSecret: 'secret',
-      meditationAudio: 'audio-file-id',
-      testMessage: 'Тестовое сообщение',
-      followUpDelayMs: 30 * 60_000,
-    });
+    const funnel = createFunnel();
+    const app = createTelegramBotApp({ funnel, webhookSecret: 'secret' });
 
     await request(app)
       .post('/telegram/webhook')
@@ -177,34 +73,19 @@ describe('createTelegramBotApp', () => {
       .send({ ...startUpdate, message: { ...startUpdate.message, text: 'Привет' } })
       .expect(204);
 
-    expect(dependencies.repository.upsertFromStart).not.toHaveBeenCalled();
+    expect(funnel.acceptStart).not.toHaveBeenCalled();
   });
 
-  it('sends a separate placeholder delivery in test mode', async () => {
-    const dependencies = createDependencies();
-    const app = createTelegramBotApp({
-      ...dependencies,
-      webhookSecret: 'secret',
-      testMessage: 'Тестовый бот работает',
-      followUpDelayMs: 30 * 60_000,
-    });
+  it('ignores invalid deep-link payloads', async () => {
+    const funnel = createFunnel();
+    const app = createTelegramBotApp({ funnel, webhookSecret: 'secret' });
 
     await request(app)
       .post('/telegram/webhook')
       .set('X-Telegram-Bot-Api-Secret-Token', 'secret')
-      .send(startUpdate)
+      .send({ ...startUpdate, message: { ...startUpdate.message, text: '/start invalid.payload' } })
       .expect(204);
 
-    expect(dependencies.telegramClient.sendMessage).toHaveBeenCalledWith(
-      123456789,
-      'Тестовый бот работает',
-    );
-    expect(dependencies.telegramClient.sendAudio).not.toHaveBeenCalled();
-    expect(dependencies.repository.markDeliverySent).toHaveBeenCalledWith(
-      'subscriber-id',
-      'welcome_test_v1',
-      789,
-    );
-    expect(dependencies.repository.markMeditationSentAndScheduleFollowUp).not.toHaveBeenCalled();
+    expect(funnel.acceptStart).not.toHaveBeenCalled();
   });
 });

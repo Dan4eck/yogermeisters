@@ -57,6 +57,27 @@
       "when": 1788254430647,
       "tag": "0007_normalize_telegram_meditation_pipeline",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1788278627825,
+      "tag": "0008_lush_toad_men",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1788279033349,
+      "tag": "0009_concerned_goliath",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1788318002000,
+      "tag": "0010_schedule_existing_funnel_steps",
+      "breakpoints": true
     }
   ]
 }

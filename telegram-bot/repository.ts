@@ -1,177 +1,177 @@
-import { and, asc, eq, inArray, lt, lte, or, sql } from 'drizzle-orm';
+import { and, asc, eq, inArray, lt, lte, ne, notExists, sql } from 'drizzle-orm';
+import { alias } from 'drizzle-orm/pg-core';
 
-import { telegramDeliveries, telegramSubscribers } from '../server/db/schema';
 import type { Database } from '../server/db/client';
-import { FOLLOW_UP_CONTENT_KEY } from './content';
+import {
+  telegramDeliveries,
+  telegramFunnelEnrollments,
+  telegramSubscribers,
+  telegramUpdates,
+} from '../server/db/schema';
 import type {
-  DeliveryClaimResult,
+  DeliveryCompletion,
   ScheduledTelegramDelivery,
-  TelegramSubscriberRecord,
-  TelegramSubscriberRepository,
-  TelegramUserProfile,
+  TelegramFunnelPlan,
+  TelegramFunnelStore,
+  TelegramStartInput,
 } from './types';
 
-export class DrizzleTelegramSubscriberRepository implements TelegramSubscriberRepository {
+const PROCESSING_LEASE_MS = 5 * 60_000;
+const priorTelegramDelivery = alias(telegramDeliveries, 'prior_telegram_delivery');
+
+export class DrizzleTelegramFunnelStore implements TelegramFunnelStore {
   constructor(private readonly database: Database) {}
 
-  async upsertFromStart(profile: TelegramUserProfile, startPayload?: string): Promise<TelegramSubscriberRecord> {
-    const now = new Date();
-    const [subscriber] = await this.database
-      .insert(telegramSubscribers)
-      .values({
-        telegramUserId: profile.telegramUserId,
-        chatId: profile.chatId,
-        username: profile.username,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        languageCode: profile.languageCode,
-        firstStartPayload: startPayload,
-        latestStartPayload: startPayload,
-        status: 'active',
-        lastInteractionAt: now,
-        updatedAt: now,
-      })
-      .onConflictDoUpdate({
-        target: telegramSubscribers.telegramUserId,
-        set: {
-          chatId: profile.chatId,
-          username: profile.username,
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          languageCode: profile.languageCode,
-          latestStartPayload: startPayload,
+  async enrollFromStart(
+    input: TelegramStartInput,
+    plan: TelegramFunnelPlan,
+  ): Promise<'enrolled' | 'duplicate_update'> {
+    return this.database.transaction(async (transaction) => {
+      const acceptedUpdate = await transaction
+        .insert(telegramUpdates)
+        .values({ updateId: input.updateId })
+        .onConflictDoNothing()
+        .returning({ updateId: telegramUpdates.updateId });
+      if (acceptedUpdate.length === 0) {
+        return 'duplicate_update';
+      }
+
+      const now = new Date();
+      const [subscriber] = await transaction
+        .insert(telegramSubscribers)
+        .values({
+          telegramUserId: input.profile.telegramUserId,
+          chatId: input.profile.chatId,
+          username: input.profile.username,
+          firstName: input.profile.firstName,
+          lastName: input.profile.lastName,
+          languageCode: input.profile.languageCode,
+          firstStartPayload: input.startPayload,
+          latestStartPayload: input.startPayload,
           status: 'active',
           lastInteractionAt: now,
-          blockedAt: null,
           updatedAt: now,
-        },
-      })
-      .returning({ id: telegramSubscribers.id });
-
-    return subscriber;
-  }
-
-  async claimDelivery(subscriberId: string, contentKey: string): Promise<DeliveryClaimResult> {
-    const inserted = await this.database
-      .insert(telegramDeliveries)
-      .values({ subscriberId, contentKey })
-      .onConflictDoNothing()
-      .returning({ id: telegramDeliveries.id });
-    if (inserted.length > 0) {
-      return 'claimed';
-    }
-
-    const retryBefore = new Date(Date.now() - 60_000);
-    const retried = await this.database
-      .update(telegramDeliveries)
-      .set({
-        status: 'pending',
-        attempts: sql`${telegramDeliveries.attempts} + 1`,
-        lastError: null,
-        updatedAt: new Date(),
-      })
-      .where(
-        and(
-          eq(telegramDeliveries.subscriberId, subscriberId),
-          eq(telegramDeliveries.contentKey, contentKey),
-          or(
-            eq(telegramDeliveries.status, 'failed'),
-            and(eq(telegramDeliveries.status, 'pending'), lt(telegramDeliveries.updatedAt, retryBefore)),
-          ),
-        ),
-      )
-      .returning({ id: telegramDeliveries.id });
-    if (retried.length > 0) {
-      return 'claimed';
-    }
-
-    const [delivery] = await this.database
-      .select({ status: telegramDeliveries.status })
-      .from(telegramDeliveries)
-      .where(and(eq(telegramDeliveries.subscriberId, subscriberId), eq(telegramDeliveries.contentKey, contentKey)))
-      .limit(1);
-    return delivery?.status === 'sent' ? 'already_sent' : 'in_progress';
-  }
-
-  async markDeliverySent(subscriberId: string, contentKey: string, telegramMessageId: number): Promise<void> {
-    await this.database
-      .update(telegramDeliveries)
-      .set({
-        status: 'sent',
-        telegramMessageId,
-        sentAt: new Date(),
-        lastError: null,
-        updatedAt: new Date(),
-      })
-      .where(and(eq(telegramDeliveries.subscriberId, subscriberId), eq(telegramDeliveries.contentKey, contentKey)));
-  }
-
-  async markMeditationSentAndScheduleFollowUp(
-    subscriberId: string,
-    meditationContentKey: string,
-    telegramMessageId: number,
-    followUpContentKey: string,
-    scheduledAt: Date,
-  ): Promise<void> {
-    await this.database.transaction(async (transaction) => {
-      await transaction
-        .update(telegramDeliveries)
-        .set({
-          status: 'sent',
-          telegramMessageId,
-          sentAt: new Date(),
-          lastError: null,
-          updatedAt: new Date(),
         })
-        .where(
-          and(
-            eq(telegramDeliveries.subscriberId, subscriberId),
-            eq(telegramDeliveries.contentKey, meditationContentKey),
-          ),
-        );
-      await transaction
-        .insert(telegramDeliveries)
+        .onConflictDoUpdate({
+          target: telegramSubscribers.telegramUserId,
+          set: {
+            chatId: input.profile.chatId,
+            username: input.profile.username,
+            firstName: input.profile.firstName,
+            lastName: input.profile.lastName,
+            languageCode: input.profile.languageCode,
+            latestStartPayload: input.startPayload,
+            status: 'active',
+            lastInteractionAt: now,
+            blockedAt: null,
+            updatedAt: now,
+          },
+        })
+        .returning({ id: telegramSubscribers.id });
+
+      const [newEnrollment] = await transaction
+        .insert(telegramFunnelEnrollments)
         .values({
-          subscriberId,
-          contentKey: followUpContentKey,
-          status: 'pending',
-          attempts: 0,
-          scheduledAt,
+          subscriberId: subscriber.id,
+          funnelKey: plan.key,
+          funnelVersion: plan.version,
+          startedAt: now,
         })
-        .onConflictDoNothing();
+        .onConflictDoNothing()
+        .returning({
+          id: telegramFunnelEnrollments.id,
+          startedAt: telegramFunnelEnrollments.startedAt,
+        });
+
+      if (newEnrollment) {
+        await transaction
+          .insert(telegramDeliveries)
+          .values(
+            plan.steps.map((step, stepOrder) => ({
+              enrollmentId: newEnrollment.id,
+              contentKey: step.contentKey,
+              stepOrder,
+              scheduledAt: new Date(newEnrollment.startedAt.getTime() + step.delayMs),
+            })),
+          );
+      }
+
+      return 'enrolled';
     });
   }
 
-  async markDeliveryFailed(subscriberId: string, contentKey: string, errorMessage: string): Promise<void> {
-    await this.database
-      .update(telegramDeliveries)
-      .set({ status: 'failed', lastError: errorMessage.slice(0, 2_000), updatedAt: new Date() })
-      .where(and(eq(telegramDeliveries.subscriberId, subscriberId), eq(telegramDeliveries.contentKey, contentKey)));
-  }
+  async claimDueDeliveries(
+    plan: TelegramFunnelPlan,
+    limit: number,
+  ): Promise<readonly ScheduledTelegramDelivery[]> {
+    const contentKeys = plan.steps.map((step) => step.contentKey);
+    if (contentKeys.length === 0) {
+      return [];
+    }
 
-  async claimDueDeliveries(limit: number): Promise<readonly ScheduledTelegramDelivery[]> {
     return this.database.transaction(async (transaction) => {
-      const retryBefore = new Date(Date.now() - 5 * 60_000);
+      const now = new Date();
+      const retryBefore = new Date(now.getTime() - PROCESSING_LEASE_MS);
+      const planEnrollmentIds = transaction
+        .select({ id: telegramFunnelEnrollments.id })
+        .from(telegramFunnelEnrollments)
+        .where(
+          and(
+            eq(telegramFunnelEnrollments.funnelKey, plan.key),
+            eq(telegramFunnelEnrollments.funnelVersion, plan.version),
+          ),
+        );
       await transaction
         .update(telegramDeliveries)
-        .set({ status: 'pending', updatedAt: new Date() })
-        .where(and(eq(telegramDeliveries.status, 'processing'), lt(telegramDeliveries.updatedAt, retryBefore)));
+        .set({
+          status: 'ambiguous',
+          lastError: 'Delivery worker stopped while Telegram request may have been in flight',
+          updatedAt: now,
+        })
+        .where(
+          and(
+            eq(telegramDeliveries.status, 'processing'),
+            inArray(telegramDeliveries.enrollmentId, planEnrollmentIds),
+            inArray(telegramDeliveries.contentKey, [...contentKeys]),
+            lt(telegramDeliveries.updatedAt, retryBefore),
+          ),
+        );
 
       const deliveries = await transaction
         .select({
           id: telegramDeliveries.id,
-          subscriberId: telegramDeliveries.subscriberId,
+          subscriberId: telegramFunnelEnrollments.subscriberId,
           chatId: telegramSubscribers.chatId,
+          contentKey: telegramDeliveries.contentKey,
           attempts: telegramDeliveries.attempts,
         })
         .from(telegramDeliveries)
-        .innerJoin(telegramSubscribers, eq(telegramSubscribers.id, telegramDeliveries.subscriberId))
+        .innerJoin(
+          telegramFunnelEnrollments,
+          eq(telegramFunnelEnrollments.id, telegramDeliveries.enrollmentId),
+        )
+        .innerJoin(telegramSubscribers, eq(telegramSubscribers.id, telegramFunnelEnrollments.subscriberId))
         .where(
           and(
             eq(telegramDeliveries.status, 'pending'),
-            eq(telegramDeliveries.contentKey, FOLLOW_UP_CONTENT_KEY),
-            lte(telegramDeliveries.scheduledAt, new Date()),
+            inArray(telegramDeliveries.contentKey, [...contentKeys]),
+            lte(telegramDeliveries.scheduledAt, now),
+            eq(telegramFunnelEnrollments.funnelKey, plan.key),
+            eq(telegramFunnelEnrollments.funnelVersion, plan.version),
+            eq(telegramFunnelEnrollments.status, 'active'),
             eq(telegramSubscribers.status, 'active'),
+            notExists(
+              transaction
+                .select({ id: priorTelegramDelivery.id })
+                .from(priorTelegramDelivery)
+                .where(
+                  and(
+                    eq(priorTelegramDelivery.enrollmentId, telegramDeliveries.enrollmentId),
+                    lt(priorTelegramDelivery.stepOrder, telegramDeliveries.stepOrder),
+                    ne(priorTelegramDelivery.status, 'sent'),
+                  ),
+                ),
+            ),
           ),
         )
         .orderBy(asc(telegramDeliveries.scheduledAt))
@@ -186,7 +186,7 @@ export class DrizzleTelegramSubscriberRepository implements TelegramSubscriberRe
         .set({
           status: 'processing',
           attempts: sql`${telegramDeliveries.attempts} + 1`,
-          updatedAt: new Date(),
+          updatedAt: now,
         })
         .where(inArray(telegramDeliveries.id, deliveries.map((delivery) => delivery.id)));
 
@@ -194,42 +194,70 @@ export class DrizzleTelegramSubscriberRepository implements TelegramSubscriberRe
     });
   }
 
-  async markScheduledDeliverySent(deliveryId: string, telegramMessageId: number): Promise<void> {
-    await this.database
-      .update(telegramDeliveries)
-      .set({
-        status: 'sent',
-        telegramMessageId,
-        sentAt: new Date(),
-        lastError: null,
-        updatedAt: new Date(),
-      })
-      .where(eq(telegramDeliveries.id, deliveryId));
-  }
+  async completeDelivery(
+    deliveryId: string,
+    subscriberId: string,
+    completion: DeliveryCompletion,
+  ): Promise<void> {
+    await this.database.transaction(async (transaction) => {
+      const now = new Date();
+      const errorMessage = 'errorMessage' in completion ? completion.errorMessage.slice(0, 2_000) : null;
+      const values =
+        completion.status === 'sent'
+          ? {
+              status: 'sent' as const,
+              telegramMessageId: completion.telegramMessageId,
+              sentAt: now,
+              lastError: null,
+              updatedAt: now,
+            }
+          : completion.status === 'retry'
+            ? {
+                status: 'pending' as const,
+                scheduledAt: completion.scheduledAt,
+                lastError: errorMessage,
+                updatedAt: now,
+              }
+            : {
+                status: completion.status,
+                lastError: errorMessage,
+                updatedAt: now,
+              };
 
-  async rescheduleDelivery(deliveryId: string, errorMessage: string, scheduledAt: Date): Promise<void> {
-    await this.database
-      .update(telegramDeliveries)
-      .set({
-        status: 'pending',
-        scheduledAt,
-        lastError: errorMessage.slice(0, 2_000),
-        updatedAt: new Date(),
-      })
-      .where(eq(telegramDeliveries.id, deliveryId));
-  }
+      const [delivery] = await transaction
+        .update(telegramDeliveries)
+        .set(values)
+        .where(and(eq(telegramDeliveries.id, deliveryId), eq(telegramDeliveries.status, 'processing')))
+        .returning({ enrollmentId: telegramDeliveries.enrollmentId });
+      if (!delivery) {
+        throw new Error(`Telegram delivery ${deliveryId} is no longer processing`);
+      }
 
-  async markScheduledDeliveryFailed(deliveryId: string, errorMessage: string): Promise<void> {
-    await this.database
-      .update(telegramDeliveries)
-      .set({ status: 'failed', lastError: errorMessage.slice(0, 2_000), updatedAt: new Date() })
-      .where(eq(telegramDeliveries.id, deliveryId));
-  }
+      if (completion.status === 'failed' && completion.blockSubscriber) {
+        await transaction
+          .update(telegramSubscribers)
+          .set({ status: 'blocked', blockedAt: now, updatedAt: now })
+          .where(eq(telegramSubscribers.id, subscriberId));
+      }
 
-  async markBlocked(subscriberId: string): Promise<void> {
-    await this.database
-      .update(telegramSubscribers)
-      .set({ status: 'blocked', blockedAt: new Date(), updatedAt: new Date() })
-      .where(eq(telegramSubscribers.id, subscriberId));
+      if (completion.status === 'sent') {
+        const [unfinishedDelivery] = await transaction
+          .select({ id: telegramDeliveries.id })
+          .from(telegramDeliveries)
+          .where(
+            and(
+              eq(telegramDeliveries.enrollmentId, delivery.enrollmentId),
+              ne(telegramDeliveries.status, 'sent'),
+            ),
+          )
+          .limit(1);
+        if (!unfinishedDelivery) {
+          await transaction
+            .update(telegramFunnelEnrollments)
+            .set({ status: 'completed', completedAt: now, updatedAt: now })
+            .where(eq(telegramFunnelEnrollments.id, delivery.enrollmentId));
+        }
+      }
+    });
   }
 }

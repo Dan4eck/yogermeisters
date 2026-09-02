@@ -7,40 +7,80 @@ export interface TelegramUserProfile {
   readonly languageCode?: string;
 }
 
-export interface TelegramSubscriberRecord {
-  readonly id: string;
+export interface TelegramStartInput {
+  readonly updateId: number;
+  readonly profile: TelegramUserProfile;
+  readonly startPayload?: string;
 }
 
-export type DeliveryClaimResult = 'claimed' | 'already_sent' | 'in_progress';
+export interface TelegramInlineButton {
+  readonly text: string;
+  readonly url: string;
+}
+
+export type TelegramDeliveryContent =
+  | {
+      readonly type: 'audio';
+      readonly audio: string;
+      readonly caption?: string;
+      readonly title?: string;
+    }
+  | {
+      readonly type: 'text';
+      readonly text: string;
+      readonly buttons?: readonly (readonly TelegramInlineButton[])[];
+    };
+
+export interface TelegramFunnelStep {
+  readonly contentKey: string;
+  readonly delayMs: number;
+  readonly content: TelegramDeliveryContent;
+}
+
+export interface TelegramFunnelPlan {
+  readonly key: string;
+  readonly version: string;
+  readonly steps: readonly TelegramFunnelStep[];
+}
 
 export interface ScheduledTelegramDelivery {
   readonly id: string;
   readonly subscriberId: string;
   readonly chatId: number;
+  readonly contentKey: string;
   readonly attempts: number;
 }
 
-export interface TelegramSubscriberRepository {
-  upsertFromStart(profile: TelegramUserProfile, startPayload?: string): Promise<TelegramSubscriberRecord>;
-  claimDelivery(subscriberId: string, contentKey: string): Promise<DeliveryClaimResult>;
-  markDeliverySent(subscriberId: string, contentKey: string, telegramMessageId: number): Promise<void>;
-  markMeditationSentAndScheduleFollowUp(
+export type DeliveryCompletion =
+  | { readonly status: 'sent'; readonly telegramMessageId: number }
+  | { readonly status: 'retry'; readonly errorMessage: string; readonly scheduledAt: Date }
+  | { readonly status: 'failed'; readonly errorMessage: string; readonly blockSubscriber?: boolean }
+  | { readonly status: 'ambiguous'; readonly errorMessage: string };
+
+export interface TelegramFunnelStore {
+  enrollFromStart(input: TelegramStartInput, plan: TelegramFunnelPlan): Promise<'enrolled' | 'duplicate_update'>;
+  claimDueDeliveries(
+    plan: TelegramFunnelPlan,
+    limit: number,
+  ): Promise<readonly ScheduledTelegramDelivery[]>;
+  completeDelivery(
+    deliveryId: string,
     subscriberId: string,
-    meditationContentKey: string,
-    telegramMessageId: number,
-    followUpContentKey: string,
-    scheduledAt: Date,
+    completion: DeliveryCompletion,
   ): Promise<void>;
-  markDeliveryFailed(subscriberId: string, contentKey: string, errorMessage: string): Promise<void>;
-  claimDueDeliveries(limit: number): Promise<readonly ScheduledTelegramDelivery[]>;
-  markScheduledDeliverySent(deliveryId: string, telegramMessageId: number): Promise<void>;
-  rescheduleDelivery(deliveryId: string, errorMessage: string, scheduledAt: Date): Promise<void>;
-  markScheduledDeliveryFailed(deliveryId: string, errorMessage: string): Promise<void>;
-  markBlocked(subscriberId: string): Promise<void>;
+}
+
+export interface TelegramFunnel {
+  acceptStart(input: TelegramStartInput): Promise<void>;
+  runDueBatch(): Promise<number>;
 }
 
 export interface TelegramClient {
-  sendAudio(chatId: number, audio: string, caption?: string): Promise<number>;
-  sendMessage(chatId: number, text: string): Promise<number>;
+  sendAudio(chatId: number, audio: string, caption?: string, title?: string): Promise<number>;
+  sendMessage(
+    chatId: number,
+    text: string,
+    buttons?: readonly (readonly TelegramInlineButton[])[],
+  ): Promise<number>;
   setWebhook(url: string, secretToken: string): Promise<void>;
 }

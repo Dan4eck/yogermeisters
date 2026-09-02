@@ -1,46 +1,65 @@
-import { TelegramApiError } from './telegram-api';
-import type { ScheduledTelegramDelivery, TelegramClient, TelegramSubscriberRepository } from './types';
+import type { TelegramFunnel } from './types';
 
-const MAX_DELIVERY_ATTEMPTS = 5;
-const DELIVERY_BATCH_SIZE = 25;
-
-interface FollowUpWorkerDependencies {
-  readonly repository: TelegramSubscriberRepository;
-  readonly telegramClient: TelegramClient;
-  readonly message: string;
+interface TelegramDeliveryWorkerDependencies {
+  readonly funnel: TelegramFunnel;
   readonly pollIntervalMs: number;
   readonly logError?: (message: string) => void;
 }
 
-export interface FollowUpWorker {
+export interface TelegramDeliveryWorker {
+  wake(): void;
   stop(): Promise<void>;
 }
 
-export function startFollowUpWorker(dependencies: FollowUpWorkerDependencies): FollowUpWorker {
+export function startTelegramDeliveryWorker(
+  dependencies: TelegramDeliveryWorkerDependencies,
+): TelegramDeliveryWorker {
   let stopped = false;
+  let running = false;
+  let runRequested = false;
   let timer: NodeJS.Timeout | undefined;
   let currentRun = Promise.resolve();
 
-  const scheduleNextRun = (): void => {
+  const schedulePoll = (): void => {
     if (stopped) {
       return;
     }
-    timer = setTimeout(() => {
-      currentRun = runFollowUpBatch(dependencies)
-        .catch((error: unknown) => {
-          dependencies.logError?.(error instanceof Error ? error.message : 'Unknown follow-up worker error');
-        })
-        .finally(scheduleNextRun);
-    }, dependencies.pollIntervalMs);
+    timer = setTimeout(requestRun, dependencies.pollIntervalMs);
   };
 
-  currentRun = runFollowUpBatch(dependencies)
-    .catch((error: unknown) => {
-      dependencies.logError?.(error instanceof Error ? error.message : 'Unknown follow-up worker error');
-    })
-    .finally(scheduleNextRun);
+  const drain = async (): Promise<void> => {
+    running = true;
+    try {
+      while (runRequested && !stopped) {
+        runRequested = false;
+        while (!stopped && (await dependencies.funnel.runDueBatch()) > 0) {}
+      }
+    } catch (error) {
+      dependencies.logError?.(error instanceof Error ? error.message : 'Unknown Telegram delivery worker error');
+    } finally {
+      running = false;
+      schedulePoll();
+    }
+  };
+
+  function requestRun(): void {
+    if (stopped) {
+      return;
+    }
+    runRequested = true;
+    if (timer) {
+      clearTimeout(timer);
+      timer = undefined;
+    }
+    if (!running) {
+      currentRun = drain();
+    }
+  }
+
+  requestRun();
 
   return {
+    wake: requestRun,
     async stop(): Promise<void> {
       stopped = true;
       if (timer) {
@@ -49,36 +68,4 @@ export function startFollowUpWorker(dependencies: FollowUpWorkerDependencies): F
       await currentRun;
     },
   };
-}
-
-export async function runFollowUpBatch(dependencies: FollowUpWorkerDependencies): Promise<void> {
-  const deliveries = await dependencies.repository.claimDueDeliveries(DELIVERY_BATCH_SIZE);
-  await Promise.all(deliveries.map((delivery) => deliverFollowUp(delivery, dependencies)));
-}
-
-async function deliverFollowUp(
-  delivery: ScheduledTelegramDelivery,
-  dependencies: FollowUpWorkerDependencies,
-): Promise<void> {
-  try {
-    const messageId = await dependencies.telegramClient.sendMessage(delivery.chatId, dependencies.message);
-    await dependencies.repository.markScheduledDeliverySent(delivery.id, messageId);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown follow-up delivery error';
-    if (error instanceof TelegramApiError && (error.status === 403 || error.errorCode === 403)) {
-      await dependencies.repository.markBlocked(delivery.subscriberId);
-      await dependencies.repository.markScheduledDeliveryFailed(delivery.id, message);
-      return;
-    }
-    if (delivery.attempts >= MAX_DELIVERY_ATTEMPTS) {
-      await dependencies.repository.markScheduledDeliveryFailed(delivery.id, message);
-      return;
-    }
-    const retryDelayMinutes = Math.min(5 * 2 ** (delivery.attempts - 1), 30);
-    await dependencies.repository.rescheduleDelivery(
-      delivery.id,
-      message,
-      new Date(Date.now() + retryDelayMinutes * 60_000),
-    );
-  }
 }
