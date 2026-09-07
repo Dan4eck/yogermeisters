@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { createTelegramBotApp } from './app';
 import { readTelegramBotConfig } from './config';
 import { createMeditationFunnelPlan } from './content';
+import { createPracticeRouter } from './practice-funnel';
 import { createTelegramFunnel } from './funnel';
 import { DrizzleTelegramFunnelStore } from './repository';
 import { BotApiTelegramClient } from './telegram-api';
@@ -29,10 +30,13 @@ async function startTelegramBot(): Promise<void> {
   const telegramClient = new BotApiTelegramClient(config.token);
   const store = new DrizzleTelegramFunnelStore(database.db);
   const plan = createMeditationFunnelPlan(config.meditationAudio);
-  const funnel = createTelegramFunnel({
+  const legacyFunnel = createTelegramFunnel({
     store,
     telegramClient,
     plan,
+    logError: (message) => log(message, 'error'),
+  });
+  const funnel = createPracticeRouter({ legacyFunnel, store, telegramClient, media: config.practiceMedia,
     logError: (message) => log(message, 'error'),
   });
   const deliveryWorker = startTelegramDeliveryWorker({

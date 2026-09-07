@@ -2,7 +2,7 @@ import { timingSafeEqual } from 'crypto';
 
 import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 
-import type { TelegramFunnel, TelegramUserProfile } from './types';
+import type { TelegramCallbackInput, TelegramFunnel, TelegramUserProfile } from './types';
 
 interface TelegramBotAppDependencies {
   readonly funnel: TelegramFunnel;
@@ -13,6 +13,12 @@ interface TelegramBotAppDependencies {
 
 interface TelegramUpdate {
   readonly update_id?: unknown;
+  readonly callback_query?: {
+    readonly id?: unknown;
+    readonly data?: unknown;
+    readonly from?: { readonly id?: unknown; readonly is_bot?: unknown };
+    readonly message?: { readonly chat?: { readonly id?: unknown; readonly type?: unknown } };
+  };
   readonly message?: {
     readonly text?: unknown;
     readonly chat?: {
@@ -49,6 +55,11 @@ export function createTelegramBotApp(dependencies: TelegramBotAppDependencies): 
       const start = parseStartUpdate(req.body as TelegramUpdate);
       if (start) {
         await dependencies.funnel.acceptStart(start);
+        dependencies.notifyWork?.();
+      }
+      const callback = parseCallbackUpdate(req.body as TelegramUpdate);
+      if (callback && dependencies.funnel.acceptCallback) {
+        await dependencies.funnel.acceptCallback(callback);
         dependencies.notifyWork?.();
       }
       res.status(204).end();
@@ -117,4 +128,16 @@ function readRequiredString(value: unknown): string | undefined {
 
 function readOptionalString(value: unknown): string | undefined {
   return typeof value === 'string' && value.length > 0 ? value.slice(0, 255) : undefined;
+}
+
+function parseCallbackUpdate(update: TelegramUpdate): TelegramCallbackInput | undefined {
+  const callback = update.callback_query;
+  if (!callback || callback.from?.is_bot === true || callback.message?.chat?.type !== 'private') return undefined;
+  const updateId = readSafeInteger(update.update_id);
+  const telegramUserId = readSafeInteger(callback.from?.id);
+  const chatId = readSafeInteger(callback.message.chat.id);
+  if (updateId === undefined || telegramUserId === undefined || chatId === undefined ||
+    typeof callback.id !== 'string' || !callback.id || typeof callback.data !== 'string' ||
+    Buffer.byteLength(callback.data, 'utf8') > 64) return undefined;
+  return { updateId, telegramUserId, chatId, callbackId: callback.id, data: callback.data };
 }

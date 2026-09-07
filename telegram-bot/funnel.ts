@@ -57,6 +57,11 @@ export function createTelegramFunnel(dependencies: TelegramFunnelDependencies): 
     },
   };
 
+  async function sendVideo(chatId: number, video: string): Promise<number> {
+    if (!dependencies.telegramClient.sendVideo) throw new Error('Telegram video client is unavailable');
+    return dependencies.telegramClient.sendVideo(chatId, video);
+  }
+
   async function deliver(delivery: ScheduledTelegramDelivery): Promise<void> {
     const content = contentByKey.get(delivery.contentKey);
     if (!content) {
@@ -70,7 +75,9 @@ export function createTelegramFunnel(dependencies: TelegramFunnelDependencies): 
     let telegramMessageId: number;
     try {
       telegramMessageId =
-        content.type === 'audio'
+        content.type === 'video'
+          ? await sendVideo(delivery.chatId, content.video)
+          : content.type === 'audio'
           ? await dependencies.telegramClient.sendAudio(
               delivery.chatId,
               content.audio,

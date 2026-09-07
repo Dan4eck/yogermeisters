@@ -13,12 +13,28 @@ export interface TelegramStartInput {
   readonly startPayload?: string;
 }
 
-export interface TelegramInlineButton {
-  readonly text: string;
-  readonly url: string;
+export type TelegramInlineButton = { readonly text: string } & (
+  | { readonly url: string; readonly callback_data?: never }
+  | { readonly callback_data: string; readonly url?: never }
+);
+
+export interface PracticeConversation {
+  readonly step: 'intro' | 'state' | 'experience' | 'recommendation' | 'interest';
+  readonly state?: number;
+  readonly experience?: number;
+  readonly interest?: 'practice' | 'travel';
+}
+
+export interface TelegramCallbackInput {
+  readonly updateId: number;
+  readonly callbackId: string;
+  readonly telegramUserId: number;
+  readonly chatId: number;
+  readonly data: string;
 }
 
 export type TelegramDeliveryContent =
+  | { readonly type: 'video'; readonly video: string }
   | {
       readonly type: 'audio';
       readonly audio: string;
@@ -41,6 +57,8 @@ export interface TelegramFunnelPlan {
   readonly key: string;
   readonly version: string;
   readonly steps: readonly TelegramFunnelStep[];
+  readonly initialContentKeys?: readonly string[];
+  readonly initialConversation?: PracticeConversation;
 }
 
 export interface ScheduledTelegramDelivery {
@@ -72,10 +90,13 @@ export interface TelegramFunnelStore {
 
 export interface TelegramFunnel {
   acceptStart(input: TelegramStartInput): Promise<void>;
+  acceptCallback?(input: TelegramCallbackInput): Promise<void>;
   runDueBatch(): Promise<number>;
 }
 
 export interface TelegramClient {
+  sendVideo?(chatId: number, video: string): Promise<number>;
+  answerCallbackQuery?(callbackId: string): Promise<void>;
   sendAudio(chatId: number, audio: string, caption?: string, title?: string): Promise<number>;
   sendMessage(
     chatId: number,

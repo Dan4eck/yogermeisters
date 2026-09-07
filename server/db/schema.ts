@@ -14,6 +14,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import type { RetreatEditableData } from '@shared/retreats';
+import type { PracticeConversation } from '../../telegram-bot/types';
 
 export const userRole = pgEnum('user_role', ['student', 'admin']);
 export const contentStatus = pgEnum('content_status', ['draft', 'published', 'archived']);
@@ -144,6 +145,7 @@ export const telegramFunnelEnrollments = pgTable(
       .references(() => telegramSubscribers.id, { onDelete: 'cascade' }),
     funnelKey: varchar('funnel_key', { length: 160 }).notNull(),
     funnelVersion: varchar('funnel_version', { length: 80 }).notNull(),
+    conversationState: jsonb('conversation_state').$type<PracticeConversation>(),
     status: telegramFunnelStatus('status').notNull().default('active'),
     startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
     completedAt: timestamp('completed_at', { withTimezone: true }),
