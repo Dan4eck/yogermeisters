@@ -5,6 +5,7 @@ export interface TelegramBotConfig {
   readonly databaseUrl: string;
   readonly meditationAudio: string;
   readonly port: number;
+  readonly practiceMedia: { readonly yogaVideo?: string; readonly nidraAudio?: string };
 }
 
 export function readTelegramBotConfig(env: NodeJS.ProcessEnv = process.env): TelegramBotConfig {
@@ -32,6 +33,10 @@ export function readTelegramBotConfig(env: NodeJS.ProcessEnv = process.env): Tel
     webhookUrl: readOptionalUrl(env.TELEGRAM_WEBHOOK_URL),
     databaseUrl,
     meditationAudio,
+    practiceMedia: {
+      yogaVideo: readPracticeMedia(env, 'PERSONAL_PRACTICE_YOGA_VIDEO'),
+      nidraAudio: readPracticeMedia(env, 'PERSONAL_PRACTICE_NIDRA_AUDIO'),
+    },
     port: readPort(env.PORT),
   };
 }
@@ -68,4 +73,12 @@ function readPort(value: string | undefined): number {
     throw new Error('PORT must be a valid TCP port');
   }
   return port;
+}
+
+function readPracticeMedia(env: NodeJS.ProcessEnv, prefix: string): string | undefined {
+  const fileId = emptyToUndefined(env[`${prefix}_FILE_ID`]);
+  const url = emptyToUndefined(env[`${prefix}_URL`]);
+  if (fileId && url) throw new Error(`Set only one of ${prefix}_FILE_ID or ${prefix}_URL`);
+  if (url && new URL(url).protocol !== 'https:') throw new Error(`${prefix}_URL must use HTTPS`);
+  return fileId ?? url;
 }

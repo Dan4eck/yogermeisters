@@ -89,3 +89,28 @@ describe('createTelegramBotApp', () => {
     expect(funnel.acceptStart).not.toHaveBeenCalled();
   });
 });
+
+it('accepts private callback queries and ignores group or invalid callbacks', async () => {
+  const funnel = { ...createFunnel(), acceptCallback: vi.fn().mockResolvedValue(undefined) };
+  const notifyWork = vi.fn();
+  const app = createTelegramBotApp({ funnel, webhookSecret: 'secret', notifyWork });
+  const callback = {
+    id: 'callback-1', data: 'pp1:state:2', from: { id: 123, is_bot: false },
+    message: { chat: { id: 123, type: 'private' } },
+  };
+  await request(app).post('/telegram/webhook').set('X-Telegram-Bot-Api-Secret-Token', 'secret')
+    .send({ update_id: 101, callback_query: callback }).expect(204);
+  expect(funnel.acceptCallback).toHaveBeenCalledWith({
+    updateId: 101, callbackId: 'callback-1', telegramUserId: 123, chatId: 123, data: 'pp1:state:2',
+  });
+  for (const invalid of [
+    { ...callback, message: { chat: { id: 123, type: 'group' } } },
+    { ...callback, from: { id: 123, is_bot: true } },
+    { ...callback, data: 'a'.repeat(65) },
+  ]) {
+    await request(app).post('/telegram/webhook').set('X-Telegram-Bot-Api-Secret-Token', 'secret')
+      .send({ update_id: 102, callback_query: invalid }).expect(204);
+  }
+  expect(funnel.acceptCallback).toHaveBeenCalledOnce();
+  expect(notifyWork).toHaveBeenCalledOnce();
+});

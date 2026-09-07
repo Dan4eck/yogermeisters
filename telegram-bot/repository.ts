@@ -1,4 +1,4 @@
-import { and, asc, eq, inArray, lt, lte, ne, notExists, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, lt, lte, ne, notExists, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 
 import type { Database } from '../server/db/client';
@@ -10,6 +10,8 @@ import {
 } from '../server/db/schema';
 import type {
   DeliveryCompletion,
+  PracticeConversation,
+  TelegramCallbackInput,
   ScheduledTelegramDelivery,
   TelegramFunnelPlan,
   TelegramFunnelStore,
@@ -75,6 +77,7 @@ export class DrizzleTelegramFunnelStore implements TelegramFunnelStore {
           subscriberId: subscriber.id,
           funnelKey: plan.key,
           funnelVersion: plan.version,
+          conversationState: plan.initialConversation,
           startedAt: now,
         })
         .onConflictDoNothing()
@@ -87,7 +90,9 @@ export class DrizzleTelegramFunnelStore implements TelegramFunnelStore {
         await transaction
           .insert(telegramDeliveries)
           .values(
-            plan.steps.map((step, stepOrder) => ({
+            plan.steps
+              .filter((step) => !plan.initialContentKeys || plan.initialContentKeys.includes(step.contentKey))
+              .map((step, stepOrder) => ({
               enrollmentId: newEnrollment.id,
               contentKey: step.contentKey,
               stepOrder,
@@ -97,6 +102,54 @@ export class DrizzleTelegramFunnelStore implements TelegramFunnelStore {
       }
 
       return 'enrolled';
+    });
+  }
+
+  async acceptPracticeCallback(
+    input: TelegramCallbackInput,
+    plan: TelegramFunnelPlan,
+    transition: (state: PracticeConversation) => { conversation: PracticeConversation; contentKeys: readonly string[] } | undefined,
+  ): Promise<void> {
+    await this.database.transaction(async (transaction) => {
+      const accepted = await transaction.insert(telegramUpdates).values({ updateId: input.updateId })
+        .onConflictDoNothing().returning();
+      if (accepted.length === 0) return;
+      const [enrollment] = await transaction.select({
+        id: telegramFunnelEnrollments.id,
+        conversation: telegramFunnelEnrollments.conversationState,
+        subscriberId: telegramSubscribers.id,
+      }).from(telegramFunnelEnrollments)
+        .innerJoin(telegramSubscribers, eq(telegramSubscribers.id, telegramFunnelEnrollments.subscriberId))
+        .where(and(
+          eq(telegramSubscribers.telegramUserId, input.telegramUserId),
+          eq(telegramSubscribers.chatId, input.chatId),
+          eq(telegramSubscribers.status, 'active'),
+          eq(telegramFunnelEnrollments.funnelKey, plan.key),
+          eq(telegramFunnelEnrollments.funnelVersion, plan.version),
+          eq(telegramFunnelEnrollments.status, 'active'),
+        )).for('update', { of: telegramFunnelEnrollments });
+      if (!enrollment?.conversation) return;
+      const next = transition(enrollment.conversation);
+      if (!next) return;
+      const now = new Date();
+      await transaction.update(telegramFunnelEnrollments)
+        .set({ conversationState: next.conversation, updatedAt: now })
+        .where(eq(telegramFunnelEnrollments.id, enrollment.id));
+      await transaction.update(telegramSubscribers).set({ lastInteractionAt: now, updatedAt: now })
+        .where(eq(telegramSubscribers.id, enrollment.subscriberId));
+      const existing = await transaction.select({ contentKey: telegramDeliveries.contentKey, stepOrder: telegramDeliveries.stepOrder })
+        .from(telegramDeliveries).where(eq(telegramDeliveries.enrollmentId, enrollment.id))
+        .orderBy(desc(telegramDeliveries.stepOrder));
+      const freshKeys = next.contentKeys.filter((key) => !existing.some((item) => item.contentKey === key));
+      if (freshKeys.some((key) => !plan.steps.some((step) => step.contentKey === key))) {
+        throw new Error('Unknown practice content key');
+      }
+      if (freshKeys.length > 0) {
+        await transaction.insert(telegramDeliveries).values(freshKeys.map((contentKey, index) => ({
+          enrollmentId: enrollment.id, contentKey,
+          stepOrder: (existing[0]?.stepOrder ?? -1) + index + 1, scheduledAt: now,
+        })));
+      }
     });
   }
 
@@ -251,7 +304,9 @@ export class DrizzleTelegramFunnelStore implements TelegramFunnelStore {
             ),
           )
           .limit(1);
-        if (!unfinishedDelivery) {
+        const [enrollment] = await transaction.select({ conversation: telegramFunnelEnrollments.conversationState })
+          .from(telegramFunnelEnrollments).where(eq(telegramFunnelEnrollments.id, delivery.enrollmentId));
+        if (!unfinishedDelivery && !enrollment?.conversation) {
           await transaction
             .update(telegramFunnelEnrollments)
             .set({ status: 'completed', completedAt: now, updatedAt: now })

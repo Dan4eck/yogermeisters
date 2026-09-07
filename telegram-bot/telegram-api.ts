@@ -43,6 +43,15 @@ export class BotApiTelegramClient implements TelegramClient {
     this.apiUrl = `https://api.telegram.org/bot${token}`;
   }
 
+  async sendVideo(chatId: number, video: string): Promise<number> {
+    const result = await this.call<TelegramMessageResult>('sendVideo', { chat_id: chatId, video });
+    return result.message_id;
+  }
+
+  async answerCallbackQuery(callbackId: string): Promise<void> {
+    await this.call<boolean>('answerCallbackQuery', { callback_query_id: callbackId });
+  }
+
   async sendAudio(chatId: number, audio: string, caption?: string, title?: string): Promise<number> {
     const result = await this.call<TelegramMessageResult>('sendAudio', {
       chat_id: chatId,
@@ -70,7 +79,7 @@ export class BotApiTelegramClient implements TelegramClient {
     await this.call<boolean>('setWebhook', {
       url,
       secret_token: secretToken,
-      allowed_updates: ['message'],
+      allowed_updates: ['message', 'callback_query'],
       drop_pending_updates: false,
     });
   }
