@@ -1,8 +1,13 @@
 .page {
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
 }
 
 .main {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: 124px clamp(24px, 5vw, 76px) 76px;
 }
 
@@ -32,6 +37,8 @@
   grid-template-columns: minmax(0, 0.78fr) minmax(420px, 1fr);
   gap: clamp(28px, 5vw, 72px);
   align-items: center;
+  width: 100%;
+  min-width: 0;
   max-width: 1180px;
   margin: 0 auto;
 }
@@ -39,6 +46,7 @@
 .heroCopy {
   display: grid;
   align-content: center;
+  min-width: 0;
 }
 
 .meta {
@@ -152,8 +160,15 @@
 .content {
   display: grid;
   gap: 28px;
+  width: 100%;
+  min-width: 0;
   max-width: 860px;
   margin: clamp(52px, 7vw, 92px) auto 0;
+}
+
+.content > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .content > p {
@@ -162,6 +177,7 @@
   font-size: clamp(17px, 1.28vw, 21px);
   font-weight: 500;
   line-height: 1.78;
+  overflow-wrap: break-word;
 }
 
 .content > h2,
@@ -173,6 +189,7 @@
   line-height: 0.94;
   letter-spacing: 0;
   text-transform: uppercase;
+  overflow-wrap: break-word;
 }
 
 .imageBlock {

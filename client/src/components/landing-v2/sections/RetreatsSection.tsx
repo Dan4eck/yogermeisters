@@ -61,11 +61,11 @@ const retreatSlots: readonly RetreatSlot[] = [
     fallback: {
       en: {
         title: 'Cirali Yoga Tour',
-        text: '10 - 16 October • Cirali, Lycian Coast, Turkey • €750',
+        text: '10 - 16 October • Cirali, Lycian Coast, Turkey • €790',
       },
       ru: {
         title: 'Чиралы Йога Тур',
-        text: '10 - 16 октября • Чиралы, Ликийское побережье, Турция • €750',
+        text: '10 - 16 октября • Чиралы, Ликийское побережье, Турция • €790',
       },
     },
   },

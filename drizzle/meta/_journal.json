@@ -92,6 +92,13 @@
       "when": 1788847201234,
       "tag": "0012_neat_zarda",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1788847465000,
+      "tag": "0013_remove_expired_cirali_promo",
+      "breakpoints": true
     }
   ]
 }
