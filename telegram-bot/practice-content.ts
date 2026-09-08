@@ -159,8 +159,9 @@ export const PRACTICE_FOLLOW_UP = [
 
 export const PRACTICE_YOGA_CAPTION = [
   'Вот, держи твоё видео. Желаю тебе глубокой практики.',
-  'Если готова пойти дальше, нажми кнопку ниже.',
-].join(' ');
+  `🧘 Открыть урок: ${YOGA_LESSON_URL}`,
+  'Когда закончишь, нажми кнопку ниже — я расскажу, куда можно двигаться дальше.',
+].join('\n\n');
 
 export const PRACTICE_NIDRA_CAPTION = [
   'Вот, держи твою запись. Желаю тебе глубокой практики.',
@@ -208,10 +209,7 @@ export function createPracticeFunnelPlan(media: PracticeMedia): TelegramFunnelPl
       { contentKey: 'pp_yoga', delayMs: 0, content: {
         type: 'text',
         text: PRACTICE_YOGA_CAPTION,
-        buttons: [
-          [{ text: '🧘 Перейти к уроку', url: YOGA_LESSON_URL }],
-          [{ text: 'Хочу практиковать', callback_data: 'pp1:continue' }],
-        ],
+        buttons: button('Хочу практиковать', 'continue'),
       } },
       ...(media.nidraAudio ? [{ contentKey: 'pp_nidra', delayMs: 0,
         content: {
@@ -235,11 +233,21 @@ export function createPracticeFunnelPlan(media: PracticeMedia): TelegramFunnelPl
         ],
       } },
       { contentKey: 'pp_destination_practice', delayMs: 0, content: {
-        type: 'text', text: 'Познакомиться с моим онлайн-курсом The Yoga Method можно на сайте. 🌿',
+        type: 'text', text: [
+          'The Yoga Method — это онлайн-курс для самостоятельной, регулярной практики дома. 🌿',
+          'Внутри — полноценные занятия йогой, короткие практики на каждый день, дыхательные техники, медитации и йога-нидра. '
+            + 'Материалы помогают мягко развивать силу, гибкость и внимание к себе в удобном темпе.',
+          'Познакомиться с программой и выбрать формат можно на сайте.',
+        ].join('\n\n'),
         buttons: [[{ text: '🧘 The Yoga Method', url: 'https://yogermeisters.com/the-yoga-method' }]],
       } },
       { contentKey: 'pp_destination_travel', delayMs: 0, content: {
-        type: 'text', text: 'О нашем путешествии в Чиралы можно узнать на сайте. 🌊',
+        type: 'text', text: [
+          'Йога-ретрит в Чиралы — это неделя у моря среди гор, где есть время замедлиться, побыть в хорошей компании и вернуться к себе. 🌊',
+          'В программе — ежедневные практики йоги и медитации, прогулки, море, поездки к красивым местам и пространство для отдыха без привычной суеты. '
+            + 'Мы живём в Чиралы, рядом с природой, и проживаем это путешествие вместе.',
+          'Все детали путешествия — на сайте.',
+        ].join('\n\n'),
         buttons: [[{ text: '🌊 Путешествие в Чиралы', url: 'https://yogermeisters.com/retreats/cirali-yoga-tour' }]],
       } },
     ],
