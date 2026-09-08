@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import {
   bigint,
   index,
@@ -153,11 +154,9 @@ export const telegramFunnelEnrollments = pgTable(
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
-    uniqueIndex('telegram_funnel_enrollments_subscriber_funnel_unique').on(
-      table.subscriberId,
-      table.funnelKey,
-      table.funnelVersion,
-    ),
+    uniqueIndex('telegram_funnel_enrollments_subscriber_funnel_active_unique')
+      .on(table.subscriberId, table.funnelKey, table.funnelVersion)
+      .where(sql`${table.status} = 'active'`),
     index('telegram_funnel_enrollments_status_idx').on(table.status),
   ],
 );

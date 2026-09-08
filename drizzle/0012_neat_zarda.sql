@@ -1,0 +1,2 @@
+DROP INDEX "telegram_funnel_enrollments_subscriber_funnel_unique";--> statement-breakpoint
+CREATE UNIQUE INDEX "telegram_funnel_enrollments_subscriber_funnel_active_unique" ON "telegram_funnel_enrollments" USING btree ("subscriber_id","funnel_key","funnel_version") WHERE "telegram_funnel_enrollments"."status" = 'active';

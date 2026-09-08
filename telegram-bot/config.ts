@@ -5,7 +5,7 @@ export interface TelegramBotConfig {
   readonly databaseUrl: string;
   readonly meditationAudio: string;
   readonly port: number;
-  readonly practiceMedia: { readonly yogaVideo?: string; readonly nidraAudio?: string };
+  readonly practiceMedia: { readonly nidraAudio?: string };
 }
 
 export function readTelegramBotConfig(env: NodeJS.ProcessEnv = process.env): TelegramBotConfig {
@@ -34,7 +34,6 @@ export function readTelegramBotConfig(env: NodeJS.ProcessEnv = process.env): Tel
     databaseUrl,
     meditationAudio,
     practiceMedia: {
-      yogaVideo: readPracticeMedia(env, 'PERSONAL_PRACTICE_YOGA_VIDEO'),
       nidraAudio: readPracticeMedia(env, 'PERSONAL_PRACTICE_NIDRA_AUDIO'),
     },
     port: readPort(env.PORT),
