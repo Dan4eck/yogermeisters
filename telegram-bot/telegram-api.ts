@@ -43,8 +43,18 @@ export class BotApiTelegramClient implements TelegramClient {
     this.apiUrl = `https://api.telegram.org/bot${token}`;
   }
 
-  async sendVideo(chatId: number, video: string): Promise<number> {
-    const result = await this.call<TelegramMessageResult>('sendVideo', { chat_id: chatId, video });
+  async sendVideo(
+    chatId: number,
+    video: string,
+    caption?: string,
+    buttons?: readonly (readonly TelegramInlineButton[])[],
+  ): Promise<number> {
+    const result = await this.call<TelegramMessageResult>('sendVideo', {
+      chat_id: chatId,
+      video,
+      caption,
+      ...(buttons ? { reply_markup: { inline_keyboard: buttons } } : {}),
+    });
     return result.message_id;
   }
 
@@ -52,12 +62,19 @@ export class BotApiTelegramClient implements TelegramClient {
     await this.call<boolean>('answerCallbackQuery', { callback_query_id: callbackId });
   }
 
-  async sendAudio(chatId: number, audio: string, caption?: string, title?: string): Promise<number> {
+  async sendAudio(
+    chatId: number,
+    audio: string,
+    caption?: string,
+    title?: string,
+    buttons?: readonly (readonly TelegramInlineButton[])[],
+  ): Promise<number> {
     const result = await this.call<TelegramMessageResult>('sendAudio', {
       chat_id: chatId,
       audio,
       caption,
       title,
+      ...(buttons ? { reply_markup: { inline_keyboard: buttons } } : {}),
     });
     return result.message_id;
   }

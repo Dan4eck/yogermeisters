@@ -106,6 +106,7 @@ describe('createTelegramFunnel', () => {
       'audio-file-id',
       MEDITATION_AUDIO_CAPTION,
       'Медитация на непостоянство',
+      undefined,
     );
     expect(dependencies.store.completeDelivery).toHaveBeenCalledWith(
       'delivery-id',

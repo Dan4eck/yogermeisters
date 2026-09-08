@@ -71,6 +71,31 @@ export class DrizzleTelegramFunnelStore implements TelegramFunnelStore {
         })
         .returning({ id: telegramSubscribers.id });
 
+      if (plan.restartOnStart) {
+        await transaction
+          .update(telegramFunnelEnrollments)
+          .set({ status: 'cancelled', updatedAt: now })
+          .where(and(
+            eq(telegramFunnelEnrollments.subscriberId, subscriber.id),
+            eq(telegramFunnelEnrollments.funnelKey, plan.key),
+            eq(telegramFunnelEnrollments.funnelVersion, plan.version),
+            eq(telegramFunnelEnrollments.status, 'active'),
+          ));
+      } else {
+        const [existingEnrollment] = await transaction
+          .select({ id: telegramFunnelEnrollments.id })
+          .from(telegramFunnelEnrollments)
+          .where(and(
+            eq(telegramFunnelEnrollments.subscriberId, subscriber.id),
+            eq(telegramFunnelEnrollments.funnelKey, plan.key),
+            eq(telegramFunnelEnrollments.funnelVersion, plan.version),
+          ))
+          .limit(1);
+        if (existingEnrollment) {
+          return 'enrolled';
+        }
+      }
+
       const [newEnrollment] = await transaction
         .insert(telegramFunnelEnrollments)
         .values({
@@ -80,7 +105,6 @@ export class DrizzleTelegramFunnelStore implements TelegramFunnelStore {
           conversationState: plan.initialConversation,
           startedAt: now,
         })
-        .onConflictDoNothing()
         .returning({
           id: telegramFunnelEnrollments.id,
           startedAt: telegramFunnelEnrollments.startedAt,

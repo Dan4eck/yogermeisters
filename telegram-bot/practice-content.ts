@@ -19,17 +19,17 @@ export const PRACTICE_STATE_QUESTION = [
   ].join('\n\n');
 
 export const PRACTICE_STATES = [
-  'В теле много напряжения, хочется движения и энергии',
-  'Голова перегружена, хочется тишины и покоя',
-  'Чувствую усталость, хочется восстановиться',
-  'Хочется больше чувствовать своё тело и быть в настоящем моменте'
+  'Напряжение — хочется движения',
+  'Перегружена голова — хочется тишины',
+  'Усталость — хочется восстановиться',
+  'Хочу лучше чувствовать тело',
 ];
 
 export const PRACTICE_EXPERIENCE_QUESTION = 'Какие практики тебе уже знакомы? 🌿';
 
 export const PRACTICE_EXPERIENCES = [
-  'Только начинаю знакомиться с практиками',
-  'В основном занимаюсь йогой или другими телесными практиками',
+  'Только начинаю',
+  'В основном занимаюсь йогой',
   'В основном практикую медитацию',
   'Практикую и йогу, и медитацию'
 ];
@@ -157,6 +157,16 @@ export const PRACTICE_FOLLOW_UP = [
     'Что тебе сейчас ближе?',
   ].join('\n\n');
 
+export const PRACTICE_YOGA_CAPTION = [
+  'Вот, держи твоё видео. Желаю тебе глубокой практики.',
+  'Если готова пойти дальше, нажми кнопку ниже.',
+].join(' ');
+
+export const PRACTICE_NIDRA_CAPTION = [
+  'Вот, держи твою запись. Желаю тебе глубокой практики.',
+  'Если готова пойти дальше, нажми кнопку ниже.',
+].join(' ');
+
 export interface PracticeMedia {
   readonly nidraAudio?: string;
 }
@@ -173,6 +183,7 @@ export function createPracticeFunnelPlan(media: PracticeMedia): TelegramFunnelPl
   return {
     key: PRACTICE_FUNNEL_KEY,
     version: 'v1',
+    restartOnStart: true,
     initialContentKeys: ['pp_intro'],
     initialConversation: { step: 'intro' },
     steps: [
@@ -196,11 +207,20 @@ export function createPracticeFunnelPlan(media: PracticeMedia): TelegramFunnelPl
       })),
       { contentKey: 'pp_yoga', delayMs: 0, content: {
         type: 'text',
-        text: 'Практика йоги доступна по ссылке ниже. 🌿',
-        buttons: [[{ text: '🧘 Перейти к уроку', url: YOGA_LESSON_URL }]],
+        text: PRACTICE_YOGA_CAPTION,
+        buttons: [
+          [{ text: '🧘 Перейти к уроку', url: YOGA_LESSON_URL }],
+          [{ text: 'Хочу практиковать', callback_data: 'pp1:continue' }],
+        ],
       } },
       ...(media.nidraAudio ? [{ contentKey: 'pp_nidra', delayMs: 0,
-        content: { type: 'audio' as const, audio: media.nidraAudio, title: 'Йога-нидра' } }] : []),
+        content: {
+          type: 'audio' as const,
+          audio: media.nidraAudio,
+          caption: PRACTICE_NIDRA_CAPTION,
+          title: 'Йога-нидра',
+          buttons: button('Хочу практиковать', 'continue'),
+        } }] : []),
       { contentKey: 'pp_unavailable', delayMs: 0, content: {
         type: 'text',
         text: 'Запись йога-нидры пока не добавлена в бот. 🤍 Можно вернуться к этой кнопке позже. ' +
@@ -250,14 +270,16 @@ export function transitionPractice(
       contentKeys: [`pp_recommendation_${conversation.state * 4 + Number(experience[1])}`],
     };
   }
-  if (action === 'pp1:practice' && ['recommendation', 'interest'].includes(conversation.step)
-    && conversation.state !== undefined) {
+  if (action === 'pp1:practice' && conversation.step === 'recommendation' && conversation.state !== undefined) {
     const kind = practiceKind(conversation.state);
     const available = kind === 'yoga' || Boolean(media.nidraAudio);
     return {
-      conversation: { ...conversation, step: 'interest' },
-      contentKeys: [available ? `pp_${kind}` : 'pp_unavailable', 'pp_interest'],
+      conversation: { ...conversation, step: available ? 'practice' : 'recommendation' },
+      contentKeys: [available ? `pp_${kind}` : 'pp_unavailable'],
     };
+  }
+  if (action === 'pp1:continue' && conversation.step === 'practice') {
+    return { conversation: { ...conversation, step: 'interest' }, contentKeys: ['pp_interest'] };
   }
   const interest = action.match(/^pp1:interest:(practice|travel)$/);
   if (interest && conversation.step === 'interest') {

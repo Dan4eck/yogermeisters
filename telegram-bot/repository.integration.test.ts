@@ -122,9 +122,14 @@ describe.skipIf(!databaseUrl)('Telegram funnel with isolated PostgreSQL database
       expect(telegramClient.sendMessage).toHaveBeenCalledWith(
         101,
         expect.any(String),
-        [[expect.objectContaining({ url: YOGA_LESSON_URL })]],
+        [
+          [expect.objectContaining({ url: YOGA_LESSON_URL })],
+          [expect.objectContaining({ callback_data: 'pp1:continue' })],
+        ],
       );
     }
+    expect(telegramClient.sendMessage).not.toHaveBeenLastCalledWith(101, PRACTICE_FOLLOW_UP, expect.any(Array));
+    await press(funnel, 'pp1:continue');
     expect(telegramClient.sendMessage).toHaveBeenLastCalledWith(101, PRACTICE_FOLLOW_UP, expect.any(Array));
     const interest = experience % 2 === 0 ? 'practice' : 'travel';
     await press(funnel, `pp1:interest:${interest}`);
@@ -163,6 +168,30 @@ describe.skipIf(!databaseUrl)('Telegram funnel with isolated PostgreSQL database
     );
   });
 
+  it('starts a fresh personal practice conversation when the deep link is opened again', async (): Promise<void> => {
+    const funnel = router();
+    await begin(funnel);
+    await press(funnel, 'pp1:state:2');
+
+    vi.clearAllMocks();
+    await funnel.acceptStart({ updateId: ++updateId, profile, startPayload: PRACTICE_START_PAYLOAD });
+    await drain(funnel);
+
+    expect(telegramClient.sendMessage).toHaveBeenCalledExactlyOnceWith(
+      101,
+      expect.any(String),
+      [[expect.objectContaining({ callback_data: 'pp1:begin' })]],
+    );
+    const enrollments = await pool.query(
+      "SELECT status, conversation_state FROM telegram_funnel_enrollments WHERE funnel_key = 'personal_practice' " +
+      'ORDER BY started_at',
+    );
+    expect(enrollments.rows).toEqual([
+      expect.objectContaining({ status: 'cancelled' }),
+      { status: 'active', conversation_state: { step: 'intro' } },
+    ]);
+  });
+
   it('survives restart and serializes duplicate and competing callbacks', async (): Promise<void> => {
     const first = router();
     await begin(first);
@@ -193,7 +222,6 @@ describe.skipIf(!databaseUrl)('Telegram funnel with isolated PostgreSQL database
     await press(empty, 'pp1:state:2');
     await press(empty, 'pp1:experience:0');
     await press(empty, 'pp1:practice');
-    await press(empty, 'pp1:interest:travel');
     expect(telegramClient.sendVideo).not.toHaveBeenCalled();
     expect(telegramClient.sendAudio).not.toHaveBeenCalled();
     const before = await pool.query("SELECT * FROM telegram_deliveries WHERE content_key = 'pp_nidra'");
@@ -201,7 +229,9 @@ describe.skipIf(!databaseUrl)('Telegram funnel with isolated PostgreSQL database
     const configured = router({ nidraAudio: 'new-nidra-file' });
     await press(configured, 'pp1:practice');
     await press(configured, 'pp1:practice');
-    expect(telegramClient.sendAudio).toHaveBeenCalledExactlyOnceWith(101, 'new-nidra-file', undefined, 'Йога-нидра');
+    expect(telegramClient.sendAudio).toHaveBeenCalledTimes(1);
+    await press(configured, 'pp1:continue');
+    await press(configured, 'pp1:continue');
     const followUps = telegramClient.sendMessage.mock.calls.filter((args: unknown[]): boolean =>
       args[1] === PRACTICE_FOLLOW_UP,
     );

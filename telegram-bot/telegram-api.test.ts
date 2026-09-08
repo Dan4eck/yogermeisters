@@ -47,12 +47,18 @@ it('supports callback buttons, callback acknowledgements, video and webhook call
   try {
     const client = new BotApiTelegramClient('test-token');
     await client.sendMessage(123, 'Вопрос', [[{ text: 'Ответ', callback_data: 'pp1:state:0' }]]);
-    await expect(client.sendVideo(123, 'new-video')).resolves.toBe(10);
+    const buttons = [[{ text: 'Хочу практиковать', callback_data: 'pp1:continue' }]];
+    await expect(client.sendVideo(123, 'new-video', 'Вот, держи видео', buttons)).resolves.toBe(10);
     await client.answerCallbackQuery('callback-1');
     await client.setWebhook('https://example.com/webhook', 'secret');
     const bodies = fetchMock.mock.calls.map((call) => JSON.parse(call[1].body as string));
     expect(bodies[0].reply_markup.inline_keyboard).toEqual([[{ text: 'Ответ', callback_data: 'pp1:state:0' }]]);
-    expect(bodies[1]).toEqual({ chat_id: 123, video: 'new-video' });
+    expect(bodies[1]).toEqual({
+      chat_id: 123,
+      video: 'new-video',
+      caption: 'Вот, держи видео',
+      reply_markup: { inline_keyboard: buttons },
+    });
     expect(bodies[2]).toEqual({ callback_query_id: 'callback-1' });
     expect(bodies[3].allowed_updates).toEqual(['message', 'callback_query']);
   } finally {
