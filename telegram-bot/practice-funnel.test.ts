@@ -106,7 +106,7 @@ describe('personal practice funnel', () => {
     });
     expect(retreat).toMatchObject({
       type: 'text',
-      text: expect.stringContaining('ежедневные практики йоги и медитации'),
+      text: expect.stringContaining('день на яхте со снорклингом'),
     });
   });
 
