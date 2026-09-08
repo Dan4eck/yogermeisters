@@ -74,29 +74,39 @@ describe('personal practice funnel', () => {
     const yoga = createPracticeFunnelPlan({}).steps.find((step) => step.contentKey === 'pp_yoga')?.content;
     expect(yoga).toEqual(expect.objectContaining({
       type: 'text',
-      buttons: [
-        [expect.objectContaining({ url: YOGA_LESSON_URL })],
-        [expect.objectContaining({ callback_data: 'pp1:continue' })],
-      ],
+      text: expect.stringContaining(YOGA_LESSON_URL),
+      buttons: [[expect.objectContaining({ callback_data: 'pp1:continue' })]],
     }));
     expect(createPracticeFunnelPlan({}).steps.some((step) => step.contentKey === 'pp_nidra')).toBe(false);
     expect(transitionPractice(result.conversation, 'pp1:practice', media)?.contentKeys).toEqual(['pp_nidra']);
   });
 
-  it('puts a short message and the continuation button under both practices', () => {
+  it('puts the yoga lesson link in its message and the continuation button under both practices', () => {
     const plan = createPracticeFunnelPlan(media);
     const yoga = plan.steps.find((step) => step.contentKey === 'pp_yoga')?.content;
     expect(yoga).toMatchObject({
       text: expect.stringMatching(/^Вот, держи/),
-      buttons: [
-        [{ text: '🧘 Перейти к уроку', url: YOGA_LESSON_URL }],
-        [{ text: 'Хочу практиковать', callback_data: 'pp1:continue' }],
-      ],
+      buttons: [[{ text: 'Хочу практиковать', callback_data: 'pp1:continue' }]],
     });
+    expect(yoga).toMatchObject({ text: expect.stringContaining(YOGA_LESSON_URL) });
     const nidra = plan.steps.find((step) => step.contentKey === 'pp_nidra')?.content;
     expect(nidra).toMatchObject({
       caption: expect.stringMatching(/^Вот, держи/),
       buttons: [[{ text: 'Хочу практиковать', callback_data: 'pp1:continue' }]],
+    });
+  });
+
+  it('describes the course and retreat before linking to their pages', () => {
+    const plan = createPracticeFunnelPlan(media);
+    const course = plan.steps.find((step) => step.contentKey === 'pp_destination_practice')?.content;
+    const retreat = plan.steps.find((step) => step.contentKey === 'pp_destination_travel')?.content;
+    expect(course).toMatchObject({
+      type: 'text',
+      text: expect.stringContaining('полноценные занятия йогой'),
+    });
+    expect(retreat).toMatchObject({
+      type: 'text',
+      text: expect.stringContaining('день на яхте со снорклингом'),
     });
   });
 
