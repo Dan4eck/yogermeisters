@@ -20,7 +20,7 @@ describe('readTelegramBotConfig', () => {
       databaseUrl: 'postgresql://user:password@localhost/database',
       meditationAudio: 'CQACAgIAAxkBAAIBexample',
       port: 3002,
-      practiceMedia: { yogaVideo: undefined, nidraAudio: undefined },
+      practiceMedia: { nidraAudio: undefined },
     });
   });
 
@@ -51,11 +51,11 @@ describe('readTelegramBotConfig', () => {
 
 it('accepts missing practice media and validates explicit independent sources', () => {
   expect(readTelegramBotConfig(validEnv).practiceMedia).toEqual({});
-  expect(readTelegramBotConfig({ ...validEnv, PERSONAL_PRACTICE_YOGA_VIDEO_FILE_ID: 'new-yoga' }).practiceMedia)
-    .toEqual({ yogaVideo: 'new-yoga' });
+  expect(readTelegramBotConfig({ ...validEnv, PERSONAL_PRACTICE_NIDRA_AUDIO_FILE_ID: 'new-nidra' }).practiceMedia)
+    .toEqual({ nidraAudio: 'new-nidra' });
   expect(() => readTelegramBotConfig({ ...validEnv,
     PERSONAL_PRACTICE_NIDRA_AUDIO_FILE_ID: 'new-nidra', PERSONAL_PRACTICE_NIDRA_AUDIO_URL: 'https://example.com/a.mp3',
   })).toThrow('Set only one');
-  expect(() => readTelegramBotConfig({ ...validEnv, PERSONAL_PRACTICE_YOGA_VIDEO_URL: 'http://example.com/a.mp4' }))
+  expect(() => readTelegramBotConfig({ ...validEnv, PERSONAL_PRACTICE_NIDRA_AUDIO_URL: 'http://example.com/a.mp3' }))
     .toThrow('HTTPS');
 });

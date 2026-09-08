@@ -3,6 +3,7 @@ import type { PracticeConversation, TelegramFunnelPlan, TelegramInlineButton } f
 export const PRACTICE_START_PAYLOAD = 'personal_practice_v1';
 export const PRACTICE_FUNNEL_KEY = 'personal_practice';
 export const PRACTICE_CALLBACK_PREFIX = 'pp1:';
+export const YOGA_LESSON_URL = 'https://yogermeisters.com/login?next=%2Fcabinet%2Ffree-lesson';
 export const PRACTICE_INTRO = [
     'Здравствуй, душа! Я рада, что ты здесь.',
     'Давай сначала узнаем, что тебе нужно именно сейчас.',
@@ -157,7 +158,6 @@ export const PRACTICE_FOLLOW_UP = [
   ].join('\n\n');
 
 export interface PracticeMedia {
-  readonly yogaVideo?: string;
   readonly nidraAudio?: string;
 }
 
@@ -194,12 +194,17 @@ export function createPracticeFunnelPlan(media: PracticeMedia): TelegramFunnelPl
           'practice',
         ) },
       })),
-      ...(media.yogaVideo ? [{ contentKey: 'pp_yoga', delayMs: 0,
-        content: { type: 'video' as const, video: media.yogaVideo } }] : []),
+      { contentKey: 'pp_yoga', delayMs: 0, content: {
+        type: 'text',
+        text: 'Практика йоги доступна по ссылке ниже. 🌿',
+        buttons: [[{ text: '🧘 Перейти к уроку', url: YOGA_LESSON_URL }]],
+      } },
       ...(media.nidraAudio ? [{ contentKey: 'pp_nidra', delayMs: 0,
         content: { type: 'audio' as const, audio: media.nidraAudio, title: 'Йога-нидра' } }] : []),
       { contentKey: 'pp_unavailable', delayMs: 0, content: {
-        type: 'text', text: 'Запись этой практики пока не добавлена в бот. 🤍 Можно вернуться к этой кнопке позже. А пока — выбрать, что тебе интересно дальше.',
+        type: 'text',
+        text: 'Запись йога-нидры пока не добавлена в бот. 🤍 Можно вернуться к этой кнопке позже. ' +
+          'А пока — выбрать, что тебе интересно дальше.',
         buttons: button('Проверить доступность практики', 'practice'),
       } },
       { contentKey: 'pp_interest', delayMs: 0, content: {
@@ -248,7 +253,7 @@ export function transitionPractice(
   if (action === 'pp1:practice' && ['recommendation', 'interest'].includes(conversation.step)
     && conversation.state !== undefined) {
     const kind = practiceKind(conversation.state);
-    const available = kind === 'yoga' ? media.yogaVideo : media.nidraAudio;
+    const available = kind === 'yoga' || Boolean(media.nidraAudio);
     return {
       conversation: { ...conversation, step: 'interest' },
       contentKeys: [available ? `pp_${kind}` : 'pp_unavailable', 'pp_interest'],

@@ -12,6 +12,7 @@ import {
   PRACTICE_FOLLOW_UP,
   PRACTICE_RECOMMENDATIONS,
   PRACTICE_START_PAYLOAD,
+  YOGA_LESSON_URL,
   type PracticeMedia,
 } from './practice-content';
 import { createPracticeRouter } from './practice-funnel';
@@ -106,7 +107,7 @@ describe.skipIf(!databaseUrl)('Telegram funnel with isolated PostgreSQL database
   it.each(combinations)('persists and delivers combination $state / $experience', async ({
     state, experience, index,
   }): Promise<void> => {
-    const funnel = router({ yogaVideo: 'test-yoga', nidraAudio: 'test-nidra' });
+    const funnel = router({ nidraAudio: 'test-nidra' });
     await begin(funnel);
     await press(funnel, `pp1:state:${state}`);
     await press(funnel, `pp1:experience:${experience}`);
@@ -115,8 +116,15 @@ describe.skipIf(!databaseUrl)('Telegram funnel with isolated PostgreSQL database
     );
     await press(funnel, 'pp1:practice');
     const yoga = state === 0 || state === 3;
-    expect(telegramClient.sendVideo).toHaveBeenCalledTimes(yoga ? 1 : 0);
+    expect(telegramClient.sendVideo).not.toHaveBeenCalled();
     expect(telegramClient.sendAudio).toHaveBeenCalledTimes(yoga ? 0 : 1);
+    if (yoga) {
+      expect(telegramClient.sendMessage).toHaveBeenCalledWith(
+        101,
+        expect.any(String),
+        [[expect.objectContaining({ url: YOGA_LESSON_URL })]],
+      );
+    }
     expect(telegramClient.sendMessage).toHaveBeenLastCalledWith(101, PRACTICE_FOLLOW_UP, expect.any(Array));
     const interest = experience % 2 === 0 ? 'practice' : 'travel';
     await press(funnel, `pp1:interest:${interest}`);
@@ -182,18 +190,18 @@ describe.skipIf(!databaseUrl)('Telegram funnel with isolated PostgreSQL database
   it('keeps missing media undelivered, continues to text5 and delivers after media is configured', async (): Promise<void> => {
     const empty = router();
     await begin(empty);
-    await press(empty, 'pp1:state:0');
+    await press(empty, 'pp1:state:2');
     await press(empty, 'pp1:experience:0');
     await press(empty, 'pp1:practice');
     await press(empty, 'pp1:interest:travel');
     expect(telegramClient.sendVideo).not.toHaveBeenCalled();
     expect(telegramClient.sendAudio).not.toHaveBeenCalled();
-    const before = await pool.query("SELECT * FROM telegram_deliveries WHERE content_key = 'pp_yoga'");
+    const before = await pool.query("SELECT * FROM telegram_deliveries WHERE content_key = 'pp_nidra'");
     expect(before.rows).toHaveLength(0);
-    const configured = router({ yogaVideo: 'new-yoga-file' });
+    const configured = router({ nidraAudio: 'new-nidra-file' });
     await press(configured, 'pp1:practice');
     await press(configured, 'pp1:practice');
-    expect(telegramClient.sendVideo).toHaveBeenCalledExactlyOnceWith(101, 'new-yoga-file');
+    expect(telegramClient.sendAudio).toHaveBeenCalledExactlyOnceWith(101, 'new-nidra-file', undefined, 'Йога-нидра');
     const followUps = telegramClient.sendMessage.mock.calls.filter((args: unknown[]): boolean =>
       args[1] === PRACTICE_FOLLOW_UP,
     );

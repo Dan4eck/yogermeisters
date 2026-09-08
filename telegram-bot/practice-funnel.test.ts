@@ -1,11 +1,17 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 
-import { createPracticeFunnelPlan, PRACTICE_RECOMMENDATIONS, PRACTICE_START_PAYLOAD, transitionPractice } from './practice-content';
+import {
+  createPracticeFunnelPlan,
+  PRACTICE_RECOMMENDATIONS,
+  PRACTICE_START_PAYLOAD,
+  transitionPractice,
+  YOGA_LESSON_URL,
+} from './practice-content';
 import { createPracticeRouter } from './practice-funnel';
 import type { TelegramClient, TelegramFunnelStore } from './types';
 
-const media = { yogaVideo: 'new-yoga-video', nidraAudio: 'new-nidra-audio' };
+const media = { nidraAudio: 'new-nidra-audio' };
 
 describe('personal practice funnel', () => {
   it('uses all 16 complete approved messages verbatim', () => {
@@ -44,7 +50,12 @@ describe('personal practice funnel', () => {
   it('continues honestly without media, and can request media after it is configured', () => {
     const result = transitionPractice({ step: 'recommendation', state: 2, experience: 1 }, 'pp1:practice', {})!;
     expect(result.contentKeys).toEqual(['pp_unavailable', 'pp_interest']);
-    expect(createPracticeFunnelPlan({}).steps.some((step) => ['pp_yoga', 'pp_nidra'].includes(step.contentKey))).toBe(false);
+    const yoga = createPracticeFunnelPlan({}).steps.find((step) => step.contentKey === 'pp_yoga')?.content;
+    expect(yoga).toEqual(expect.objectContaining({
+      type: 'text',
+      buttons: [[expect.objectContaining({ url: YOGA_LESSON_URL })]],
+    }));
+    expect(createPracticeFunnelPlan({}).steps.some((step) => step.contentKey === 'pp_nidra')).toBe(false);
     expect(transitionPractice(result.conversation, 'pp1:practice', media)?.contentKeys).toEqual(['pp_nidra', 'pp_interest']);
   });
 
