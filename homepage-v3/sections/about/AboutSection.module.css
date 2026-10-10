@@ -1,0 +1,419 @@
+.section {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-height: min(850px, 100svh);
+  overflow: hidden;
+  padding: clamp(112px, 19svh, 180px) 13vw clamp(40px, 8svh, 72px) 15vw;
+  background: #f2efe7;
+  color: #171918;
+  font-family: var(--v3-font, Inter, Arial, sans-serif);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-areas:
+    'header portrait'
+    'details portrait';
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
+  align-content: start;
+  align-items: start;
+  column-gap: clamp(30px, 3.6vw, 58px);
+  row-gap: clamp(20px, 2.1vw, 32px);
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+}
+
+.header {
+  grid-area: header;
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 16px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.025em;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(54px, 5.65vw, 88px);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.065em;
+}
+
+.title > span {
+  display: block;
+  width: fit-content;
+}
+
+.fullStop {
+  color: #712f43;
+}
+
+.credit {
+  margin: 16px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.portrait {
+  grid-area: portrait;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+.portraitPrint {
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 0.8;
+  overflow: hidden;
+  border: 3px solid #f8f6ef;
+  box-shadow: 0 9px 14px rgb(23 25 24 / 16%);
+  transform: rotate(2deg);
+}
+
+.portraitPrint img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.details {
+  grid-area: details;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  min-width: 0;
+}
+
+.detail {
+  min-width: 0;
+}
+
+.detail + .detail {
+  border-left: 1px solid rgb(23 25 24 / 23%);
+  padding-left: 18px;
+}
+
+.detail h3 {
+  margin: 0 0 9px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.04em;
+}
+
+.detail p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.decorations {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+}
+
+.decorativePrint {
+  position: absolute;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0;
+  border: 3px solid #f8f6ef;
+  background: #d8d5ce;
+  box-shadow: 0 6px 11px rgb(23 25 24 / 20%);
+}
+
+.decorativePrint img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+
+.printOne {
+  top: -15%;
+  left: -1.5%;
+  width: 20%;
+  aspect-ratio: 1.12;
+  transform: rotate(-8deg);
+}
+
+.printTwo {
+  top: -5%;
+  left: 29%;
+  width: 17%;
+  aspect-ratio: 1.35;
+  transform: rotate(6deg);
+}
+
+.printThree {
+  top: -12%;
+  left: 53%;
+  width: 27%;
+  aspect-ratio: 1.8;
+  transform: rotate(-11deg);
+}
+
+.printFour {
+  top: -5%;
+  right: -9%;
+  width: 20%;
+  aspect-ratio: 0.82;
+  transform: rotate(7deg);
+}
+
+.printFive {
+  top: 42%;
+  left: -12%;
+  width: 21%;
+  aspect-ratio: 0.9;
+  transform: rotate(9deg);
+}
+
+.printSix {
+  bottom: -14%;
+  left: -9%;
+  width: 20%;
+  aspect-ratio: 0.9;
+  transform: rotate(-9deg);
+}
+
+.printSeven {
+  top: 47%;
+  right: -13%;
+  width: 20%;
+  aspect-ratio: 0.85;
+  transform: rotate(-8deg);
+}
+
+.printEight {
+  right: -4%;
+  bottom: -15%;
+  width: 21%;
+  aspect-ratio: 1.1;
+  transform: rotate(12deg);
+}
+
+@media (min-width: 1000px) and (max-height: 740px) {
+  .section {
+    padding-top: 17svh;
+    padding-bottom: 6svh;
+  }
+
+  .content {
+    row-gap: 20px;
+  }
+
+  .title {
+    font-size: clamp(54px, 5.4vw, 76px);
+  }
+
+  .credit {
+    margin-top: 13px;
+  }
+}
+
+@media (max-width: 999px) {
+  .section {
+    min-height: 100svh;
+    padding: clamp(100px, 16vw, 145px) 8vw clamp(56px, 8vw, 80px);
+  }
+
+  .content {
+    grid-template-areas:
+      'header portrait'
+      'details details';
+    column-gap: 32px;
+    row-gap: 32px;
+  }
+
+  .title {
+    font-size: clamp(44px, 6.2vw, 62px);
+  }
+
+  .portrait {
+    align-self: center;
+  }
+
+  .details {
+    gap: 28px;
+    max-width: 720px;
+  }
+
+  .detail + .detail {
+    padding-left: 28px;
+  }
+
+  .decorativePrint {
+    opacity: 0.5;
+  }
+
+  .printOne {
+    top: -3%;
+    left: -8%;
+    width: 21%;
+  }
+
+  .printTwo {
+    top: -4%;
+    left: 33%;
+    width: 20%;
+  }
+
+  .printThree {
+    top: -4%;
+    left: 66%;
+    width: 24%;
+  }
+
+  .printFour {
+    top: 14%;
+    right: -16%;
+    width: 20%;
+  }
+
+  .printFive {
+    left: -17%;
+  }
+
+  .printSix {
+    bottom: -4%;
+    left: -15%;
+  }
+
+  .printSeven {
+    right: -17%;
+  }
+
+  .printEight {
+    right: -8%;
+    bottom: -7%;
+    width: 20%;
+  }
+}
+
+@media (max-width: 599px) {
+  .section {
+    padding: 88px 24px 64px;
+  }
+
+  .content {
+    grid-template-areas:
+      'header'
+      'portrait'
+      'details';
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 30px;
+    max-width: 460px;
+  }
+
+  .eyebrow {
+    margin-bottom: 20px;
+    font-size: 10px;
+  }
+
+  .title {
+    font-size: clamp(46px, 11.5vw, 66px);
+    line-height: 0.97;
+    letter-spacing: -0.06em;
+  }
+
+  .credit {
+    max-width: 300px;
+    margin-top: 18px;
+    font-size: 12px;
+  }
+
+  .portrait {
+    justify-self: end;
+    width: min(85%, 340px);
+    margin-right: 3px;
+  }
+
+  .details {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .detail + .detail {
+    border-top: 1px solid rgb(23 25 24 / 23%);
+    border-left: 0;
+    margin-top: 24px;
+    padding-top: 24px;
+    padding-left: 0;
+  }
+
+  .detail h3 {
+    font-size: 19px;
+  }
+
+  .detail p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .decorativePrint {
+    border-width: 2px;
+    opacity: 0.34;
+  }
+
+  .printOne {
+    top: -1%;
+    left: -10%;
+    width: 31%;
+  }
+
+  .printTwo {
+    top: -2%;
+    left: 39%;
+    width: 24%;
+  }
+
+  .printThree {
+    top: -1%;
+    left: 77%;
+    width: 34%;
+  }
+
+  .printFour {
+    right: -23%;
+    width: 26%;
+  }
+
+  .printFive {
+    top: 33%;
+    left: -24%;
+    width: 28%;
+  }
+
+  .printSix {
+    left: -24%;
+    width: 28%;
+  }
+
+  .printSeven {
+    right: -26%;
+    width: 29%;
+  }
+
+  .printEight {
+    right: -12%;
+    bottom: -3%;
+    width: 25%;
+  }
+}

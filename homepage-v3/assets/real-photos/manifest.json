@@ -1,0 +1,478 @@
+{
+  "id": "real-photos",
+  "projectRoot": "/Users/daniel/.codex/worktrees/1041/Yogermeisters",
+  "assetRoot": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos",
+  "inputDirectory": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets",
+  "compositionReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/full-page-v2.png",
+  "generation": false,
+  "processing": {
+    "library": "Pillow",
+    "exifTranspose": true,
+    "outputColorSpace": "sRGB",
+    "webpQuality": 84,
+    "webpMethod": 6,
+    "maxLongEdge": 1800,
+    "upscale": false,
+    "retouch": false,
+    "crop": false,
+    "blackAndWhite": "CSS only; sunsetBreath is already monochrome in its supplied original"
+  },
+  "keyAssets": {
+    "braidedPortrait": "braidedPortrait",
+    "oceanMovement": "oceanMovement",
+    "rockPose": "rockPose",
+    "sunsetBreath": "sunsetBreath"
+  },
+  "sunsetBreathAvailability": {
+    "available": true,
+    "sourceIsMonochrome": true,
+    "colorVersionAvailable": false,
+    "notes": "Low sun and a breathing silhouette are visible. Sunrise versus sunset cannot be established from the image alone."
+  },
+  "assets": [
+    {
+      "id": "sunsetBreath",
+      "sourceName": "2026-10-10 15.51.45.jpg",
+      "alt": {
+        "ru": "Силуэт женщины во время дыхательной практики на берегу у низкого солнца.",
+        "en": "A woman practicing breathing on the shore, silhouetted against the low sun."
+      },
+      "recommendedObjectPosition": "50% 45%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Keep the hand near the face and seated silhouette visible. The original is monochrome; do not colorize it.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/2026-10-10 15.51.45.jpg",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/2026-10-10 15.51.45.jpg",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/shore-breath-silhouette.webp",
+      "readyRelative": "ready/shore-breath-silhouette.webp",
+      "width": 853,
+      "height": 1280,
+      "bytes": 22180,
+      "sourceBytes": 37225,
+      "sourceRawSize": [
+        853,
+        1280
+      ],
+      "sourceOrientedSize": [
+        853,
+        1280
+      ],
+      "sourceExifOrientation": 1,
+      "sourceProfile": null,
+      "sourceMonochrome": true,
+      "colorConversion": "untagged RGB assumed sRGB and explicitly tagged",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "0af60734b96a922c175eea421f779bddb5b3136f42011c7914195a0a5305eba5",
+      "readySha256": "3d7dac18f5d95b718a08839d10579997ea72eb88e6e55324876ac7214994e030",
+      "sourceExifColorSpace": null
+    },
+    {
+      "id": "paddleboardYoga",
+      "sourceName": "2026-10-10 15.52.11.jpg",
+      "alt": {
+        "ru": "Женщина с косами сидит на голубой доске на воде и поднимает соединённые ладони.",
+        "en": "A woman with braids sits on a blue paddleboard and raises her joined palms."
+      },
+      "recommendedObjectPosition": "50% 50%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Keep raised hands, head, and the board together when the slot allows.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/2026-10-10 15.52.11.jpg",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/2026-10-10 15.52.11.jpg",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/braided-paddleboard-yoga.webp",
+      "readyRelative": "ready/braided-paddleboard-yoga.webp",
+      "width": 853,
+      "height": 1280,
+      "bytes": 67092,
+      "sourceBytes": 126034,
+      "sourceRawSize": [
+        853,
+        1280
+      ],
+      "sourceOrientedSize": [
+        853,
+        1280
+      ],
+      "sourceExifOrientation": 1,
+      "sourceProfile": null,
+      "sourceMonochrome": false,
+      "colorConversion": "untagged RGB assumed sRGB and explicitly tagged",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "bfeb43f3b3cdf440fd49307e9b0e17e7a08dd3f01d07d022003df7c7e73e66b7",
+      "readySha256": "b0e263e67b281908783c778b536a8ba764d87e96734381fdb8fab997919fdf35",
+      "sourceExifColorSpace": null
+    },
+    {
+      "id": "prayerFlagsPortrait",
+      "sourceName": "ZVC03615.jpg",
+      "alt": {
+        "ru": "Женщина и монах перед разноцветными молитвенными флажками.",
+        "en": "A woman and a monk in front of colorful prayer flags."
+      },
+      "recommendedObjectPosition": "50% 55%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Keep both faces; this is not the current About portrait reference.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC03615.jpg",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/ZVC03615.jpg",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/teacher-and-monk-prayer-flags.webp",
+      "readyRelative": "ready/teacher-and-monk-prayer-flags.webp",
+      "width": 1670,
+      "height": 1800,
+      "bytes": 146078,
+      "sourceBytes": 2241422,
+      "sourceRawSize": [
+        3711,
+        4000
+      ],
+      "sourceOrientedSize": [
+        3711,
+        4000
+      ],
+      "sourceExifOrientation": 1,
+      "sourceProfile": "Display P3",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "f0806f9c92e94ce4f2b4d29b6098cceffef57b029469730a59f299ee409b0e81",
+      "readySha256": "a072537884490287fe0d2f0f96654f69944b56c3979ddb224de1d932f5fa237b",
+      "sourceExifColorSpace": 1
+    },
+    {
+      "id": "rockPose",
+      "sourceName": "ZVC05159.JPG",
+      "alt": {
+        "ru": "Женщина в солнцезащитных очках сидит на рыжих скалах под голубым небом.",
+        "en": "A woman in sunglasses sits on orange rocks beneath a blue sky."
+      },
+      "recommendedObjectPosition": "50% 50%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "The source shows a seated portrait on rocks, not a yoga asana. Preserve the face and bent knee.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC05159.JPG",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/ZVC05159.JPG",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/rock-seated-portrait.webp",
+      "readyRelative": "ready/rock-seated-portrait.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 275974,
+      "sourceBytes": 7760646,
+      "sourceRawSize": [
+        6000,
+        4000
+      ],
+      "sourceOrientedSize": [
+        4000,
+        6000
+      ],
+      "sourceExifOrientation": 8,
+      "sourceProfile": null,
+      "sourceMonochrome": false,
+      "colorConversion": "EXIF sRGB retained and explicitly tagged",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "a009232aa24adfadff9788699a98db9fab888d9d8bd9012b91dc3ed78aeafba6",
+      "readySha256": "882905055aceea83b7e603cf4f8fbe4f04432016a5ca9df1c05e0c0bd6b12e97",
+      "sourceExifColorSpace": 1
+    },
+    {
+      "id": "oceanMovement",
+      "sourceName": "ZVC05224.JPG",
+      "alt": {
+        "ru": "Женщина выполняет прогиб на скалах у океана, рядом с набегающими волнами.",
+        "en": "A woman performs a backbend on coastal rocks beside breaking ocean waves."
+      },
+      "recommendedObjectPosition": "50% 65%",
+      "whatUsedFor": [
+        "hero unique photograph",
+        "classes photograph"
+      ],
+      "cropGuidance": "Use the full lower figure for classes. Upper sea-only crops can provide real wave detail tiles.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC05224.JPG",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/ZVC05224.JPG",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/ocean-backbend.webp",
+      "readyRelative": "ready/ocean-backbend.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 519192,
+      "sourceBytes": 9691976,
+      "sourceRawSize": [
+        6000,
+        4000
+      ],
+      "sourceOrientedSize": [
+        4000,
+        6000
+      ],
+      "sourceExifOrientation": 8,
+      "sourceProfile": null,
+      "sourceMonochrome": false,
+      "colorConversion": "EXIF sRGB retained and explicitly tagged",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "9ef080598cbeae2049255773b6764e9ec2f5fc0b0cb452cceccb0b0c9f536a53",
+      "readySha256": "8f6343fc95829a1c0f5639d00bba284032560f0c562fc2d5ab37898c29b20690",
+      "sourceExifColorSpace": 1
+    },
+    {
+      "id": "rockStanding",
+      "sourceName": "ZVC05307.JPG",
+      "alt": {
+        "ru": "Женщина стоит среди тёмных прибрежных скал на фоне океана.",
+        "en": "A woman stands among dark coastal rocks with the ocean behind her."
+      },
+      "recommendedObjectPosition": "50% 50%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Keep the standing figure within the natural rock opening.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC05307.JPG",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/ZVC05307.JPG",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/rock-standing-portrait.webp",
+      "readyRelative": "ready/rock-standing-portrait.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 142798,
+      "sourceBytes": 7288795,
+      "sourceRawSize": [
+        6000,
+        4000
+      ],
+      "sourceOrientedSize": [
+        4000,
+        6000
+      ],
+      "sourceExifOrientation": 8,
+      "sourceProfile": null,
+      "sourceMonochrome": false,
+      "colorConversion": "EXIF sRGB retained and explicitly tagged",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "3c9e69f42c11432bc7b984d6a70bf28a8ebe03ca61f34a179a748ea053ed0b39",
+      "readySha256": "ec17f7239022f50a07e24eb2dde95a13080e4c8f6a2b88bce04f016866a44a76",
+      "sourceExifColorSpace": 1
+    },
+    {
+      "id": "mirrorPortrait",
+      "sourceName": "nastya (251 of 269).jpg",
+      "alt": {
+        "ru": "Женщина с косами сидит у стены из зеркальной мозаики и смотрит в камеру.",
+        "en": "A woman with braids sits by a mirrored mosaic wall and looks at the camera."
+      },
+      "recommendedObjectPosition": "50% 38%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Prioritize the face and braids; the mosaic is part of the original photo.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/nastya (251 of 269).jpg",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/nastya (251 of 269).jpg",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/braided-mirror-portrait.webp",
+      "readyRelative": "ready/braided-mirror-portrait.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 271300,
+      "sourceBytes": 13193525,
+      "sourceRawSize": [
+        4000,
+        6000
+      ],
+      "sourceOrientedSize": [
+        4000,
+        6000
+      ],
+      "sourceExifOrientation": 1,
+      "sourceProfile": "IEC 61966-2.1 Default RGB colour space - sRGB",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "64b85c0ce9553a544bd8498f9563ef033e7000d8453a07f990921f47938e2839",
+      "readySha256": "70b44ca4aeba771f7c2e8bb440b5b9920690080dc1f9300b2a73506504cb8cb6",
+      "sourceExifColorSpace": null
+    },
+    {
+      "id": "studioBackbend",
+      "sourceName": "nastya (29 of 269).jpg",
+      "alt": {
+        "ru": "Женщина с длинными косами выполняет глубокий прогиб в выпаде в светлой студии.",
+        "en": "A woman with long braids performs a deep backbend in a low lunge in a bright studio."
+      },
+      "recommendedObjectPosition": "50% 65%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Keep the entire lunge and both supporting legs. Upper half contains useful empty studio space.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/nastya (29 of 269).jpg",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/nastya (29 of 269).jpg",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/studio-low-lunge-backbend.webp",
+      "readyRelative": "ready/studio-low-lunge-backbend.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 65510,
+      "sourceBytes": 8580829,
+      "sourceRawSize": [
+        4000,
+        6000
+      ],
+      "sourceOrientedSize": [
+        4000,
+        6000
+      ],
+      "sourceExifOrientation": 1,
+      "sourceProfile": "Display P3",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "fb16ac21ef66de4f3b73af5d47f7646e0df54a341f21f7b667d56abc8e0ada72",
+      "readySha256": "d5b2570b280d487089020cf22023b4330b73c5dc14b48b0223ecf493cd4b53d3",
+      "sourceExifColorSpace": 65535
+    },
+    {
+      "id": "braidedPortrait",
+      "sourceName": "telegram-cloud-document-4-5983426692197126973.jpg",
+      "alt": {
+        "ru": "Анастасия с длинными косами сидит со скрещёнными ногами у серой стены.",
+        "en": "Anastasia with long braids sits cross-legged against a grey wall."
+      },
+      "recommendedObjectPosition": "50% 42%",
+      "whatUsedFor": [
+        "hero unique photograph",
+        "About main full-color portrait"
+      ],
+      "cropGuidance": "Use face and upper torso for About. Natural foreground leaves remain in the source and ready file.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/telegram-cloud-document-4-5983426692197126973.jpg",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/telegram-cloud-document-4-5983426692197126973.jpg",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/braided-seated-portrait.webp",
+      "readyRelative": "ready/braided-seated-portrait.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 108112,
+      "sourceBytes": 10861284,
+      "sourceRawSize": [
+        4000,
+        6000
+      ],
+      "sourceOrientedSize": [
+        4000,
+        6000
+      ],
+      "sourceExifOrientation": 1,
+      "sourceProfile": "IEC 61966-2.1 Default RGB colour space - sRGB",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "129ead69cdfa0d9baf7ed75aa6d86ad9c3bc04fa149c055dc823885d783dbc07",
+      "readySha256": "b81fbea74be96e40f574f59954be5425fcd6ba8ee83c9ee93b81685ef88a4ef0",
+      "sourceExifColorSpace": 1
+    },
+    {
+      "id": "waterfallMeditation",
+      "sourceName": "telegram-cloud-photo-size-4-5776394464237653992-y.jpg",
+      "alt": {
+        "ru": "Два человека в бордовых одеждах сидят на камнях у водопада.",
+        "en": "Two people in burgundy robes sit on rocks beside a waterfall."
+      },
+      "recommendedObjectPosition": "50% 62%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Keep both people and the waterfall. Do not use in the current About composition.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/telegram-cloud-photo-size-4-5776394464237653992-y.jpg",
+      "inputFile": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets/telegram-cloud-photo-size-4-5776394464237653992-y.jpg",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/waterfall-meditation.webp",
+      "readyRelative": "ready/waterfall-meditation.webp",
+      "width": 960,
+      "height": 1280,
+      "bytes": 198808,
+      "sourceBytes": 267413,
+      "sourceRawSize": [
+        960,
+        1280
+      ],
+      "sourceOrientedSize": [
+        960,
+        1280
+      ],
+      "sourceExifOrientation": 1,
+      "sourceProfile": "Display P3",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "6628152acfec852b7d934051e3efddd345a69ff2828ec216e78aa7ca84791675",
+      "readySha256": "7dfbae6b3306b043a3d53f1608c2b402f5061715b3e28b132a4d72d15ac696e2",
+      "sourceExifColorSpace": null
+    }
+  ],
+  "heroTiles": [
+    {
+      "tile": 1,
+      "assetId": "braidedPortrait",
+      "objectPosition": "50% 38%"
+    },
+    {
+      "tile": 2,
+      "assetId": "sunsetBreath",
+      "objectPosition": "50% 55%"
+    },
+    {
+      "tile": 3,
+      "assetId": "oceanMovement",
+      "objectPosition": "50% 82%"
+    },
+    {
+      "tile": 4,
+      "assetId": "prayerFlagsPortrait",
+      "objectPosition": "50% 48%"
+    },
+    {
+      "tile": 5,
+      "assetId": "studioBackbend",
+      "objectPosition": "50% 56%"
+    },
+    {
+      "tile": 6,
+      "assetId": "mirrorPortrait",
+      "objectPosition": "50% 35%"
+    },
+    {
+      "tile": 7,
+      "assetId": "waterfallMeditation",
+      "objectPosition": "50% 62%"
+    },
+    {
+      "tile": 8,
+      "assetId": "rockPose",
+      "objectPosition": "50% 35%"
+    },
+    {
+      "tile": 9,
+      "assetId": "rockStanding",
+      "objectPosition": "50% 35%"
+    },
+    {
+      "tile": 10,
+      "assetId": "paddleboardYoga",
+      "objectPosition": "50% 55%"
+    }
+  ],
+  "heroTileGuidance": "10 unique real photographs, each used once. Irregular responsive mosaic; exact geometry is owned by HeroSection.module.css. Required: prayerFlagsPortrait and waterfallMeditation.",
+  "checks": {
+    "originalCount": 10,
+    "readyCount": 10,
+    "allSourcesByteIdenticalToInput": true,
+    "allReadyFilesDecode": true,
+    "allReadyFilesSrgbTagged": true,
+    "allReadyFilesOpaque": true,
+    "noUpscale": true
+  }
+}

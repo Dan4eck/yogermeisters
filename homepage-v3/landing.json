@@ -1,0 +1,483 @@
+{
+  "projectRoot": "/Users/daniel/.codex/worktrees/1041/Yogermeisters",
+  "workDir": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3",
+  "approval": {
+    "date": "2026-10-10",
+    "source": "user",
+    "text": "Окей, теперь собери все секции, используй skill pa-lannding-v4.",
+    "scope": "Макет v2; финальная секция из v1; реальные фотографии New Assets; два последовательных scroll-перехода; 3 ретрита; текущее видео; автоматическая смена практик."
+  },
+  "brief": "Реализованная главная Yogermeisters по pa-landing-v4. Согласованный макет full-page-v2.png, финальная секция из full-page-v1.png. Отдельные React-секции, реальные фотографии New Assets, ч/б hero через CSS, два обратимых scroll-перехода, пять форматов занятий, карусель из трёх ретритов, текущее YouTube-видео и автоматическая смена трёх существующих смысловых выдержек. Языки RU/EN. Маршруты / и /homepage-v3. Контент занятий и видео берётся из landing-v2/content.ts, ретриты из shared/retreat-content.",
+  "style": "Inter Variable с кириллицей, локальный WOFF2. Монументальная белая типографика на нерегулярной ч/б мозаике; кремовый фон #F2EFE7, ink #171918, burgundy #712F43. Редакционная композиция с тонкими линиями и отдельными фотослоями. На мобильном самостоятельная нерегулярная мозаика из тех же 10 уникальных фотографий.",
+  "layout": {
+    "file": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/full-page-v2.png",
+    "prompts": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/PROMPTS-v2.md",
+    "footerReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/full-page-v1.png",
+    "storyboard": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/hero-scroll-storyboard-v1.png"
+  },
+  "assets": [
+    {
+      "id": "ocean-movement",
+      "sectionId": "hero",
+      "brief": "Реальная фотография Насти у океана; ч/б повторы и разные кадрирования для hero. В цвете — окружение ретритов. На этапе реализации каждый движущийся тайл отдельный DOM-элемент; оригинал неизменен, alpha не требуется.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/ocean-backbend.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC05224.JPG"
+      ]
+    },
+    {
+      "id": "rock-portrait",
+      "sectionId": "hero",
+      "brief": "Реальный портрет на скалах, используется в ч/б hero и декоративных фотографиях about. Основная фотография classes — ocean-movement.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/rock-seated-portrait.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC05159.JPG"
+      ]
+    },
+    {
+      "id": "waterfall-tradition",
+      "sectionId": "hero",
+      "brief": "Обязательное фото hero по правке пользователя: два человека у водопада. Исходник сохранён, ч/б через CSS.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/waterfall-meditation.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/telegram-cloud-photo-size-4-5776394464237653992-y.jpg"
+      ]
+    },
+    {
+      "id": "sunset-breath",
+      "sectionId": "practice",
+      "brief": "Дыхательная практика на закате: реальный снимок для hero и дизайн-обложки перехода на практику. Обложка не объявляется реальным кадром YouTube-видео.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/shore-breath-silhouette.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/2026-10-10 15.51.45.jpg"
+      ]
+    },
+    {
+      "id": "braided-portrait",
+      "sectionId": "about",
+      "brief": "Портрет Насти с косами у бетонной стены: крупный снимок подхода и повторяемые ч/б кропы hero; сохранять лицо, анатомию, одежду.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/braided-seated-portrait.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/telegram-cloud-document-4-5983426692197126973.jpg"
+      ]
+    },
+    {
+      "id": "retreat-cirali-cover",
+      "sectionId": "retreats",
+      "brief": "Обложка карточки Чиралы: пляж и зонты.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/retreat-cirali-cover/ready/cirali.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/attached_assets/cirali/cirali-beach-cover.jpeg"
+      ],
+      "url": "/assets/landing-v3/retreats/cirali.webp"
+    },
+    {
+      "id": "retreat-nepal-cover",
+      "sectionId": "retreats",
+      "brief": "Обложка карточки Непал: ступа Боднатх и молитвенные флажки.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/retreat-nepal-cover/ready/nepal.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/attached_assets/nepal/nepal-boudhanath-close.jpg"
+      ],
+      "url": "/assets/landing-v3/retreats/nepal.webp"
+    },
+    {
+      "id": "retreat-mountains-cover",
+      "sectionId": "retreats",
+      "brief": "Обложка карточки Йога и Горы: зелёные горы и лес.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/retreat-mountains-cover/ready/mountains.webp"
+      ],
+      "source": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/client/public/assets/landing-v2/retreats/thumb-prague-retreat.png"
+      ],
+      "url": "/assets/landing-v3/retreats/mountains.webp"
+    },
+    {
+      "id": "real-photo-set",
+      "sectionId": "hero",
+      "brief": "10 реальных фотографий New Assets; исходники сохранены, sRGB/WebP. Ч/б через CSS. Новая генерация не использовалась.",
+      "files": [
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/shore-breath-silhouette.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/braided-paddleboard-yoga.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/teacher-and-monk-prayer-flags.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/rock-seated-portrait.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/ocean-backbend.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/rock-standing-portrait.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/braided-mirror-portrait.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/studio-low-lunge-backbend.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/braided-seated-portrait.webp",
+        "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/waterfall-meditation.webp"
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "id": "hero",
+      "copy": {
+        "brand": "Yogermeisters.",
+        "title": [
+          "Himalayan",
+          "Yoga."
+        ],
+        "description": "Между движением и тишиной рождается практика",
+        "navigation": [
+          {
+            "label": "Практика",
+            "href": "#practice"
+          },
+          {
+            "label": "Занятия",
+            "href": "#classes"
+          },
+          {
+            "label": "Ретриты",
+            "href": "#retreats"
+          },
+          {
+            "label": "О проекте",
+            "href": "#about"
+          },
+          {
+            "label": "Шала",
+            "href": "/cabinet"
+          }
+        ],
+        "cta": [
+          {
+            "label": "Выбрать занятие",
+            "href": "#classes"
+          },
+          {
+            "label": "Ретриты",
+            "href": "#retreats"
+          }
+        ]
+      },
+      "layout": {
+        "desktop": "Полноэкранная нерегулярная мозаика из 10 уникальных реальных фотографий. Разные размеры и соотношения сторон; большие квадратные, широкие и вытянутые кадры. Белый трёхстрочный заголовок, CTA внизу. Постоянная полупрозрачная шапка инвертирует цвет по фону. Стрелка вниз удалена.",
+        "mobile": "Адаптивная мозаика из тех же 10 уникальных фото. Ни один исходник не повторяется. Читаемые заголовок, подпись и CTA."
+      },
+      "motion": "GSAP ScrollTrigger: desktop >=1000px и >=680px, общий pinned stage 100svh на 425vh скролла. Камера 1→1.17→1; заголовок исчезает, 10 отдельных фотографий расходятся к краям, раскрывается about. Обратимый scrub 0.55. Mobile: естественный поток и уменьшенный разлёт 10 тайлов. Reduced motion: без анимации, все секции в потоке.",
+      "assets": [
+        "real-photo-set"
+      ],
+      "files": [
+        "homepage-v3/sections/hero/HeroSection.tsx",
+        "homepage-v3/sections/hero/HeroSection.module.css"
+      ],
+      "layoutReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/sections/hero.png",
+      "status": "implemented"
+    },
+    {
+      "id": "about",
+      "copy": {
+        "eyebrow": "01 / О ПОДХОДЕ",
+        "title": [
+          "Движение.",
+          "Дыхание.",
+          "Тишина."
+        ],
+        "credit": "Анастасия Пальяччи / Himalayan Yoga",
+        "details": [
+          {
+            "title": "Практика йоги",
+            "description": "Мой подход к йоге основан на принципах универсальной йоги: комплексная работа со всеми направлениями подвижности, вниманием к биомеханике и индивидуальным особенностям каждого практикующего."
+          },
+          {
+            "title": "Медитация",
+            "description": "Это глубокая работа с умом через медитацию. Практики метты и безмыслия учат ум разотождествляться с телом, внешними и внутренними колебаниями. Я передаю практики, которые получила от своего ламы Кармы Гюрме."
+          }
+        ]
+      },
+      "layout": {
+        "desktop": "Финальное состояние разлёта из правого кадра hero-scroll-storyboard-v1: кремовый центр, три строки заголовка и два текстовых столбца слева, один крупный цветной портрет справа. По периметру разлетевшиеся чёрно-белые фотографии с небольшими поворотами, тонкими кромками и мягкими тенями; часть кадров обрезана границами секции. Фотографии не перекрывают текст. Фото у водопада здесь не используется.",
+        "mobile": "Тот же финальный разлёт в компактной композиции: заголовок и текст остаются читаемыми, цветной портрет, уменьшенные чёрно-белые фотографии по краям. Нет обязательного горизонтального скролла."
+      },
+      "motion": "Финальный кадр первой сцены: те же hero-тайлы по периметру, цветной портрет и текст в центре. Пауза для чтения, затем фотографии, портрет и отдельные текстовые блоки улетают, открывая classes. Mobile: естественная прокрутка и лёгкий уход декоративных фото. Reduced motion: статичная композиция.",
+      "assets": [
+        "braided-portrait",
+        "ocean-movement",
+        "rock-portrait",
+        "sunset-breath"
+      ],
+      "files": [
+        "homepage-v3/sections/about/AboutSection.tsx",
+        "homepage-v3/sections/about/AboutSection.module.css"
+      ],
+      "layoutReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/sections/about.png",
+      "status": "implemented"
+    },
+    {
+      "id": "classes",
+      "copy": {
+        "eyebrow": "02 / ЗАНЯТИЯ",
+        "title": "Начни заниматься сегодня",
+        "offers": [
+          {
+            "title": "Курс по йоге",
+            "format": "Онлайн",
+            "price": "€49",
+            "description": "Структурированный онлайн-курс по основам гималайской йоги: пранаяма, биомеханика и медитация в удобном темпе.",
+            "cta": "Узнать подробнее",
+            "href": "/the-yoga-method"
+          },
+          {
+            "title": "Индивидуально",
+            "format": "Онлайн",
+            "price": "€45",
+            "description": "Индивидуальная практика с вниманием преподавателя, бережной поддержкой и адаптацией под личный запрос ученика.",
+            "cta": "Записаться",
+            "href": "https://t.me/AnastasiaPagliacci"
+          },
+          {
+            "title": "Индивидуально",
+            "format": "Офлайн. Прага",
+            "price": "€49",
+            "description": "Индивидуальная практика в йога-студии в Праге, с полным вниманием к выравниванию, дыханию и твоим целям.",
+            "cta": "Записаться",
+            "href": "https://t.me/AnastasiaPagliacci"
+          },
+          {
+            "title": "Флай, хатха-йога",
+            "format": "Офлайн. Прага",
+            "price": "€25",
+            "description": "Флай-йога и хатха-йога в небольшой группе до восьми человек в йога-студии в Праге.",
+            "cta": "Записаться",
+            "href": "https://t.me/AnastasiaPagliacci"
+          },
+          {
+            "title": "Йога-буст",
+            "format": "Онлайн",
+            "price": "Donation",
+            "description": "Совместная групповая практика онлайн. Дыхание, движение и медитация вместе - плати, сколько считаешь уместным.",
+            "cta": "Присоединиться",
+            "href": "https://t.me/AnastasiaPagliacci"
+          }
+        ]
+      },
+      "layout": {
+        "desktop": "Цветная фотография у океана слева 40%, справа 5 открытых строк с форматом, ценой и действием; тонкие линии, без карусели.",
+        "mobile": "Цветная фотография, затем заголовок и пять открытых строк с форматами, описаниями, ценами и действиями."
+      },
+      "motion": "Завершение общей desktop-сцены: цветная фотография приходит слева, заголовок снизу, пять строк справа со stagger. Затем обычная вертикальная прокрутка. Mobile: естественный поток, однократное появление строк. Reduced motion: все строки сразу видимы.",
+      "assets": [
+        "ocean-movement"
+      ],
+      "files": [
+        "homepage-v3/sections/classes/ClassesSection.tsx",
+        "homepage-v3/sections/classes/ClassesSection.module.css"
+      ],
+      "layoutReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/sections/classes.png",
+      "status": "implemented"
+    },
+    {
+      "id": "retreats",
+      "copy": {
+        "eyebrow": "03 / РЕТРИТЫ",
+        "title": "Дальше от рутины. Ближе к себе.",
+        "description": "Ретриты, где сочетаются познание внешнего и внутреннего: море, горы, тишина и ежедневное возвращение к себе.",
+        "cards": [
+          {
+            "id": "cirali",
+            "title": "Чиралы Йога Тур",
+            "date": "10–16 октября",
+            "place": "Чиралы, Ликийское побережье, Турция",
+            "price": "€790",
+            "cta": "Посмотреть ретрит",
+            "href": "/retreats/cirali-yoga-tour"
+          },
+          {
+            "id": "nepal",
+            "title": "Непал",
+            "description": "Буддийский паломнический тур",
+            "date": "Август 2026",
+            "place": "Долина Катманду и Нагаркот, Непал",
+            "price": "€1450 early / €1650",
+            "status": "Запись недоступна"
+          },
+          {
+            "id": "mountains",
+            "title": "Йога и Горы",
+            "date": "13–15 марта",
+            "place": "Крконоше, Чехия",
+            "price": "5,699 CZK early / 6,399 CZK",
+            "status": "Запись недоступна"
+          }
+        ]
+      },
+      "layout": {
+        "desktop": "Бордовая секция: две целые фотокарточки и часть третьей, горизонтальная прокрутка с центрированием выбранной карточки. Все три позиции доступны стрелками и индикаторами.",
+        "mobile": "Горизонтальная карусель из тех же трёх карточек: одна целиком и край следующей, свайп, scroll snap, стрелки и счётчик 01 / 03. Заголовок над лентой, подписи и статусы видны без наведения."
+      },
+      "motion": "Рабочая ручная карусель ровно из трёх ретритов: native scroll snap, свайп, стрелки, Home/End, клавиши влево/вправо, счётчик и три индикатора. Без автопрокрутки; reduced motion использует мгновенное переключение.",
+      "assets": [
+        "retreat-cirali-cover",
+        "retreat-nepal-cover",
+        "retreat-mountains-cover"
+      ],
+      "files": [
+        "homepage-v3/sections/retreats/RetreatsSection.tsx",
+        "homepage-v3/sections/retreats/RetreatsSection.module.css"
+      ],
+      "layoutReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/sections/retreats.png",
+      "status": "implemented"
+    },
+    {
+      "id": "practice",
+      "copy": {
+        "eyebrow": "04 / ПРАКТИКА",
+        "title": "Почувствуй до первого занятия.",
+        "description": "Начни с практики на дыхание, подвижность и устойчивую силу. Это простой способ познакомиться с моим подходом и почувствовать его на собственном теле.",
+        "cta": {
+          "label": "Попробовать практику",
+          "href": "https://www.youtube.com/watch?v=Z_AabfLhaHo"
+        },
+        "videoTitle": "25 min Yoga MORNING POWER for Core, Shoulders, Flexibility – ALL LEVELS",
+        "posterNote": "Дизайн-обложка из снимка заката, не кадр ролика.",
+        "sequence": [
+          "01 — Дыхание",
+          "02 — Движение",
+          "03 — Интеграция"
+        ]
+      },
+      "layout": {
+        "desktop": "Слева крупный заголовок, справа широкий постер с кнопкой play; под ним три открытые подписи.",
+        "mobile": "Заголовок, описание и CTA, затем видеообложка, ссылка на YouTube и три подписи."
+      },
+      "motion": "YouTube iframe Z_AabfLhaHo монтируется только по нажатию. Реальный ролик текущего сайта, отдельная ссылка на YouTube. Постер — реальная фотография, не кадр видео. Звук не запускается без действия пользователя.",
+      "assets": [
+        "sunset-breath"
+      ],
+      "files": [
+        "homepage-v3/sections/practice/PracticeSection.tsx",
+        "homepage-v3/sections/practice/PracticeSection.module.css"
+      ],
+      "layoutReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/sections/practice.png",
+      "status": "implemented"
+    },
+    {
+      "id": "philosophy",
+      "copy": {
+        "eyebrow": "37 ПРАКТИК БОДХИСАТТВЫ",
+        "title": "В тишине меньше отвлечений: ясность становится ближе.",
+        "fullQuote": "В тишине меньше отвлечений: ясность становится ближе, а практика естественно набирает силу.",
+        "additional": [
+          {
+            "title": "Практика 1 · Драгоценная человеческая жизнь",
+            "text": "Раз у нас есть тело, время и возможность встретиться с путем, практику стоит начинать сейчас, не откладывая."
+          },
+          {
+            "title": "Практика 10 · Бодхичитта",
+            "text": "Практика раскрывается шире, когда она не только для себя, но и ради большей доброты к другим."
+          }
+        ],
+        "attribution": "Смысловые выдержки по мотивам текста «37 практик бодхисаттвы» Гьялсе Тогме Зангпо."
+      },
+      "layout": {
+        "desktop": "Тёмная компактная секция, текст шириной 62%, максимум 780px. Реальное фото на всю ширину, плавно гаснущее в тёмный фон слева; видимых стыков нет. Заголовок без нумерации.",
+        "mobile": "Цитата переносится по ширине; атрибуция и кнопки остаются доступны. Автосмена отключается при reduced motion."
+      },
+      "motion": "Три существующие выдержки, старт с практики 3 без видимого номера. Автосмена раз в 8 секунд при видимости >=35% и активной вкладке. Fade/slide слева направо 1000 мс. Без ручных кнопок и hover-паузы. Reduced motion отключает автосмену.",
+      "assets": [
+        "ocean-movement"
+      ],
+      "files": [
+        "homepage-v3/sections/philosophy/PhilosophySection.tsx",
+        "homepage-v3/sections/philosophy/PhilosophySection.module.css"
+      ],
+      "layoutReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/sections/bodhisattva.png",
+      "status": "implemented"
+    },
+    {
+      "id": "final",
+      "copy": {
+        "eyebrow": "ПРАКТИКА НАЧИНАЕТСЯ С ТЕБЯ",
+        "title": "Вернись к практике.",
+        "choices": [
+          {
+            "title": "01 · Личная практика",
+            "description": "Онлайн или в Праге - с вниманием к телу, задаче и текущему уровню.",
+            "cta": "Записаться на занятие",
+            "href": "#classes"
+          },
+          {
+            "title": "02 · Ретрит",
+            "description": "Возможность вырваться из рутины и погрузиться в практику, путешествие, новый опыт и знакомства",
+            "cta": "Посмотреть ретриты",
+            "href": "#retreats"
+          },
+          {
+            "title": "03 · the yoga method",
+            "description": "Фундамент гималайской йоги – Крепкое тело, прогибы, шпагаты, пранаямы и техники глубокого расслабления",
+            "cta": "Посмотреть курс",
+            "href": "/the-yoga-method"
+          }
+        ],
+        "brand": "Yogermeisters.",
+        "location": "Прага · Онлайн · Ретриты",
+        "message": "Намасте, йогермейстерс! Спасибо, что уделили внимание моему сайту. Самое время вернуться к практике!",
+        "links": [
+          {
+            "label": "Telegram",
+            "href": "https://t.me/AnastasiaPagliacci"
+          },
+          {
+            "label": "YouTube",
+            "href": "https://www.youtube.com/watch?v=Z_AabfLhaHo"
+          },
+          {
+            "label": "Шала",
+            "href": "/cabinet"
+          }
+        ]
+      },
+      "layout": {
+        "desktop": "Большой заголовок, три открытых столбца действий, внизу бренд почти на всю ширину и минимальный footer.",
+        "mobile": "Столбцы становятся тремя строками; бренд масштабируется без переполнения."
+      },
+      "motion": "Естественный поток без pin. Композиция первого макета: заголовок, три открытых направления, крупный бренд, нижние ссылки.",
+      "assets": [],
+      "files": [
+        "homepage-v3/sections/footer/FooterSection.tsx",
+        "homepage-v3/sections/footer/FooterSection.module.css"
+      ],
+      "layoutReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/sections/footer.png",
+      "status": "implemented"
+    }
+  ],
+  "implementation": {
+    "entry": "homepage-v3/HomepageV3.tsx",
+    "styles": "homepage-v3/HomepageV3.module.css",
+    "motion": "homepage-v3/useIntroMotion.ts",
+    "media": "homepage-v3/media.ts",
+    "routes": [
+      "/",
+      "/homepage-v3"
+    ],
+    "font": "client/public/assets/landing-v3/fonts/InterVariable.woff2",
+    "runtimeAssets": "client/public/assets/landing-v3",
+    "sourcePhotos": "homepage-v3/assets/real-photos/manifest.json"
+  },
+  "revisions": [
+    {
+      "date": "2026-10-10",
+      "source": "user",
+      "changes": "Hero: 10 уникальных фото разных форматов, обязательно ZVC03615.jpg и фото у водопада, без нижней стрелки. Fixed шапка с полупрозрачным mix-blend-mode:difference. Бодхисаттва: без номера и ручных контролов, более узкий текст, плавная горизонтальная автосмена и бесшовный градиент фотографии."
+    }
+  ]
+}

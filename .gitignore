@@ -7,3 +7,4 @@ vite.config.ts.*
 .env
 .env.local
 .env.*.local
+homepage-v3/assets/real-photos/source/

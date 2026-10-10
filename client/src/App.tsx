@@ -43,6 +43,9 @@ function Router() {
         <Route path="/">
           <Home language={language} setLanguage={setLanguage} />
         </Route>
+        <Route path="/homepage-v3">
+          <Home language={language} setLanguage={setLanguage} />
+        </Route>
         <Route path="/retreats/:slug">
           {(params) => <RetreatPage slug={params.slug} language={language} setLanguage={setLanguage} />}
         </Route>
