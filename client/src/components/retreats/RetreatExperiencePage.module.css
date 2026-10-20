@@ -22,6 +22,7 @@
 }
 
 .page *, .page *::before, .page *::after { box-sizing: border-box; }
+.page main, .page main > section { min-width: 0; }
 .page :is(h1, h2, h3, p, figure, ul, ol) { margin: 0; }
 .page :is(h1, h2, h3) { font-weight: 800; white-space: pre-line; letter-spacing: -.07em; }
 .page a { color: inherit; text-decoration: none; }
@@ -70,21 +71,22 @@
 
 .page h2 { font-size: clamp(54px, 6.4vw, 112px); font-weight: 800; line-height: .93; letter-spacing: -.07em; }
 
-.stay { display: grid; grid-template-columns: .8fr 1.4fr; align-items: center; gap: 7%; padding: 70px var(--gutter) 90px; background: #e5e1d6; }
+.stay { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); align-items: center; gap: 7%; padding: 70px var(--gutter) 90px; background: #e5e1d6; }
+.stayCopy { min-width: 0; }
 .stayCopy h2 { margin-bottom: 28px; }
 .page .stayCopy h2 { font-size: clamp(40px, 3.7vw, 64px); }
 .stayCopy > p:last-child { max-width: 420px; font-size: var(--body-size); line-height: var(--body-leading); color: #50524a; }
 .photograph { position: relative; min-width: 0; }
 .photograph img { height: 100%; object-fit: cover; }
-.stayPhotos { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(10, 1fr); aspect-ratio: 1.12; isolation: isolate; }
+.stayPhotos { display: grid; min-width: 0; max-width: 100%; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(10, minmax(0, 1fr)); aspect-ratio: 1.12; isolation: isolate; }
 .stayPhotos .photograph { height: 100%; overflow: hidden; border-radius: 20px; }
 .stayPhotos .photograph:first-child { grid-area: 1 / 1 / 7 / 11; }
 .stayPhotos .photograph:nth-child(2) { grid-area: 3 / 9 / 10 / 13; z-index: 1; border: 6px solid #e5e1d6; }
 .stayPhotos .photograph:nth-child(3) { grid-area: 6 / 3 / 11 / 9; z-index: 2; border: 6px solid #e5e1d6; }
 .stayPhotos .photograph img { width: 100%; height: 100%; }
 
-.inclusions { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; padding: 80px var(--gutter) 88px; }
-.inclusions > div { border-top: 1px solid var(--line); padding-top: 28px; }
+.inclusions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10%; padding: 80px var(--gutter) 88px; }
+.inclusions > div { min-width: 0; border-top: 1px solid var(--line); padding-top: 28px; }
 .page .inclusions h2 { font-size: clamp(36px, 3.7vw, 64px); margin-bottom: 30px; }
 .inclusions ul { list-style: none; padding: 0; display: grid; gap: 16px; }
 .inclusions li { display: flex; gap: 18px; align-items: baseline; font-size: clamp(18px, 1.6vw, 24px); line-height: 1.4; }
@@ -116,15 +118,15 @@
 .programme { padding: 90px var(--gutter) 100px; background: var(--wine); color: var(--paper); }
 .programIntro { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 42px; }
 .programIntro > p { max-width: 320px; font-size: var(--body-size); line-height: var(--body-leading); color: rgb(242 239 231 / 78%); }
-.days { display: grid; gap: 12px; }
-.dayCard { border-radius: 16px; background: var(--paper); color: var(--ink); overflow: hidden; scroll-margin-top: 24px !important; }
+.days { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.dayCard { min-width: 0; border-radius: 16px; background: var(--paper); color: var(--ink); overflow: hidden; scroll-margin-top: 24px !important; }
 .dayTrigger { display: flex; align-items: center; gap: 24px; width: 100%; padding: 24px 30px; border: 0; text-align: left; background: transparent; color: inherit; cursor: pointer; }
 .page .dayTrigger:focus-visible { outline-offset: -5px; border-radius: 16px; outline-color: var(--wine); }
 .dayNumber { font-size: 14px; font-weight: 500; letter-spacing: -.04em; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; display: grid; place-items: center; color: var(--wine); flex-shrink: 0; }
 .dayLabel { display: flex; flex: 1; align-items: center; gap: 30px; min-width: 0; }
 .dayLabel time { flex: 0 0 170px; font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--muted); }
 .dayLabel time::first-letter { text-transform: uppercase; }
-.dayLabel > span { font-size: clamp(20px, 2.15vw, 30px); line-height: 1.2; letter-spacing: -.045em; font-weight: 500; }
+.dayLabel > span { min-width: 0; overflow-wrap: anywhere; font-size: clamp(20px, 2.15vw, 30px); line-height: 1.2; letter-spacing: -.045em; font-weight: 500; }
 .dayToggle { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #e4ded4; color: var(--wine); flex-shrink: 0; transition: background 200ms ease, color 200ms ease; }
 .dayToggle svg { transition: transform 280ms ease; }
 .dayOpen .dayToggle { color: var(--paper); background: var(--wine); }
@@ -132,7 +134,7 @@
 .dayReveal { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 320ms ease, visibility 320ms; }
 .dayOpen .dayReveal { grid-template-rows: 1fr; visibility: visible; }
 .dayRevealInner { overflow: hidden; min-height: 0; }
-.dayPanel { display: grid; grid-template-columns: 1.1fr 1fr; align-items: start; gap: 48px; padding: 8px 30px 32px 98px; }
+.dayPanel { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; gap: 48px; padding: 8px 30px 32px 98px; }
 .schedule { list-style: none; padding: 0; display: grid; gap: 20px; align-content: start; }
 .schedule li { display: grid; gap: 6px; }
 .scheduleTime { color: var(--wine); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -140,7 +142,7 @@
 .dayImage { align-self: stretch; max-height: 390px; min-height: 280px; border-radius: 10px; overflow: hidden; }
 .dayImage img { position: absolute; inset: 0; }
 
-.booking { display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 10%; padding: 80px var(--gutter); color: var(--paper); background: var(--wine); }
+.booking { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; gap: 10%; padding: 80px var(--gutter); color: var(--paper); background: var(--wine); }
 .bookingText { margin-top: 28px !important; max-width: 500px; font-size: var(--body-size); line-height: var(--body-leading); color: rgb(242 239 231 / 88%); }
 .bookingActions { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
 .bookingOffer { display: grid; gap: 14px; }
@@ -168,7 +170,7 @@
 
 @media (max-width: 800px) {
   .reasonGallery { height: clamp(380px, 95vw, 640px); }
-  .reasons { grid-template-columns: 1fr; gap: 40px; padding-top: 64px; padding-bottom: 64px; }
+  .reasons { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 64px; padding-bottom: 64px; }
   .page .reasons h2 { font-size: clamp(48px, 7.5vw, 64px); }
   .reasonDescriptions { max-width: 520px; }
   .programme { padding-top: 64px; padding-bottom: 64px; }
@@ -187,11 +189,11 @@
   .heroContent { padding-bottom: 65px; }
   .heroText { max-width: 420px; font-size: 16px; }
   .heroImage { object-position: 60% center; }
-  .stay { grid-template-columns: 1fr; padding-top: 60px; padding-bottom: 65px; gap: 30px; }
+  .stay { grid-template-columns: minmax(0, 1fr); padding-top: 60px; padding-bottom: 65px; gap: 30px; }
   .stayCopy > p:last-child { max-width: 560px; }
   .stayPhotos { width: 100%; max-width: 680px; }
   .inclusions { gap: 40px; padding-top: 64px; padding-bottom: 64px; }
-  .booking { gap: 50px; padding-top: 70px; padding-bottom: 70px; grid-template-columns: 1fr; }
+  .booking { gap: 50px; padding-top: 70px; padding-bottom: 70px; grid-template-columns: minmax(0, 1fr); }
   .bookingText { max-width: 600px; }
 }
 
@@ -213,7 +215,7 @@
   .dayLabel > span { font-size: 20px; }
   .dayToggle { width: 30px; height: 30px; }
   .dayToggle svg { width: 18px; height: 18px; }
-  .dayPanel { grid-template-columns: 1fr; padding: 6px 20px 22px; gap: 24px; }
+  .dayPanel { grid-template-columns: minmax(0, 1fr); padding: 6px 20px 22px; gap: 24px; }
   .schedule { gap: 16px; }
   .dayImage { min-height: 0; aspect-ratio: 4 / 3; }
 
@@ -234,9 +236,12 @@
   .heroPrice { flex-basis: 100%; gap: 5px 8px; }
   .page h2, .page .stayCopy h2 { font-size: clamp(40px, 12vw, 70px); }
   .stay { padding-top: 50px; padding-bottom: 50px; }
-  .stayPhotos .photograph { border-radius: 14px; }
-  .stayPhotos .photograph:not(:first-child) { border-width: 4px; }
-  .inclusions { grid-template-columns: 1fr; gap: 36px; padding-top: 48px; padding-bottom: 52px; }
+  .stayPhotos { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; gap: 10px; aspect-ratio: auto; }
+  .stayPhotos .photograph { height: auto; aspect-ratio: 4 / 3; border-radius: 14px; }
+  .stayPhotos .photograph:first-child { grid-area: auto; grid-column: 1 / -1; aspect-ratio: 3 / 2; }
+  .stayPhotos .photograph:nth-child(2), .stayPhotos .photograph:nth-child(3) { grid-area: auto; border: 0; }
+  .stayPhotos .photograph img { position: absolute; inset: 0; }
+  .inclusions { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 48px; padding-bottom: 52px; }
   .page .inclusions h2 { font-size: 36px; margin-bottom: 24px; }
   .booking { padding-top: 60px; padding-bottom: 60px; }
   .bookingPrice { font-size: clamp(56px, 16vw, 72px); }
