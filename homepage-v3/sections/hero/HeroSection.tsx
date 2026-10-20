@@ -18,16 +18,15 @@ interface HeroTile {
 }
 
 const HERO_TILES: readonly HeroTile[] = [
-  { photo: 'braidedPortrait', position: '50% 38%' },
   { photo: 'sunsetBreath', position: '50% 55%' },
-  { photo: 'oceanMovement', position: '50% 82%' },
+  { photo: 'retreatCampfire', position: '50% 60%' },
   { photo: 'prayerFlagsPortrait', position: '50% 48%' },
-  { photo: 'studioBackbend', position: '50% 56%' },
-  { photo: 'mirrorPortrait', position: '50% 35%' },
-  { photo: 'waterfallMeditation', position: '50% 62%' },
-  { photo: 'rockPose', position: '50% 35%' },
-  { photo: 'rockStanding', position: '50% 35%' },
-  { photo: 'paddleboardYoga', position: '50% 55%' },
+  { photo: 'studioBackbend', position: '50% 85%' },
+  { photo: 'waterfallWalk', position: '35% 65%' },
+  { photo: 'waterfallMeditation', position: '50% 56%' },
+  { photo: 'mountainMeditation', position: '45% 65%' },
+  { photo: 'prayerFlagsWalk', position: '50% 65%' },
+  { photo: 'templeRoof', position: '65% 50%' },
 ];
 
 const COPY = {

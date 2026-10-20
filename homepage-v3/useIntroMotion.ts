@@ -11,16 +11,15 @@ type SceneName = 'hero' | 'about' | 'classes';
 type ScatterPosition = readonly [number, number, number, number];
 
 const SCATTER_POSITIONS: readonly ScatterPosition[] = [
-  [0.025, 0.07, 0.92, -12],
-  [0.31, 0.04, 0.8, 7],
+  [0.04, 0.07, 0.8, -7],
   [0.73, 0.005, 1, -13],
   [1.015, 0.22, 1, 11],
   [-0.04, 0.55, 0.85, 11],
   [0.4, -0.24, 0.9, -9],
   [1.04, 0.63, 0.95, -9],
-  [0.015, 0.98, 0.95, -13],
   [0.39, 1.2, 0.85, 13],
   [0.92, 1.015, 1, 15],
+  [0.75, -0.12, 0.8, 8],
 ];
 
 export function useIntroMotion(

@@ -4,6 +4,8 @@ import hashlib
 import json
 import shutil
 import sys
+import subprocess
+import tempfile
 
 from PIL import Image, ImageChops, ImageCms, ImageOps
 
@@ -118,7 +120,65 @@ PHOTO_SPECS = [
         'whatUsedFor': ['additional real photograph for future editorial use'],
         'cropGuidance': 'Keep both people and the waterfall. Do not use in the current About composition.',
     },
+    {
+        'id': 'retreatCampfire',
+        'sourceName': 'IMG_2271.HEIC',
+        'filename': 'retreat-campfire.webp',
+        'alt': {'ru': 'Участницы ретрита у костра среди гор и деревьев.', 'en': 'Retreat participants gathered around a campfire among mountains and trees.'},
+        'recommendedObjectPosition': '50% 60%',
+        'whatUsedFor': ['hero unique photograph'],
+        'cropGuidance': 'Preserve the original photograph; responsive cropping is applied in CSS.',
+    },
+    {
+        'id': 'templeRoof',
+        'sourceName': 'IMG_5194.HEIC',
+        'filename': 'temple-roof.webp',
+        'alt': {'ru': 'Резная крыша буддийского храма на фоне неба.', 'en': 'The ornate roof of a Buddhist temple against the sky.'},
+        'recommendedObjectPosition': '65% 50%',
+        'whatUsedFor': ['hero unique photograph'],
+        'cropGuidance': 'Preserve the original photograph; responsive cropping is applied in CSS.',
+    },
+    {
+        'id': 'waterfallWalk',
+        'sourceName': 'Screenshot 2026-10-20 at 14.03.58.png',
+        'filename': 'waterfall-walk.webp',
+        'alt': {'ru': 'Анастасия идёт по воде рядом с водопадом.', 'en': 'Anastasia walking through the water beside a waterfall.'},
+        'recommendedObjectPosition': '40% 65%',
+        'whatUsedFor': ['hero unique photograph'],
+        'cropGuidance': 'Preserve the original photograph; responsive cropping is applied in CSS.',
+    },
+    {
+        'id': 'mountainMeditation',
+        'sourceName': 'Screenshot 2026-10-20 at 14.03.45.png',
+        'filename': 'mountain-meditation-detail.webp',
+        'alt': {'ru': 'Крупный план рук во время медитации на скале над облаками.', 'en': 'A close-up of hands during meditation on a rock above the clouds.'},
+        'recommendedObjectPosition': '45% 65%',
+        'whatUsedFor': ['hero unique photograph'],
+        'cropGuidance': 'Preserve the original photograph; responsive cropping is applied in CSS.',
+    },
+    {
+        'id': 'prayerFlagsWalk',
+        'sourceName': 'ZVC04853.JPG',
+        'filename': 'prayer-flags-walk.webp',
+        'alt': {'ru': 'Анастасия и монах среди молитвенных флажков.', 'en': 'Anastasia and a monk among prayer flags.'},
+        'recommendedObjectPosition': '50% 50%',
+        'whatUsedFor': ['hero unique photograph'],
+        'cropGuidance': 'Preserve the original photograph; responsive cropping is applied in CSS.',
+    },
 ]
+
+
+def open_source(path: Path) -> Image.Image:
+    if path.suffix.lower() not in {'.heic', '.heif'}:
+        return Image.open(path)
+    with tempfile.TemporaryDirectory() as temporary:
+        converted = Path(temporary) / 'source.png'
+        subprocess.run(['sips', '-s', 'format', 'png', str(path), '--out', str(converted)],
+                       check=True, capture_output=True)
+        image = Image.open(converted)
+        image.load()
+        return image
+
 
 assets = []
 for spec in PHOTO_SPECS:
@@ -127,7 +187,7 @@ for spec in PHOTO_SPECS:
     if input_file.resolve() != source_file.resolve():
         shutil.copy2(input_file, source_file)
     source_hash = hashlib.sha256(source_file.read_bytes()).hexdigest()
-    with Image.open(source_file) as source_image:
+    with open_source(source_file) as source_image:
         raw_size = list(source_image.size)
         orientation = source_image.getexif().get(274, 1)
         exif_color_space = source_image.getexif().get_ifd(34665).get(40961)
@@ -186,7 +246,7 @@ for spec in PHOTO_SPECS:
     })
     assets.append(asset)
 
-hero_tiles = [{'tile': 1, 'assetId': 'braidedPortrait', 'objectPosition': '50% 38%'}, {'tile': 2, 'assetId': 'sunsetBreath', 'objectPosition': '50% 55%'}, {'tile': 3, 'assetId': 'oceanMovement', 'objectPosition': '50% 82%'}, {'tile': 4, 'assetId': 'prayerFlagsPortrait', 'objectPosition': '50% 48%'}, {'tile': 5, 'assetId': 'studioBackbend', 'objectPosition': '50% 56%'}, {'tile': 6, 'assetId': 'mirrorPortrait', 'objectPosition': '50% 35%'}, {'tile': 7, 'assetId': 'waterfallMeditation', 'objectPosition': '50% 62%'}, {'tile': 8, 'assetId': 'rockPose', 'objectPosition': '50% 35%'}, {'tile': 9, 'assetId': 'rockStanding', 'objectPosition': '50% 35%'}, {'tile': 10, 'assetId': 'paddleboardYoga', 'objectPosition': '50% 55%'}]
+hero_tiles = [{'tile': 1, 'assetId': 'sunsetBreath', 'objectPosition': '50% 55%'}, {'tile': 2, 'assetId': 'retreatCampfire', 'objectPosition': '50% 60%'}, {'tile': 3, 'assetId': 'prayerFlagsPortrait', 'objectPosition': '50% 48%'}, {'tile': 4, 'assetId': 'studioBackbend', 'objectPosition': '50% 85%'}, {'tile': 5, 'assetId': 'waterfallWalk', 'objectPosition': '35% 65%'}, {'tile': 6, 'assetId': 'waterfallMeditation', 'objectPosition': '50% 56%'}, {'tile': 7, 'assetId': 'mountainMeditation', 'objectPosition': '45% 65%'}, {'tile': 8, 'assetId': 'prayerFlagsWalk', 'objectPosition': '50% 65%'}, {'tile': 9, 'assetId': 'templeRoof', 'objectPosition': '65% 50%'}]
 
 manifest = {
     'id': 'real-photos',
@@ -221,7 +281,7 @@ manifest = {
     },
     'assets': assets,
     'heroTiles': hero_tiles,
-    'heroTileGuidance': '10 unique real photographs, each used once in an irregular responsive mosaic. Geometry: HeroSection.module.css.',
+    'heroTileGuidance': '9 unique real photographs filling the hero. Alternate arrangement: architectural and hand details on the left, wide group photos in the center, portraits on the right. Studio pose uses a compact crop aligned to the bottom. Geometry: HeroSection.module.css.',
     'checks': {
         'originalCount': len(assets),
         'readyCount': len(assets),

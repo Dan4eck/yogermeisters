@@ -2,7 +2,7 @@
   "id": "real-photos",
   "projectRoot": "/Users/daniel/.codex/worktrees/1041/Yogermeisters",
   "assetRoot": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos",
-  "inputDirectory": "/Users/daniel/coding/Yogermeisters/homepage-v3/new assets",
+  "inputDirectory": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source",
   "compositionReference": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/layout/full-page-v2.png",
   "generation": false,
   "processing": {
@@ -411,64 +411,249 @@
       "sourceSha256": "6628152acfec852b7d934051e3efddd345a69ff2828ec216e78aa7ca84791675",
       "readySha256": "7dfbae6b3306b043a3d53f1608c2b402f5061715b3e28b132a4d72d15ac696e2",
       "sourceExifColorSpace": null
+    },
+    {
+      "id": "retreatCampfire",
+      "sourceName": "IMG_2271.HEIC",
+      "alt": {
+        "ru": "Участницы ретрита у костра среди гор и деревьев.",
+        "en": "Retreat participants gathered around a campfire among mountains and trees."
+      },
+      "recommendedObjectPosition": "50% 60%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Preserve the original photograph; responsive cropping is applied in CSS.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/IMG_2271.HEIC",
+      "inputFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/IMG_2271.HEIC",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/retreat-campfire.webp",
+      "readyRelative": "ready/retreat-campfire.webp",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 474308,
+      "sourceBytes": 2473353,
+      "sourceRawSize": [
+        5712,
+        4284
+      ],
+      "sourceOrientedSize": [
+        5712,
+        4284
+      ],
+      "sourceExifOrientation": 1,
+      "sourceExifColorSpace": null,
+      "sourceProfile": "Display P3",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "de0b37b9fe35742d14dce0ff0785694b4cc48c352acfcdc141d138b2c8c51013",
+      "readySha256": "aa7902ee228fe770da4daffc274e12ed708e3ae8846eb9e9d5b6765870d7d2c5"
+    },
+    {
+      "id": "templeRoof",
+      "sourceName": "IMG_5194.HEIC",
+      "alt": {
+        "ru": "Резная крыша буддийского храма на фоне неба.",
+        "en": "The ornate roof of a Buddhist temple against the sky."
+      },
+      "recommendedObjectPosition": "65% 50%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Preserve the original photograph; responsive cropping is applied in CSS.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/IMG_5194.HEIC",
+      "inputFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/IMG_5194.HEIC",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/temple-roof.webp",
+      "readyRelative": "ready/temple-roof.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 361906,
+      "sourceBytes": 1517140,
+      "sourceRawSize": [
+        4032,
+        3024
+      ],
+      "sourceOrientedSize": [
+        3024,
+        4032
+      ],
+      "sourceExifOrientation": 6,
+      "sourceExifColorSpace": null,
+      "sourceProfile": "Display P3",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "2abe286fae647b6f5988d329d664fdf4850044df761c99c1dc6af1a24b0851a1",
+      "readySha256": "6a2c2310484072c460bdd931231d576720154d369c4a86ac658f562d90092aa5"
+    },
+    {
+      "id": "waterfallWalk",
+      "sourceName": "Screenshot 2026-10-20 at 14.03.58.png",
+      "alt": {
+        "ru": "Анастасия идёт по воде рядом с водопадом.",
+        "en": "Anastasia walking through the water beside a waterfall."
+      },
+      "recommendedObjectPosition": "40% 65%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Preserve the original photograph; responsive cropping is applied in CSS.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/Screenshot 2026-10-20 at 14.03.58.png",
+      "inputFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/Screenshot 2026-10-20 at 14.03.58.png",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/waterfall-walk.webp",
+      "readyRelative": "ready/waterfall-walk.webp",
+      "width": 936,
+      "height": 1540,
+      "bytes": 58562,
+      "sourceBytes": 1971385,
+      "sourceRawSize": [
+        936,
+        1540
+      ],
+      "sourceOrientedSize": [
+        936,
+        1540
+      ],
+      "sourceExifOrientation": 1,
+      "sourceExifColorSpace": null,
+      "sourceProfile": "Display",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "f1b2c371619246356c4307ae540098617753cf38a1ac9041acf0ed16e3813dd7",
+      "readySha256": "3a08f562c6811bd2177b36d234b69e52f1e16ee3c1adb4383263cbb0daa5a714"
+    },
+    {
+      "id": "mountainMeditation",
+      "sourceName": "Screenshot 2026-10-20 at 14.03.45.png",
+      "alt": {
+        "ru": "Крупный план рук во время медитации на скале над облаками.",
+        "en": "A close-up of hands during meditation on a rock above the clouds."
+      },
+      "recommendedObjectPosition": "45% 65%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Preserve the original photograph; responsive cropping is applied in CSS.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/Screenshot 2026-10-20 at 14.03.45.png",
+      "inputFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/Screenshot 2026-10-20 at 14.03.45.png",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/mountain-meditation-detail.webp",
+      "readyRelative": "ready/mountain-meditation-detail.webp",
+      "width": 960,
+      "height": 1470,
+      "bytes": 92260,
+      "sourceBytes": 2443911,
+      "sourceRawSize": [
+        960,
+        1470
+      ],
+      "sourceOrientedSize": [
+        960,
+        1470
+      ],
+      "sourceExifOrientation": 1,
+      "sourceExifColorSpace": null,
+      "sourceProfile": "Display",
+      "sourceMonochrome": false,
+      "colorConversion": "embedded ICC converted to sRGB",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "667249065093dd0785c44ea40a20892edd0cbeb61625c0b0a53b5377f9e6cf27",
+      "readySha256": "44cb77b29ed37615672caa77d0f05049d17ae319df9b535308c2c944c985bdfe"
+    },
+    {
+      "id": "prayerFlagsWalk",
+      "sourceName": "ZVC04853.JPG",
+      "alt": {
+        "ru": "Анастасия и монах среди молитвенных флажков.",
+        "en": "Anastasia and a monk among prayer flags."
+      },
+      "recommendedObjectPosition": "50% 50%",
+      "whatUsedFor": [
+        "hero unique photograph"
+      ],
+      "cropGuidance": "Preserve the original photograph; responsive cropping is applied in CSS.",
+      "sourceFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC04853.JPG",
+      "inputFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/source/ZVC04853.JPG",
+      "readyFile": "/Users/daniel/.codex/worktrees/1041/Yogermeisters/homepage-v3/assets/real-photos/ready/prayer-flags-walk.webp",
+      "readyRelative": "ready/prayer-flags-walk.webp",
+      "width": 1200,
+      "height": 1800,
+      "bytes": 195982,
+      "sourceBytes": 7466747,
+      "sourceRawSize": [
+        6000,
+        4000
+      ],
+      "sourceOrientedSize": [
+        4000,
+        6000
+      ],
+      "sourceExifOrientation": 8,
+      "sourceExifColorSpace": 1,
+      "sourceProfile": null,
+      "sourceMonochrome": false,
+      "colorConversion": "EXIF sRGB retained and explicitly tagged",
+      "colorSpace": "sRGB",
+      "alpha": false,
+      "sourceSha256": "5d6b128291697aceceedb06cc1e5330293403e510d141f33321ca970ba23c7a4",
+      "readySha256": "a1aee2509b768d9c77b347728f9ae92e8a3c18ce71b06853130001bebbf1d534"
     }
   ],
   "heroTiles": [
     {
       "tile": 1,
-      "assetId": "braidedPortrait",
-      "objectPosition": "50% 38%"
-    },
-    {
-      "tile": 2,
       "assetId": "sunsetBreath",
       "objectPosition": "50% 55%"
     },
     {
-      "tile": 3,
-      "assetId": "oceanMovement",
-      "objectPosition": "50% 82%"
+      "tile": 2,
+      "assetId": "retreatCampfire",
+      "objectPosition": "50% 60%"
     },
     {
-      "tile": 4,
+      "tile": 3,
       "assetId": "prayerFlagsPortrait",
       "objectPosition": "50% 48%"
     },
     {
-      "tile": 5,
+      "tile": 4,
       "assetId": "studioBackbend",
-      "objectPosition": "50% 56%"
+      "objectPosition": "50% 85%"
+    },
+    {
+      "tile": 5,
+      "assetId": "waterfallWalk",
+      "objectPosition": "35% 65%"
     },
     {
       "tile": 6,
-      "assetId": "mirrorPortrait",
-      "objectPosition": "50% 35%"
+      "assetId": "waterfallMeditation",
+      "objectPosition": "50% 56%"
     },
     {
       "tile": 7,
-      "assetId": "waterfallMeditation",
-      "objectPosition": "50% 62%"
+      "assetId": "mountainMeditation",
+      "objectPosition": "45% 65%"
     },
     {
       "tile": 8,
-      "assetId": "rockPose",
-      "objectPosition": "50% 35%"
+      "assetId": "prayerFlagsWalk",
+      "objectPosition": "50% 65%"
     },
     {
       "tile": 9,
-      "assetId": "rockStanding",
-      "objectPosition": "50% 35%"
-    },
-    {
-      "tile": 10,
-      "assetId": "paddleboardYoga",
-      "objectPosition": "50% 55%"
+      "assetId": "templeRoof",
+      "objectPosition": "65% 50%"
     }
   ],
-  "heroTileGuidance": "10 unique real photographs, each used once. Irregular responsive mosaic; exact geometry is owned by HeroSection.module.css. Required: prayerFlagsPortrait and waterfallMeditation.",
+  "heroTileGuidance": "9 unique real photographs filling the hero. Alternate arrangement: architectural and hand details on the left, wide group photos in the center, portraits on the right. Studio pose uses a compact crop aligned to the bottom. Geometry: HeroSection.module.css.",
   "checks": {
-    "originalCount": 10,
-    "readyCount": 10,
+    "originalCount": 15,
+    "readyCount": 15,
     "allSourcesByteIdenticalToInput": true,
     "allReadyFilesDecode": true,
     "allReadyFilesSrgbTagged": true,

@@ -30,54 +30,49 @@
   inset: 0;
 }
 
-.tile[data-hero-photo='braidedPortrait'] {
+.tile[data-hero-photo='templeRoof'] {
   grid-column: 1 / span 3;
-  grid-row: 1 / span 6;
+  grid-row: 1 / span 7;
+}
+
+.tile[data-hero-photo='mountainMeditation'] {
+  grid-column: 1 / span 3;
+  grid-row: 8 / span 5;
+}
+
+.tile[data-hero-photo='retreatCampfire'] {
+  grid-column: 4 / span 6;
+  grid-row: 1 / span 4;
 }
 
 .tile[data-hero-photo='sunsetBreath'] {
-  grid-column: 4 / span 2;
-  grid-row: 1 / span 4;
-}
-
-.tile[data-hero-photo='oceanMovement'] {
-  grid-column: 6 / span 3;
-  grid-row: 1 / span 4;
-}
-
-.tile[data-hero-photo='prayerFlagsPortrait'] {
-  grid-column: 9 / span 4;
-  grid-row: 1 / span 6;
-}
-
-.tile[data-hero-photo='studioBackbend'] {
-  grid-column: 4 / span 5;
+  grid-column: 4 / span 3;
   grid-row: 5 / span 4;
 }
 
-.tile[data-hero-photo='mirrorPortrait'] {
-  grid-column: 9 / span 2;
-  grid-row: 7 / span 6;
+.tile[data-hero-photo='studioBackbend'] {
+  grid-column: 7 / span 3;
+  grid-row: 5 / span 4;
 }
 
 .tile[data-hero-photo='waterfallMeditation'] {
-  grid-column: 1 / span 3;
-  grid-row: 7 / span 6;
-}
-
-.tile[data-hero-photo='rockPose'] {
-  grid-column: 4 / span 3;
+  grid-column: 4 / span 6;
   grid-row: 9 / span 4;
 }
 
-.tile[data-hero-photo='rockStanding'] {
-  grid-column: 7 / span 2;
-  grid-row: 9 / span 4;
+.tile[data-hero-photo='prayerFlagsPortrait'] {
+  grid-column: 10 / span 3;
+  grid-row: 1 / span 4;
 }
 
-.tile[data-hero-photo='paddleboardYoga'] {
-  grid-column: 11 / span 2;
-  grid-row: 7 / span 6;
+.tile[data-hero-photo='waterfallWalk'] {
+  grid-column: 10 / span 3;
+  grid-row: 5 / span 4;
+}
+
+.tile[data-hero-photo='prayerFlagsWalk'] {
+  grid-column: 10 / span 3;
+  grid-row: 9 / span 4;
 }
 
 .photo {
@@ -221,54 +216,49 @@
 }
 
 @media (max-width: 600px) {
-  .tile[data-hero-photo='braidedPortrait'] {
-    grid-column: 1 / span 4;
-    grid-row: 1 / span 4;
-  }
-
-  .tile[data-hero-photo='sunsetBreath'] {
-    grid-column: 1 / span 4;
-    grid-row: 5 / span 3;
-  }
-
-  .tile[data-hero-photo='oceanMovement'] {
-    grid-column: 5 / span 8;
-    grid-row: 4 / span 4;
-  }
-
-  .tile[data-hero-photo='prayerFlagsPortrait'] {
-    grid-column: 5 / span 8;
+  .tile[data-hero-photo='retreatCampfire'] {
+    grid-column: 1 / span 8;
     grid-row: 1 / span 3;
   }
 
-  .tile[data-hero-photo='studioBackbend'] {
-    grid-column: 7 / span 6;
-    grid-row: 8 / span 3;
+  .tile[data-hero-photo='templeRoof'] {
+    grid-column: 9 / span 4;
+    grid-row: 1 / span 3;
   }
 
-  .tile[data-hero-photo='mirrorPortrait'] {
-    grid-column: 1 / span 3;
-    grid-row: 11 / span 2;
+  .tile[data-hero-photo='prayerFlagsPortrait'] {
+    grid-column: 1 / span 6;
+    grid-row: 4 / span 3;
   }
 
   .tile[data-hero-photo='waterfallMeditation'] {
+    grid-column: 7 / span 6;
+    grid-row: 4 / span 3;
+  }
+
+  .tile[data-hero-photo='studioBackbend'] {
     grid-column: 1 / span 6;
-    grid-row: 8 / span 3;
+    grid-row: 7 / span 3;
   }
 
-  .tile[data-hero-photo='rockPose'] {
-    grid-column: 4 / span 3;
-    grid-row: 11 / span 2;
+  .tile[data-hero-photo='prayerFlagsWalk'] {
+    grid-column: 7 / span 6;
+    grid-row: 7 / span 3;
   }
 
-  .tile[data-hero-photo='rockStanding'] {
-    grid-column: 7 / span 3;
-    grid-row: 11 / span 2;
+  .tile[data-hero-photo='waterfallWalk'] {
+    grid-column: 1 / span 4;
+    grid-row: 10 / span 3;
   }
 
-  .tile[data-hero-photo='paddleboardYoga'] {
-    grid-column: 10 / span 3;
-    grid-row: 11 / span 2;
+  .tile[data-hero-photo='sunsetBreath'] {
+    grid-column: 5 / span 4;
+    grid-row: 10 / span 3;
+  }
+
+  .tile[data-hero-photo='mountainMeditation'] {
+    grid-column: 9 / span 4;
+    grid-row: 10 / span 3;
   }
 
   .copy {
