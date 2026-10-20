@@ -38,7 +38,9 @@ export function useIntroMotion(
 
     const trigger = triggerRef.current;
     const progress: Record<string, number> = { home: 0, about: 0.5, classes: 0.95 };
-    const headerOffset = id === 'home' ? 0 : (root?.querySelector('header')?.clientHeight ?? 88) + 12;
+    const headerOffset = id === 'home' || id === 'retreats'
+      ? 0
+      : (root?.querySelector('header')?.clientHeight ?? 88) + 12;
     const top = trigger && id in progress
       ? trigger.start + (trigger.end - trigger.start) * progress[id]
       : target.getBoundingClientRect().top + window.scrollY - headerOffset;
