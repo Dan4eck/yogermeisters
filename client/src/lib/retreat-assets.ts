@@ -17,5 +17,8 @@ const publicRetreatImageByFileName: Record<string, string> = {
 };
 
 export function getRetreatImageUrl(image: string): string {
+  if (/^\/assets\/[a-zA-Z0-9/_-]+\.(webp|jpe?g|png|avif)$/.test(image)) {
+    return image;
+  }
   return imageUrlByFileName[image] ?? publicRetreatImageByFileName[image] ?? '';
 }

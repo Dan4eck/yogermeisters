@@ -1,6 +1,7 @@
 import { ciraliRetreat } from './cirali';
 import { mountainsRetreat } from './mountains';
 import { nepalRetreat } from './nepal';
+import { sriLankaRetreat } from './sri-lanka';
 import type {
   RetreatLanguage,
   RetreatListResponse,
@@ -35,7 +36,7 @@ export type {
   RetreatUpdate,
 };
 
-export const retreatSeedData: readonly RetreatSeed[] = [ciraliRetreat, mountainsRetreat, nepalRetreat];
+export const retreatSeedData: readonly RetreatSeed[] = [ciraliRetreat, mountainsRetreat, nepalRetreat, sriLankaRetreat];
 
 function matchesView(retreat: RetreatRecord, view: RetreatView, today: string): boolean {
   const isPast = retreat.endDate < today;
@@ -66,6 +67,7 @@ function localizeRetreat(seed: RetreatSeed, language: RetreatLanguage): RetreatR
     price: seed.price,
     bookingUrl: seed.bookingUrl,
     coverImage: seed.coverImage,
+    experience: translation?.experience ?? seed.experience,
     postBlocks: seed.blocks
       .slice()
       .sort((left, right) => left.sortOrder - right.sortOrder)

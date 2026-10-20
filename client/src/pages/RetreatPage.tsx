@@ -3,6 +3,7 @@ import { Link } from 'wouter';
 import { ArrowLeft, Calendar, ExternalLink, MapPin } from 'lucide-react';
 
 import Header from '@/components/landing-v2/Header';
+import RetreatExperiencePage from '@/components/retreats/RetreatExperiencePage';
 import { landingCopy } from '@/components/landing-v2/content';
 import { getRetreatImageUrl } from '@/lib/retreat-assets';
 import { fetchRetreat } from '@/lib/retreat-api';
@@ -28,6 +29,12 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
   const copy = landingCopy[language].retreats;
   const [retreat, setRetreat] = useState(() => getRetreatBySlug(slug, language));
 
+  useEffect((): void => {
+    if (!window.location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [slug]);
+
   useEffect(() => {
     const controller = new AbortController();
     setRetreat(getRetreatBySlug(slug, language));
@@ -41,6 +48,17 @@ export default function RetreatPage({ slug, language, setLanguage }: RetreatPage
   const dateLabel = retreat
     ? formatRetreatDateLabel(retreat.startDate, retreat.endDate, retreat.dateLabel, copy.dateLocale, language)
     : '';
+
+  if (retreat?.experience) {
+    return (
+      <RetreatExperiencePage
+        retreat={retreat}
+        experience={retreat.experience}
+        language={language}
+        setLanguage={setLanguage}
+      />
+    );
+  }
 
   return (
     <div className={`landing-v2-root ${styles.page}`}>

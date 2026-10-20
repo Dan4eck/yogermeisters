@@ -92,6 +92,7 @@ interface RetreatTranslation {
   title: string;
   location: string;
   dateLabel?: string;
+  experience?: RetreatExperience;
 }
 
 interface RetreatBlockTranslation {
@@ -127,6 +128,7 @@ interface Retreat {
   coverImage: string;
   translations?: Partial<Record<RetreatLanguage, RetreatTranslation>>;
   blocks: RetreatBlock[];
+  experience?: RetreatExperience;
 }
 
 interface AdminRetreatListResponse {
@@ -141,6 +143,16 @@ interface RetreatUpdateResponse {
 ```
 
 ### Ограничения полей
+
+`RetreatExperience` определён в `shared/retreats/experience.ts`: тексты hero/intro/stay/booking,
+`stayImages`, `bookingSteps`, `bookingNote` и массив `days`. Каждый день содержит `id`, `date`, `title`,
+`summary`, `pace`, `layout`, `highlights`, `images`, `schedule` и необязательное `note`.
+`layout`: `text | split | panorama | collage`. Изображение: `{ src, alt, caption? }`;
+элемент расписания: `{ time, text }`.
+Изображения должны указывать на локальные `/assets/...` с расширением WebP/JPEG/PNG/AVIF.
+Дни (1–31) требуют уникальных `id` и возрастающих корректных ISO-дат; расписание содержит 1–24 пункта.
+`experience` заменяется целиком, включая его перевод. Перед изменением прочитайте административную модель.
+Переведённый `experience` имеет приоритет над базовым. Старые ретриты могут не содержать этого поля.
 
 - `id` и `slug` неизменяемы и запрещены в `PATCH`-теле.
 - Все переданные строковые поля должны быть непустыми строками. `null` и `""` не принимаются.
@@ -381,6 +393,7 @@ interface PublicRetreat {
   bookingUrl: string;
   coverImage: string;
   postBlocks: PublicRetreatBlock[];
+  experience?: RetreatExperience;
 }
 ```
 

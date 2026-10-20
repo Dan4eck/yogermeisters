@@ -1,3 +1,5 @@
+import type { RetreatExperience } from './experience';
+
 export type RetreatLanguage = 'en' | 'ru';
 export type RetreatStatus = 'draft' | 'active' | 'archived';
 export type RetreatView = 'upcoming' | 'archive' | 'all';
@@ -8,6 +10,7 @@ export interface RetreatTranslationSeed {
   readonly title: string;
   readonly location: string;
   readonly dateLabel?: string;
+  readonly experience?: RetreatExperience;
 }
 
 export interface RetreatBlockTranslationSeed {
@@ -43,6 +46,7 @@ export interface RetreatSeed {
   readonly coverImage: string;
   readonly translations?: Partial<Record<RetreatLanguage, RetreatTranslationSeed>>;
   readonly blocks: readonly RetreatBlockSeed[];
+  readonly experience?: RetreatExperience;
 }
 
 export type RetreatEditableData = Omit<RetreatSeed, 'id' | 'slug'>;
@@ -73,6 +77,7 @@ export interface RetreatRecord {
   readonly bookingUrl: string;
   readonly coverImage: string;
   readonly postBlocks: readonly RetreatPostBlock[];
+  readonly experience?: RetreatExperience;
 }
 
 export interface RetreatListResponse {

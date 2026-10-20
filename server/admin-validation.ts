@@ -7,6 +7,7 @@ import type {
   RetreatUpdate,
   RetreatView,
 } from '@shared/retreats';
+import type { RetreatDay, RetreatDayLayout, RetreatExperience, RetreatMedia } from '@shared/retreats/experience';
 
 const RETREAT_UPDATE_KEYS = new Set<keyof RetreatEditableData>([
   'status',
@@ -20,6 +21,7 @@ const RETREAT_UPDATE_KEYS = new Set<keyof RetreatEditableData>([
   'coverImage',
   'translations',
   'blocks',
+  'experience',
 ]);
 const RETREAT_STATUSES = new Set(['draft', 'active', 'archived']);
 const BLOCK_TYPES = new Set(['paragraph', 'image', 'heading', 'callout', 'countdown']);
@@ -98,6 +100,9 @@ export function parseRetreatUpdate(body: unknown): RetreatUpdate {
     }
     update.blocks = record.blocks.map((block, index) => parseBlock(block, index));
   }
+  if (record.experience !== undefined) {
+    update.experience = parseRetreatExperience(record.experience, 'experience');
+  }
 
   return update as RetreatUpdate;
 }
@@ -112,13 +117,16 @@ function parseRetreatTranslations(value: unknown): Partial<Record<RetreatLanguag
       continue;
     }
     const translation = requireRecord(record[language], `translations.${language}`);
-    rejectUnknownKeys(translation, new Set(['title', 'location', 'dateLabel']), `translations.${language}`);
+    rejectUnknownKeys(translation, new Set(['title', 'location', 'dateLabel', 'experience']), `translations.${language}`);
     translations[language] = {
       title: requireString(translation.title, `translations.${language}.title`),
       location: requireString(translation.location, `translations.${language}.location`),
       ...(translation.dateLabel === undefined
         ? {}
         : { dateLabel: requireString(translation.dateLabel, `translations.${language}.dateLabel`) }),
+      ...(translation.experience === undefined
+        ? {}
+        : { experience: parseRetreatExperience(translation.experience, `translations.${language}.experience`) }),
     };
   }
 
@@ -245,6 +253,93 @@ function requireRecord(value: unknown, field: string): Record<string, unknown> {
 function requireString(value: unknown, field: string): string {
   if (typeof value !== 'string' || value.trim() === '') {
     throw new RequestValidationError(`${field} must be a non-empty string`);
+  }
+  return value;
+}
+
+function parseRetreatExperience(value: unknown, field: string): RetreatExperience {
+  const record = requireRecord(value, field);
+  const textKeys = [
+    'heroTitle', 'heroText', 'introTitle', 'introText', 'stayTitle', 'stayText',
+    'bookingTitle', 'bookingText', 'bookingNote',
+  ] as const;
+  rejectUnknownKeys(record, new Set([...textKeys, 'stayImages', 'days', 'bookingSteps']), field);
+  const text = Object.fromEntries(textKeys.map((key) => [key, requireString(record[key], `${field}.${key}`)])) as
+    Pick<RetreatExperience, typeof textKeys[number]>;
+  const days = requireArray(record.days, `${field}.days`, 1, 31).map((item, index): RetreatDay => {
+    const dayField = `${field}.days[${index}]`;
+    const day = requireRecord(item, dayField);
+    rejectUnknownKeys(day, new Set([
+      'id', 'date', 'title', 'summary', 'pace', 'layout', 'highlights', 'images', 'schedule', 'note',
+    ]), dayField);
+    const id = requireString(day.id, `${dayField}.id`);
+    if (!/^[a-z][a-z0-9-]*$/.test(id)) {
+      throw new RequestValidationError(`${dayField}.id must be a lowercase anchor identifier`);
+    }
+    const date = requireString(day.date, `${dayField}.date`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(Date.parse(date))
+      || new Date(date).toISOString().slice(0, 10) !== date) {
+      throw new RequestValidationError(`${dayField}.date must be a valid ISO date`);
+    }
+    const layout = requireString(day.layout, `${dayField}.layout`);
+    if (!['text', 'split', 'panorama', 'collage'].includes(layout)) {
+      throw new RequestValidationError(`${dayField}.layout is not supported`);
+    }
+    const images = parseExperienceMedia(day.images, `${dayField}.images`, layout === 'text' ? 0 : 1);
+    return {
+      id, date,
+      title: requireString(day.title, `${dayField}.title`),
+      summary: requireString(day.summary, `${dayField}.summary`),
+      pace: requireString(day.pace, `${dayField}.pace`),
+      layout: layout as RetreatDayLayout,
+      highlights: requireArray(day.highlights, `${dayField}.highlights`, 1, 4)
+        .map((text, index): string => requireString(text, `${dayField}.highlights[${index}]`)),
+      images,
+      schedule: requireArray(day.schedule, `${dayField}.schedule`, 1, 24).map((item, index) => {
+        const scheduleField = `${dayField}.schedule[${index}]`;
+        const entry = requireRecord(item, scheduleField);
+        rejectUnknownKeys(entry, new Set(['time', 'text']), scheduleField);
+        return {
+          time: requireString(entry.time, `${scheduleField}.time`),
+          text: requireString(entry.text, `${scheduleField}.text`),
+        };
+      }),
+      ...(day.note === undefined ? {} : { note: requireString(day.note, `${dayField}.note`) }),
+    };
+  });
+  if (new Set(days.map((day) => day.id)).size !== days.length
+    || days.some((day, index) => index > 0 && day.date <= days[index - 1].date)) {
+    throw new RequestValidationError(`${field}.days must have unique IDs and increasing dates`);
+  }
+  return {
+    ...text,
+    stayImages: parseExperienceMedia(record.stayImages, `${field}.stayImages`, 1),
+    days,
+    bookingSteps: requireArray(record.bookingSteps, `${field}.bookingSteps`, 1, 5)
+      .map((text, index): string => requireString(text, `${field}.bookingSteps[${index}]`)),
+  };
+}
+
+function parseExperienceMedia(value: unknown, field: string, minimum: number): readonly RetreatMedia[] {
+  return requireArray(value, field, minimum, 3).map((item, index): RetreatMedia => {
+    const imageField = `${field}[${index}]`;
+    const image = requireRecord(item, imageField);
+    rejectUnknownKeys(image, new Set(['src', 'alt', 'caption']), imageField);
+    const src = requireString(image.src, `${imageField}.src`);
+    if (!/^\/assets\/[a-zA-Z0-9/_-]+\.(webp|jpe?g|png|avif)$/.test(src)) {
+      throw new RequestValidationError(`${imageField}.src must be a local image under /assets/`);
+    }
+    return {
+      src,
+      alt: requireString(image.alt, `${imageField}.alt`),
+      ...(image.caption === undefined ? {} : { caption: requireString(image.caption, `${imageField}.caption`) }),
+    };
+  });
+}
+
+function requireArray(value: unknown, field: string, minimum: number, maximum: number): readonly unknown[] {
+  if (!Array.isArray(value) || value.length < minimum || value.length > maximum) {
+    throw new RequestValidationError(`${field} must contain ${minimum}–${maximum} items`);
   }
   return value;
 }

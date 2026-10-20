@@ -5,6 +5,8 @@ import { Link } from 'wouter';
 import { landingCopy } from '@/components/landing-v2/content';
 import type { Language } from '@/lib/i18n';
 import { formatRetreatDateLabel } from '@/lib/retreat-date';
+import { fetchRetreats } from '@/lib/retreat-api';
+import { getRetreatImageUrl } from '@/lib/retreat-assets';
 import { listRetreats, type RetreatRecord } from '@shared/retreat-content';
 
 import styles from './RetreatsSection.module.css';
@@ -20,15 +22,26 @@ interface RetreatSlot {
 }
 
 interface RetreatCard {
-  readonly retreat: RetreatRecord;
+  readonly slug: string;
   readonly image: string;
   readonly alt: string;
   readonly title: string;
   readonly dateLabel: string;
-  readonly isAvailable: boolean;
+  readonly location: string;
+  readonly price: string;
+  readonly href: string | null;
+  readonly statusLabel: string;
 }
 
 const RETREAT_SLOTS: readonly RetreatSlot[] = [
+  {
+    slug: 'sri-lanka-yoga-tour',
+    image: '/assets/landing-v3/retreats/sri-lanka.webp',
+    alt: {
+      ru: 'Пальмы на скалистом мысе у океана на Шри-Ланке',
+      en: 'Palm trees on a rocky headland by the ocean in Sri Lanka',
+    },
+  },
   {
     slug: 'cirali-yoga-tour',
     image: '/assets/landing-v3/retreats/cirali.webp',
@@ -76,29 +89,31 @@ const COPY = {
   },
 } as const;
 
-function getRetreatCards(language: Language): readonly RetreatCard[] {
+function getRetreatCards(language: Language, retreats: readonly RetreatRecord[]): readonly RetreatCard[] {
   const copy = COPY[language];
   const sectionCopy = landingCopy[language].retreats;
   const today = new Date().toISOString().slice(0, 10);
   const retreatBySlug = new Map<string, RetreatRecord>(
-    listRetreats('all', language).retreats.map((retreat: RetreatRecord): [string, RetreatRecord] => [
+    retreats.map((retreat: RetreatRecord): [string, RetreatRecord] => [
       retreat.slug,
       retreat,
     ]),
   );
 
-  return RETREAT_SLOTS.map((slot: RetreatSlot): RetreatCard => {
+  return RETREAT_SLOTS.flatMap((slot: RetreatSlot): readonly RetreatCard[] => {
     const retreat = retreatBySlug.get(slot.slug);
 
     if (!retreat) {
-      throw new Error(`Retreat content is missing for ${slot.slug}`);
+      return [];
     }
 
     const isNepal = slot.slug === 'nepal-buddhist-pilgrimage-tour';
 
-    return {
-      retreat,
-      image: slot.image,
+    return [{
+      slug: retreat.slug,
+      image: retreat.coverImage.startsWith('/assets/')
+        ? getRetreatImageUrl(retreat.coverImage) || slot.image
+        : slot.image,
       alt: slot.alt[language],
       title: isNepal ? copy.nepalTitle : retreat.title,
       dateLabel: formatRetreatDateLabel(
@@ -108,8 +123,11 @@ function getRetreatCards(language: Language): readonly RetreatCard[] {
         sectionCopy.dateLocale,
         language,
       ),
-      isAvailable: retreat.status === 'active' && retreat.endDate >= today,
-    };
+      location: retreat.location,
+      price: retreat.price,
+      href: retreat.status === 'active' && retreat.endDate >= today ? `/retreats/${retreat.slug}` : null,
+      statusLabel: copy.unavailable,
+    }];
   });
 }
 
@@ -145,8 +163,22 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [hasOverflow, setHasOverflow] = useState<boolean>(false);
-  const cards = getRetreatCards(language);
+  const [retreats, setRetreats] = useState<readonly RetreatRecord[]>(() => listRetreats('all', language).retreats);
+  const cards = getRetreatCards(language, retreats);
   const copy = COPY[language];
+
+  useEffect((): (() => void) => {
+    const controller = new AbortController();
+    setRetreats(listRetreats('all', language).retreats);
+    void fetchRetreats(language, 'all', controller.signal)
+      .then((response): void => {
+        if (!controller.signal.aborted) {
+          setRetreats(response.retreats);
+        }
+      })
+      .catch(() => undefined);
+    return (): void => controller.abort();
+  }, [language]);
 
   useEffect((): (() => void) | void => {
     const track = trackRef.current;
@@ -174,7 +206,7 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
       track.removeEventListener('scroll', synchronize);
       observer.disconnect();
     };
-  }, []);
+  }, [cards.length]);
 
   function scrollToCard(index: number): void {
     const track = trackRef.current;
@@ -242,12 +274,12 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
           >
             {cards.map((card: RetreatCard, index: number): ReactElement => (
               <article
-                key={card.retreat.slug}
+                key={card.slug}
                 className={styles.card}
-                data-retreat-card={card.retreat.slug}
+                data-retreat-card={card.slug}
                 role='group'
                 aria-roledescription={language === 'ru' ? 'слайд' : 'slide'}
-                aria-label={`${index + 1} / ${cards.length}: ${card.retreat.title}`}
+                aria-label={`${index + 1} / ${cards.length}: ${card.title}`}
               >
                 <div className={styles.photoFrame}>
                   <img
@@ -268,17 +300,17 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
                   </p>
                   <p className={styles.location}>
                     <MapPin size={15} strokeWidth={1.5} aria-hidden='true' />
-                    <span>{card.retreat.location}</span>
+                    <span>{card.location}</span>
                   </p>
                   <div className={styles.cardAction}>
-                    <p className={styles.price}>{card.retreat.price}</p>
-                    {card.isAvailable ? (
-                      <Link href={`/retreats/${card.retreat.slug}`} className={styles.explore}>
+                    <p className={styles.price}>{card.price}</p>
+                    {card.href ? (
+                      <Link href={card.href} className={styles.explore}>
                         {copy.explore}
                         <ArrowUpRight size={17} aria-hidden='true' strokeWidth={1.5} />
                       </Link>
                     ) : (
-                      <p className={styles.unavailable}>{copy.unavailable}</p>
+                      <p className={styles.unavailable}>{card.statusLabel}</p>
                     )}
                   </div>
                 </div>

@@ -147,8 +147,12 @@ Content-Type: application/json
 ```
 
 Поддерживаются поля `status`, `title`, `location`, `startDate`, `endDate`, `dateLabel`, `price`, `bookingUrl`,
-`coverImage`, `translations` и `blocks`. При передаче `translations` или `blocks` соответствующий вложенный объект
+`coverImage`, `translations`, `blocks` и `experience`. При передаче `translations`, `blocks` или `experience` соответствующий вложенный объект
 или массив заменяется целиком. Поля `id` и `slug` неизменяемы.
+
+`experience` — необязательная визуальная программа по дням, также доступная в переводах.
+Контракт: `shared/retreats/experience.ts`; устройство шаблона и точечная загрузка нового ретрита — `docs/retreats.md`.
+Данные сохраняются в существующем JSONB без SQL-миграции. Старый формат `blocks` остаётся поддержан.
 
 Маршрутов `POST /api/admin/retreats` и `DELETE /api/admin/retreats/:slug` намеренно нет: API не позволяет
 создавать или удалять ретриты.
