@@ -71,6 +71,8 @@ describe('structured retreat experience', () => {
     expect(detail.body.retreat.price).toBe('€1250');
     expect(detail.body.retreat.experience.heroText).toBe('Обновлённый текст из базы.');
     expect(detail.body.retreat.experience.days).toEqual(changed.translations.ru.experience.days);
+    expect(detail.body.retreat.experience.reasons).toEqual(changed.translations.ru.experience.reasons);
+    expect(detail.body.retreat.experience.inclusions).toEqual(changed.translations.ru.experience.inclusions);
     expect(list.body.retreats.find((retreat: RetreatSeed) => retreat.slug === slug).price).toBe('€1250');
   });
 
@@ -101,12 +103,39 @@ describe('structured retreat experience', () => {
     })).toThrow('local image');
   });
 
+  it('accepts older content without reasons and rejects unsafe reason images', () => {
+    const { reasons: _reasons, ...legacy } = sriLankaRetreat.experience!;
+    expect(parseRetreatUpdate({ experience: legacy }).experience?.reasons).toBeUndefined();
+    expect(() => parseRetreatUpdate({
+      experience: {
+        ...legacy,
+        reasons: [{ title: 'Ocean', text: 'Beach time', image: { src: 'https://example.com/photo.jpg', alt: 'Ocean' } }],
+      },
+    })).toThrow('local image');
+  });
+
+  it('validates inclusions while accepting older experiences without them', () => {
+    const { inclusions, ...legacy } = sriLankaRetreat.experience!;
+    expect(parseRetreatUpdate({ experience: legacy }).experience?.inclusions).toBeUndefined();
+    expect(parseRetreatUpdate({ experience: { ...legacy, inclusions } }).experience?.inclusions).toEqual(inclusions);
+    for (const invalid of [
+      { included: [], excluded: ['Flights'] },
+      { included: ['Programme'], excluded: [''] },
+      { included: ['Programme'], excluded: ['Flights'], other: true },
+    ]) {
+      expect(() => parseRetreatUpdate({ experience: { ...legacy, inclusions: invalid } })).toThrow();
+    }
+  });
+
   it('keeps all selected media deployable and each day fully scheduled in both languages', () => {
     const experiences: readonly RetreatExperience[] = [
       sriLankaRetreat.experience!, sriLankaRetreat.translations!.ru!.experience!,
     ];
     for (const experience of experiences) {
-      const images = [...experience.stayImages, ...experience.days.flatMap((day) => day.images)];
+      const images = [
+        ...experience.stayImages, ...experience.days.flatMap((day) => day.images),
+        ...(experience.reasons ?? []).map((reason) => reason.image),
+      ];
       for (const media of images) {
         expect(existsSync(path.resolve('client/public', `.${media.src}`)), media.src).toBe(true);
       }

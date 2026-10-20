@@ -145,7 +145,8 @@ interface RetreatUpdateResponse {
 ### Ограничения полей
 
 `RetreatExperience` определён в `shared/retreats/experience.ts`: тексты hero/intro/stay/booking,
-`stayImages`, `bookingSteps`, `bookingNote` и массив `days`. Каждый день содержит `id`, `date`, `title`,
+`stayImages`, `bookingSteps`, `bookingNote` и массив `days`. Необязательный `reasons` — 1–6 элементов
+`{ title, text, image: { src, alt, caption? } }` для секции причин поехать. Необязательный `inclusions` содержит массивы `included` и `excluded` (по 1–12 непустых строк) для состава стоимости. Каждый день содержит `id`, `date`, `title`,
 `summary`, `pace`, `layout`, `highlights`, `images`, `schedule` и необязательное `note`.
 `layout`: `text | split | panorama | collage`. Изображение: `{ src, alt, caption? }`;
 элемент расписания: `{ time, text }`.

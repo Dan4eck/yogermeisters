@@ -11,6 +11,12 @@ export interface RetreatScheduleItem {
   readonly text: string;
 }
 
+export interface RetreatReason {
+  readonly title: string;
+  readonly text: string;
+  readonly image: RetreatMedia;
+}
+
 export interface RetreatDay {
   readonly id: string;
   readonly date: string;
@@ -25,6 +31,11 @@ export interface RetreatDay {
 }
 
 export interface RetreatExperience {
+  readonly reasons?: readonly RetreatReason[];
+  readonly inclusions?: {
+    readonly included: readonly string[];
+    readonly excluded: readonly string[];
+  };
   readonly heroTitle: string;
   readonly heroText: string;
   readonly introTitle: string;

@@ -263,7 +263,7 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
     'heroTitle', 'heroText', 'introTitle', 'introText', 'stayTitle', 'stayText',
     'bookingTitle', 'bookingText', 'bookingNote',
   ] as const;
-  rejectUnknownKeys(record, new Set([...textKeys, 'stayImages', 'days', 'bookingSteps']), field);
+  rejectUnknownKeys(record, new Set([...textKeys, 'stayImages', 'days', 'bookingSteps', 'reasons', 'inclusions']), field);
   const text = Object.fromEntries(textKeys.map((key) => [key, requireString(record[key], `${field}.${key}`)])) as
     Pick<RetreatExperience, typeof textKeys[number]>;
   const days = requireArray(record.days, `${field}.days`, 1, 31).map((item, index): RetreatDay => {
@@ -311,8 +311,30 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
     || days.some((day, index) => index > 0 && day.date <= days[index - 1].date)) {
     throw new RequestValidationError(`${field}.days must have unique IDs and increasing dates`);
   }
+  let inclusions: RetreatExperience['inclusions'];
+  if (record.inclusions !== undefined) {
+    const details = requireRecord(record.inclusions, `${field}.inclusions`);
+    rejectUnknownKeys(details, new Set(['included', 'excluded']), `${field}.inclusions`);
+    const parseItems = (key: 'included' | 'excluded'): readonly string[] =>
+      requireArray(details[key], `${field}.inclusions.${key}`, 1, 12)
+        .map((item, index): string => requireString(item, `${field}.inclusions.${key}[${index}]`));
+    inclusions = { included: parseItems('included'), excluded: parseItems('excluded') };
+  }
   return {
     ...text,
+    ...(inclusions ? { inclusions } : {}),
+    ...(record.reasons === undefined ? {} : {
+      reasons: requireArray(record.reasons, `${field}.reasons`, 1, 6).map((item, index) => {
+        const reasonField = `${field}.reasons[${index}]`;
+        const reason = requireRecord(item, reasonField);
+        rejectUnknownKeys(reason, new Set(['title', 'text', 'image']), reasonField);
+        return {
+          title: requireString(reason.title, `${reasonField}.title`),
+          text: requireString(reason.text, `${reasonField}.text`),
+          image: parseExperienceMedia([reason.image], `${reasonField}.image`, 1)[0],
+        };
+      }),
+    }),
     stayImages: parseExperienceMedia(record.stayImages, `${field}.stayImages`, 1),
     days,
     bookingSteps: requireArray(record.bookingSteps, `${field}.bookingSteps`, 1, 5)
