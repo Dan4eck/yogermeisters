@@ -10,25 +10,42 @@ function schedule(items: readonly (readonly [string, string])[]): readonly Retre
 }
 
 const russianExperience: RetreatExperience = {
+  priceOffer: { regularPrice: '€1299', label: 'Early birds', note: 'Всего 3 места' },
   heroTitle: 'Йога и отдых\nна Шри-Ланке.',
   heroText: 'Восемь дней в Велигаме: йога по утрам, поездки по югу острова и время у океана.',
-  introTitle: 'Путешествие,\nв котором есть\nместо для тебя.',
-  introText: 'Начинаем день с практики, отправляемся знакомиться с островом и оставляем время просто быть у океана. Чайные плантации, улочки Галле и тихие храмы чередуются с отдыхом. Не нужно успевать всё: программа учитывает дорогу, самочувствие и желание замедлиться.',
+  introTitle: 'Летим на Цейлон\nжить у океана!',
+  introText: 'Утром — йога, днём — океан, пляжи и сёрфинг по желанию, вечером — медитации в буддийских храмах. Все поездки — примерно до 30–50 минут, чтобы не уставать от дороги.',
   reasons: [
-    { title: 'Океан и сёрфинг', text: 'Плавать, попробовать сёрфинг или просто провести время на пляже. В программе есть место для всех трёх вариантов.', image: photo('mirissa', 'Пляж с пальмами и волнами океана') },
-    { title: 'Храмы, чай и Галле', text: 'Зайти в древние храмы, попробовать местный чай и погулять по форту Галле. Познакомиться с югом острова в одной поездке.', image: photo('galle', 'Маяк и исторический форт Галле') },
-    { title: 'Йога, медитация и танцы', text: 'Начинать утро с йоги, пробовать медитацию и танцевать на Ecstatic Dance. Разделить этот опыт с группой.', image: photo('ecstatic', 'Участники танцуют на Ecstatic Dance') },
+    { title: 'Океан, пляжи и сёрфинг', text: 'Океан и Jungle Beach — в 10 минутах от проживания. Купаемся, отдыхаем на пляже или пробуем сёрфинг по желанию.', image: photo('surf-van', 'Фургон с досками для сёрфинга у океана'), additionalImages: [photo('surfer', 'Сёрфер с доской на берегу океана'), photo('palm-coast', 'Волны, песчаный пляж, пальмы и лодки с высоты')] },
+    { title: 'Чайная плантация', text: 'Гуляем среди чайных кустов, знакомимся с производством цейлонского чая и пробуем его на дегустации.', image: photo('tea-plantation', 'Зелёные чайные плантации Шри-Ланки') },
+    { title: 'Исторический форт Галле', text: 'Гуляем по старинным улочкам и вдоль крепостных стен, выходим к маяку и смотрим на океан.', image: photo('galle', 'Маяк и исторический форт Галле'), additionalImages: [photo('galle-street', 'Улица Галле в закатном свете')] },
+    { title: 'Пальмы и морские черепахи', text: 'Пальмовые рощи и пляжи южного побережья. Здесь есть возможность увидеть морских черепах в их естественной среде.', image: photo('palm-grove', 'Пальмовая роща над бирюзовым океаном'), additionalImages: [photo('turtle', 'Морская черепаха в прозрачной воде'), photo('turtle-beach', 'Морская черепаха на пляже')] },
+    { title: 'Храмы и древние святыни', text: 'Посещаем буддийские храмы и древние святыни. Вечером оставляем время для тишины и медитации.', image: photo('weherahena', 'Буддийский храм Weherahena'), additionalImages: [photo('temple-monks', 'Буддийские монахи в оранжевых одеяниях на каменной лестнице'), photo('agrabodhi', 'Буддийский храм Agrabodhi')] },
+    { title: 'Ecstatic Dance в джунглях', text: 'Кульминация тура — легендарный Ecstatic Dance в джунглях, ради которого сюда съезжаются люди со всего мира.', image: photo('ecstatic', 'Участники танцуют на Ecstatic Dance') },
   ],
   stayTitle: 'Где будем жить',
   stayText: 'Светлые комнаты, деревянная мебель и балкон с видом на зелень и океан. Здесь отдыхаем между практиками и поездками по острову.',
   stayImages: [
-    photo('casa-balcony', 'Балкон с видом на зелень и океан'),
-    photo('casa-room', 'Комната с деревянной мебелью и растениями'),
+    photo('casa-ocean-view', 'Вид на океан и балкон из спальни'),
+    photo('casa-room-balcony', 'Светлая комната с кроватью, рабочим столом и выходом на балкон'),
     photo('casa-bedroom', 'Светлая спальня с деревянным столом и плетёным светильником'),
   ],
   inclusions: {
-    included: ['Вся программа ретрита'],
-    excluded: ['Перелёты', 'Трансферы', 'Опциональный сёрфинг'],
+    included: [
+      'Проживание — комфортное двухместное размещение в уютном отеле в Велигаме с завтраками.',
+      'Все трансферы — из аэропорта, по маршруту путешествия и обратно в аэропорт.',
+      'Сопровождение турлидера на протяжении всего путешествия.',
+      'Утренние практики йоги и вечерние медитации.',
+      'Ecstatic Dance в джунглях — участие в особенном событии, на которое съезжаются люди со всего мира.',
+      'Экскурсии по программе — древние буддийские храмы, чайная плантация, исторический форт Галле и живописные пляжи.',
+    ],
+    excluded: [
+      'Международный авиаперелёт.',
+      'Медицинская страховка.',
+      'Обеды и ужины.',
+      'Личные расходы и покупка сувениров.',
+      'Сёрфинг и занятия с инструктором — по желанию, за дополнительную плату.',
+    ],
   },
   days: [
     {
@@ -134,29 +151,46 @@ const russianExperience: RetreatExperience = {
   bookingTitle: 'Хочешь с нами?',
   bookingText: 'Присоединяйся к йога-туру за новыми впечатлениями и духовным опытом. Оставь заявку в Telegram – Я расскажу подробности поездки!',
   bookingSteps: ['Перейди в Telegram и напиши: «Хочу на Шри-Ланку».', 'Уточни наличие мест, проживание и что входит в стоимость.', 'Получи условия оплаты и подтверждение бронирования.'],
-  bookingNote: 'Стоимость тура – €1199. Состав стоимости, перелёт, размещение и условия оплаты уточняются при заявке. Программа может меняться с учётом погоды, расписания площадок и состояния группы.',
+  bookingNote: 'Стоимость Early birds — €1090, всего 3 места по этой цене. Полная стоимость — €1299. Условия оплаты уточняются при заявке. Программа может меняться с учётом погоды, расписания площадок и состояния группы.',
 };
 
 const englishExperience: RetreatExperience = {
+  priceOffer: { regularPrice: '€1299', label: 'Early birds', note: 'Only 3 places' },
   heroTitle: 'Yoga and a break\nin Sri Lanka.',
   heroText: 'Eight days in Weligama: morning yoga, trips along the south coast and time by the ocean.',
-  introTitle: 'A journey\nwith space\nfor you.',
-  introText: 'We begin with practice, discover the island and leave time simply to be by the ocean. Tea country, Galle’s streets and quiet temples alternate with rest. There is no need to do everything: the programme makes room for travel, how we feel and the wish to slow down.',
+  introTitle: 'Off to Ceylon,\nto live by the ocean!',
+  introText: 'Yoga in the morning, ocean swims, beaches and optional surfing by day, and meditation in Buddhist temples in the evening. Trips take roughly 30–50 minutes, so we spend less time on the road.',
   reasons: [
-    { title: 'Ocean and surfing', text: 'Swim, try surfing or simply spend time on the beach. The programme leaves room for all three.', image: photo('mirissa', 'A palm-lined beach and ocean waves') },
-    { title: 'Temples, tea and Galle', text: 'Visit ancient temples, taste local tea and walk through Galle Fort. Get to know the south of the island in one trip.', image: photo('galle', 'The lighthouse and historic Galle Fort') },
-    { title: 'Yoga, meditation and dance', text: 'Start the morning with yoga, explore meditation and join Ecstatic Dance. Share the experience with the group.', image: photo('ecstatic', 'People taking part in Ecstatic Dance') },
+    { title: 'Ocean, beaches and surfing', text: 'The ocean and Jungle Beach are 10 minutes from our accommodation. Swim, relax on the beach or try surfing if you feel like it.', image: photo('surf-van', 'A van with surfboards by the ocean'), additionalImages: [photo('surfer', 'A surfer carrying a board by the ocean'), photo('palm-coast', 'An aerial view of ocean waves, a sandy beach, palms and boats')] },
+    { title: 'A tea plantation', text: 'Walk among tea bushes, discover how Ceylon tea is made and enjoy a tasting.', image: photo('tea-plantation', 'Green tea plantations in Sri Lanka') },
+    { title: 'Historic Galle Fort', text: 'Explore old streets and the fort walls, walk to the lighthouse and take in the ocean views.', image: photo('galle', 'The lighthouse and historic Galle Fort'), additionalImages: [photo('galle-street', 'A street in Galle at sunset')] },
+    { title: 'Palm groves and sea turtles', text: 'Discover palm groves and beaches along the south coast, with a chance to see sea turtles in their natural habitat.', image: photo('palm-grove', 'A palm grove above the turquoise ocean'), additionalImages: [photo('turtle', 'A sea turtle in clear water'), photo('turtle-beach', 'A sea turtle on the beach')] },
+    { title: 'Temples and ancient sacred sites', text: 'Visit Buddhist temples and ancient sacred sites, with evenings set aside for stillness and meditation.', image: photo('weherahena', 'Weherahena Buddhist temple'), additionalImages: [photo('temple-monks', 'Buddhist monks in orange robes on a stone staircase'), photo('agrabodhi', 'Agrabodhi Buddhist temple')] },
+    { title: 'Ecstatic Dance in the jungle', text: 'The highlight of the tour: a legendary Ecstatic Dance in the jungle that draws people from all over the world.', image: photo('ecstatic', 'People taking part in Ecstatic Dance') },
   ],
   stayTitle: 'Where we’ll stay',
   stayText: 'Bright rooms, wooden furniture and a balcony overlooking greenery and the ocean. A place to rest between practices and trips around the island.',
   stayImages: [
-    photo('casa-balcony', 'A balcony overlooking greenery and the ocean'),
-    photo('casa-room', 'A room with wooden furniture and plants'),
+    photo('casa-ocean-view', 'An ocean view and balcony seen from the bedroom'),
+    photo('casa-room-balcony', 'A bright room with a bed, desk and doors opening onto a balcony'),
     photo('casa-bedroom', 'A bright bedroom with a wooden desk and a woven pendant light'),
   ],
   inclusions: {
-    included: ['The full retreat programme'],
-    excluded: ['Flights', 'Transfers', 'Optional surfing'],
+    included: [
+      'Accommodation — comfortable twin-share accommodation in a cosy hotel in Weligama, with breakfast.',
+      'All transfers — from the airport, throughout the itinerary and back to the airport.',
+      'A tour leader accompanying the group throughout the journey.',
+      'Morning yoga practices and evening meditation.',
+      'Ecstatic Dance in the jungle — admission to a special event that draws people from all over the world.',
+      'Excursions on the programme — ancient Buddhist temples, a tea plantation, historic Galle Fort and scenic beaches.',
+    ],
+    excluded: [
+      'International flights.',
+      'Travel medical insurance.',
+      'Lunches and dinners.',
+      'Personal expenses and souvenirs.',
+      'Surfing and lessons with an instructor — optional, at an additional cost.',
+    ],
   },
   days: [
     {
@@ -260,7 +294,7 @@ const englishExperience: RetreatExperience = {
   bookingTitle: 'Would you like to join us?',
   bookingText: 'Join the yoga tour for new experiences and spiritual practice. Leave an enquiry on Telegram – I’ll tell you more about the trip!',
   bookingSteps: ['Open Telegram and write: “I’d like to join Sri Lanka”.', 'Ask about availability, accommodation and what the price includes.', 'Receive payment terms and booking confirmation.'],
-  bookingNote: 'Tour price: €1199. Inclusions, flights, accommodation and payment terms are clarified when you enquire. The programme may change with the weather, venue schedules and the group’s wellbeing.',
+  bookingNote: 'Early birds price: €1090, with only 3 places at this price. Full price: €1299. Payment terms are clarified when you enquire. The programme may change with the weather, venue schedules and the group’s wellbeing.',
 };
 
 export const sriLankaRetreat: RetreatSeed = {
@@ -272,7 +306,7 @@ export const sriLankaRetreat: RetreatSeed = {
   startDate: '2027-02-24',
   endDate: '2027-03-03',
   dateLabel: '24 February – 3 March 2027',
-  price: '€1199',
+  price: '€1090',
   bookingUrl: 'https://t.me/AnastasiaPagliacci',
   coverImage: '/assets/retreats/sri-lanka/coast.webp',
   experience: englishExperience,
