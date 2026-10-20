@@ -73,6 +73,7 @@ describe('structured retreat experience', () => {
     expect(detail.body.retreat.experience.days).toEqual(changed.translations.ru.experience.days);
     expect(detail.body.retreat.experience.reasons).toEqual(changed.translations.ru.experience.reasons);
     expect(detail.body.retreat.experience.inclusions).toEqual(changed.translations.ru.experience.inclusions);
+    expect(detail.body.retreat.experience.priceOffer).toEqual(changed.translations.ru.experience.priceOffer);
     expect(list.body.retreats.find((retreat: RetreatSeed) => retreat.slug === slug).price).toBe('€1250');
   });
 
@@ -112,6 +113,15 @@ describe('structured retreat experience', () => {
         reasons: [{ title: 'Ocean', text: 'Beach time', image: { src: 'https://example.com/photo.jpg', alt: 'Ocean' } }],
       },
     })).toThrow('local image');
+    expect(() => parseRetreatUpdate({
+      experience: {
+        ...legacy,
+        reasons: [{
+          ...sriLankaRetreat.experience!.reasons![0],
+          additionalImages: [{ src: 'https://example.com/photo.jpg', alt: 'Ocean' }],
+        }],
+      },
+    })).toThrow('local image');
   });
 
   it('validates inclusions while accepting older experiences without them', () => {
@@ -134,7 +144,7 @@ describe('structured retreat experience', () => {
     for (const experience of experiences) {
       const images = [
         ...experience.stayImages, ...experience.days.flatMap((day) => day.images),
-        ...(experience.reasons ?? []).map((reason) => reason.image),
+        ...(experience.reasons ?? []).flatMap((reason) => [reason.image, ...(reason.additionalImages ?? [])]),
       ];
       for (const media of images) {
         expect(existsSync(path.resolve('client/public', `.${media.src}`)), media.src).toBe(true);

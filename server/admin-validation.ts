@@ -263,7 +263,9 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
     'heroTitle', 'heroText', 'introTitle', 'introText', 'stayTitle', 'stayText',
     'bookingTitle', 'bookingText', 'bookingNote',
   ] as const;
-  rejectUnknownKeys(record, new Set([...textKeys, 'stayImages', 'days', 'bookingSteps', 'reasons', 'inclusions']), field);
+  rejectUnknownKeys(record, new Set([
+    ...textKeys, 'stayImages', 'days', 'bookingSteps', 'reasons', 'inclusions', 'priceOffer',
+  ]), field);
   const text = Object.fromEntries(textKeys.map((key) => [key, requireString(record[key], `${field}.${key}`)])) as
     Pick<RetreatExperience, typeof textKeys[number]>;
   const days = requireArray(record.days, `${field}.days`, 1, 31).map((item, index): RetreatDay => {
@@ -320,18 +322,35 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
         .map((item, index): string => requireString(item, `${field}.inclusions.${key}[${index}]`));
     inclusions = { included: parseItems('included'), excluded: parseItems('excluded') };
   }
+  let priceOffer: RetreatExperience['priceOffer'];
+  if (record.priceOffer !== undefined) {
+    const offer = requireRecord(record.priceOffer, `${field}.priceOffer`);
+    rejectUnknownKeys(offer, new Set(['regularPrice', 'label', 'note']), `${field}.priceOffer`);
+    priceOffer = {
+      regularPrice: requireString(offer.regularPrice, `${field}.priceOffer.regularPrice`),
+      label: requireString(offer.label, `${field}.priceOffer.label`),
+      note: requireString(offer.note, `${field}.priceOffer.note`),
+    };
+  }
   return {
     ...text,
+    ...(priceOffer ? { priceOffer } : {}),
     ...(inclusions ? { inclusions } : {}),
     ...(record.reasons === undefined ? {} : {
       reasons: requireArray(record.reasons, `${field}.reasons`, 1, 6).map((item, index) => {
         const reasonField = `${field}.reasons[${index}]`;
         const reason = requireRecord(item, reasonField);
-        rejectUnknownKeys(reason, new Set(['title', 'text', 'image']), reasonField);
+        rejectUnknownKeys(reason, new Set(['title', 'text', 'image', 'additionalImages']), reasonField);
+        const additionalImages = reason.additionalImages === undefined
+          ? undefined : parseExperienceMedia(reason.additionalImages, `${reasonField}.additionalImages`, 0);
+        if (additionalImages && additionalImages.length > 2) {
+          throw new RequestValidationError(`${reasonField}.additionalImages must contain at most 2 items`);
+        }
         return {
           title: requireString(reason.title, `${reasonField}.title`),
           text: requireString(reason.text, `${reasonField}.text`),
           image: parseExperienceMedia([reason.image], `${reasonField}.image`, 1)[0],
+          ...(additionalImages ? { additionalImages } : {}),
         };
       }),
     }),

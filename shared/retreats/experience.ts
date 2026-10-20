@@ -15,6 +15,7 @@ export interface RetreatReason {
   readonly title: string;
   readonly text: string;
   readonly image: RetreatMedia;
+  readonly additionalImages?: readonly RetreatMedia[];
 }
 
 export interface RetreatDay {
@@ -31,6 +32,11 @@ export interface RetreatDay {
 }
 
 export interface RetreatExperience {
+  readonly priceOffer?: {
+    readonly regularPrice: string;
+    readonly label: string;
+    readonly note: string;
+  };
   readonly reasons?: readonly RetreatReason[];
   readonly inclusions?: {
     readonly included: readonly string[];

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement, type Touch as ReactTouch, type TouchEvent } from 'react';
 import { ArrowDown, ArrowLeft, ArrowUpRight, Plus } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -19,10 +19,9 @@ const COPY = {
   ru: {
     back: 'Все ретриты', program: 'Программа', book: 'Оставить заявку',
     programTitle: 'Программа тура',
-    programText: 'Восемь дней на юге острова. Выбери день и посмотри, что нас ждёт.',
-    reasons: 'Что тебя\nждёт',
-    included: 'Что включено',
-    excluded: 'Не включено',
+    programText: 'Семь дней на юге острова. Выбери день и посмотри, что нас ждёт.',
+    included: 'Что включено в стоимость 🌴',
+    excluded: 'Не включено в стоимость 🥲',
     schedule: 'Расписание дня',
     telegram: 'Написать в Telegram',
     footer: 'Йога-туры Yogermeisters', skip: 'Перейти к программе',
@@ -31,10 +30,9 @@ const COPY = {
   en: {
     back: 'All retreats', program: 'Programme', book: 'Enquire now',
     programTitle: 'Tour programme',
-    programText: 'Eight days on the south coast. Choose a day to see what we have planned.',
-    reasons: 'What awaits\nyou',
-    included: 'What’s included',
-    excluded: 'Not included',
+    programText: 'Seven days on the south coast. Choose a day to see what we have planned.',
+    included: 'Included in the price 🌴',
+    excluded: 'Not included in the price 🥲',
     schedule: 'Daily schedule',
     telegram: 'Message on Telegram',
     footer: 'Yoga tours by Yogermeisters', skip: 'Skip to the programme',
@@ -61,14 +59,16 @@ function Photograph({ media, className = '' }: PhotographProps): ReactElement {
   );
 }
 
-function RetreatReasons({ reasons, language }: {
+function RetreatReasons({ experience, reasons }: {
+  readonly experience: RetreatExperience;
   readonly reasons: readonly RetreatReason[];
-  readonly language: Language;
 }): ReactElement {
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   const [inView, setInView] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [touching, setTouching] = useState(false);
+  const swipeStart = useRef<{ readonly id: number; readonly x: number; readonly y: number } | null>(null);
 
   useEffect((): (() => void) => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -86,17 +86,46 @@ function RetreatReasons({ reasons, language }: {
   }, []);
 
   useEffect((): (() => void) | undefined => {
-    if (reducedMotion || !inView || reasons.length < 2) return;
+    if (reducedMotion || !inView || touching || reasons.length < 2) return;
     const timer = window.setInterval((): void => {
       if (!document.hidden) setActive((current: number): number => (current + 1) % reasons.length);
-    }, 3000);
+    }, 4000);
     return (): void => window.clearInterval(timer);
-  }, [active, reducedMotion, inView, reasons.length]);
+  }, [active, reducedMotion, inView, touching, reasons.length]);
+
+  const cancelSwipe = (): void => {
+    swipeStart.current = null;
+    setTouching(false);
+  };
+
+  const startSwipe = (event: TouchEvent<HTMLDivElement>): void => {
+    if (event.touches.length !== 1) {
+      cancelSwipe();
+      return;
+    }
+    const touch = event.touches[0];
+    swipeStart.current = { id: touch.identifier, x: touch.clientX, y: touch.clientY };
+    setTouching(true);
+  };
+
+  const endSwipe = (event: TouchEvent<HTMLDivElement>): void => {
+    const start = swipeStart.current;
+    const touch = Array.from(event.changedTouches).find((item: ReactTouch): boolean => item.identifier === start?.id);
+    if (!start || !touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    cancelSwipe();
+    if (Math.abs(dx) < 40 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+    setActive((current: number): number => (current + (dx < 0 ? 1 : -1) + reasons.length) % reasons.length);
+  };
 
   return (
-    <section className={styles.reasons} ref={sectionRef} aria-labelledby='reasons-title' data-in-view={inView}>
+    <section
+      className={styles.reasons} ref={sectionRef} aria-labelledby='reasons-title' data-in-view={inView}
+    >
       <div className={styles.reasonContent}>
-        <h2 id='reasons-title'>{COPY[language].reasons}</h2>
+        <h2 id='reasons-title'>{experience.introTitle}</h2>
+        <p className={styles.reasonIntro}>{experience.introText}</p>
         <div className={styles.reasonIndicators}>
           {reasons.map((reason: RetreatReason, index: number): ReactElement => (
             <button
@@ -116,14 +145,23 @@ function RetreatReasons({ reasons, language }: {
           ))}
         </div>
       </div>
-      <div className={styles.reasonPhotos}>
-        {reasons.map((reason: RetreatReason, index: number): ReactElement => (
-          <img
-            key={reason.image.src} src={reason.image.src} alt={reason.image.alt}
-            aria-hidden={index !== active} loading='lazy' decoding='async'
-            className={index === active ? styles.activePhoto : undefined}
-          />
-        ))}
+      <div
+        className={styles.reasonGallery}
+        onTouchStart={startSwipe} onTouchEnd={endSwipe} onTouchCancel={cancelSwipe}
+      >
+        {reasons.map((reason: RetreatReason, index: number): ReactElement => {
+          const images = [reason.image, ...(reason.additionalImages ?? [])];
+          return (
+            <div
+              key={reason.title} aria-hidden={index !== active} data-photo-count={images.length}
+              className={`${styles.reasonPhotoSet} ${index === active ? styles.activePhotoSet : ''}`}
+            >
+              {images.map((media: RetreatMedia): ReactElement => (
+                <Photograph key={media.src} media={media} className={styles.reasonPhoto} />
+              ))}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
@@ -284,10 +322,16 @@ export default function RetreatExperiencePage({
           <div className={styles.heroBottom}>
             <span>{retreat.location}</span>
             <span>{retreat.dateLabel}</span>
-            <span>{retreat.price}</span>
+            <p className={styles.heroPrice}>
+              {experience.priceOffer ? <del>{experience.priceOffer.regularPrice}</del> : null}
+              <strong>{retreat.price}</strong>
+              {experience.priceOffer ? <span>— {experience.priceOffer.note}</span> : null}
+            </p>
           </div>
         </section>
-        {experience.reasons?.length ? <RetreatReasons reasons={experience.reasons} language={language} /> : null}
+        {experience.reasons?.length ? (
+          <RetreatReasons experience={experience} reasons={experience.reasons} />
+        ) : null}
         <Programme experience={experience} language={language} />
         <section className={styles.stay} id='stay' aria-labelledby='stay-title'>
           <div className={styles.stayCopy}><h2 id='stay-title'>{experience.stayTitle}</h2><p>{experience.stayText}</p></div>
@@ -321,7 +365,14 @@ export default function RetreatExperiencePage({
             <p className={styles.bookingText}>{experience.bookingText}</p>
           </div>
           <div className={styles.bookingActions}>
-            <p className={styles.bookingPrice}>{retreat.price}</p>
+            <div className={styles.bookingOffer}>
+              {experience.priceOffer ? <p className={styles.offerLabel}>{experience.priceOffer.label}</p> : null}
+              <div className={styles.bookingPrices}>
+                {experience.priceOffer ? <del>{experience.priceOffer.regularPrice}</del> : null}
+                <p className={styles.bookingPrice}>{retreat.price}</p>
+              </div>
+              {experience.priceOffer ? <p className={styles.offerNote}>{experience.priceOffer.note}</p> : null}
+            </div>
             <a className={styles.lightButton} href={retreat.bookingUrl} target='_blank' rel='noopener noreferrer'>{copy.telegram}<ArrowUpRight size={19} aria-hidden='true' /></a>
           </div>
         </section>

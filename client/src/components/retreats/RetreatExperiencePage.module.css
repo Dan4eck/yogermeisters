@@ -62,7 +62,11 @@
 .lightButton { display: inline-flex; gap: 28px; align-items: center; justify-content: space-between; min-height: 54px; padding: 15px 24px; border-radius: 3px; background: var(--paper); color: var(--ink) !important; font-size: 14px; font-weight: 500; line-height: 1.4; transition: background 160ms ease; }
 .programLink { display: inline-flex; gap: 20px; align-items: center; min-height: 48px; border-bottom: 1px solid rgb(242 239 231 / 50%); font-size: 13px; }
 .heroBottom { display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: center; font-size: 14px; line-height: 1.6; }
-.heroBottom span { white-space: nowrap; }
+.heroBottom > span { white-space: nowrap; }
+.heroPrice { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+.heroPrice del { opacity: .6; text-decoration-thickness: 1px; }
+.heroPrice strong { font-weight: 600; }
+.heroPrice span { opacity: .85; text-transform: lowercase; }
 
 .page h2 { font-size: clamp(54px, 6.4vw, 112px); font-weight: 800; line-height: .93; letter-spacing: -.07em; }
 
@@ -89,9 +93,10 @@
 
 .reasons { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); align-items: center; gap: 6%; padding: 88px var(--gutter); background: var(--paper); }
 .reasonContent { min-width: 0; }
-.page .reasons h2 { font-size: clamp(68px, 7.7vw, 132px); font-weight: 850; line-height: .92; letter-spacing: -.07em; margin-bottom: 28px; }
-.reasonIndicators { display: flex; gap: 10px; margin-bottom: 28px; }
-.reasonIndicators button { display: grid; align-items: center; width: 56px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+.page .reasons h2 { font-size: clamp(46px, 4.7vw, 80px); font-weight: 850; line-height: .98; letter-spacing: -.065em; margin-bottom: 26px; }
+.reasonIntro { max-width: 460px; font-size: var(--body-size); line-height: 1.5; color: #50524a; }
+.reasonIndicators { display: flex; gap: 10px; max-width: 430px; margin: 28px 0 18px; }
+.reasonIndicators button { display: grid; flex: 1; align-items: center; min-width: 0; max-width: 56px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
 .reasonIndicators button span { width: 100%; height: 3px; background: rgb(113 47 67 / 20%); transition: background 250ms ease; }
 .reasonIndicators button[aria-pressed='true'] span { background: var(--wine); }
 .reasonDescriptions { display: grid; max-width: 430px; }
@@ -99,10 +104,15 @@
 .reasonSlide.activeDescription { opacity: 1; visibility: visible; }
 .page .reasonSlide h3 { margin-bottom: 18px; font-size: clamp(26px, 2.5vw, 36px); font-weight: 500; line-height: 1.12; letter-spacing: -.045em; }
 .reasonSlide p { font-size: var(--body-size); line-height: 1.5; color: #50524a; }
-.reasonPhotos { position: relative; min-width: 0; height: clamp(480px, 44vw, 660px); overflow: hidden; border-radius: 20px; background: #e5e1d6; opacity: 0; transition: opacity 600ms ease-out; }
-.reasons[data-in-view='true'] .reasonPhotos { opacity: 1; }
-.reasonPhotos img { position: absolute; inset: 0; height: 100%; object-fit: cover; object-position: center; opacity: 0; transition: opacity 600ms ease-out; }
-.reasonPhotos img.activePhoto { opacity: 1; }
+.reasonGallery { display: grid; min-width: 0; height: clamp(540px, 48vw, 740px); touch-action: pan-y pinch-zoom; }
+.reasonPhotoSet { grid-area: 1 / 1; display: grid; min-width: 0; min-height: 0; gap: 14px; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); opacity: 0; visibility: hidden; transition: opacity 600ms ease-out, visibility 600ms; }
+.reasons[data-in-view='true'] .activePhotoSet { opacity: 1; visibility: visible; }
+.reasonPhotoSet[data-photo-count='2'] { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.reasonPhotoSet[data-photo-count='3'] { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(0, 1.2fr) minmax(0, 1fr); }
+.reasonPhotoSet[data-photo-count='3'] .reasonPhoto:first-child { grid-column: 1 / -1; }
+.reasonPhoto { min-height: 0; overflow: hidden; border-radius: 20px; }
+.reasonPhoto img { position: absolute; inset: 0; height: 100%; object-fit: cover; }
+.reasonPhotoSet[data-photo-count='3'] .reasonPhoto:nth-child(2) img { object-position: center 20%; }
 .programme { padding: 90px var(--gutter) 100px; background: var(--wine); color: var(--paper); }
 .programIntro { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 42px; }
 .programIntro > p { max-width: 320px; font-size: var(--body-size); line-height: var(--body-leading); color: rgb(242 239 231 / 78%); }
@@ -133,6 +143,11 @@
 .booking { display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 10%; padding: 80px var(--gutter); color: var(--paper); background: var(--wine); }
 .bookingText { margin-top: 28px !important; max-width: 500px; font-size: var(--body-size); line-height: var(--body-leading); color: rgb(242 239 231 / 88%); }
 .bookingActions { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.bookingOffer { display: grid; gap: 14px; }
+.offerLabel { font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+.bookingPrices { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 20px; }
+.bookingPrices del { font-size: clamp(24px, 2.4vw, 38px); line-height: 1; letter-spacing: -.045em; opacity: .6; text-decoration-thickness: 1px; }
+.offerNote { font-size: 14px; line-height: 1.5; opacity: .85; }
 .bookingPrice { font-size: clamp(56px, 6.4vw, 112px); line-height: .93; letter-spacing: -.07em; font-weight: 800; }
 .footer { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 36px var(--gutter); }
 .footer > span { font-size: 11px; color: var(--muted); }
@@ -152,10 +167,10 @@
 }
 
 @media (max-width: 800px) {
+  .reasonGallery { height: clamp(380px, 95vw, 640px); }
   .reasons { grid-template-columns: 1fr; gap: 40px; padding-top: 64px; padding-bottom: 64px; }
-  .page .reasons h2 { font-size: clamp(72px, 11vw, 100px); }
+  .page .reasons h2 { font-size: clamp(48px, 7.5vw, 64px); }
   .reasonDescriptions { max-width: 520px; }
-  .reasonPhotos { height: auto; aspect-ratio: 4 / 3; }
   .programme { padding-top: 64px; padding-bottom: 64px; }
   .programIntro { display: block; margin-bottom: 32px; }
   .programIntro > p { max-width: 420px; margin-top: 22px; }
@@ -181,11 +196,13 @@
 }
 
 @media (max-width: 520px) {
+  .reasonGallery { height: clamp(380px, 110vw, 540px); }
+  .reasonPhotoSet { gap: 10px; }
+  .reasonPhoto { border-radius: 14px; }
   .reasons { gap: 32px; padding-top: 52px; padding-bottom: 52px; }
-  .page .reasons h2 { font-size: clamp(62px, 17vw, 88px); margin-bottom: 18px; }
+  .page .reasons h2 { font-size: clamp(40px, 10.7vw, 56px); margin-bottom: 22px; }
   .reasonIndicators { margin-bottom: 18px; }
   .page .reasonSlide h3 { font-size: 28px; margin-bottom: 14px; }
-  .reasonPhotos { aspect-ratio: 1; }
 
   .programme { padding-left: 14px; padding-right: 14px; }
   .programIntro { padding: 0 8px; }
@@ -213,7 +230,8 @@
   .lightButton { padding: 14px 18px; font-size: 14px; gap: 18px; min-height: 50px; }
   .programLink { font-size: 12px; gap: 10px; }
   .heroBottom { gap: 10px 22px; font-size: 12px; }
-  .heroBottom span:first-child { flex-basis: 100%; }
+  .heroBottom > span:first-child { flex-basis: 100%; }
+  .heroPrice { flex-basis: 100%; gap: 5px 8px; }
   .page h2, .page .stayCopy h2 { font-size: clamp(40px, 12vw, 70px); }
   .stay { padding-top: 50px; padding-bottom: 50px; }
   .stayPhotos .photograph { border-radius: 14px; }
