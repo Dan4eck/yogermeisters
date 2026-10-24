@@ -27,6 +27,7 @@ export function useIntroMotion(
   language: Language,
 ): (id: string, behavior?: ScrollBehavior) => boolean {
   const triggerRef = useRef<ScrollTrigger | null>(null);
+  const sceneProgressRef = useRef<Record<string, number>>({});
 
   const scrollToSection = useCallback((id: string, behavior: ScrollBehavior = 'smooth'): boolean => {
     const root = rootRef.current;
@@ -37,7 +38,7 @@ export function useIntroMotion(
     }
 
     const trigger = triggerRef.current;
-    const progress: Record<string, number> = { home: 0, about: 0.5, classes: 0.95 };
+    const progress = sceneProgressRef.current;
     const headerOffset = id === 'home' || id === 'retreats'
       ? 0
       : (root?.querySelector('header')?.clientHeight ?? 88) + 12;
@@ -55,8 +56,9 @@ export function useIntroMotion(
     const root = rootRef.current;
     const intro = root?.querySelector<HTMLElement>('[data-intro]');
     const stage = root?.querySelector<HTMLElement>('[data-intro-stage]');
+    const opening = root?.querySelector<HTMLElement>('[data-intro-opening]');
 
-    if (!root || !intro || !stage) {
+    if (!root || !intro || !stage || !opening) {
       return;
     }
 
@@ -86,6 +88,7 @@ export function useIntroMotion(
         scene.removeAttribute('aria-hidden');
       });
       triggerRef.current = null;
+      sceneProgressRef.current = {};
     };
 
     media.add({
@@ -105,55 +108,24 @@ export function useIntroMotion(
         return restoreScenes;
       }
 
-      if (!desktop) {
-        gsap.set(Object.values(scenes), { autoAlpha: 1 });
-        gsap.set(camera, { scale: 1 });
-        gsap.set(heroShade, { autoAlpha: 1 });
-        tiles.forEach((tile: HTMLElement, index: number): void => {
-          gsap.fromTo(tile, { x: 0, y: 0, rotation: 0, scale: 1, autoAlpha: 1 }, {
-            x: (): number => (tile.offsetLeft + tile.offsetWidth / 2 - stage.clientWidth / 2) * 0.4,
-            y: (): number => -window.innerHeight * (0.13 + (index % 4) * 0.025),
-            rotation: index % 2 ? 10 : -10,
-            scale: 0.88,
-            ease: 'none',
-            scrollTrigger: { trigger: scenes.hero, start: 'top top', end: 'bottom 18%', scrub: 0.5 },
-          });
-        });
-        gsap.fromTo([heroCopy, heroBottom], { y: 0, scale: 1, autoAlpha: 1 }, {
-          y: -55,
-          autoAlpha: 0,
-          scrollTrigger: { trigger: scenes.hero, start: '30% top', end: 'bottom 35%', scrub: 0.4 },
-        });
-        gsap.to(root.querySelectorAll('[data-about-decor]'), {
-          y: -160,
-          rotation: (index: number): number => index % 2 ? 22 : -22,
-          autoAlpha: 0,
-          scrollTrigger: { trigger: scenes.about, start: 'bottom 80%', end: 'bottom 15%', scrub: 0.4 },
-        });
-        gsap.from([classHeading, ...Array.from(classRows)], {
-          y: 35,
-          opacity: 0,
-          duration: 0.65,
-          stagger: 0.06,
-          scrollTrigger: { trigger: classHeading, start: 'top 92%', once: true },
-        });
-        return restoreScenes;
-      }
-
-      intro.dataset.motion = 'on';
+      intro.dataset.motion = desktop ? 'on' : 'mobile';
+      sceneProgressRef.current = desktop ? { home: 0, about: 0.5, classes: 0.95 } : { home: 0, about: 1 };
       const setActiveScene = (name: SceneName): void => {
         if (root.dataset.activeScene === name) {
           return;
         }
         root.dataset.activeScene = name;
         (Object.entries(scenes) as [SceneName, HTMLElement][]).forEach(([key, scene]): void => {
+          if (!desktop && key === 'classes') {
+            return;
+          }
           scene.inert = key !== name;
           scene.setAttribute('aria-hidden', String(key !== name));
         });
       };
       setActiveScene('hero');
 
-      gsap.set([scenes.about, scenes.classes], { autoAlpha: 0 });
+      gsap.set(desktop ? [scenes.about, scenes.classes] : scenes.about, { autoAlpha: 0 });
       gsap.set(tiles, { transformOrigin: 'center center', force3D: true });
       const timeline = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
 
@@ -173,18 +145,27 @@ export function useIntroMotion(
         .to(camera, { scale: 1, duration: 1.45 }, 2.1);
 
       tiles.forEach((tile: HTMLElement, index: number): void => {
-        const [centerX, centerY, size, rotation] = SCATTER_POSITIONS[index % SCATTER_POSITIONS.length];
+        const [scatterX, centerY, size, rotation] = SCATTER_POSITIONS[index % SCATTER_POSITIONS.length];
+        let centerX = scatterX;
+        if (!desktop && centerY >= 1) {
+          centerX = scatterX < 0.5 ? -0.08 : 1.08;
+        } else if (!desktop && scatterX < 0.1) {
+          centerX = -0.06;
+        }
         const scale = (): number => Math.min(
-          stage.clientWidth * 0.21 / tile.offsetWidth,
-          stage.clientHeight * 0.26 / tile.offsetHeight,
+          scenes.hero.clientWidth * 0.21 / tile.offsetWidth,
+          scenes.hero.clientHeight * 0.26 / tile.offsetHeight,
         ) * size;
-        const x = (): number => stage.clientWidth * centerX - tile.offsetLeft - tile.offsetWidth / 2;
-        const y = (): number => stage.clientHeight * centerY - tile.offsetTop - tile.offsetHeight / 2;
+        const x = (): number => scenes.hero.clientWidth * centerX - tile.offsetLeft - tile.offsetWidth / 2;
+        const y = (): number => scenes.hero.clientHeight * centerY - tile.offsetTop - tile.offsetHeight / 2;
 
         timeline.to(tile, {
           x, y, scale, rotation, duration: 1.55, ease: 'power2.inOut',
           boxShadow: '0 16px 28px rgba(23,25,24,0.18)',
         }, 1.85 + (index % 4) * 0.055);
+        if (!desktop) {
+          return;
+        }
         timeline.to(tile, {
           x: (): number => x() + (centerX - 0.5) * stage.clientWidth * 1.9,
           y: (): number => y() + (centerY - 0.5) * stage.clientHeight * 1.8,
@@ -195,6 +176,32 @@ export function useIntroMotion(
           ease: 'power2.in',
         }, 6.65 + (index % 3) * 0.07);
       });
+
+      if (!desktop) {
+        timeline.to({}, { duration: 0.8 });
+        timeline.eventCallback('onUpdate', (): void => {
+          setActiveScene(timeline.time() < 2.8 ? 'hero' : 'about');
+        });
+        triggerRef.current = ScrollTrigger.create({
+          id: 'homepage-v3-intro',
+          trigger: opening,
+          pin: opening,
+          animation: timeline,
+          start: 'top top',
+          end: (): string => `+=${Math.round(scenes.hero.clientHeight * 1.8)}`,
+          scrub: 0.55,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+        gsap.from([classHeading, ...Array.from(classRows)], {
+          y: 35,
+          opacity: 0,
+          duration: 0.65,
+          stagger: 0.06,
+          scrollTrigger: { trigger: classHeading, start: 'top 92%', once: true },
+        });
+        return restoreScenes;
+      }
 
       timeline
         .addLabel('about', 4.9)

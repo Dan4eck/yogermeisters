@@ -82,6 +82,14 @@
 .menuButton { display: none; align-items: center; justify-content: center; height: 44px; width: 44px; border: 0; color: inherit; background: none; cursor: pointer; }
 .mobileNav { display: none; }
 .intro, .stage { position: relative; }
+.opening { display: contents; }
+
+.intro[data-motion='mobile'] .opening { position: relative; display: block; }
+.intro[data-motion='mobile'] :global([data-v3-scene='hero']) { position: absolute; z-index: 3; inset: 0 0 auto; height: 100svh; min-height: 0; overflow: hidden; pointer-events: none; }
+.intro[data-motion='mobile'] :global([data-v3-scene='about']) { min-height: 100svh; }
+.intro[data-motion='mobile'] :global([data-hero-copy]),
+.intro[data-motion='mobile'] :global([data-hero-bottom]) { pointer-events: auto; }
+.intro[data-motion='mobile'] :global([data-about-decor]) { display: none; }
 
 .intro[data-motion='on'] .stage { height: 100svh; min-height: 680px; overflow: hidden; }
 .intro[data-motion='on'] :global([data-v3-scene]) { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; }

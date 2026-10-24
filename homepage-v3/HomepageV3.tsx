@@ -133,8 +133,10 @@ export default function HomepageV3({ language, setLanguage }: HomepageV3Props): 
       <main>
         <div className={styles.intro} data-intro>
           <div className={styles.stage} data-intro-stage>
-            <HeroSection language={language} />
-            <AboutSection language={language} />
+            <div className={styles.opening} data-intro-opening>
+              <HeroSection language={language} />
+              <AboutSection language={language} />
+            </div>
             <ClassesSection language={language} />
           </div>
         </div>
