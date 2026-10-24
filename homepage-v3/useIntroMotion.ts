@@ -22,6 +22,15 @@ const SCATTER_POSITIONS: readonly ScatterPosition[] = [
   [0.75, -0.12, 0.8, 8],
 ];
 
+const MOBILE_SCATTER_POSITIONS: Readonly<Record<string, ScatterPosition>> = {
+  assistedYoga: [-0.07, 0.06, 1, -10],
+  waterfallWalk: [1.06, 0.24, 1, 9],
+  sunsetBreath: [0.72, -0.02, 0.9, 8],
+  mountainMeditation: [-0.04, 0.8, 0.95, 10],
+  prayerFlagsWalk: [1.07, 0.63, 1, -11],
+  templeRoof: [-0.06, 0.48, 0.9, -9],
+};
+
 export function useIntroMotion(
   rootRef: RefObject<HTMLDivElement | null>,
   language: Language,
@@ -94,9 +103,14 @@ export function useIntroMotion(
     media.add({
       all: 'all',
       desktop: '(min-width: 1000px) and (min-height: 680px)',
+      mobile: '(max-width: 999px)',
       reduced: '(prefers-reduced-motion: reduce)',
     }, (context: gsap.Context): (() => void) | void => {
-      const { desktop, reduced } = context.conditions as { desktop: boolean; reduced: boolean };
+      const { desktop, mobile, reduced } = context.conditions as {
+        desktop: boolean;
+        mobile: boolean;
+        reduced: boolean;
+      };
 
       gsap.set([
         ...Object.values(scenes), ...tiles, camera, heroCopy, heroBottom, heroShade,
@@ -126,7 +140,8 @@ export function useIntroMotion(
       setActiveScene('hero');
 
       gsap.set(desktop ? [scenes.about, scenes.classes] : scenes.about, { autoAlpha: 0 });
-      gsap.set(tiles, { transformOrigin: 'center center', force3D: true });
+      const activeTiles = tiles.filter((tile: HTMLElement): boolean => tile.offsetWidth > 0 && tile.offsetHeight > 0);
+      gsap.set(activeTiles, { transformOrigin: 'center center', force3D: true });
       const timeline = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
 
       timeline
@@ -144,12 +159,15 @@ export function useIntroMotion(
         }, 2.25)
         .to(camera, { scale: 1, duration: 1.45 }, 2.1);
 
-      tiles.forEach((tile: HTMLElement, index: number): void => {
-        const [scatterX, centerY, size, rotation] = SCATTER_POSITIONS[index % SCATTER_POSITIONS.length];
+      activeTiles.forEach((tile: HTMLElement, index: number): void => {
+        const position = mobile
+          ? MOBILE_SCATTER_POSITIONS[tile.dataset.heroPhoto ?? '']
+          : SCATTER_POSITIONS[index % SCATTER_POSITIONS.length];
+        const [scatterX, centerY, size, rotation] = position;
         let centerX = scatterX;
-        if (!desktop && centerY >= 1) {
+        if (!desktop && !mobile && centerY >= 1) {
           centerX = scatterX < 0.5 ? -0.08 : 1.08;
-        } else if (!desktop && scatterX < 0.1) {
+        } else if (!desktop && !mobile && scatterX < 0.1) {
           centerX = -0.06;
         }
         const scale = (): number => Math.min(

@@ -15,18 +15,19 @@ type HeroPhotoKey = keyof typeof photos;
 interface HeroTile {
   readonly photo: HeroPhotoKey;
   readonly position?: string;
+  readonly mobile?: boolean;
 }
 
 const HERO_TILES: readonly HeroTile[] = [
-  { photo: 'sunsetBreath', position: '50% 55%' },
+  { photo: 'sunsetBreath', position: '50% 55%', mobile: true },
   { photo: 'retreatCampfire', position: '50% 60%' },
   { photo: 'prayerFlagsPortrait', position: '50% 48%' },
-  { photo: 'studioBackbend', position: '50% 85%' },
-  { photo: 'waterfallWalk', position: '35% 65%' },
+  { photo: 'assistedYoga', position: '50% 70%', mobile: true },
+  { photo: 'waterfallWalk', position: '35% 65%', mobile: true },
   { photo: 'waterfallMeditation', position: '50% 56%' },
-  { photo: 'mountainMeditation', position: '45% 65%' },
-  { photo: 'prayerFlagsWalk', position: '50% 65%' },
-  { photo: 'templeRoof', position: '65% 50%' },
+  { photo: 'mountainMeditation', position: '45% 65%', mobile: true },
+  { photo: 'prayerFlagsWalk', position: '50% 65%', mobile: true },
+  { photo: 'templeRoof', position: '65% 50%', mobile: true },
 ];
 
 const COPY = {
@@ -63,6 +64,7 @@ export default function HeroSection({ language }: HeroSectionProps): ReactElemen
               className={styles.tile}
               data-hero-tile={index}
               data-hero-photo={tile.photo}
+              data-hero-mobile={tile.mobile ? 'true' : 'false'}
             >
               <div className={styles.tileMedia} data-hero-crop='natural'>
                 <img
