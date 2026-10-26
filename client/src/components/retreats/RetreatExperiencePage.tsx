@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactElement, type Touch as ReactTouch, type TouchEvent } from 'react';
-import { ArrowDown, ArrowLeft, ArrowUpRight, Plus, Sun } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowUpRight, Plus } from 'lucide-react';
 import { Link } from 'wouter';
 
 import type { RetreatRecord } from '@shared/retreat-content';
@@ -49,6 +49,29 @@ function formatDay(date: string, language: Language, weekday = false): string {
 interface PhotographProps {
   readonly media: RetreatMedia;
   readonly className?: string;
+}
+
+function EarlyBirdCard({ offer }: { readonly offer: NonNullable<RetreatExperience['priceOffer']> }): ReactElement {
+  const cardRef = useRef<HTMLElement>(null);
+  const [arrived, setArrived] = useState(false);
+
+  useEffect((): (() => void) => {
+    const observer = new IntersectionObserver(([entry]: IntersectionObserverEntry[]): void => {
+      if (entry.isIntersecting) {
+        setArrived(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.6 });
+    if (cardRef.current) observer.observe(cardRef.current);
+    return (): void => observer.disconnect();
+  }, []);
+
+  return (
+    <aside ref={cardRef} className={styles.earlyBird} data-arrived={arrived} aria-label={offer.label}>
+      <span className={styles.offerBird} aria-hidden='true'>🐦</span>
+      <p>{offer.note.replace(/[.!?]\s*$/, '')} <strong>{offer.label}</strong>.</p>
+    </aside>
+  );
 }
 
 function Photograph({ media, className = '' }: PhotographProps): ReactElement {
@@ -365,6 +388,7 @@ export default function RetreatExperiencePage({
             <p className={styles.bookingText}>{experience.bookingText}</p>
           </div>
           <div className={styles.bookingActions}>
+            {experience.priceOffer ? <EarlyBirdCard offer={experience.priceOffer} /> : null}
             <div className={styles.bookingOffer}>
               <div className={styles.bookingPrices}>
                 {experience.priceOffer?.regularPrice ? <del>{experience.priceOffer.regularPrice}</del> : null}
@@ -372,15 +396,6 @@ export default function RetreatExperiencePage({
               </div>
             </div>
             <a className={styles.lightButton} href={retreat.bookingUrl} target='_blank' rel='noopener noreferrer'>{copy.telegram}<ArrowUpRight size={19} aria-hidden='true' /></a>
-            {experience.priceOffer ? (
-              <aside className={styles.earlyBird} aria-label={experience.priceOffer.label}>
-                <Sun className={styles.offerSun} size={28} strokeWidth={1.5} aria-hidden='true' />
-                <div>
-                  <p className={styles.offerLabel}>{experience.priceOffer.label}</p>
-                  <p className={styles.offerNote}>{experience.priceOffer.note}</p>
-                </div>
-              </aside>
-            ) : null}
           </div>
         </section>
       </main>
