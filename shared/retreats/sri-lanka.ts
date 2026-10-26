@@ -10,7 +10,7 @@ function schedule(items: readonly (readonly [string, string])[]): readonly Retre
 }
 
 const russianExperience: RetreatExperience = {
-  priceOffer: { regularPrice: '€1299', label: 'Early birds', note: 'Всего 3 места' },
+  priceOffer: { label: 'Early bird', note: 'Пиши сейчас, чтобы получить специальное предложение.' },
   heroTitle: 'Йога и отдых\nна Шри-Ланке.',
   heroText: 'Восемь дней в Велигаме: йога по утрам, поездки по югу острова и время у океана.',
   introTitle: 'Летим на Цейлон\nжить у океана!',
@@ -151,11 +151,11 @@ const russianExperience: RetreatExperience = {
   bookingTitle: 'Хочешь с нами?',
   bookingText: 'Присоединяйся к йога-туру за новыми впечатлениями и духовным опытом. Оставь заявку в Telegram – Я расскажу подробности поездки!',
   bookingSteps: ['Перейди в Telegram и напиши: «Хочу на Шри-Ланку».', 'Уточни наличие мест, проживание и что входит в стоимость.', 'Получи условия оплаты и подтверждение бронирования.'],
-  bookingNote: 'Стоимость Early birds — €1090, всего 3 места по этой цене. Полная стоимость — €1299. Условия оплаты уточняются при заявке. Программа может меняться с учётом погоды, расписания площадок и состояния группы.',
+  bookingNote: 'Стоимость — €1450. Пиши сейчас, чтобы получить специальное предложение early bird. Условия оплаты уточняются при заявке. Программа может меняться с учётом погоды, расписания площадок и состояния группы.',
 };
 
 const englishExperience: RetreatExperience = {
-  priceOffer: { regularPrice: '€1299', label: 'Early birds', note: 'Only 3 places' },
+  priceOffer: { label: 'Early bird', note: 'Message now to receive a special offer.' },
   heroTitle: 'Yoga and a break\nin Sri Lanka.',
   heroText: 'Eight days in Weligama: morning yoga, trips along the south coast and time by the ocean.',
   introTitle: 'Off to Ceylon,\nto live by the ocean!',
@@ -294,7 +294,7 @@ const englishExperience: RetreatExperience = {
   bookingTitle: 'Would you like to join us?',
   bookingText: 'Join the yoga tour for new experiences and spiritual practice. Leave an enquiry on Telegram – I’ll tell you more about the trip!',
   bookingSteps: ['Open Telegram and write: “I’d like to join Sri Lanka”.', 'Ask about availability, accommodation and what the price includes.', 'Receive payment terms and booking confirmation.'],
-  bookingNote: 'Early birds price: €1090, with only 3 places at this price. Full price: €1299. Payment terms are clarified when you enquire. The programme may change with the weather, venue schedules and the group’s wellbeing.',
+  bookingNote: 'Price: €1450. Message now to receive a special early bird offer. Payment terms are clarified when you enquire. The programme may change with the weather, venue schedules and the group’s wellbeing.',
 };
 
 export const sriLankaRetreat: RetreatSeed = {
@@ -306,7 +306,7 @@ export const sriLankaRetreat: RetreatSeed = {
   startDate: '2027-02-24',
   endDate: '2027-03-03',
   dateLabel: '24 February – 3 March 2027',
-  price: '€1090',
+  price: '€1450',
   bookingUrl: 'https://t.me/AnastasiaPagliacci',
   coverImage: '/assets/retreats/sri-lanka/coast.webp',
   experience: englishExperience,

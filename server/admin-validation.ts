@@ -327,7 +327,9 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
     const offer = requireRecord(record.priceOffer, `${field}.priceOffer`);
     rejectUnknownKeys(offer, new Set(['regularPrice', 'label', 'note']), `${field}.priceOffer`);
     priceOffer = {
-      regularPrice: requireString(offer.regularPrice, `${field}.priceOffer.regularPrice`),
+      ...(offer.regularPrice === undefined ? {} : {
+        regularPrice: requireString(offer.regularPrice, `${field}.priceOffer.regularPrice`),
+      }),
       label: requireString(offer.label, `${field}.priceOffer.label`),
       note: requireString(offer.note, `${field}.priceOffer.note`),
     };

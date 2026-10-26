@@ -33,7 +33,7 @@ export interface RetreatDay {
 
 export interface RetreatExperience {
   readonly priceOffer?: {
-    readonly regularPrice: string;
+    readonly regularPrice?: string;
     readonly label: string;
     readonly note: string;
   };

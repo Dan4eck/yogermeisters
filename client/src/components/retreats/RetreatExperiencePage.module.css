@@ -68,6 +68,7 @@
 .heroPrice del { opacity: .6; text-decoration-thickness: 1px; }
 .heroPrice strong { font-weight: 600; }
 .heroPrice span { opacity: .85; text-transform: lowercase; }
+.heroOffer { display: inline-flex; align-items: center; gap: 7px; margin-left: 4px; padding: 3px 12px; border-radius: 999px; background: #f8d68b; color: #533044 !important; font-size: 12px; font-weight: 600; }
 
 .page h2 { font-size: clamp(54px, 6.4vw, 112px); font-weight: 800; line-height: .93; letter-spacing: -.07em; }
 
@@ -144,12 +145,14 @@
 
 .booking { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; gap: 10%; padding: 80px var(--gutter); color: var(--paper); background: var(--wine); }
 .bookingText { margin-top: 28px !important; max-width: 500px; font-size: var(--body-size); line-height: var(--body-leading); color: rgb(242 239 231 / 88%); }
-.bookingActions { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.bookingActions { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; min-width: 0; }
 .bookingOffer { display: grid; gap: 14px; }
-.offerLabel { font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+.earlyBird { display: flex; align-items: flex-start; gap: 16px; width: min(100%, 340px); margin-top: 8px; padding: 22px 24px; border-radius: 24px; background: #f8d68b; color: #533044; box-shadow: 0 12px 32px rgb(39 12 24 / 12%); transform: rotate(-3deg); }
+.offerSun { flex-shrink: 0; margin-top: 3px; }
+.offerLabel { font-size: 22px; font-weight: 650; letter-spacing: -.04em; line-height: 1.15; }
 .bookingPrices { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 20px; }
 .bookingPrices del { font-size: clamp(24px, 2.4vw, 38px); line-height: 1; letter-spacing: -.045em; opacity: .6; text-decoration-thickness: 1px; }
-.offerNote { font-size: 14px; line-height: 1.5; opacity: .85; }
+.offerNote { margin-top: 9px !important; font-size: 15px; line-height: 1.5; }
 .bookingPrice { font-size: clamp(56px, 6.4vw, 112px); line-height: .93; letter-spacing: -.07em; font-weight: 800; }
 .footer { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 36px var(--gutter); }
 .footer > span { font-size: 11px; color: var(--muted); }
@@ -246,6 +249,7 @@
   .booking { padding-top: 60px; padding-bottom: 60px; }
   .bookingPrice { font-size: clamp(56px, 16vw, 72px); }
   .booking .lightButton { width: 100%; font-size: 14px; }
+  .earlyBird { width: calc(100% - 6px); max-width: 340px; margin-left: 3px; padding: 20px; transform: rotate(-2deg); }
   .footer { flex-wrap: wrap; gap: 8px 24px; padding-top: 28px; padding-bottom: 28px; }
   .footer > span { order: 3; width: 100%; }
   .footer > a:last-child { margin-left: auto; }

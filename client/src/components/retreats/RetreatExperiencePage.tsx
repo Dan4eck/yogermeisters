@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactElement, type Touch as ReactTouch, type TouchEvent } from 'react';
-import { ArrowDown, ArrowLeft, ArrowUpRight, Plus } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowUpRight, Plus, Sun } from 'lucide-react';
 import { Link } from 'wouter';
 
 import type { RetreatRecord } from '@shared/retreat-content';
@@ -323,9 +323,9 @@ export default function RetreatExperiencePage({
             <span>{retreat.location}</span>
             <span>{retreat.dateLabel}</span>
             <p className={styles.heroPrice}>
-              {experience.priceOffer ? <del>{experience.priceOffer.regularPrice}</del> : null}
+              {experience.priceOffer?.regularPrice ? <del>{experience.priceOffer.regularPrice}</del> : null}
               <strong>{retreat.price}</strong>
-              {experience.priceOffer ? <span>— {experience.priceOffer.note}</span> : null}
+              {experience.priceOffer ? <a className={styles.heroOffer} href='#booking'>{experience.priceOffer.label}<ArrowUpRight size={14} aria-hidden='true' /></a> : null}
             </p>
           </div>
         </section>
@@ -366,14 +366,21 @@ export default function RetreatExperiencePage({
           </div>
           <div className={styles.bookingActions}>
             <div className={styles.bookingOffer}>
-              {experience.priceOffer ? <p className={styles.offerLabel}>{experience.priceOffer.label}</p> : null}
               <div className={styles.bookingPrices}>
-                {experience.priceOffer ? <del>{experience.priceOffer.regularPrice}</del> : null}
+                {experience.priceOffer?.regularPrice ? <del>{experience.priceOffer.regularPrice}</del> : null}
                 <p className={styles.bookingPrice}>{retreat.price}</p>
               </div>
-              {experience.priceOffer ? <p className={styles.offerNote}>{experience.priceOffer.note}</p> : null}
             </div>
             <a className={styles.lightButton} href={retreat.bookingUrl} target='_blank' rel='noopener noreferrer'>{copy.telegram}<ArrowUpRight size={19} aria-hidden='true' /></a>
+            {experience.priceOffer ? (
+              <aside className={styles.earlyBird} aria-label={experience.priceOffer.label}>
+                <Sun className={styles.offerSun} size={28} strokeWidth={1.5} aria-hidden='true' />
+                <div>
+                  <p className={styles.offerLabel}>{experience.priceOffer.label}</p>
+                  <p className={styles.offerNote}>{experience.priceOffer.note}</p>
+                </div>
+              </aside>
+            ) : null}
           </div>
         </section>
       </main>
