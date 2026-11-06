@@ -59,7 +59,7 @@
 }
 .brand { font-weight: 800; font-size: clamp(20px, 2vw, 27px); letter-spacing: -.075em; }
 .desktopNav { display: flex; align-items: center; gap: clamp(18px, 2.5vw, 42px); }
-.desktopNav a, .headerActions a { font-size: 13px; }
+.desktopNav a, .headerActions a { font-size: 13px; line-height: 20px; }
 .desktopNav a { position: relative; padding: 12px 0; }
 .desktopNav a::after {
   position: absolute;
@@ -75,8 +75,8 @@
 }
 .desktopNav a:hover::after { transform: scaleX(1); }
 .headerActions { display: flex; align-items: center; gap: 30px; }
-.shala { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; }
-.language { display: flex; gap: 5px; padding: 10px 0; min-height: 44px; border: 0; background: none; color: inherit; cursor: pointer; font-size: 12px !important; }
+.shala { display: inline-flex; align-items: center; min-height: 44px; }
+.language { display: inline-flex; align-items: center; justify-content: center; line-height: 20px; gap: 5px; padding: 10px 0; min-height: 44px; border: 0; background: none; color: inherit; cursor: pointer; font-size: 12px !important; }
 .language span { opacity: .62; }
 .language .selectedLanguage { opacity: 1; font-weight: 700; }
 .menuButton { display: none; align-items: center; justify-content: center; height: 44px; width: 44px; border: 0; color: inherit; background: none; cursor: pointer; }
@@ -87,10 +87,9 @@
 .intro[data-motion='on'] :global([data-v3-scene]) { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; }
 .intro[data-motion='on'] :global([data-v3-scene='classes']) { z-index: 1; }
 .intro[data-motion='on'] :global([data-v3-scene='about']) { z-index: 2; }
-.intro[data-motion='on'] :global([data-v3-scene='hero']) { z-index: 3; overflow: visible; pointer-events: none; }
+.intro[data-motion='on'] :global([data-v3-scene='hero']) { z-index: 3; overflow: hidden; pointer-events: none; }
 .intro[data-motion='on'] :global([data-hero-copy]),
 .intro[data-motion='on'] :global([data-hero-bottom]) { pointer-events: auto; }
-.intro[data-motion='on'] :global([data-about-decor]) { display: none; }
 
 @media (max-width: 999px) {
   .desktopNav { display: none; }

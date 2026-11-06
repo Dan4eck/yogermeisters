@@ -1,4 +1,14 @@
 export const photos = {
+  studioAssistedPractice: {
+    src: '/assets/landing-v3/photos/studio-assisted-practice.jpg', width: 960, height: 1280,
+    alt: { ru: 'Анастасия помогает ученице в асане в деревянном зале.', en: 'Anastasia assists a student with a yoga pose in a wooden studio.' },
+    position: '50% 65%',
+  },
+  studioSeatedMeditation: {
+    src: '/assets/landing-v3/photos/studio-seated-meditation.jpg', width: 960, height: 1280,
+    alt: { ru: 'Анастасия сидит с закрытыми глазами на коврике в зале для практики.', en: 'Anastasia sits with her eyes closed on a mat in the practice studio.' },
+    position: '50% 70%',
+  },
   sunsetBreath: {'src': '/assets/landing-v3/photos/shore-breath-silhouette.webp', 'width': 853, 'height': 1280, 'alt': {'ru': 'Силуэт женщины во время дыхательной практики на берегу у низкого солнца.', 'en': 'A woman practicing breathing on the shore, silhouetted against the low sun.'}, 'position': '50% 45%'},
   paddleboardYoga: {'src': '/assets/landing-v3/photos/braided-paddleboard-yoga.webp', 'width': 853, 'height': 1280, 'alt': {'ru': 'Женщина с косами сидит на голубой доске на воде и поднимает соединённые ладони.', 'en': 'A woman with braids sits on a blue paddleboard and raises her joined palms.'}, 'position': '50% 50%'},
   prayerFlagsPortrait: {'src': '/assets/landing-v3/photos/teacher-and-monk-prayer-flags.webp', 'width': 1670, 'height': 1800, 'alt': {'ru': 'Женщина и монах перед разноцветными молитвенными флажками.', 'en': 'A woman and a monk in front of colorful prayer flags.'}, 'position': '50% 55%'},

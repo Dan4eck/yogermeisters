@@ -10,14 +10,7 @@ interface AboutSectionProps {
   readonly language: Language;
 }
 
-type AboutPhoto = (typeof photos)[keyof typeof photos];
 type AboutDetail = (typeof landingCopy)[Language]['himalayan']['details'][number];
-
-interface DecorativePrint {
-  readonly id: string;
-  readonly photo: AboutPhoto;
-  readonly className: string;
-}
 
 const COPY = {
   ru: {
@@ -36,17 +29,6 @@ const COPY = {
   },
 } as const;
 
-const DECORATIVE_PRINTS: readonly DecorativePrint[] = [
-  { id: 'portrait-top', photo: photos.braidedPortrait, className: styles.printOne },
-  { id: 'breath-top', photo: photos.sunsetBreath, className: styles.printTwo },
-  { id: 'movement-top', photo: photos.oceanMovement, className: styles.printThree },
-  { id: 'rock-right', photo: photos.rockPose, className: styles.printFour },
-  { id: 'portrait-left', photo: photos.braidedPortrait, className: styles.printFive },
-  { id: 'movement-bottom', photo: photos.oceanMovement, className: styles.printSix },
-  { id: 'rock-bottom', photo: photos.rockPose, className: styles.printSeven },
-  { id: 'breath-bottom', photo: photos.sunsetBreath, className: styles.printEight },
-];
-
 export default function AboutSection({ language }: AboutSectionProps): ReactElement {
   const copy = COPY[language];
   const details = landingCopy[language].himalayan.details;
@@ -63,22 +45,6 @@ export default function AboutSection({ language }: AboutSectionProps): ReactElem
       aria-labelledby='v3-about-heading'
       lang={language}
     >
-      <div className={styles.decorations} aria-hidden='true'>
-        {DECORATIVE_PRINTS.map((print: DecorativePrint): ReactElement => (
-          <figure key={print.id} className={`${styles.decorativePrint} ${print.className}`} data-about-decor={print.id}>
-            <img
-              src={print.photo.src}
-              width={print.photo.width}
-              height={print.photo.height}
-              alt=''
-              loading='lazy'
-              decoding='async'
-              style={{ objectPosition: print.photo.position }}
-            />
-          </figure>
-        ))}
-      </div>
-
       <div className={styles.content} data-about-copy>
         <header className={styles.header}>
           <p className={styles.eyebrow} data-about-text>{copy.eyebrow}</p>

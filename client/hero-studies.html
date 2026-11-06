@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yogermeisters — варианты главной</title>
+  <style>
+    @font-face {font-family:Inter;src:url('/assets/landing-v3/fonts/InterVariable.woff2')}
+    * {box-sizing:border-box} body {margin:0;background:#e6e4de;color:#29312b;font-family:Inter,Arial,sans-serif}
+    header {padding:22px 28px 18px;background:#f7f5ef;border-bottom:1px solid #d1d3ca}
+    .top {display:flex;align-items:center;justify-content:space-between;gap:20px}
+    h1 {font-size:20px;letter-spacing:-.06em;margin:0} .top span {font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+    nav {display:flex;gap:8px;flex-wrap:wrap;margin-top:20px} button,a {font:inherit}
+    button {border:1px solid #cbd0c6;background:transparent;color:inherit;border-radius:30px;padding:10px 15px;font-size:12px;cursor:pointer}
+    button[aria-pressed=true] {color:#fff;background:#384a3d;border-color:#384a3d}
+    .details {display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 28px}
+    p {margin:0;font-size:12px;line-height:1.6;max-width:720px}.controls {display:flex;align-items:center;gap:8px;flex-shrink:0}
+    a {font-size:12px;color:inherit;text-underline-offset:4px;margin-left:10px}
+    #frame-shell {position:relative;margin:0 auto 30px;overflow:hidden;box-shadow:0 14px 45px #27312a16;background:#f2efe7}
+    iframe {border:0;position:absolute;left:0;top:0;transform-origin:top left;background:#f2efe7}
+    @media(max-width:700px){header{padding:20px 16px}.top span{display:none}.details{padding:16px;flex-direction:column;align-items:flex-start}nav{gap:6px}button{padding:9px 12px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top"><h1>yogermeisters. / первый экран</h1><span>Пять новых направлений</span></div>
+    <nav aria-label="Варианты композиции"></nav>
+  </header>
+  <div class="details">
+    <p id="description"></p>
+    <div class="controls">
+      <button id="desktop" aria-pressed="true">Десктоп</button>
+      <button id="mobile" aria-pressed="false">Телефон</button>
+      <a id="open" target="_blank" rel="noopener">Открыть отдельно ↗</a>
+    </div>
+  </div>
+  <div id="frame-shell"><iframe title="Предпросмотр главной страницы"></iframe></div>
+  <script type="module">
+    const studies = [
+      ['triptych','03 · Три истории','3 фото · Практика с преподавателем → личная тишина → люди рядом. Три крупных кадра, приглушённый цвет и заголовок внизу.'],
+      ['sanctuary','04 · Пространство','3 фото · Светлый фон и свободное пространство. Медитация — главный кадр; храм и руки в практике дополняют историю.'],
+      ['together','05 · Вместе','5 фото · Сначала люди и совместный опыт. Большой кадр ретрита и четыре небольших эпизода: практика, традиция, дыхание, внимание.'],
+      ['rhythm','06 · Ритм практики','5 фото · Выбранный лейаут: природа, наставничество, практика, внимание и сообщество. Светлая галерея с мягким ритмом размеров.'],
+      ['atlas','07 · Тихий атлас','6 фото · Природа, практика и сообщество в асимметричной сетке. Чёрно-белая обработка объединяет разные места и моменты.'],
+      ['nine','01 · Замена двух','9 фото · Предыдущий вариант: исходная сетка с двумя новыми фотографиями.'],
+      ['five','02 · Пять кадров','5 фото · Предыдущий вариант: крупный центральный кадр и две пары фотографий по сторонам.'],
+    ];
+    const frame = document.querySelector('iframe');
+    const shell = document.querySelector('#frame-shell');
+    let mobile = false;
+    function resize() {
+      const width = mobile ? 390 : 1440;
+      const height = mobile ? 844 : 900;
+      const scale = Math.min(1, (window.innerWidth - 32) / width);
+      frame.style.width = `${width}px`;
+      frame.style.height = `${height}px`;
+      frame.style.transform = `scale(${scale})`;
+      shell.style.width = `${width * scale}px`;
+      shell.style.height = `${height * scale}px`;
+    }
+    function select(study) {
+      frame.src = `/?hero=${study[0]}`;
+      document.querySelector('#description').textContent = study[2];
+      document.querySelector('#open').href = frame.src;
+      document.querySelectorAll('nav button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.variant === study[0])));
+      history.replaceState(null, '', `#${study[0]}`);
+    }
+    studies.forEach(study => {
+      const button = document.createElement('button');
+      button.textContent = study[1];
+      button.dataset.variant = study[0];
+      button.addEventListener('click', () => select(study));
+      document.querySelector('nav').append(button);
+    });
+    for (const mode of ['desktop', 'mobile']) {
+      document.getElementById(mode).addEventListener('click', () => {
+        mobile = mode === 'mobile';
+        document.querySelector('#mobile').setAttribute('aria-pressed', String(mobile));
+        document.querySelector('#desktop').setAttribute('aria-pressed', String(!mobile));
+        resize();
+      });
+    }
+    window.addEventListener('resize', resize);
+    select(studies.find(study => study[0] === location.hash.slice(1)) ?? studies[0]);
+    resize();
+  </script>
+</body>
+</html>

@@ -93,7 +93,7 @@ export default function HomepageV3({ language, setLanguage }: HomepageV3Props): 
         </nav>
         <div className={styles.headerActions}>
           <a className={styles.shala} href='/cabinet'>
-            {isRussian ? 'Шала' : 'Shala'} <ArrowUpRight size={14} aria-hidden='true' />
+            {isRussian ? 'Шала' : 'Shala'}
           </a>
           <button
             className={styles.language}

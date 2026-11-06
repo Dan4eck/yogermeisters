@@ -8,19 +8,6 @@ import type { Language } from '@/lib/i18n';
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 type SceneName = 'hero' | 'about' | 'classes';
-type ScatterPosition = readonly [number, number, number, number];
-
-const SCATTER_POSITIONS: readonly ScatterPosition[] = [
-  [0.04, 0.07, 0.8, -7],
-  [0.73, 0.005, 1, -13],
-  [1.015, 0.22, 1, 11],
-  [-0.04, 0.55, 0.85, 11],
-  [0.4, -0.24, 0.9, -9],
-  [1.04, 0.63, 0.95, -9],
-  [0.39, 1.2, 0.85, 13],
-  [0.92, 1.015, 1, 15],
-  [0.75, -0.12, 0.8, 8],
-];
 
 export function useIntroMotion(
   rootRef: RefObject<HTMLDivElement | null>,
@@ -65,11 +52,11 @@ export function useIntroMotion(
       about: root.querySelector<HTMLElement>('[data-v3-scene="about"]')!,
       classes: root.querySelector<HTMLElement>('[data-v3-scene="classes"]')!,
     };
-    const tiles = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-tile]'));
     const camera = root.querySelector<HTMLElement>('[data-hero-camera]');
     const heroCopy = root.querySelector<HTMLElement>('[data-hero-copy]');
     const heroBottom = root.querySelector<HTMLElement>('[data-hero-bottom]');
     const heroShade = root.querySelector<HTMLElement>('[data-hero-shade]');
+    const aboutCopy = root.querySelector<HTMLElement>('[data-about-copy]');
     const aboutText = Array.from(root.querySelectorAll<HTMLElement>('[data-about-text]'));
     const portrait = root.querySelector<HTMLElement>('[data-about-portrait]');
     const classPhoto = root.querySelector<HTMLElement>('[data-classes-photo]');
@@ -96,9 +83,8 @@ export function useIntroMotion(
       const { desktop, reduced } = context.conditions as { desktop: boolean; reduced: boolean };
 
       gsap.set([
-        ...Object.values(scenes), ...tiles, camera, heroCopy, heroBottom, heroShade,
+        ...Object.values(scenes), camera, heroCopy, heroBottom, heroShade, aboutCopy,
         ...aboutText, portrait, classPhoto, classHeading, ...Array.from(classRows),
-        ...Array.from(root.querySelectorAll('[data-about-decor]')),
       ], { clearProps: 'transform,opacity,visibility,boxShadow' });
 
       if (reduced) {
@@ -109,26 +95,19 @@ export function useIntroMotion(
         gsap.set(Object.values(scenes), { autoAlpha: 1 });
         gsap.set(camera, { scale: 1 });
         gsap.set(heroShade, { autoAlpha: 1 });
-        tiles.forEach((tile: HTMLElement, index: number): void => {
-          gsap.fromTo(tile, { x: 0, y: 0, rotation: 0, scale: 1, autoAlpha: 1 }, {
-            x: (): number => (tile.offsetLeft + tile.offsetWidth / 2 - stage.clientWidth / 2) * 0.4,
-            y: (): number => -window.innerHeight * (0.13 + (index % 4) * 0.025),
-            rotation: index % 2 ? 10 : -10,
-            scale: 0.88,
-            ease: 'none',
-            scrollTrigger: { trigger: scenes.hero, start: 'top top', end: 'bottom 18%', scrub: 0.5 },
-          });
-        });
-        gsap.fromTo([heroCopy, heroBottom], { y: 0, scale: 1, autoAlpha: 1 }, {
-          y: -55,
+        gsap.fromTo([camera, heroCopy, heroBottom], { x: 0, y: 0, autoAlpha: 1 }, {
+          x: (): number => -stage.clientWidth * 0.12,
+          y: -24,
           autoAlpha: 0,
-          scrollTrigger: { trigger: scenes.hero, start: '30% top', end: 'bottom 35%', scrub: 0.4 },
+          ease: 'none',
+          scrollTrigger: { trigger: scenes.hero, start: '20% top', end: 'bottom 35%', scrub: 0.4 },
         });
-        gsap.to(root.querySelectorAll('[data-about-decor]'), {
-          y: -160,
-          rotation: (index: number): number => index % 2 ? 22 : -22,
-          autoAlpha: 0,
-          scrollTrigger: { trigger: scenes.about, start: 'bottom 80%', end: 'bottom 15%', scrub: 0.4 },
+        gsap.fromTo(aboutCopy, { x: 48, y: 24, autoAlpha: 0 }, {
+          x: 0,
+          y: 0,
+          autoAlpha: 1,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: scenes.about, start: 'top 85%', end: 'top 25%', scrub: 0.35 },
         });
         gsap.from([classHeading, ...Array.from(classRows)], {
           y: 35,
@@ -154,47 +133,27 @@ export function useIntroMotion(
       setActiveScene('hero');
 
       gsap.set([scenes.about, scenes.classes], { autoAlpha: 0 });
-      gsap.set(tiles, { transformOrigin: 'center center', force3D: true });
       const timeline = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
 
       timeline
         .addLabel('hero', 0)
-        .to(camera, { scale: 1.17, duration: 1.1 }, 1.1)
-        .to(heroCopy, { autoAlpha: 0, scale: 1.08, y: -35, duration: 0.85 }, 1.2)
-        .to(heroBottom, { autoAlpha: 0, y: 20, duration: 0.65 }, 1.25)
-        .to(heroShade, { autoAlpha: 0, duration: 0.7 }, 1.7)
-        .to(scenes.about, { autoAlpha: 1, duration: 1.2 }, 2.05)
-        .fromTo(aboutText, { y: 60, autoAlpha: 0 }, {
-          y: 0, autoAlpha: 1, duration: 1.1, stagger: 0.045,
-        }, 2.3)
-        .fromTo(portrait, { y: 75, scale: 0.88, autoAlpha: 0 }, {
-          y: 0, scale: 1, autoAlpha: 1, duration: 1.25,
-        }, 2.25)
-        .to(camera, { scale: 1, duration: 1.45 }, 2.1);
-
-      tiles.forEach((tile: HTMLElement, index: number): void => {
-        const [centerX, centerY, size, rotation] = SCATTER_POSITIONS[index % SCATTER_POSITIONS.length];
-        const scale = (): number => Math.min(
-          stage.clientWidth * 0.21 / tile.offsetWidth,
-          stage.clientHeight * 0.26 / tile.offsetHeight,
-        ) * size;
-        const x = (): number => stage.clientWidth * centerX - tile.offsetLeft - tile.offsetWidth / 2;
-        const y = (): number => stage.clientHeight * centerY - tile.offsetTop - tile.offsetHeight / 2;
-
-        timeline.to(tile, {
-          x, y, scale, rotation, duration: 1.55, ease: 'power2.inOut',
-          boxShadow: '0 16px 28px rgba(23,25,24,0.18)',
-        }, 1.85 + (index % 4) * 0.055);
-        timeline.to(tile, {
-          x: (): number => x() + (centerX - 0.5) * stage.clientWidth * 1.9,
-          y: (): number => y() + (centerY - 0.5) * stage.clientHeight * 1.8,
-          rotation: rotation * 2.7,
-          scale: (): number => scale() * 0.7,
-          autoAlpha: 0,
-          duration: 1.35,
-          ease: 'power2.in',
-        }, 6.65 + (index % 3) * 0.07);
-      });
+        .addLabel('heroExit', 1.05)
+        .to(scenes.hero, {
+          xPercent: -100,
+          duration: 1.4,
+          ease: 'power2.inOut',
+        }, 'heroExit')
+        .to(scenes.hero, { autoAlpha: 0, duration: 0.6 }, 'heroExit+=0.8')
+        .addLabel('aboutEnter', 2.45)
+        .fromTo(scenes.about, { xPercent: 100, autoAlpha: 1 }, {
+          xPercent: 0, autoAlpha: 1, duration: 1.4, ease: 'power2.inOut',
+        }, 'heroExit')
+        .fromTo(aboutText, { x: 60, y: 24, autoAlpha: 0 }, {
+          x: 0, y: 0, autoAlpha: 1, duration: 0.95, stagger: 0.045, ease: 'power3.out',
+        }, 'heroExit+=0.65')
+        .fromTo(portrait, { x: 80, y: 30, autoAlpha: 0 }, {
+          x: 0, y: 0, autoAlpha: 1, duration: 1.15, ease: 'power3.out',
+        }, 'heroExit+=0.55');
 
       timeline
         .addLabel('about', 4.9)
@@ -231,7 +190,7 @@ export function useIntroMotion(
 
       timeline.eventCallback('onUpdate', (): void => {
         const time = timeline.time();
-        setActiveScene(time < 2.8 ? 'hero' : time < 8.1 ? 'about' : 'classes');
+        setActiveScene(time < timeline.labels.aboutEnter ? 'hero' : time < 8.1 ? 'about' : 'classes');
       });
 
       triggerRef.current = ScrollTrigger.create({
