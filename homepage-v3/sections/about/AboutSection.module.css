@@ -141,8 +141,8 @@
 
 @media (max-width: 999px) {
   .section {
-    min-height: 100svh;
-    padding: clamp(100px, 16vw, 145px) 8vw clamp(56px, 8vw, 80px);
+    min-height: 0;
+    padding: 64px clamp(24px, 5.2vw, 48px) 36px;
   }
 
   .content {
@@ -173,7 +173,7 @@
 
 @media (max-width: 599px) {
   .section {
-    padding: 88px 24px 64px;
+    padding: 56px 24px 28px;
   }
 
   .content {

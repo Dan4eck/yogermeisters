@@ -827,3 +827,45 @@
     bottom: 12%;
   }
 }
+
+@media (max-width: 999px) {
+  .rhythm {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 96px clamp(24px, 5.2vw, 48px) 36px;
+  }
+
+  .rhythm .copy {
+    position: relative;
+    inset: auto;
+    order: 1;
+    padding: 0;
+  }
+
+  .rhythm .camera {
+    position: relative;
+    inset: auto;
+    order: 2;
+    height: clamp(260px, 32vw, 360px);
+    margin-top: 48px;
+  }
+
+  .rhythm .bottom {
+    position: relative;
+    inset: auto;
+    order: 3;
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .rhythm {
+    padding: 96px 24px 28px;
+  }
+
+  .rhythm .camera {
+    height: auto;
+    aspect-ratio: 5 / 6;
+  }
+}
