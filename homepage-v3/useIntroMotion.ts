@@ -78,16 +78,22 @@ export function useIntroMotion(
     media.add({
       all: 'all',
       desktop: '(min-width: 1000px) and (min-height: 680px)',
+      mobile: '(max-width: 999px)',
       reduced: '(prefers-reduced-motion: reduce)',
     }, (context: gsap.Context): (() => void) | void => {
-      const { desktop, reduced } = context.conditions as { desktop: boolean; reduced: boolean };
+      const { desktop, mobile, reduced } = context.conditions as {
+        desktop: boolean;
+        mobile: boolean;
+        reduced: boolean;
+      };
 
       gsap.set([
         ...Object.values(scenes), camera, heroCopy, heroBottom, heroShade, aboutCopy,
         ...aboutText, portrait, classPhoto, classHeading, ...Array.from(classRows),
       ], { clearProps: 'transform,opacity,visibility,boxShadow' });
 
-      if (reduced) {
+      if (reduced || mobile) {
+        restoreScenes();
         return restoreScenes;
       }
 

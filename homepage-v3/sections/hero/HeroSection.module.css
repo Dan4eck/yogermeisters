@@ -767,7 +767,7 @@
   }
 
   .rhythm .camera {
-    inset: 28% 20px 22%;
+    inset: 32% 20px 18%;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     grid-template-rows: 1fr 1.15fr;
     gap: 10px;
