@@ -22,12 +22,11 @@ export default function FooterSection({ language }: { language: Language }): Rea
   return (
     <footer className={styles.section} data-v3-section='footer' id='contact'>
       <p className={styles.eyebrow}>
-        {isRussian ? 'ПРАКТИКА НАЧИНАЕТСЯ С ТЕБЯ' : 'YOUR PRACTICE STARTS WITH YOU'}
+        {isRussian ? 'В любой непонятной ситуации' : 'Whenever life feels uncertain'}
       </p>
 
       <h2 className={styles.heading}>
-        <span>{isRussian ? 'Вернись' : 'Return'}</span>
-        <span>{isRussian ? 'к практике.' : 'to practice.'}</span>
+        <span>{isRussian ? 'Практикуй' : 'Practice'}</span>
       </h2>
 
       <nav className={styles.practiceLinks} aria-label={isRussian ? 'Направления практики' : 'Ways to practice'}>

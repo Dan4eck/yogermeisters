@@ -144,7 +144,7 @@ export default function PhilosophySection({ language }: { language: Language }):
           </div>
           <figcaption className={styles.attribution}>
             <span aria-hidden='true'>
-              {isRussian ? 'По мотивам текста Гьялсе Тогме Зангпо' : 'Inspired by Gyalse Tokme Zangpo'}
+              {isRussian ? 'Гьялсе Тогме Зангпо' : 'Gyalse Tokme Zangpo'}
             </span>
             <span className={styles.srOnly}>{copy.footnote}</span>
           </figcaption>

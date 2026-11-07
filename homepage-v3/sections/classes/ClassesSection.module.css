@@ -151,8 +151,7 @@
   justify-self: end;
 }
 
-.description,
-.action {
+.description {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -277,8 +276,7 @@
     font-size: 13px;
   }
 
-  .description,
-  .action {
+  .description {
     position: static;
     width: auto;
     height: auto;
@@ -296,13 +294,6 @@
     text-wrap: pretty;
   }
 
-  .action {
-    grid-column: 2 / -1;
-    margin-top: 4px;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.4;
-  }
 }
 
 @media (max-width: 420px) {

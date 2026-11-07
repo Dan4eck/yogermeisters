@@ -14,16 +14,16 @@ type AboutDetail = (typeof landingCopy)[Language]['himalayan']['details'][number
 
 const COPY = {
   ru: {
-    eyebrow: '01 / О ПОДХОДЕ',
+    eyebrow: 'О ПОДХОДЕ',
     title: ['Движение.', 'Дыхание.', 'Тишина'],
-    credit: 'Анастасия Пальяччи / Himalayan Yoga',
+    credit: 'Привет! Меня зовут Анастасия Пальяччи',
     yogaLabel: 'Практика йоги',
     meditationLabel: 'Медитация',
   },
   en: {
-    eyebrow: '01 / THE APPROACH',
+    eyebrow: 'THE APPROACH',
     title: ['Movement.', 'Breath.', 'Stillness'],
-    credit: 'Anastasia Pagliacci / Himalayan Yoga',
+    credit: 'Hi! My name is Anastasia Pagliacci',
     yogaLabel: 'Yoga Practice',
     meditationLabel: 'Meditation',
   },

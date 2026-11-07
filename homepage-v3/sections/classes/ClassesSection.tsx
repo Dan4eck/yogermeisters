@@ -18,15 +18,14 @@ const RUSSIAN_TITLES: readonly string[] = [
   'Йога-буст',
 ];
 
-const HEADING_LINES: Readonly<Record<Language, readonly [string, string]>> = {
-  ru: ['Начни заниматься', 'сегодня'],
-  en: ['Start practicing', 'today'],
+const HEADINGS: Readonly<Record<Language, string>> = {
+  ru: 'Форматы',
+  en: 'Practice formats',
 };
 
 export default function ClassesSection({ language }: ClassesSectionProps): ReactElement {
   const cards: readonly ClassCard[] = landingCopy[language].classes.cards;
   const photo = photos.oceanMovement;
-  const headingLines = HEADING_LINES[language];
 
   return (
     <section
@@ -56,10 +55,9 @@ export default function ClassesSection({ language }: ClassesSectionProps): React
 
       <div className={styles.panel}>
         <header className={styles.heading} data-classes-heading>
-          <p className={styles.eyebrow}>{language === 'ru' ? '02 / ЗАНЯТИЯ' : '02 / CLASSES'}</p>
+          <p className={styles.eyebrow}>{language === 'ru' ? 'ЗАНЯТИЯ' : 'CLASSES'}</p>
           <h2 id='v3-classes-title' className={styles.title}>
-            <span>{headingLines[0]}</span>
-            <span>{headingLines[1]}</span>
+            <span>{HEADINGS[language]}</span>
           </h2>
         </header>
 
@@ -87,7 +85,6 @@ export default function ClassesSection({ language }: ClassesSectionProps): React
                   <p id={descriptionId} className={styles.description}>
                     {card.description}
                   </p>
-                  <span className={styles.action}>{card.cta}</span>
                 </a>
               </li>
             );

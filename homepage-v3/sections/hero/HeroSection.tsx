@@ -32,10 +32,10 @@ const FIVE_PHOTO_TILES: readonly HeroTile[] = [
 
 const COPY = {
   ru: {
-    statement: 'Между движением и тишиной рождается практика',
+    statement: 'Практикуй йогу и медитацию, изучай философию и погружайся в новый опыт на ретритах вместе с другими йогермейстерами!',
   },
   en: {
-    statement: 'Between movement and stillness, there is practice',
+    statement: 'Practice yoga and meditation, explore philosophy, and share new experiences on retreats with fellow Yogermeisters!',
   },
 } as const;
 
