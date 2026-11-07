@@ -21,14 +21,27 @@ interface RetreatSlot {
   readonly alt: Record<Language, string>;
 }
 
+interface RetreatDateStop {
+  readonly date: string;
+  readonly day: string;
+  readonly month: string;
+}
+
+interface RetreatPrice {
+  readonly current: string;
+  readonly regular: string | null;
+}
+
 interface RetreatCard {
   readonly slug: string;
   readonly image: string;
   readonly alt: string;
   readonly title: string;
   readonly dateLabel: string;
+  readonly dateStops: readonly RetreatDateStop[];
+  readonly mobileDateLabel: string | null;
   readonly location: string;
-  readonly price: string;
+  readonly price: RetreatPrice;
   readonly href: string;
   readonly bookingAvailable: boolean;
   readonly statusLabel: string;
@@ -73,6 +86,9 @@ const COPY = {
   ru: {
     label: 'Ретриты',
     unavailable: 'Запись недоступна',
+    booking: 'Запись',
+    regularPrice: 'Обычная цена:',
+    discountedPrice: 'Цена со скидкой:',
     previous: 'Предыдущий ретрит',
     next: 'Следующий ретрит',
     carousel: 'Ретриты: используйте стрелки влево и вправо для просмотра',
@@ -81,12 +97,22 @@ const COPY = {
   en: {
     label: 'Retreats',
     unavailable: 'Booking unavailable',
+    booking: 'Booking',
+    regularPrice: 'Regular price:',
+    discountedPrice: 'Discounted price:',
     previous: 'Previous retreat',
     next: 'Next retreat',
     carousel: 'Retreats: use the left and right arrow keys to browse',
     nepalTitle: 'Nepal',
   },
 } as const;
+
+function getCardPrice(price: string): RetreatPrice {
+  const discount = price.trim().match(/^(.+?)\s+early(?:\s+bird)?\s*\/\s*(.+)$/i);
+  return discount
+    ? { current: discount[1].trim(), regular: discount[2].trim() }
+    : { current: price, regular: null };
+}
 
 function getRetreatCards(language: Language, retreats: readonly RetreatRecord[]): readonly RetreatCard[] {
   const copy = COPY[language];
@@ -107,6 +133,7 @@ function getRetreatCards(language: Language, retreats: readonly RetreatRecord[])
     }
 
     const isNepal = slot.slug === 'nepal-buddhist-pilgrimage-tour';
+    const dateWithoutYear = retreat.dateLabel?.replace(/\b\d{4}\b/g, '').trim();
 
     return [{
       slug: retreat.slug,
@@ -122,8 +149,18 @@ function getRetreatCards(language: Language, retreats: readonly RetreatRecord[])
         sectionCopy.dateLocale,
         language,
       ),
+      dateStops: [retreat.startDate, retreat.endDate].map((date: string): RetreatDateStop => {
+        const value = new Date(`${date}T12:00:00Z`);
+        return {
+          date,
+          day: new Intl.DateTimeFormat(sectionCopy.dateLocale, { day: '2-digit', timeZone: 'UTC' }).format(value),
+          month: new Intl.DateTimeFormat(sectionCopy.dateLocale, { month: 'short', timeZone: 'UTC' })
+            .format(value).replace(/\.$/, ''),
+        };
+      }),
+      mobileDateLabel: dateWithoutYear && !/\d/.test(dateWithoutYear) ? dateWithoutYear : null,
       location: retreat.location,
-      price: retreat.price,
+      price: getCardPrice(retreat.price),
       href: `/retreats/${retreat.slug}`,
       bookingAvailable: retreat.status === 'active' && retreat.endDate >= today && Boolean(retreat.bookingUrl),
       statusLabel: copy.unavailable,
@@ -278,7 +315,7 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
                 className={styles.card}
                 data-retreat-card={card.slug}
                 role='group'
-                aria-roledescription={language === 'ru' ? 'слайд' : 'slide'}
+                aria-roledescription={hasOverflow ? (language === 'ru' ? 'слайд' : 'slide') : undefined}
                 aria-label={`${index + 1} / ${cards.length}: ${card.title}`}
               >
                 <Link href={card.href} className={styles.cardLink}>
@@ -294,8 +331,30 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
                     />
                   </div>
                   <div className={styles.cardHeading}>
-                    <h2 className={styles.cardTitle}>{card.title}</h2>
+                    <h2 className={styles.cardTitle}>
+                      {card.title}{' '}
+                      {!card.bookingAvailable && (
+                        <span className={styles.inlineStatus} aria-label={card.statusLabel}>
+                          {copy.booking} <span aria-hidden='true'>×</span>
+                        </span>
+                      )}
+                    </h2>
                     {!card.bookingAvailable && <p className={styles.unavailable}>{card.statusLabel}</p>}
+                  </div>
+                  <div className={styles.dateRoute} aria-label={card.dateLabel}>
+                    {card.mobileDateLabel ? (
+                      <span className={styles.monthLabel}>{card.mobileDateLabel}</span>
+                    ) : (
+                      <>
+                        <time dateTime={card.dateStops[0].date}>
+                          <strong>{card.dateStops[0].day}</strong><span>{card.dateStops[0].month}</span>
+                        </time>
+                        <span className={styles.routeLine} aria-hidden='true' />
+                        <time dateTime={card.dateStops[1].date}>
+                          <strong>{card.dateStops[1].day}</strong><span>{card.dateStops[1].month}</span>
+                        </time>
+                      </>
+                    )}
                   </div>
                   <div className={styles.cardCopy}>
                     <p className={styles.date}>
@@ -307,7 +366,18 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
                       <span>{card.location}</span>
                     </p>
                     <div className={styles.cardAction}>
-                      <p className={styles.price}>{card.price}</p>
+                      <p className={styles.price}>
+                        {card.price.regular && (
+                          <>
+                            <span className={styles.srOnly}>{copy.regularPrice} </span>
+                            <s className={styles.regularPrice}>{card.price.regular}</s>
+                            <span className={styles.srOnly}>{copy.discountedPrice} </span>
+                          </>
+                        )}
+                        <span className={card.price.regular ? styles.discountedPrice : undefined}>
+                          {card.price.current}
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </Link>

@@ -110,6 +110,11 @@
   text-wrap: balance;
 }
 
+.inlineStatus,
+.dateRoute {
+  display: none;
+}
+
 .date {
   display: inline-flex;
   align-items: center;
@@ -152,10 +157,40 @@
 }
 
 .price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
   margin: 0;
   font-size: clamp(16px, 1.5vw, 22px);
   font-weight: 500;
   line-height: 1.4;
+}
+
+.price > span:not(.srOnly),
+.regularPrice {
+  white-space: nowrap;
+}
+
+.regularPrice {
+  color: rgb(242 239 231 / 65%);
+  font-size: .65em;
+  font-weight: 400;
+  letter-spacing: -.02em;
+  text-decoration-thickness: 1px;
+}
+
+.discountedPrice {
+  color: #f0d3a1;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .unavailable {
@@ -232,54 +267,150 @@
 }
 
 @media (max-width: 999px) {
-  .track {
-    grid-auto-columns: calc((100% - var(--card-gap)) / 1.85);
-  }
-
-  .cardTitle {
-    font-size: clamp(34px, 4.4vw, 48px);
-  }
-}
-
-@media (max-width: 600px) {
   .section {
     padding: 64px 16px;
   }
 
   .track {
-    --card-gap: 10px;
-    grid-auto-columns: 100%;
+    --card-gap: 12px;
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    scroll-snap-type: none;
   }
 
   .card {
-    min-height: 560px;
-    height: calc(100svh - 96px);
-    border-radius: 20px;
+    min-height: 0;
+    height: clamp(420px, 64svh, 520px);
+    border-radius: 16px;
+    scroll-snap-align: none;
+  }
+
+  .card::after {
+    background:
+      linear-gradient(90deg, rgb(12 16 15 / 65%), transparent 85%),
+      linear-gradient(180deg, rgb(12 16 15 / 52%) 0%, transparent 38%, rgb(12 16 15 / 90%) 100%);
+  }
+
+  .cardLink {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0;
+    height: 100%;
   }
 
   .cardCopy {
-    gap: 14px;
-    padding: 24px;
+    align-content: end;
+    min-height: 0;
+    padding: 18px 14px;
   }
 
   .cardHeading {
-    padding: 24px;
+    display: block;
+    position: absolute;
+    inset: 18px 64px 98px 14px;
+    padding: 0;
   }
 
   .cardTitle {
-    font-size: clamp(32px, 9vw, 44px);
+    max-height: 100%;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: clamp(22px, 6.6vw, 32px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    text-wrap: wrap;
+  }
+
+  .inlineStatus {
+    display: inline;
+    margin-inline-start: 16px;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: .015em;
+    white-space: nowrap;
+    color: rgb(242 239 231 / 85%);
+  }
+
+  .inlineStatus span {
+    font-size: 13px;
+  }
+
+  .date,
+  .location,
+  .unavailable {
+    display: none;
+  }
+
+  .dateRoute {
+    display: flex;
+    position: absolute;
+    top: 22px;
+    right: 14px;
+    height: 60%;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dateRoute time {
+    display: grid;
+    gap: 4px;
+  }
+
+  .dateRoute strong {
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -.05em;
+  }
+
+  .dateRoute time span,
+  .monthLabel {
+    font-size: 9px;
+    line-height: 1.4;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+
+  .routeLine {
+    position: relative;
+    flex: 1;
+    width: 1px;
+    background: rgb(242 239 231 / 40%);
+  }
+
+  .routeLine::before,
+  .routeLine::after {
+    position: absolute;
+    left: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #f2efe7;
+    content: '';
+  }
+
+  .routeLine::after {
+    bottom: 0;
+  }
+
+  .cardAction {
+    padding: 0;
+    border: 0;
   }
 
   .price {
-    font-size: 18px;
+    font-size: clamp(22px, 6.6vw, 27px);
+    line-height: 1.2;
+    letter-spacing: -.055em;
   }
 
-  .previous {
-    left: 12px;
-  }
-
-  .next {
-    right: 12px;
+  .arrow {
+    display: none;
   }
 }
 
