@@ -59,7 +59,7 @@
 }
 .brand { font-weight: 800; font-size: clamp(20px, 2vw, 27px); letter-spacing: -.075em; }
 .desktopNav { display: flex; align-items: center; gap: clamp(18px, 2.5vw, 42px); }
-.desktopNav a, .headerActions a { font-size: 13px; line-height: 20px; }
+.desktopNav a { font-size: 13px; line-height: 20px; }
 .desktopNav a { position: relative; padding: 12px 0; }
 .desktopNav a::after {
   position: absolute;
@@ -75,7 +75,6 @@
 }
 .desktopNav a:hover::after { transform: scaleX(1); }
 .headerActions { display: flex; align-items: center; gap: 30px; }
-.shala { display: inline-flex; align-items: center; min-height: 44px; }
 .language { display: inline-flex; align-items: center; justify-content: center; line-height: 20px; gap: 5px; padding: 10px 0; min-height: 44px; border: 0; background: none; color: inherit; cursor: pointer; font-size: 12px !important; }
 .language span { opacity: .62; }
 .language .selectedLanguage { opacity: 1; font-weight: 700; }
@@ -105,7 +104,6 @@
 
 @media (max-width: 480px) {
   .headerActions { gap: 9px; }
-  .headerActions .shala { display: none; }
   .brand { font-size: 21px; }
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactElement } from 'react';
-import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, MapPin } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarDays, MapPin } from 'lucide-react';
 import { Link } from 'wouter';
 
 import { landingCopy } from '@/components/landing-v2/content';
@@ -29,7 +29,8 @@ interface RetreatCard {
   readonly dateLabel: string;
   readonly location: string;
   readonly price: string;
-  readonly href: string | null;
+  readonly href: string;
+  readonly bookingAvailable: boolean;
   readonly statusLabel: string;
 }
 
@@ -71,7 +72,6 @@ const RETREAT_SLOTS: readonly RetreatSlot[] = [
 const COPY = {
   ru: {
     label: 'Ретриты',
-    explore: 'Посмотреть ретрит',
     unavailable: 'Запись недоступна',
     previous: 'Предыдущий ретрит',
     next: 'Следующий ретрит',
@@ -80,7 +80,6 @@ const COPY = {
   },
   en: {
     label: 'Retreats',
-    explore: 'Explore retreat',
     unavailable: 'Booking unavailable',
     previous: 'Previous retreat',
     next: 'Next retreat',
@@ -125,7 +124,8 @@ function getRetreatCards(language: Language, retreats: readonly RetreatRecord[])
       ),
       location: retreat.location,
       price: retreat.price,
-      href: retreat.status === 'active' && retreat.endDate >= today ? `/retreats/${retreat.slug}` : null,
+      href: `/retreats/${retreat.slug}`,
+      bookingAvailable: retreat.status === 'active' && retreat.endDate >= today && Boolean(retreat.bookingUrl),
       statusLabel: copy.unavailable,
     }];
   });
@@ -281,39 +281,36 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
                 aria-roledescription={language === 'ru' ? 'слайд' : 'slide'}
                 aria-label={`${index + 1} / ${cards.length}: ${card.title}`}
               >
-                <div className={styles.photoFrame}>
-                  <img
-                    src={card.image}
-                    alt={card.alt}
-                    className={styles.photo}
-                    width={1200}
-                    height={760}
-                    loading='lazy'
-                    decoding='async'
-                  />
-                </div>
-                <h2 className={styles.cardTitle}>{card.title}</h2>
-                <div className={styles.cardCopy}>
-                  <p className={styles.date}>
-                    <CalendarDays size={14} strokeWidth={1.5} aria-hidden='true' />
-                    <span>{card.dateLabel}</span>
-                  </p>
-                  <p className={styles.location}>
-                    <MapPin size={15} strokeWidth={1.5} aria-hidden='true' />
-                    <span>{card.location}</span>
-                  </p>
-                  <div className={styles.cardAction}>
-                    <p className={styles.price}>{card.price}</p>
-                    {card.href ? (
-                      <Link href={card.href} className={styles.explore}>
-                        {copy.explore}
-                        <ArrowUpRight size={17} aria-hidden='true' strokeWidth={1.5} />
-                      </Link>
-                    ) : (
-                      <p className={styles.unavailable}>{card.statusLabel}</p>
-                    )}
+                <Link href={card.href} className={styles.cardLink}>
+                  <div className={styles.photoFrame}>
+                    <img
+                      src={card.image}
+                      alt={card.alt}
+                      className={styles.photo}
+                      width={1200}
+                      height={760}
+                      loading='lazy'
+                      decoding='async'
+                    />
                   </div>
-                </div>
+                  <div className={styles.cardHeading}>
+                    <h2 className={styles.cardTitle}>{card.title}</h2>
+                    {!card.bookingAvailable && <p className={styles.unavailable}>{card.statusLabel}</p>}
+                  </div>
+                  <div className={styles.cardCopy}>
+                    <p className={styles.date}>
+                      <CalendarDays size={14} strokeWidth={1.5} aria-hidden='true' />
+                      <span>{card.dateLabel}</span>
+                    </p>
+                    <p className={styles.location}>
+                      <MapPin size={15} strokeWidth={1.5} aria-hidden='true' />
+                      <span>{card.location}</span>
+                    </p>
+                    <div className={styles.cardAction}>
+                      <p className={styles.price}>{card.price}</p>
+                    </div>
+                  </div>
+                </Link>
               </article>
             ))}
           </div>

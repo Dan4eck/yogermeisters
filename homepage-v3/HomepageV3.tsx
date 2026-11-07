@@ -18,10 +18,11 @@ interface HomepageV3Props {
 }
 
 const NAVIGATION = [
-  { id: 'practice', ru: 'Практика', en: 'Practice' },
-  { id: 'classes', ru: 'Занятия', en: 'Classes' },
-  { id: 'retreats', ru: 'Ретриты', en: 'Retreats' },
-  { id: 'about', ru: 'О проекте', en: 'About' },
+  { href: '#practice', ru: 'Практика', en: 'Practice' },
+  { href: '#classes', ru: 'Занятия', en: 'Classes' },
+  { href: '#retreats', ru: 'Ретриты', en: 'Retreats' },
+  { href: '#about', ru: 'О проекте', en: 'About' },
+  { href: '/cabinet', ru: 'Шала', en: 'Shala' },
 ] as const;
 
 export default function HomepageV3({ language, setLanguage }: HomepageV3Props): ReactElement {
@@ -88,13 +89,10 @@ export default function HomepageV3({ language, setLanguage }: HomepageV3Props): 
         </a>
         <nav className={styles.desktopNav} aria-label={isRussian ? 'Главная навигация' : 'Main navigation'}>
           {NAVIGATION.map((item): ReactElement => (
-            <a href={`#${item.id}`} key={item.id}>{item[language]}</a>
+            <a href={item.href} key={item.href}>{item[language]}</a>
           ))}
         </nav>
         <div className={styles.headerActions}>
-          <a className={styles.shala} href='/cabinet'>
-            {isRussian ? 'Шала' : 'Shala'}
-          </a>
           <button
             className={styles.language}
             type='button'
@@ -124,7 +122,7 @@ export default function HomepageV3({ language, setLanguage }: HomepageV3Props): 
           hidden={!menuOpen}
         >
           {NAVIGATION.map((item, index): ReactElement => (
-            <a href={`#${item.id}`} key={item.id}>
+            <a href={item.href} key={item.href}>
               <span>0{index + 1}</span>{item[language]}<ArrowUpRight size={24} aria-hidden='true' />
             </a>
           ))}
