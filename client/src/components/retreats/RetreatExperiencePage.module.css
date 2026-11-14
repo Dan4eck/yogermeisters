@@ -233,7 +233,8 @@
   .dayToggle svg { width: 18px; height: 18px; }
   .dayPanel { grid-template-columns: minmax(0, 1fr); padding: 6px 20px 22px; gap: 24px; }
   .schedule { gap: 16px; }
-  .dayImage { min-height: 0; aspect-ratio: 4 / 3; }
+  .dayImage { width: 100%; min-height: 0; max-height: none; align-self: start; }
+  .dayImage img { position: static; width: 100%; height: auto; aspect-ratio: 4 / 3; }
 
   .page { --gutter: 22px; }
   .header { gap: 20px; }

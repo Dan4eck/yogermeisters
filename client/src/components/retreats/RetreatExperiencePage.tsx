@@ -49,6 +49,7 @@ function formatDay(date: string, language: Language, weekday = false): string {
 interface PhotographProps {
   readonly media: RetreatMedia;
   readonly className?: string;
+  readonly loading?: 'eager' | 'lazy';
 }
 
 function EarlyBirdCard({ offer }: { readonly offer: NonNullable<RetreatExperience['priceOffer']> }): ReactElement {
@@ -74,10 +75,10 @@ function EarlyBirdCard({ offer }: { readonly offer: NonNullable<RetreatExperienc
   );
 }
 
-function Photograph({ media, className = '' }: PhotographProps): ReactElement {
+function Photograph({ media, className = '', loading = 'lazy' }: PhotographProps): ReactElement {
   return (
     <figure className={`${styles.photograph} ${className}`}>
-      <img src={media.src} alt={media.alt} loading='lazy' decoding='async' />
+      <img src={media.src} alt={media.alt} loading={loading} decoding='async' />
     </figure>
   );
 }
@@ -248,7 +249,7 @@ function DaySection({ day, index, language, open, onToggle }: DaySectionProps): 
                   autoPlay={open} muted loop playsInline preload='none' aria-label={day.video.label}
                 />
               </figure>
-            ) : day.images[0] ? <Photograph media={day.images[0]} className={styles.dayImage} /> : null}
+            ) : day.images[0] ? <Photograph media={day.images[0]} className={styles.dayImage} loading={open ? 'eager' : 'lazy'} /> : null}
           </section>
         </div>
       </div>
