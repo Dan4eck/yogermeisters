@@ -85,6 +85,8 @@
 .stayPhotos .photograph:nth-child(2) { grid-area: 3 / 9 / 10 / 13; z-index: 1; border: 6px solid #e5e1d6; }
 .stayPhotos .photograph:nth-child(3) { grid-area: 6 / 3 / 11 / 9; z-index: 2; border: 6px solid #e5e1d6; }
 .stayPhotos .photograph img { width: 100%; height: 100%; }
+.page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(2) { grid-area: 7 / 1 / 11 / 11; z-index: 2; }
+.page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(3) { grid-area: 3 / 9 / 9 / 13; z-index: 1; }
 
 .inclusions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10%; padding: 80px var(--gutter) 88px; }
 .inclusions > div { min-width: 0; border-top: 1px solid var(--line); padding-top: 28px; }
@@ -142,6 +144,10 @@
 .schedule li p { font-size: var(--body-size); line-height: 1.5; }
 .dayImage { align-self: stretch; max-height: 390px; min-height: 280px; border-radius: 10px; overflow: hidden; }
 .dayImage img { position: absolute; inset: 0; }
+.dayPanel[data-has-media='false'] { grid-template-columns: minmax(0, 1fr); }
+.dayPanel[data-has-media='false'] .schedule { max-width: 760px; }
+.dayVideo { min-width: 0; align-self: center; }
+.dayVideo video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; background: #242723; }
 
 .booking { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; gap: 10%; padding: 80px var(--gutter); color: var(--paper); background: var(--wine); }
 .bookingText { margin-top: 28px !important; max-width: 500px; font-size: var(--body-size); line-height: var(--body-leading); color: rgb(242 239 231 / 88%); }
@@ -158,7 +164,7 @@
   54% { translate: 0 -5px; }
   84% { translate: 0 -2px; }
 }
-.bookingPrices { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 20px; }
+.bookingPrices { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .bookingPrices del { font-size: clamp(24px, 2.4vw, 38px); line-height: 1; letter-spacing: -.045em; opacity: .6; text-decoration-thickness: 1px; }
 .bookingPrice { font-size: clamp(56px, 6.4vw, 112px); line-height: .93; letter-spacing: -.07em; font-weight: 800; }
 .footer { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 36px var(--gutter); }
@@ -251,6 +257,10 @@
   .stayPhotos .photograph:first-child { grid-area: auto; grid-column: 1 / -1; aspect-ratio: 3 / 2; }
   .stayPhotos .photograph:nth-child(2), .stayPhotos .photograph:nth-child(3) { grid-area: auto; border: 0; }
   .stayPhotos .photograph img { position: absolute; inset: 0; }
+  .page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(2),
+  .page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(3) { grid-area: auto; grid-column: 1 / -1; }
+  .page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(2) { aspect-ratio: 2.7; }
+  .page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(3) { aspect-ratio: 3; }
   .inclusions { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 48px; padding-bottom: 52px; }
   .page .inclusions h2 { font-size: 36px; margin-bottom: 24px; }
   .booking { padding-top: 60px; padding-bottom: 60px; }

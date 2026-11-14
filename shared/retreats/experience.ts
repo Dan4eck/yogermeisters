@@ -11,6 +11,12 @@ export interface RetreatScheduleItem {
   readonly text: string;
 }
 
+export interface RetreatVideo {
+  readonly src: string;
+  readonly poster: string;
+  readonly label: string;
+}
+
 export interface RetreatReason {
   readonly title: string;
   readonly text: string;
@@ -27,6 +33,7 @@ export interface RetreatDay {
   readonly layout: RetreatDayLayout;
   readonly highlights: readonly string[];
   readonly images: readonly RetreatMedia[];
+  readonly video?: RetreatVideo;
   readonly schedule: readonly RetreatScheduleItem[];
   readonly note?: string;
 }

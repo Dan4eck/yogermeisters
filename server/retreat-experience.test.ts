@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { getRetreatBySlug, retreatSeedData } from '../shared/retreats';
 import { sriLankaRetreat } from '../shared/retreats/sri-lanka';
+import { ciraliRetreat } from '../shared/retreats/cirali';
 import type { RetreatExperience } from '../shared/retreats/experience';
 import type { RetreatSeed, RetreatUpdate } from '../shared/retreats/types';
 import type { AdminRepository } from './admin-repository';
@@ -45,9 +46,62 @@ describe('structured retreat experience', () => {
         getRetreatBySlug('sri-lanka-yoga-tour', language)?.experience?.heroTitle,
       );
     }
-    const legacy = await request(app).get('/api/retreats/cirali-yoga-tour?language=ru');
+    const legacy = await request(app).get('/api/retreats/nepal-buddhist-pilgrimage-tour?language=ru');
     expect(legacy.body.retreat.experience).toBeUndefined();
     expect(legacy.body.retreat.postBlocks.length).toBeGreaterThan(0);
+  });
+
+  it('serves the seven-day Cirali experience with optional SUP excluded in both languages', async () => {
+    const app = createApp({ adminRepository: createRepository() });
+    const { id: _id, slug: _slug, ...update } = ciraliRetreat;
+    expect(() => parseRetreatUpdate(update)).not.toThrow();
+    for (const language of ['ru', 'en'] as const) {
+      const response = await request(app).get(`/api/retreats/cirali-yoga-tour?language=${language}`);
+      expect(response.status).toBe(200);
+      const retreat = response.body.retreat;
+      expect(retreat.experience.days).toHaveLength(7);
+      expect(retreat.experience.days[0].date).toBe(retreat.startDate);
+      expect(retreat.experience.days[6].date).toBe(retreat.endDate);
+      expect(retreat.price).toBe('€720 Early Bird / €790');
+      expect(retreat.experience.priceOffer.regularPrice).toBe('€790');
+      expect(retreat.experience.days[2].video.src).toBe('/assets/retreats/cirali/cirali-practice.mp4');
+      expect(retreat.experience.days[2].images).toEqual([]);
+      expect(retreat.experience.days[0].video).toBeUndefined();
+      expect(retreat.experience.days[4].images[0].src).toBe('/assets/retreats/cirali/cirali-five-bays.webp');
+      expect(retreat.experience.days[5].video.src).toBe('/assets/retreats/cirali/cirali-chimaera.mp4');
+      expect(JSON.stringify(retreat.experience.days)).not.toMatch(/\bSUP\b|сап-борд/i);
+      expect(JSON.stringify(retreat.experience.inclusions.included)).not.toMatch(/\bSUP\b|сап-борд/i);
+      expect(JSON.stringify(retreat.experience.inclusions.excluded)).toMatch(/\bSUP\b/);
+    }
+  });
+
+  it('keeps Cirali visuals unique across the hero, reasons, programme and accommodation', () => {
+    for (const experience of [ciraliRetreat.experience!, ciraliRetreat.translations!.ru!.experience!]) {
+      const sources = [
+        ciraliRetreat.coverImage,
+        ...experience.stayImages.map((media) => media.src),
+        ...(experience.reasons ?? []).flatMap((reason) => [reason.image, ...(reason.additionalImages ?? [])])
+          .map((media) => media.src),
+        ...experience.days.flatMap((day) => day.images.map((media) => media.src)),
+        ...experience.days.flatMap((day) => day.video ? [day.video.src, day.video.poster] : []),
+      ];
+      expect(new Set(sources).size).toBe(sources.length);
+    }
+  });
+
+  it('validates programme videos and rejects external or unsafe media paths', () => {
+    const experience = ciraliRetreat.experience!;
+    const video = experience.days[2].video!;
+    expect(parseRetreatUpdate({ experience }).experience?.days[2].video).toEqual(video);
+    for (const invalid of [
+      { ...video, src: 'https://example.com/video.mp4' },
+      { ...video, src: '/assets/../video.mp4' },
+      { ...video, poster: 'https://example.com/poster.jpg' },
+    ]) {
+      expect(() => parseRetreatUpdate({
+        experience: { ...experience, days: [{ ...experience.days[0], video: invalid }] },
+      })).toThrow();
+    }
   });
 
   it('round-trips the full bilingual payload through an admin edit and public read', async () => {
@@ -140,6 +194,7 @@ describe('structured retreat experience', () => {
   it('keeps all selected media deployable and each day fully scheduled in both languages', () => {
     const experiences: readonly RetreatExperience[] = [
       sriLankaRetreat.experience!, sriLankaRetreat.translations!.ru!.experience!,
+      ciraliRetreat.experience!, ciraliRetreat.translations!.ru!.experience!,
     ];
     for (const experience of experiences) {
       const images = [
@@ -149,8 +204,13 @@ describe('structured retreat experience', () => {
       for (const media of images) {
         expect(existsSync(path.resolve('client/public', `.${media.src}`)), media.src).toBe(true);
       }
+      for (const day of experience.days) {
+        for (const source of day.video ? [day.video.src, day.video.poster] : []) {
+          expect(existsSync(path.resolve('client/public', `.${source}`)), source).toBe(true);
+        }
+      }
       expect(experience.days.every((day) => day.schedule.length >= 3)).toBe(true);
-      expect(new Set(experience.days.map((day) => day.date)).size).toBe(8);
+      expect(new Set(experience.days.map((day) => day.date)).size).toBe(experience.days.length);
     }
   });
 });

@@ -19,7 +19,7 @@ const COPY = {
   ru: {
     back: 'Все ретриты', program: 'Программа', book: 'Оставить заявку',
     programTitle: 'Программа тура',
-    programText: 'Семь дней на юге острова. Выбери день и посмотри, что нас ждёт.',
+    programText: 'Выбери день и посмотри, что нас ждёт.',
     included: 'Что включено в стоимость 🌴',
     excluded: 'Не включено в стоимость 🥲',
     schedule: 'Расписание дня',
@@ -30,7 +30,7 @@ const COPY = {
   en: {
     back: 'All retreats', program: 'Programme', book: 'Enquire now',
     programTitle: 'Tour programme',
-    programText: 'Seven days on the south coast. Choose a day to see what we have planned.',
+    programText: 'Choose a day to see what we have planned.',
     included: 'Included in the price 🌴',
     excluded: 'Not included in the price 🥲',
     schedule: 'Daily schedule',
@@ -196,11 +196,21 @@ interface DaySectionProps {
   readonly language: Language;
   readonly open: boolean;
   readonly onToggle: () => void;
-  readonly fallbackImage: RetreatMedia;
 }
 
-function DaySection({ day, index, language, open, onToggle, fallbackImage }: DaySectionProps): ReactElement {
+function DaySection({ day, index, language, open, onToggle }: DaySectionProps): ReactElement {
   const panelId = `schedule-${day.id}`;
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect((): (() => void) => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      if (open) void video.play().catch((): undefined => undefined);
+      else video.pause();
+    }
+    return (): void => video?.pause();
+  }, [open]);
   return (
     <article className={`${styles.dayCard} ${open ? styles.dayOpen : ''}`} id={`day-${day.id}`}>
       <h3>
@@ -222,7 +232,7 @@ function DaySection({ day, index, language, open, onToggle, fallbackImage }: Day
       </h3>
       <div className={styles.dayReveal} inert={!open} aria-hidden={!open}>
         <div className={styles.dayRevealInner}>
-          <section className={styles.dayPanel} id={panelId} aria-labelledby={`title-${day.id}`}>
+          <section className={styles.dayPanel} data-has-media={Boolean(day.video || day.images.length)} id={panelId} aria-labelledby={`title-${day.id}`}>
             <ol className={styles.schedule}>
               {day.schedule.map((item: RetreatScheduleItem, itemIndex: number): ReactElement => (
                 <li key={`${item.time}-${itemIndex}`}>
@@ -231,7 +241,14 @@ function DaySection({ day, index, language, open, onToggle, fallbackImage }: Day
                 </li>
               ))}
             </ol>
-            <Photograph media={day.images[0] ?? fallbackImage} className={styles.dayImage} />
+            {day.video ? (
+              <figure className={styles.dayVideo}>
+                <video
+                  ref={videoRef} src={day.video.src} poster={day.video.poster}
+                  autoPlay={open} muted loop playsInline preload='none' aria-label={day.video.label}
+                />
+              </figure>
+            ) : day.images[0] ? <Photograph media={day.images[0]} className={styles.dayImage} /> : null}
           </section>
         </div>
       </div>
@@ -293,7 +310,6 @@ function Programme({ experience, language }: { readonly experience: RetreatExper
               revealOnChange.current = true;
               setOpenId(openId === day.id ? null : day.id);
             }}
-            fallbackImage={experience.stayImages[0]}
           />
         ))}
       </div>
@@ -306,6 +322,9 @@ export default function RetreatExperiencePage({
 }: RetreatExperiencePageProps): ReactElement {
   const copy = COPY[language];
   const coverImage = getRetreatImageUrl(retreat.coverImage);
+  const discount = retreat.price.trim().match(/^(.+?)\s+early(?:\s+bird)?\s*\/\s*(.+)$/i);
+  const currentPrice = discount?.[1].trim() ?? retreat.price;
+  const regularPrice = experience.priceOffer?.regularPrice ?? discount?.[2].trim();
 
   useEffect((): (() => void) => {
     const previousTitle = document.title;
@@ -314,7 +333,7 @@ export default function RetreatExperiencePage({
   }, [retreat.title, retreat.dateLabel]);
 
   return (
-    <div className={styles.page} lang={language}>
+    <div className={styles.page} lang={language} data-retreat={retreat.slug}>
       <a className={styles.skipLink} href='#programme'>{copy.skip}</a>
       <header className={styles.header}>
         <Link href='/' className={styles.brand} aria-label='Yogermeisters – home'>yogermeisters.</Link>
@@ -346,8 +365,8 @@ export default function RetreatExperiencePage({
             <span>{retreat.location}</span>
             <span>{retreat.dateLabel}</span>
             <p className={styles.heroPrice}>
-              {experience.priceOffer?.regularPrice ? <del>{experience.priceOffer.regularPrice}</del> : null}
-              <strong>{retreat.price}</strong>
+              {regularPrice ? <del>{regularPrice}</del> : null}
+              <strong>{currentPrice}</strong>
               {experience.priceOffer ? <a className={styles.heroOffer} href='#booking'>{experience.priceOffer.label}<ArrowUpRight size={14} aria-hidden='true' /></a> : null}
             </p>
           </div>
@@ -391,8 +410,8 @@ export default function RetreatExperiencePage({
             {experience.priceOffer ? <EarlyBirdCard offer={experience.priceOffer} /> : null}
             <div className={styles.bookingOffer}>
               <div className={styles.bookingPrices}>
-                {experience.priceOffer?.regularPrice ? <del>{experience.priceOffer.regularPrice}</del> : null}
-                <p className={styles.bookingPrice}>{retreat.price}</p>
+                {regularPrice ? <del>{regularPrice}</del> : null}
+                <p className={styles.bookingPrice}>{currentPrice}</p>
               </div>
             </div>
             <a className={styles.lightButton} href={retreat.bookingUrl} target='_blank' rel='noopener noreferrer'>{copy.telegram}<ArrowUpRight size={19} aria-hidden='true' /></a>

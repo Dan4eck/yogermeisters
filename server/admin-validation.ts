@@ -7,7 +7,7 @@ import type {
   RetreatUpdate,
   RetreatView,
 } from '@shared/retreats';
-import type { RetreatDay, RetreatDayLayout, RetreatExperience, RetreatMedia } from '@shared/retreats/experience';
+import type { RetreatDay, RetreatDayLayout, RetreatExperience, RetreatMedia, RetreatVideo } from '@shared/retreats/experience';
 
 const RETREAT_UPDATE_KEYS = new Set<keyof RetreatEditableData>([
   'status',
@@ -272,7 +272,7 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
     const dayField = `${field}.days[${index}]`;
     const day = requireRecord(item, dayField);
     rejectUnknownKeys(day, new Set([
-      'id', 'date', 'title', 'summary', 'pace', 'layout', 'highlights', 'images', 'schedule', 'note',
+      'id', 'date', 'title', 'summary', 'pace', 'layout', 'highlights', 'images', 'schedule', 'note', 'video',
     ]), dayField);
     const id = requireString(day.id, `${dayField}.id`);
     if (!/^[a-z][a-z0-9-]*$/.test(id)) {
@@ -288,6 +288,18 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
       throw new RequestValidationError(`${dayField}.layout is not supported`);
     }
     const images = parseExperienceMedia(day.images, `${dayField}.images`, layout === 'text' ? 0 : 1);
+    let video: RetreatVideo | undefined;
+    if (day.video !== undefined) {
+      const media = requireRecord(day.video, `${dayField}.video`);
+      rejectUnknownKeys(media, new Set(['src', 'poster', 'label']), `${dayField}.video`);
+      const src = requireString(media.src, `${dayField}.video.src`);
+      if (!/^\/assets\/[a-zA-Z0-9/_-]+\.mp4$/.test(src)) {
+        throw new RequestValidationError(`${dayField}.video.src must be a local MP4 under /assets/`);
+      }
+      const label = requireString(media.label, `${dayField}.video.label`);
+      const poster = parseExperienceMedia([{ src: media.poster, alt: label }], `${dayField}.video.poster`, 1)[0].src;
+      video = { src, poster, label };
+    }
     return {
       id, date,
       title: requireString(day.title, `${dayField}.title`),
@@ -297,6 +309,7 @@ function parseRetreatExperience(value: unknown, field: string): RetreatExperienc
       highlights: requireArray(day.highlights, `${dayField}.highlights`, 1, 4)
         .map((text, index): string => requireString(text, `${dayField}.highlights[${index}]`)),
       images,
+      ...(video ? { video } : {}),
       schedule: requireArray(day.schedule, `${dayField}.schedule`, 1, 24).map((item, index) => {
         const scheduleField = `${dayField}.schedule[${index}]`;
         const entry = requireRecord(item, scheduleField);
