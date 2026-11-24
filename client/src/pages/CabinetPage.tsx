@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, LogOut } from 'lucide-react';
+import { ArrowUpRight, LogOut, SlidersHorizontal } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 import Header from '@/components/landing-v2/Header';
@@ -120,10 +120,18 @@ function CabinetContent({
     <div>
       <header className={styles.cabinetHeader}>
         <h1>{copy.cabinet.title}</h1>
-        <button type='button' className={styles.logoutButton} onClick={() => void logout()}>
-          {copy.cabinet.logout}
-          <LogOut aria-hidden='true' />
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          {user.role === 'admin' ? (
+            <Link href='/cabinet/admin' className={styles.courseLink} style={{ marginTop: 0 }}>
+              <SlidersHorizontal aria-hidden='true' />
+              {language === 'ru' ? 'CMS · Управление' : 'Admin CMS'}
+            </Link>
+          ) : null}
+          <button type='button' className={styles.logoutButton} onClick={() => void logout()}>
+            {copy.cabinet.logout}
+            <LogOut aria-hidden='true' />
+          </button>
+        </div>
       </header>
       <div className={styles.profile}>
         {user.avatarUrl ? <img src={user.avatarUrl} alt='' referrerPolicy='no-referrer' /> : null}

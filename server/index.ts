@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { createApp } from './app';
 import { DrizzleAdminRepository } from './admin-repository';
 import { createAuthentication, createDevelopmentAuthentication, createUnavailableAuthentication } from './auth';
+import { DrizzleCmsRepository } from './cms-repository';
 import { readRuntimeConfig } from './config';
 import { DrizzleCourseRepository } from './course-repository';
 import { createDatabase } from './db/client';
@@ -27,6 +28,7 @@ async function startServer(): Promise<void> {
   const database = config.databaseUrl ? createDatabase(config.databaseUrl) : undefined;
   const repository = database ? new DrizzleCourseRepository(database.db) : undefined;
   const adminRepository = database ? new DrizzleAdminRepository(database.db) : undefined;
+  const cmsRepository = database ? new DrizzleCmsRepository(database.db) : undefined;
   const authentication = database && repository
     ? shouldUseDevelopmentAuthentication(config)
       ? createDevelopmentAuthentication(repository, config.developmentAuthEmail!)
@@ -45,6 +47,7 @@ async function startServer(): Promise<void> {
   const app = createApp({
     repository,
     adminRepository,
+    cmsRepository,
     adminApiKey: config.adminApiKey,
     mediaSigner,
     authMiddleware: authentication.middleware,

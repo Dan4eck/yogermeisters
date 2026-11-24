@@ -101,13 +101,35 @@ export interface TelegramFunnel {
   runDueBatch(): Promise<number>;
 }
 
+export interface TelegramPhotoUploadResult {
+  readonly messageId: number;
+  readonly fileId?: string;
+}
+
 export interface TelegramClient {
   sendVideo?(
     chatId: number,
     video: string,
     caption?: string,
     buttons?: readonly (readonly TelegramInlineButton[])[],
+    parseMode?: 'HTML',
   ): Promise<number>;
+  sendPhoto?(
+    chatId: number,
+    photo: string,
+    caption?: string,
+    buttons?: readonly (readonly TelegramInlineButton[])[],
+    parseMode?: 'HTML',
+  ): Promise<number>;
+  sendPhotoBuffer?(
+    chatId: number,
+    buffer: Buffer,
+    filename: string,
+    mimeType: string,
+    caption?: string,
+    buttons?: readonly (readonly TelegramInlineButton[])[],
+    parseMode?: 'HTML',
+  ): Promise<TelegramPhotoUploadResult>;
   answerCallbackQuery?(callbackId: string): Promise<void>;
   sendAudio(
     chatId: number,
@@ -115,11 +137,13 @@ export interface TelegramClient {
     caption?: string,
     title?: string,
     buttons?: readonly (readonly TelegramInlineButton[])[],
+    parseMode?: 'HTML',
   ): Promise<number>;
   sendMessage(
     chatId: number,
     text: string,
     buttons?: readonly (readonly TelegramInlineButton[])[],
+    parseMode?: 'HTML',
   ): Promise<number>;
   setWebhook(url: string, secretToken: string): Promise<void>;
 }

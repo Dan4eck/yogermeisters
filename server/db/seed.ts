@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 import { retreatSeedData } from '@shared/retreats';
 
+import { seedLegacyScenariosIntoCms } from '../cms-seed-scenarios';
 import { createDatabase } from './client';
 import { courseModules, courses, lessons, retreats } from './schema';
 
@@ -164,7 +165,8 @@ async function seed(): Promise<void> {
           .onConflictDoNothing({ target: retreats.slug });
       }
     });
-    console.log('Seeded course and retreats');
+    await seedLegacyScenariosIntoCms(db);
+    console.log('Seeded course, retreats, and Telegram CMS scenarios');
   } finally {
     await pool.end();
   }

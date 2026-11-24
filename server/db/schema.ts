@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm';
 import {
   bigint,
+  boolean,
   index,
   integer,
   jsonb,
@@ -14,6 +15,17 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
+import type {
+  BroadcastStatus,
+  BroadcastTargetFilter,
+  BroadcastTargetType,
+  CmsScenarioButton,
+  CmsUrlButton,
+  ScenarioStatus,
+  ScenarioStepTrigger,
+  TelegramMediaType,
+  TelegramParseMode,
+} from '@shared/cms';
 import type { RetreatEditableData } from '@shared/retreats';
 import type { PracticeConversation } from '../../telegram-bot/types';
 
@@ -184,5 +196,116 @@ export const telegramDeliveries = pgTable(
     uniqueIndex('telegram_deliveries_enrollment_step_unique').on(table.enrollmentId, table.stepOrder),
     index('telegram_deliveries_status_idx').on(table.status),
     index('telegram_deliveries_schedule_idx').on(table.status, table.contentKey, table.scheduledAt),
+  ],
+);
+
+export const telegramMediaAssets = pgTable('telegram_media_assets', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  filename: varchar('filename', { length: 255 }).notNull(),
+  mimeType: varchar('mime_type', { length: 100 }).notNull(),
+  sizeBytes: integer('size_bytes').notNull(),
+  dataBase64: text('data_base64').notNull(),
+  telegramFileId: text('telegram_file_id'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const telegramBroadcasts = pgTable(
+  'telegram_broadcasts',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    title: varchar('title', { length: 255 }).notNull(),
+    messageText: text('message_text').notNull(),
+    parseMode: varchar('parse_mode', { length: 16 }).$type<TelegramParseMode>().notNull().default('HTML'),
+    mediaAssetId: uuid('media_asset_id').references(() => telegramMediaAssets.id, { onDelete: 'set null' }),
+    mediaUrl: text('media_url'),
+    mediaType: varchar('media_type', { length: 16 }).$type<TelegramMediaType>(),
+    buttons: jsonb('buttons').$type<readonly (readonly CmsUrlButton[])[]>().notNull().default(sql`'[]'::jsonb`),
+    targetType: varchar('target_type', { length: 32 }).$type<BroadcastTargetType>().notNull().default('all_active'),
+    targetFilter: jsonb('target_filter').$type<BroadcastTargetFilter>().notNull().default(sql`'{}'::jsonb`),
+    status: varchar('status', { length: 32 }).$type<BroadcastStatus>().notNull().default('draft'),
+    scheduledAt: timestamp('scheduled_at', { withTimezone: true }),
+    startedAt: timestamp('started_at', { withTimezone: true }),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+    createdByUserId: uuid('created_by_user_id').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index('telegram_broadcasts_status_idx').on(table.status, table.scheduledAt)],
+);
+
+export const telegramBroadcastDeliveries = pgTable(
+  'telegram_broadcast_deliveries',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    broadcastId: uuid('broadcast_id')
+      .notNull()
+      .references(() => telegramBroadcasts.id, { onDelete: 'cascade' }),
+    subscriberId: uuid('subscriber_id')
+      .notNull()
+      .references(() => telegramSubscribers.id, { onDelete: 'cascade' }),
+    isTest: boolean('is_test').notNull().default(false),
+    status: telegramDeliveryStatus('status').notNull().default('pending'),
+    attempts: integer('attempts').notNull().default(0),
+    telegramMessageId: bigint('telegram_message_id', { mode: 'number' }),
+    lastError: text('last_error'),
+    scheduledAt: timestamp('scheduled_at', { withTimezone: true }).notNull().defaultNow(),
+    sentAt: timestamp('sent_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('telegram_broadcast_deliveries_live_unique')
+      .on(table.broadcastId, table.subscriberId)
+      .where(sql`${table.isTest} = false`),
+    index('telegram_broadcast_deliveries_due_idx').on(table.status, table.scheduledAt),
+    index('telegram_broadcast_deliveries_broadcast_idx').on(table.broadcastId, table.isTest, table.status),
+  ],
+);
+
+export const telegramScenarios = pgTable(
+  'telegram_scenarios',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    slug: varchar('slug', { length: 100 }).notNull().unique(),
+    title: varchar('title', { length: 255 }).notNull(),
+    description: text('description').notNull().default(''),
+    startPayload: varchar('start_payload', { length: 64 }).notNull().unique(),
+    status: varchar('status', { length: 24 }).$type<ScenarioStatus>().notNull().default('draft'),
+    isDefault: boolean('is_default').notNull().default(false),
+    restartOnStart: boolean('restart_on_start').notNull().default(true),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index('telegram_scenarios_payload_status_idx').on(table.startPayload, table.status),
+    uniqueIndex('telegram_scenarios_single_default_unique')
+      .on(table.isDefault)
+      .where(sql`${table.isDefault} = true`),
+  ],
+);
+
+export const telegramScenarioSteps = pgTable(
+  'telegram_scenario_steps',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    scenarioId: uuid('scenario_id')
+      .notNull()
+      .references(() => telegramScenarios.id, { onDelete: 'cascade' }),
+    stepOrder: integer('step_order').notNull(),
+    stepKey: varchar('step_key', { length: 120 }).notNull(),
+    triggerType: varchar('trigger_type', { length: 24 }).$type<ScenarioStepTrigger>().notNull().default('delay'),
+    delayMinutes: integer('delay_minutes').notNull().default(0),
+    messageText: text('message_text').notNull(),
+    parseMode: varchar('parse_mode', { length: 16 }).$type<TelegramParseMode>().notNull().default('HTML'),
+    mediaAssetId: uuid('media_asset_id').references(() => telegramMediaAssets.id, { onDelete: 'set null' }),
+    mediaUrl: text('media_url'),
+    mediaType: varchar('media_type', { length: 16 }).$type<TelegramMediaType>(),
+    buttons: jsonb('buttons').$type<readonly (readonly CmsScenarioButton[])[]>().notNull().default(sql`'[]'::jsonb`),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('telegram_scenario_steps_order_unique').on(table.scenarioId, table.stepOrder),
+    uniqueIndex('telegram_scenario_steps_key_unique').on(table.scenarioId, table.stepKey),
   ],
 );

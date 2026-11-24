@@ -13,6 +13,17 @@ import {
   parseUserId,
   RequestValidationError,
 } from './admin-validation';
+import type { CmsRepository } from './cms-repository';
+import {
+  parseBroadcastInput,
+  parseBroadcastLaunchInput,
+  parseBroadcastTestInput,
+  parseManualEnrollInput,
+  parseMediaUpload,
+  parseScenarioInput,
+  parseUserRoleUpdate,
+  parseUuid,
+} from './cms-validation';
 import type { CourseRepository } from './course-repository';
 import type { MediaSigner } from './storage/selectel';
 import { StorageConfigurationError } from './storage/selectel';
@@ -20,6 +31,7 @@ import { StorageConfigurationError } from './storage/selectel';
 export interface AppDependencies {
   readonly repository?: CourseRepository;
   readonly adminRepository?: AdminRepository;
+  readonly cmsRepository?: CmsRepository;
   readonly adminApiKey?: string;
   readonly mediaSigner?: MediaSigner;
   readonly authMiddleware?: readonly RequestHandler[];
@@ -30,8 +42,16 @@ export interface AppDependencies {
 export function createApp(dependencies: AppDependencies = {}): Express {
   const app = express();
   const requireAdmin = createAdminAuthorization(dependencies.adminApiKey);
+  const standardJson = express.json({ limit: '100kb' });
+  const mediaUploadJson = express.json({ limit: '8mb' });
   app.set('trust proxy', 1);
-  app.use(express.json({ limit: '100kb' }));
+  app.use((req, res, next) => {
+    if (req.path === '/api/admin/bot/media' && req.method === 'POST') {
+      mediaUploadJson(req, res, next);
+      return;
+    }
+    standardJson(req, res, next);
+  });
 
   for (const middleware of dependencies.authMiddleware ?? []) {
     app.use(middleware);
@@ -160,6 +180,310 @@ export function createApp(dependencies: AppDependencies = {}): Express {
         return;
       }
       res.set('Cache-Control', 'private, no-store').json({ retreat });
+    }),
+  );
+
+  app.get(
+    '/api/admin/cms/overview',
+    requireAdmin,
+    asyncRoute(async (_req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const overview = await cms.getOverview();
+      res.set('Cache-Control', 'private, no-store').json({ overview });
+    }),
+  );
+
+  app.get(
+    '/api/admin/bot/subscribers',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const status = req.query.status === 'active' || req.query.status === 'blocked' ? req.query.status : undefined;
+      const subscribers = await cms.listSubscribers({
+        search: typeof req.query.search === 'string' ? req.query.search : undefined,
+        status,
+        funnelKey: typeof req.query.funnelKey === 'string' && req.query.funnelKey ? req.query.funnelKey : undefined,
+        source: typeof req.query.source === 'string' && req.query.source ? req.query.source : undefined,
+        language: typeof req.query.language === 'string' && req.query.language ? req.query.language : undefined,
+      });
+      res.set('Cache-Control', 'private, no-store').json({ subscribers });
+    }),
+  );
+
+  app.get(
+    '/api/admin/bot/subscribers/:id',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const subscriber = await cms.getSubscriberDetail(parseUuid(req.params.id, 'subscriberId'));
+      if (!subscriber) {
+        res.status(404).json({ code: 'subscriber_not_found', message: 'Subscriber not found' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json({ subscriber });
+    }),
+  );
+
+  app.post(
+    '/api/admin/bot/subscribers/:id/enroll',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const subscriberId = parseUuid(req.params.id, 'subscriberId');
+      const { scenarioId } = parseManualEnrollInput(req.body);
+      const result = await cms.enrollSubscriberInScenario(subscriberId, scenarioId);
+      if (result === 'subscriber_not_found' || result === 'scenario_not_found') {
+        res.status(404).json({ code: result, message: 'Subscriber or scenario not found' });
+        return;
+      }
+      if (result === 'subscriber_blocked' || result === 'scenario_inactive') {
+        res.status(409).json({ code: result, message: 'Subscriber is blocked or scenario is not active' });
+        return;
+      }
+      res.status(204).end();
+    }),
+  );
+
+  app.post(
+    '/api/admin/bot/media',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const asset = await cms.createMediaAsset(parseMediaUpload(req.body));
+      res.set('Cache-Control', 'private, no-store').status(201).json({ asset });
+    }),
+  );
+
+  app.get(
+    '/api/admin/bot/media/:id',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const binary = await cms.getMediaAssetBinary(parseUuid(req.params.id, 'mediaId'));
+      if (!binary) {
+        res.status(404).json({ code: 'media_not_found', message: 'Media asset not found' });
+        return;
+      }
+      res
+        .set('Cache-Control', 'private, max-age=3600')
+        .set('Content-Type', binary.mimeType)
+        .send(binary.buffer);
+    }),
+  );
+
+  app.get(
+    '/api/admin/bot/broadcasts',
+    requireAdmin,
+    asyncRoute(async (_req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const broadcasts = await cms.listBroadcasts();
+      res.set('Cache-Control', 'private, no-store').json({ broadcasts });
+    }),
+  );
+
+  app.post(
+    '/api/admin/bot/broadcasts',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const broadcast = await cms.createBroadcast(parseBroadcastInput(req.body), req.user?.id);
+      res.set('Cache-Control', 'private, no-store').status(201).json({ broadcast });
+    }),
+  );
+
+  app.patch(
+    '/api/admin/bot/broadcasts/:id',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const result = await cms.updateBroadcast(parseUuid(req.params.id, 'broadcastId'), parseBroadcastInput(req.body));
+      if (result === null) {
+        res.status(404).json({ code: 'broadcast_not_found', message: 'Broadcast not found' });
+        return;
+      }
+      if (result === 'not_editable') {
+        res.status(409).json({ code: 'broadcast_not_editable', message: 'Only draft or scheduled broadcasts can be edited' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json({ broadcast: result });
+    }),
+  );
+
+  app.delete(
+    '/api/admin/bot/broadcasts/:id',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const result = await cms.deleteOrCancelBroadcast(parseUuid(req.params.id, 'broadcastId'));
+      if (result === 'not_found') {
+        res.status(404).json({ code: 'broadcast_not_found', message: 'Broadcast not found' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json({ result });
+    }),
+  );
+
+  app.post(
+    '/api/admin/bot/broadcasts/:id/test',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const result = await cms.enqueueTestBroadcast(
+        parseUuid(req.params.id, 'broadcastId'),
+        parseBroadcastTestInput(req.body),
+      );
+      if (result === 'not_found') {
+        res.status(404).json({ code: 'broadcast_not_found', message: 'Broadcast not found' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json(result);
+    }),
+  );
+
+  app.post(
+    '/api/admin/bot/broadcasts/:id/launch',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const { scheduledAt } = parseBroadcastLaunchInput(req.body);
+      const result = await cms.launchBroadcast(parseUuid(req.params.id, 'broadcastId'), scheduledAt);
+      if (result === 'not_found') {
+        res.status(404).json({ code: 'broadcast_not_found', message: 'Broadcast not found' });
+        return;
+      }
+      if (result === 'already_launched' || result === 'no_recipients') {
+        res.status(409).json({ code: result, message: result === 'no_recipients' ? 'No active recipients match this filter' : 'Broadcast was already launched' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json(result);
+    }),
+  );
+
+  app.get(
+    '/api/admin/bot/broadcasts/:id/deliveries',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const deliveries = await cms.listBroadcastDeliveries(parseUuid(req.params.id, 'broadcastId'));
+      if (!deliveries) {
+        res.status(404).json({ code: 'broadcast_not_found', message: 'Broadcast not found' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json({ deliveries });
+    }),
+  );
+
+  app.get(
+    '/api/admin/bot/scenarios',
+    requireAdmin,
+    asyncRoute(async (_req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const scenarios = await cms.listScenarios();
+      res.set('Cache-Control', 'private, no-store').json({ scenarios });
+    }),
+  );
+
+  app.post(
+    '/api/admin/bot/scenarios',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const result = await cms.createScenario(parseScenarioInput(req.body));
+      if (result === 'duplicate_payload') {
+        res.status(409).json({ code: 'duplicate_payload', message: 'A scenario with this deep-link payload already exists' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').status(201).json({ scenario: result });
+    }),
+  );
+
+  app.patch(
+    '/api/admin/bot/scenarios/:id',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const result = await cms.updateScenario(parseUuid(req.params.id, 'scenarioId'), parseScenarioInput(req.body));
+      if (result === null) {
+        res.status(404).json({ code: 'scenario_not_found', message: 'Scenario not found' });
+        return;
+      }
+      if (result === 'duplicate_payload') {
+        res.status(409).json({ code: 'duplicate_payload', message: 'A scenario with this deep-link payload already exists' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json({ scenario: result });
+    }),
+  );
+
+  app.delete(
+    '/api/admin/bot/scenarios/:id',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const result = await cms.deleteScenario(parseUuid(req.params.id, 'scenarioId'));
+      if (result === 'not_found') {
+        res.status(404).json({ code: 'scenario_not_found', message: 'Scenario not found' });
+        return;
+      }
+      if (result === 'active_cannot_delete') {
+        res.status(409).json({ code: 'scenario_active', message: 'Archive or pause the scenario before deleting it' });
+        return;
+      }
+      res.status(204).end();
+    }),
+  );
+
+  app.get(
+    '/api/admin/courses',
+    requireAdmin,
+    asyncRoute(async (_req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const courses = await cms.listAdminCourses();
+      res.set('Cache-Control', 'private, no-store').json({ courses });
+    }),
+  );
+
+  app.get(
+    '/api/admin/courses/:slug/clients-progress',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const clients = await cms.listCourseClientsWithProgress(req.params.slug);
+      if (!clients) {
+        res.status(404).json({ code: 'course_not_found', message: 'Course not found' });
+        return;
+      }
+      res.set('Cache-Control', 'private, no-store').json({ clients });
+    }),
+  );
+
+  app.get(
+    '/api/admin/users',
+    requireAdmin,
+    asyncRoute(async (_req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const users = await cms.listTeamUsers();
+      res.set('Cache-Control', 'private, no-store').json({ users });
+    }),
+  );
+
+  app.patch(
+    '/api/admin/users/:userId/role',
+    requireAdmin,
+    asyncRoute(async (req, res) => {
+      const cms = requireCmsRepository(dependencies.cmsRepository);
+      const userId = parseUserId(req.params.userId);
+      const role = parseUserRoleUpdate(req.body);
+      if (req.user?.id === userId && role !== 'admin') {
+        res.status(409).json({ code: 'cannot_demote_self', message: 'You cannot remove admin access from yourself' });
+        return;
+      }
+      const result = await cms.updateUserRole(userId, role);
+      if (result === 'not_found') {
+        res.status(404).json({ code: 'user_not_found', message: 'User not found' });
+        return;
+      }
+      res.status(204).end();
     }),
   );
 
@@ -329,6 +653,13 @@ function requireRepository(repository: CourseRepository | undefined): CourseRepo
 }
 
 function requireAdminRepository(repository: AdminRepository | undefined): AdminRepository {
+  if (!repository) {
+    throw new ServiceConfigurationError('Database is not configured');
+  }
+  return repository;
+}
+
+function requireCmsRepository(repository: CmsRepository | undefined): CmsRepository {
   if (!repository) {
     throw new ServiceConfigurationError('Database is not configured');
   }

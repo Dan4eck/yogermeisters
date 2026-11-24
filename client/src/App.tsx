@@ -4,6 +4,7 @@ import { Route, Switch, useLocation } from 'wouter';
 import VajraLoader from '@/components/VajraLoader';
 import { useLanguage } from '@/hooks/use-language';
 import Home from '@/pages/Home';
+import AdminCmsPage from '@/pages/AdminCmsPage';
 import CabinetPage from '@/pages/CabinetPage';
 import CourseCabinetPage from '@/pages/CourseCabinetPage';
 import FreeLessonPage from '@/pages/FreeLessonPage';
@@ -60,6 +61,9 @@ function Router() {
         </Route>
         <Route path="/cabinet">
           <CabinetPage language={language} setLanguage={setLanguage} />
+        </Route>
+        <Route path="/cabinet/admin">
+          <AdminCmsPage language={language} setLanguage={setLanguage} />
         </Route>
         <Route path="/cabinet/free-lesson">
           <FreeLessonPage language={language} setLanguage={setLanguage} />
