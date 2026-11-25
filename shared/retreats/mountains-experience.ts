@@ -41,7 +41,7 @@ export const mountainsRussianExperience: RetreatExperience = {
     },
     {
       title: 'Медитация Метта',
-      text: 'В первый вечер знакомимся с буддийской медитацией Метта: теория, практика и журналирование.',
+      text: 'В первый вечер знакомимся с буддийской медитацией Метта: теория и практика. Во второй - звуковибрационный массаж тибетскими чашами и гонгом.',
       image: photo('teacher-bowl', 'Девушка в бордовом держит поющую чашу'),
     },
     {
@@ -82,7 +82,7 @@ export const mountainsRussianExperience: RetreatExperience = {
       ['День', 'Время для себя.'],
       ['17:00', 'Сауна, аюрведическая практика красоты и молодости, теория.'],
       ['Вечер', 'Ужин.'],
-      ['20:40', 'Дыхательная практика, психо-энергетическая практика.'],
+      ['20:40', 'Дыхательная практика, психо-энергетическая практика, звуковибрационный массаж тибетскими чашами и гонгом.'],
     ]),
     day('closing', '2026-12-13', 'Закрытие', video('pranayama', 'Участницы ретрита выполняют пранаяму'), [
       ['07:30', 'Пранаяма, практика асан с элементами парной йоги.'],
@@ -110,7 +110,7 @@ export const mountainsEnglishExperience: RetreatExperience = {
     },
     {
       title: 'Metta meditation',
-      text: 'On the first evening we explore Buddhist Metta meditation: theory, practice and journaling.',
+      text: 'On the first evening we explore Buddhist Metta meditation: theory and practice. On the second, a sound vibration massage with Tibetan singing bowls and a gong.',
       image: photo('teacher-bowl', 'A woman in burgundy holding a singing bowl'),
     },
     {
@@ -151,7 +151,7 @@ export const mountainsEnglishExperience: RetreatExperience = {
       ['Daytime', 'Time for yourself.'],
       ['17:00', 'Sauna, Ayurvedic beauty and youth practice, theory.'],
       ['Evening', 'Dinner.'],
-      ['20:40', 'Breathwork and psycho-energetic practice.'],
+      ['20:40', 'Breathwork, psycho-energetic practice and a sound vibration massage with Tibetan singing bowls and a gong.'],
     ]),
     day('closing', '2026-12-13', 'Closing', video('pranayama', 'Retreat participants practising pranayama'), [
       ['07:30', 'Pranayama, asana practice with elements of partner yoga.'],
