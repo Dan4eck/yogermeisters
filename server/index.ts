@@ -64,7 +64,7 @@ async function startServer(): Promise<void> {
   });
 
   if (process.env.NODE_ENV === 'production') {
-    serveStatic(app);
+    serveStatic(app, adminRepository);
   } else {
     const { setupVite } = await import('./vite');
     await setupVite(httpServer, app);
