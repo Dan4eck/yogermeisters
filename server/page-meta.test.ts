@@ -65,7 +65,7 @@ describe('link previews', () => {
     const draft = await resolvePageMeta(`/retreats/${seed.slug}`, createRepository(async () => [{ ...seed, status: 'draft' }]));
     expect(draft.imagePath).toBe('/assets/og/home.jpg');
     const fallback = await resolvePageMeta(`/retreats/${seed.slug}`, createRepository(async () => { throw new Error('down'); }));
-    expect(fallback.title).toBe('Йога и Горы | Yogermeisters');
+    expect(fallback.title).toBe('Йога-ретрит в Чешской Швейцарии | Yogermeisters');
     expect((await resolvePageMeta('/retreats/unknown')).imagePath).toBe('/assets/og/home.jpg');
   });
 });

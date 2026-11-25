@@ -88,7 +88,7 @@ describe('structured retreat experience', () => {
       expect(retreat.experience.days.map((day: { readonly date: string }): string => day.date))
         .toEqual(['2026-12-11', '2026-12-12', '2026-12-13']);
       expect(retreat.experience.days.map((day: { readonly schedule: readonly unknown[] }): number => day.schedule.length))
-        .toEqual([4, 7, 3]);
+        .toEqual([4, 8, 3]);
       expect(retreat.experience.days[1].video).toBeUndefined();
       expect(retreat.experience.days[1].images[0].src).toBe('/assets/retreats/mountains/mountains-forest-trail.webp');
       expect(retreat.experience.days[2].video.src).toBe('/assets/retreats/mountains/mountains-pranayama.mp4');

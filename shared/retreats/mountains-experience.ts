@@ -28,11 +28,11 @@ function day(
 }
 
 export const mountainsRussianExperience: RetreatExperience = {
-  priceOffer: { regularPrice: '6,399 CZK', label: 'Early bird', note: '5,699 CZK вместо 6,399 CZK - цена по предложению' },
-  heroTitle: 'Йога и горы.\nТри дня для себя.',
-  heroText: 'Выходные в Крконоше: практики, поход в лес, сауна и медитации.',
-  introTitle: 'В горы.\nК себе.',
-  introText: 'Утром - йога и пранаяма, днём - лес и время для себя, вечером - сауна, дыхание и медитация.',
+  priceOffer: { regularPrice: '€350', label: 'Early bird', note: '€275 вместо €350 - цена по предложению' },
+  heroTitle: 'Йога в Чешской\nШвейцарии.',
+  heroText: 'Три дня для себя: практики, поход в лес, сауна, медитации и итальянская кухня.',
+  introTitle: 'Перезагрузка\nна природе',
+  introText: 'Утром - йога и пранаяма, днём - лес и время для себя, вечером - сауна, дыхание и медитация. А за столом - итальянская кухня.',
   reasons: [
     {
       title: 'Поход и практика в лесу',
@@ -51,7 +51,7 @@ export const mountainsRussianExperience: RetreatExperience = {
     },
   ],
   stayTitle: 'Где будем жить',
-  stayText: 'Живём в горах Крконоше. Проживание входит в стоимость, подробности о доме и размещении расскажу в Telegram.',
+  stayText: 'Живём в Рыбниште (Rybniště), в Чешской Швейцарии. Проживание входит в стоимость, подробности о доме и размещении расскажу в Telegram.',
   stayImages: [
     photo('moon', 'Молодая луна над тёмным горным хребтом'),
     photo('dreamcatcher', 'Ловец снов в каплях росы, за ним туманный луг и лес'),
@@ -61,7 +61,7 @@ export const mountainsRussianExperience: RetreatExperience = {
     included: [
       'Проживание.',
       'Все практики йоги, пранаямы и медитации по программе.',
-      'Питание по программе: ужин, обед и два завтрака.',
+      'Питание с акцентом на итальянскую кухню: два ужина, обед и два завтрака.',
       'Поход и практика в лесу.',
       'Сауна, аюрведическая практика красоты и молодости.',
     ],
@@ -81,6 +81,7 @@ export const mountainsRussianExperience: RetreatExperience = {
       ['14:00', 'Обед.'],
       ['День', 'Время для себя.'],
       ['17:00', 'Сауна, аюрведическая практика красоты и молодости, теория.'],
+      ['Вечер', 'Ужин.'],
       ['20:40', 'Дыхательная практика, психо-энергетическая практика.'],
     ]),
     day('closing', '2026-12-13', 'Закрытие', video('pranayama', 'Участницы ретрита выполняют пранаяму'), [
@@ -90,17 +91,17 @@ export const mountainsRussianExperience: RetreatExperience = {
     ]),
   ],
   bookingTitle: 'Едешь\nс нами?',
-  bookingText: 'Встречаемся в Крконоше 11-13 декабря. Напиши мне в Telegram, расскажу о местах и размещении. Оставляю за собой право менять программу :)',
-  bookingSteps: ['Напиши в Telegram: «Хочу в горы».', 'Уточни наличие мест и размещение.', 'Получи условия оплаты и подтверждение бронирования.'],
-  bookingNote: 'Early bird - 5,699 CZK, обычная цена - 6,399 CZK. Программа может меняться.',
+  bookingText: 'Встречаемся в Чешской Швейцарии 11-13 декабря. Напиши мне в Telegram, расскажу о местах и размещении. Оставляю за собой право менять программу :)',
+  bookingSteps: ['Напиши в Telegram: «Хочу в Чешскую Швейцарию».', 'Уточни наличие мест и размещение.', 'Получи условия оплаты и подтверждение бронирования.'],
+  bookingNote: 'Early bird - €275, обычная цена - €350. Программа может меняться.',
 };
 
 export const mountainsEnglishExperience: RetreatExperience = {
-  priceOffer: { regularPrice: '6,399 CZK', label: 'Early bird', note: '5,699 CZK instead of 6,399 CZK with our' },
-  heroTitle: 'Yoga and mountains.\nThree days for you.',
-  heroText: 'A weekend in Krkonose: yoga, a forest hike, sauna and meditation.',
-  introTitle: 'To the mountains.\nBack to yourself.',
-  introText: 'Yoga and pranayama in the morning, forest and free time by day, sauna, breathwork and meditation in the evening.',
+  priceOffer: { regularPrice: '€350', label: 'Early bird', note: '€275 instead of €350 with our' },
+  heroTitle: 'Yoga in Bohemian\nSwitzerland.',
+  heroText: 'Three days for yourself: yoga, a forest hike, sauna, meditation and Italian cuisine.',
+  introTitle: 'A reset\nin nature',
+  introText: 'Yoga and pranayama in the morning, forest and free time by day, sauna, breathwork and meditation in the evening. And Italian cuisine at the table.',
   reasons: [
     {
       title: 'A hike and forest practice',
@@ -119,7 +120,7 @@ export const mountainsEnglishExperience: RetreatExperience = {
     },
   ],
   stayTitle: 'Where we’ll stay',
-  stayText: 'We stay in the Krkonose mountains. Accommodation is included in the price, and I’ll share details about the house and rooms on Telegram.',
+  stayText: 'We stay in Rybniště, Bohemian Switzerland. Accommodation is included in the price, and I’ll share details about the house and rooms on Telegram.',
   stayImages: [
     photo('moon', 'A crescent moon above a dark mountain ridge'),
     photo('dreamcatcher', 'A dreamcatcher covered in dew with a misty meadow and forest behind it'),
@@ -129,7 +130,7 @@ export const mountainsEnglishExperience: RetreatExperience = {
     included: [
       'Accommodation.',
       'All yoga, pranayama and meditation practices on the programme.',
-      'Meals on the programme: a dinner, a lunch and two breakfasts.',
+      'Meals with a focus on Italian cuisine: two dinners, a lunch and two breakfasts.',
       'The hike and forest practice.',
       'Sauna and the Ayurvedic beauty and youth practice.',
     ],
@@ -149,6 +150,7 @@ export const mountainsEnglishExperience: RetreatExperience = {
       ['14:00', 'Lunch.'],
       ['Daytime', 'Time for yourself.'],
       ['17:00', 'Sauna, Ayurvedic beauty and youth practice, theory.'],
+      ['Evening', 'Dinner.'],
       ['20:40', 'Breathwork and psycho-energetic practice.'],
     ]),
     day('closing', '2026-12-13', 'Closing', video('pranayama', 'Retreat participants practising pranayama'), [
@@ -158,7 +160,7 @@ export const mountainsEnglishExperience: RetreatExperience = {
     ]),
   ],
   bookingTitle: 'Coming\nwith us?',
-  bookingText: 'Join us in Krkonose on 11-13 December. Message me on Telegram about availability and accommodation. I reserve the right to change the programme :)',
-  bookingSteps: ['Write on Telegram: “I’d like to join the mountains retreat”.', 'Ask about availability and accommodation.', 'Receive payment terms and booking confirmation.'],
-  bookingNote: 'Early bird: 5,699 CZK, regular price: 6,399 CZK. The programme may change.',
+  bookingText: 'Join us in Bohemian Switzerland on 11-13 December. Message me on Telegram about availability and accommodation. I reserve the right to change the programme :)',
+  bookingSteps: ['Write on Telegram: “I’d like to join the Bohemian Switzerland retreat”.', 'Ask about availability and accommodation.', 'Receive payment terms and booking confirmation.'],
+  bookingNote: 'Early bird: €275, regular price: €350. The programme may change.',
 };

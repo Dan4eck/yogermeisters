@@ -76,8 +76,8 @@ const RETREAT_SLOTS: readonly RetreatSlot[] = [
     slug: 'yoga-and-mountains-retreat',
     image: '/assets/retreats/mountains/mountains-dawn-cover.webp',
     alt: {
-      ru: 'Рассвет над заснеженным еловым лесом и горами',
-      en: 'Dawn over a snowy spruce forest and mountains',
+      ru: 'Рассвет над заснеженным еловым лесом и холмами',
+      en: 'Dawn over a snowy spruce forest and hills',
     },
   },
 ];
