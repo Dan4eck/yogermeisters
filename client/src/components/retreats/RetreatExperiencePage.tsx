@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState, type ReactElement, type Touch as ReactTouch, type TouchEvent } from 'react';
+import {
+  useEffect, useLayoutEffect, useRef, useState, type ReactElement, type Touch as ReactTouch, type TouchEvent,
+} from 'react';
 import { ArrowDown, ArrowLeft, ArrowUpRight, Plus } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -50,6 +52,8 @@ function formatDay(date: string, language: Language, weekday = false): string {
     day: 'numeric', month: 'long', ...(weekday ? { weekday: 'long' as const } : {}), timeZone: 'UTC',
   }).format(new Date(`${date}T12:00:00Z`));
 }
+
+const DAY_TRANSITION_MS = 320;
 
 interface PhotographProps {
   readonly media: RetreatMedia;
@@ -268,20 +272,42 @@ function Programme({ experience, language, title }: {
   readonly title: string;
 }): ReactElement {
   const [openId, setOpenId] = useState<string | null>(experience.days[0]?.id ?? null);
-  const revealOnChange = useRef(false);
+  const daysRef = useRef<HTMLDivElement>(null);
+  const pinnedTrigger = useRef<{ readonly id: string; readonly top: number } | null>(null);
 
-  useEffect((): (() => void) | undefined => {
-    if (!openId || !revealOnChange.current) return;
-    const timeout = window.setTimeout((): void => {
-      const card = document.getElementById(`day-${openId}`);
-      const button = document.getElementById(`title-${openId}`);
-      const bounds = button?.getBoundingClientRect();
-      if (bounds && (bounds.top < 0 || bounds.bottom > window.innerHeight)) {
-        card?.scrollIntoView({ block: 'start', behavior: 'instant' });
-      }
-      revealOnChange.current = false;
-    }, 350);
-    return (): void => window.clearTimeout(timeout);
+  useLayoutEffect((): (() => void) | undefined => {
+    const pinned = pinnedTrigger.current;
+    pinnedTrigger.current = null;
+    const button = pinned && pinned.id === openId ? document.getElementById(`title-${pinned.id}`) : null;
+    const list = daysRef.current;
+    if (!pinned || !button || !list) return;
+
+    const root = document.documentElement;
+    const previousAnchor = root.style.overflowAnchor;
+    const deadline = performance.now() + DAY_TRANSITION_MS + 100;
+    const interruptions = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const;
+    let frame = 0;
+
+    const release = (): void => {
+      window.cancelAnimationFrame(frame);
+      root.style.overflowAnchor = previousAnchor;
+      list.style.top = '';
+      interruptions.forEach((type): void => window.removeEventListener(type, release));
+    };
+    const holdPosition = (): void => {
+      list.style.top = '';
+      const shift = button.getBoundingClientRect().top - pinned.top;
+      if (Math.abs(shift) >= 0.5) window.scrollBy({ top: shift, behavior: 'instant' });
+      const remainder = button.getBoundingClientRect().top - pinned.top;
+      list.style.top = Math.abs(remainder) < 1 ? `${-remainder}px` : '';
+      if (performance.now() >= deadline) release();
+      else frame = window.requestAnimationFrame(holdPosition);
+    };
+
+    root.style.overflowAnchor = 'none';
+    interruptions.forEach((type): void => window.addEventListener(type, release, { passive: true }));
+    holdPosition();
+    return release;
   }, [openId]);
 
   useEffect((): (() => void) => {
@@ -311,14 +337,18 @@ function Programme({ experience, language, title }: {
         <h2 id='programme-title'>{title}</h2>
         <p>{COPY[language].programText}</p>
       </div>
-      <div className={styles.days}>
+      <div className={styles.days} ref={daysRef}>
         {experience.days.map((day: RetreatDay, index: number): ReactElement => (
           <DaySection
             key={day.id} day={day} index={index} language={language}
             open={openId === day.id}
             onToggle={(): void => {
-              revealOnChange.current = true;
-              setOpenId(openId === day.id ? null : day.id);
+              const nextId = openId === day.id ? null : day.id;
+              const button = document.getElementById(`title-${day.id}`);
+              pinnedTrigger.current = nextId && button
+                ? { id: nextId, top: button.getBoundingClientRect().top }
+                : null;
+              setOpenId(nextId);
             }}
           />
         ))}

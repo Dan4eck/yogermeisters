@@ -121,7 +121,7 @@
 .programme { padding: 90px var(--gutter) 100px; background: var(--wine); color: var(--paper); }
 .programIntro { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 42px; }
 .programIntro > p { max-width: 320px; font-size: var(--body-size); line-height: var(--body-leading); color: rgb(242 239 231 / 78%); }
-.days { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.days { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .dayCard { min-width: 0; border-radius: 16px; background: var(--paper); color: var(--ink); overflow: hidden; scroll-margin-top: 24px !important; }
 .dayTrigger { display: flex; align-items: center; gap: 24px; width: 100%; padding: 24px 30px; border: 0; text-align: left; background: transparent; color: inherit; cursor: pointer; }
 .page .dayTrigger:focus-visible { outline-offset: -5px; border-radius: 16px; outline-color: var(--wine); }
