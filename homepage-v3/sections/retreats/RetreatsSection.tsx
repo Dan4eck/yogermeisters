@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactElement, type ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, CalendarDays, MapPin } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -125,7 +125,7 @@ function getRetreatCards(language: Language, retreats: readonly RetreatRecord[])
     ]),
   );
 
-  return RETREAT_SLOTS.flatMap((slot: RetreatSlot): readonly RetreatCard[] => {
+  const cards = RETREAT_SLOTS.flatMap((slot: RetreatSlot): readonly RetreatCard[] => {
     const retreat = retreatBySlug.get(slot.slug);
 
     if (!retreat) {
@@ -166,6 +166,11 @@ function getRetreatCards(language: Language, retreats: readonly RetreatRecord[])
       statusLabel: copy.unavailable,
     }];
   });
+
+  return cards.sort((left: RetreatCard, right: RetreatCard): number => (
+    Number(right.bookingAvailable) - Number(left.bookingAvailable)
+      || left.dateStops[0].date.localeCompare(right.dateStops[0].date)
+  ));
 }
 
 function getSnapPositions(track: HTMLDivElement): readonly number[] {
@@ -194,6 +199,12 @@ function getClosestCardIndex(track: HTMLDivElement): number {
   });
 
   return closestIndex;
+}
+
+function CardBody({ card, children }: { readonly card: RetreatCard; readonly children: ReactNode }): ReactElement {
+  return card.bookingAvailable
+    ? <Link href={card.href} className={styles.cardLink}>{children}</Link>
+    : <div className={styles.cardLink}>{children}</div>;
 }
 
 export default function RetreatsSection({ language }: RetreatsSectionProps): ReactElement {
@@ -314,11 +325,12 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
                 key={card.slug}
                 className={styles.card}
                 data-retreat-card={card.slug}
+                data-available={card.bookingAvailable}
                 role='group'
                 aria-roledescription={hasOverflow ? (language === 'ru' ? 'слайд' : 'slide') : undefined}
                 aria-label={`${index + 1} / ${cards.length}: ${card.title}`}
               >
-                <Link href={card.href} className={styles.cardLink}>
+                <CardBody card={card}>
                   <div className={styles.photoFrame}>
                     <img
                       src={card.image}
@@ -380,7 +392,7 @@ export default function RetreatsSection({ language }: RetreatsSectionProps): Rea
                       </p>
                     </div>
                   </div>
-                </Link>
+                </CardBody>
               </article>
             ))}
           </div>

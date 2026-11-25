@@ -256,7 +256,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .card:hover .photo {
+  .card[data-available='true']:hover .photo {
     transform: scale(1.035);
   }
 
@@ -424,7 +424,7 @@
     transition: none;
   }
 
-  .card:hover .photo {
+  .card[data-available='true']:hover .photo {
     transform: none;
   }
 }
