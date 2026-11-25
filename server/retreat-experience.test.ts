@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { getRetreatBySlug, retreatSeedData } from '../shared/retreats';
 import { sriLankaRetreat } from '../shared/retreats/sri-lanka';
 import { ciraliRetreat } from '../shared/retreats/cirali';
+import { mountainsRetreat } from '../shared/retreats/mountains';
 import type { RetreatExperience } from '../shared/retreats/experience';
 import type { RetreatSeed, RetreatUpdate } from '../shared/retreats/types';
 import type { AdminRepository } from './admin-repository';
@@ -72,6 +73,25 @@ describe('structured retreat experience', () => {
       expect(JSON.stringify(retreat.experience.days)).not.toMatch(/\bSUP\b|сап-борд/i);
       expect(JSON.stringify(retreat.experience.inclusions.included)).not.toMatch(/\bSUP\b|сап-борд/i);
       expect(JSON.stringify(retreat.experience.inclusions.excluded)).toMatch(/\bSUP\b/);
+    }
+  });
+
+  it('serves the three-day Czech mountains experience in both languages', async () => {
+    const app = createApp({ adminRepository: createRepository() });
+    const { id: _id, slug: _slug, ...update } = mountainsRetreat;
+    expect(() => parseRetreatUpdate(update)).not.toThrow();
+    for (const language of ['ru', 'en'] as const) {
+      const response = await request(app).get(`/api/retreats/yoga-and-mountains-retreat?language=${language}`);
+      expect(response.status).toBe(200);
+      const retreat = response.body.retreat;
+      expect(retreat.status).toBe('active');
+      expect(retreat.experience.days.map((day: { readonly date: string }): string => day.date))
+        .toEqual(['2026-12-11', '2026-12-12', '2026-12-13']);
+      expect(retreat.experience.days.map((day: { readonly schedule: readonly unknown[] }): number => day.schedule.length))
+        .toEqual([4, 7, 3]);
+      expect(retreat.experience.days[1].video).toBeUndefined();
+      expect(retreat.experience.days[1].images[0].src).toBe('/assets/retreats/mountains/mountains-forest-trail.webp');
+      expect(retreat.experience.days[2].video.src).toBe('/assets/retreats/mountains/mountains-pranayama.mp4');
     }
   });
 
@@ -195,6 +215,7 @@ describe('structured retreat experience', () => {
     const experiences: readonly RetreatExperience[] = [
       sriLankaRetreat.experience!, sriLankaRetreat.translations!.ru!.experience!,
       ciraliRetreat.experience!, ciraliRetreat.translations!.ru!.experience!,
+      mountainsRetreat.experience!, mountainsRetreat.translations!.ru!.experience!,
     ];
     for (const experience of experiences) {
       const images = [

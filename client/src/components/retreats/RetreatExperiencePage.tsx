@@ -40,6 +40,11 @@ const COPY = {
   },
 } as const;
 
+const MOUNTAINS_COPY = {
+  ru: { programTitle: 'Программа ретрита', included: 'Что включено в стоимость 🌲' },
+  en: { programTitle: 'Retreat programme', included: 'Included in the price 🌲' },
+} as const;
+
 function formatDay(date: string, language: Language, weekday = false): string {
   return new Intl.DateTimeFormat(COPY[language].dateLocale, {
     day: 'numeric', month: 'long', ...(weekday ? { weekday: 'long' as const } : {}), timeZone: 'UTC',
@@ -257,7 +262,11 @@ function DaySection({ day, index, language, open, onToggle }: DaySectionProps): 
   );
 }
 
-function Programme({ experience, language }: { readonly experience: RetreatExperience; readonly language: Language }): ReactElement {
+function Programme({ experience, language, title }: {
+  readonly experience: RetreatExperience;
+  readonly language: Language;
+  readonly title: string;
+}): ReactElement {
   const [openId, setOpenId] = useState<string | null>(experience.days[0]?.id ?? null);
   const revealOnChange = useRef(false);
 
@@ -299,7 +308,7 @@ function Programme({ experience, language }: { readonly experience: RetreatExper
   return (
     <section className={styles.programme} id='programme' aria-labelledby='programme-title'>
       <div className={styles.programIntro}>
-        <h2 id='programme-title'>{COPY[language].programTitle}</h2>
+        <h2 id='programme-title'>{title}</h2>
         <p>{COPY[language].programText}</p>
       </div>
       <div className={styles.days}>
@@ -321,7 +330,7 @@ function Programme({ experience, language }: { readonly experience: RetreatExper
 export default function RetreatExperiencePage({
   retreat, experience, language, setLanguage,
 }: RetreatExperiencePageProps): ReactElement {
-  const copy = COPY[language];
+  const copy = { ...COPY[language], ...(retreat.slug === 'yoga-and-mountains-retreat' ? MOUNTAINS_COPY[language] : {}) };
   const coverImage = getRetreatImageUrl(retreat.coverImage);
   const discount = retreat.price.trim().match(/^(.+?)\s+early(?:\s+bird)?\s*\/\s*(.+)$/i);
   const currentPrice = discount?.[1].trim() ?? retreat.price;
@@ -375,7 +384,7 @@ export default function RetreatExperiencePage({
         {experience.reasons?.length ? (
           <RetreatReasons experience={experience} reasons={experience.reasons} />
         ) : null}
-        <Programme experience={experience} language={language} />
+        <Programme experience={experience} language={language} title={copy.programTitle} />
         <section className={styles.stay} id='stay' aria-labelledby='stay-title'>
           <div className={styles.stayCopy}><h2 id='stay-title'>{experience.stayTitle}</h2><p>{experience.stayText}</p></div>
           <div className={styles.stayPhotos}>

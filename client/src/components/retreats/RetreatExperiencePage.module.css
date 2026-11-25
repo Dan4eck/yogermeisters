@@ -258,6 +258,7 @@
   .stayPhotos .photograph:first-child { grid-area: auto; grid-column: 1 / -1; aspect-ratio: 3 / 2; }
   .stayPhotos .photograph:nth-child(2), .stayPhotos .photograph:nth-child(3) { grid-area: auto; border: 0; }
   .stayPhotos .photograph img { position: absolute; inset: 0; }
+  .page[data-retreat='yoga-and-mountains-retreat'] .heroImage { object-position: 72% 50%; }
   .page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(2),
   .page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(3) { grid-area: auto; grid-column: 1 / -1; }
   .page[data-retreat='cirali-yoga-tour'] .stayPhotos .photograph:nth-child(2) { aspect-ratio: 2.7; }

@@ -74,10 +74,10 @@ const RETREAT_SLOTS: readonly RetreatSlot[] = [
   },
   {
     slug: 'yoga-and-mountains-retreat',
-    image: '/assets/landing-v3/retreats/mountains.webp',
+    image: '/assets/retreats/mountains/mountains-dawn-cover.webp',
     alt: {
-      ru: 'Зелёные горные склоны Крконоше',
-      en: 'Green mountain slopes in Krkonose',
+      ru: 'Рассвет над заснеженным еловым лесом и горами',
+      en: 'Dawn over a snowy spruce forest and mountains',
     },
   },
 ];
