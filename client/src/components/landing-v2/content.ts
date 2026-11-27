@@ -101,6 +101,7 @@ const practiceVideoSrc = 'https://www.youtube.com/embed/Z_AabfLhaHo';
 export const youtubePracticeUrl = 'https://www.youtube.com/watch?v=Z_AabfLhaHo';
 const himalayanYogaCourseUrl = '/the-yoga-method';
 export const telegramUrl = 'https://t.me/AnastasiaPagliacci';
+export const whatsappUrl = 'https://wa.me/420608615517';
 
 export const landingCopy = {
   en: {
